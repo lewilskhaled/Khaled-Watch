@@ -10,7 +10,7 @@
 <style>
 :root{
   --or:#C9A84C;--or-l:#E8C97A;--or-d:#8B6914;
-  --noir:#090909;--noir2:#111;--noir3:#1a1a1a;
+  --noir:#090909;--noir3:#1a1a1a;
   --blanc:#F5F0E8;--gris:#777;--rouge:#C0392B;
   --glass:rgba(255,255,255,0.05);
   --bord:rgba(201,168,76,0.28);
@@ -18,218 +18,123 @@
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{-webkit-text-size-adjust:100%;}
-body{
-  font-family:'Montserrat',sans-serif;
-  background:var(--noir);color:var(--blanc);
-  min-height:100vh;overflow-x:hidden;
-}
+body{font-family:'Montserrat',sans-serif;background:var(--noir);color:var(--blanc);min-height:100vh;overflow-x:hidden;}
+.bg-fixed{position:fixed;inset:0;z-index:-2;background-size:cover;background-position:center;background-attachment:fixed;}
+.bg-overlay{position:fixed;inset:0;z-index:-1;background:linear-gradient(170deg,rgba(9,9,9,.93) 0%,rgba(9,9,9,.82) 100%);}
 
-/* ===== FOND ===== */
-.bg-fixed{
-  position:fixed;inset:0;z-index:-1;
-  background-size:cover;background-position:center;background-attachment:fixed;
-  transition:background-image .5s ease;
-}
-.bg-overlay{
-  position:fixed;inset:0;z-index:-1;
-  background:linear-gradient(170deg,rgba(9,9,9,.93) 0%,rgba(9,9,9,.82) 100%);
-}
-
-/* ===== HEADER ===== */
-.hdr{
-  position:sticky;top:0;z-index:200;
-  background:rgba(6,6,6,.9);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  border-bottom:1px solid var(--bord);
-  padding:.85rem 1rem;
-  display:flex;align-items:center;justify-content:space-between;
-}
-.hdr-logo{
-  font-family:'Cormorant Garamond',serif;
-  font-size:1.35rem;font-weight:700;letter-spacing:.12em;
-  background:linear-gradient(130deg,var(--or-d),var(--or-l));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-}
+/* HEADER */
+.hdr{position:sticky;top:0;z-index:200;background:rgba(6,6,6,.9);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--bord);padding:.85rem 1rem;display:flex;align-items:center;justify-content:space-between;}
+.hdr-logo{font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:700;letter-spacing:.12em;background:linear-gradient(130deg,var(--or-d),var(--or-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .hdr-right{display:flex;align-items:center;gap:.5rem;}
 .badge-admin{font-size:.52rem;letter-spacing:.25em;color:var(--rouge);border:1px solid var(--rouge);border-radius:50px;padding:.2rem .55rem;text-transform:uppercase;}
 .btn-view{font-size:.58rem;letter-spacing:.12em;color:var(--or);text-decoration:none;text-transform:uppercase;border:1px solid var(--bord);padding:.32rem .75rem;border-radius:50px;-webkit-tap-highlight-color:transparent;}
 
-/* ===== TABS ===== */
-.tabs{
-  display:flex;border-bottom:1px solid var(--bord);
-  background:rgba(0,0,0,.35);
-  position:sticky;top:55px;z-index:100;
-  overflow-x:auto;scrollbar-width:none;
-}
+/* TABS */
+.tabs{display:flex;border-bottom:1px solid var(--bord);background:rgba(0,0,0,.35);position:sticky;top:55px;z-index:100;overflow-x:auto;scrollbar-width:none;}
 .tabs::-webkit-scrollbar{display:none;}
-.tab{
-  flex:none;min-width:0;padding:.75rem .9rem;
-  font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--gris);cursor:pointer;border:none;background:none;
-  font-family:'Montserrat',sans-serif;border-bottom:2px solid transparent;
-  -webkit-tap-highlight-color:transparent;transition:color .2s,border-color .2s;white-space:nowrap;
-}
+.tab{flex:none;padding:.75rem .9rem;font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gris);cursor:pointer;border:none;background:none;font-family:'Montserrat',sans-serif;border-bottom:2px solid transparent;-webkit-tap-highlight-color:transparent;transition:color .2s,border-color .2s;white-space:nowrap;}
 .tab.active{color:var(--or);border-bottom-color:var(--or);}
 
-/* ===== SECTIONS ===== */
+/* SECTIONS */
 .section{display:none;padding:1rem 1rem calc(var(--safe-bottom) + 2rem);}
 .section.show{display:block;}
 
-/* ===== CARD ===== */
-.card{
-  background:var(--glass);border:1px solid var(--bord);
-  border-radius:14px;padding:1.2rem;margin-bottom:1.2rem;
-  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-}
-.card-title{
-  font-family:'Cormorant Garamond',serif;
-  font-size:1.1rem;font-weight:600;color:var(--or);
-  margin-bottom:1rem;padding-bottom:.7rem;
-  border-bottom:1px solid var(--bord);
-  display:flex;align-items:center;gap:.4rem;
-}
+/* CARD */
+.card{background:var(--glass);border:1px solid var(--bord);border-radius:14px;padding:1.2rem;margin-bottom:1.2rem;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);}
+.card-title{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:var(--or);margin-bottom:1rem;padding-bottom:.7rem;border-bottom:1px solid var(--bord);display:flex;align-items:center;gap:.4rem;}
 
-/* ===== FORM ===== */
+/* FORM */
 .field{margin-bottom:.9rem;}
 label{display:block;font-size:.58rem;letter-spacing:.2em;color:var(--gris);text-transform:uppercase;margin-bottom:.4rem;}
-input[type=text],input[type=password],input[type=url],input[type=number],select,textarea{
-  width:100%;background:rgba(0,0,0,.45);
-  border:1px solid rgba(201,168,76,.2);border-radius:8px;
-  color:var(--blanc);padding:.7rem .85rem;
-  font-size:.85rem;font-family:'Montserrat',sans-serif;
-  outline:none;transition:border .25s;
-  -webkit-appearance:none;appearance:none;
-}
+input[type=text],input[type=password],input[type=url],input[type=number],select,textarea{width:100%;background:rgba(0,0,0,.45);border:1px solid rgba(201,168,76,.2);border-radius:8px;color:var(--blanc);padding:.7rem .85rem;font-size:.85rem;font-family:'Montserrat',sans-serif;outline:none;transition:border .25s;-webkit-appearance:none;appearance:none;}
 input:focus,select:focus,textarea:focus{border-color:var(--or);}
-select{
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23C9A84C'/%3E%3C/svg%3E");
-  background-repeat:no-repeat;background-position:right .85rem center;padding-right:2rem;
-}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23C9A84C'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .85rem center;padding-right:2rem;}
 select option{background:#111;}
 
-.btn-gold{
-  width:100%;padding:.85rem;
-  background:linear-gradient(135deg,var(--or-d),var(--or));
-  color:#000;border:none;border-radius:10px;
-  font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;
-  font-weight:700;font-family:'Montserrat',sans-serif;
-  cursor:pointer;-webkit-tap-highlight-color:transparent;
-  transition:opacity .25s,transform .15s;margin-top:.4rem;
-}
+.btn-gold{width:100%;padding:.85rem;background:linear-gradient(135deg,var(--or-d),var(--or));color:#000;border:none;border-radius:10px;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;font-weight:700;font-family:'Montserrat',sans-serif;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:opacity .25s,transform .15s;margin-top:.4rem;}
 .btn-gold:active{opacity:.82;transform:scale(.98);}
 .btn-gold:disabled{opacity:.45;cursor:not-allowed;}
+.btn-sm{padding:.5rem .85rem;font-size:.65rem;border-radius:8px;margin-top:0;}
 
-/* ===== STATUS ===== */
+/* STATUS */
 .status{font-size:.7rem;padding:.65rem .9rem;border-radius:8px;margin-bottom:.85rem;display:none;line-height:1.5;}
 .status.ok{background:rgba(39,174,96,.15);border:1px solid rgba(39,174,96,.3);color:#6fcf97;display:block;}
 .status.err{background:rgba(192,57,43,.15);border:1px solid rgba(192,57,43,.3);color:#eb5757;display:block;}
 .status.load{background:rgba(201,168,76,.1);border:1px solid var(--bord);color:var(--or);display:block;}
 
-/* ===== IMAGE PICKER ===== */
+/* IMAGE SOURCE TABS */
 .img-source-tabs{display:flex;gap:.5rem;margin-bottom:.7rem;}
-.src-tab{
-  flex:1;text-align:center;padding:.4rem;
-  border-radius:8px;border:1px solid rgba(201,168,76,.2);
-  font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;
-  color:var(--gris);cursor:pointer;background:transparent;
-  font-family:'Montserrat',sans-serif;transition:all .2s;
-  -webkit-tap-highlight-color:transparent;
-}
+.src-tab{flex:1;text-align:center;padding:.4rem;border-radius:8px;border:1px solid rgba(201,168,76,.2);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gris);cursor:pointer;background:transparent;font-family:'Montserrat',sans-serif;transition:all .2s;-webkit-tap-highlight-color:transparent;}
 .src-tab.active{background:rgba(201,168,76,.12);border-color:var(--or);color:var(--or);font-weight:700;}
-
-/* Zone de dépôt fichier */
-.drop-zone{
-  border:2px dashed rgba(201,168,76,.3);border-radius:12px;
-  padding:1.5rem 1rem;text-align:center;cursor:pointer;
-  transition:border-color .25s,background .25s;
-  -webkit-tap-highlight-color:transparent;
-}
+.drop-zone{border:2px dashed rgba(201,168,76,.3);border-radius:12px;padding:1.5rem 1rem;text-align:center;cursor:pointer;transition:all .25s;-webkit-tap-highlight-color:transparent;}
 .drop-zone:hover,.drop-zone.drag-over{border-color:var(--or);background:rgba(201,168,76,.06);}
 .drop-zone input[type=file]{display:none;}
 .drop-icon{font-size:2rem;margin-bottom:.5rem;}
 .drop-txt{font-size:.7rem;color:var(--gris);line-height:1.6;}
 .drop-txt strong{color:var(--or);}
-
-/* Aperçu image */
 .img-preview-wrap{margin-top:.7rem;text-align:center;display:none;}
-.img-preview-wrap img{
-  max-height:130px;max-width:100%;border-radius:10px;
-  border:1px solid var(--bord);object-fit:cover;
-}
+.img-preview-wrap img{max-height:130px;max-width:100%;border-radius:10px;border:1px solid var(--bord);object-fit:cover;}
 .img-filename{font-size:.6rem;color:var(--gris);margin-top:.35rem;}
 
-/* ===== PRODUCT LIST ===== */
-.prod-row{
-  display:flex;align-items:center;gap:.75rem;
-  background:rgba(0,0,0,.3);border:1px solid rgba(201,168,76,.1);
-  border-radius:10px;padding:.65rem;margin-bottom:.55rem;transition:border-color .2s;
-}
+/* ===== COULEURS PRODUIT ===== */
+.color-list{display:flex;flex-direction:column;gap:.5rem;margin-top:.5rem;}
+.color-row{display:flex;align-items:center;gap:.6rem;background:rgba(0,0,0,.3);border:1px solid rgba(201,168,76,.15);border-radius:8px;padding:.5rem .7rem;}
+.color-dot-preview{width:24px;height:24px;border-radius:50%;border:2px solid rgba(201,168,76,.4);flex-shrink:0;}
+.color-row-info{flex:1;min-width:0;}
+.color-row-name{font-size:.75rem;font-weight:600;}
+.color-row-hex{font-size:.58rem;color:var(--gris);}
+.btn-del-color{background:rgba(192,57,43,.15);border:1px solid rgba(192,57,43,.25);color:#eb5757;border-radius:6px;padding:.28rem .55rem;font-size:.62rem;cursor:pointer;-webkit-tap-highlight-color:transparent;font-family:'Montserrat',sans-serif;flex-shrink:0;}
+
+/* ADD COLOR FORM */
+.add-color-box{background:rgba(0,0,0,.25);border:1px solid rgba(201,168,76,.15);border-radius:10px;padding:.9rem;margin-top:.6rem;}
+.add-color-box .row3{display:grid;grid-template-columns:1fr 90px auto;gap:.5rem;align-items:end;}
+.color-picker-wrap{display:flex;align-items:center;gap:.5rem;}
+input[type=color]{width:42px;height:38px;border:1px solid rgba(201,168,76,.3);border-radius:6px;background:transparent;cursor:pointer;padding:2px;}
+
+/* PRODUCT LIST */
+.prod-row{display:flex;align-items:center;gap:.75rem;background:rgba(0,0,0,.3);border:1px solid rgba(201,168,76,.1);border-radius:10px;padding:.65rem;margin-bottom:.55rem;transition:border-color .2s;}
 .prod-row:hover{border-color:rgba(201,168,76,.3);}
 .prod-row img{width:46px;height:46px;object-fit:cover;border-radius:7px;flex-shrink:0;background:var(--noir3);}
 .prod-row-info{flex:1;min-width:0;}
 .prod-row-name{font-size:.78rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .prod-row-meta{font-size:.58rem;color:var(--gris);margin-top:.12rem;}
 .prod-row-price{font-family:'Cormorant Garamond',serif;font-size:.92rem;color:var(--or);white-space:nowrap;margin-right:.2rem;}
-.btn-del{
-  background:rgba(192,57,43,.15);border:1px solid rgba(192,57,43,.3);
-  color:#eb5757;border-radius:7px;padding:.38rem .6rem;
-  font-size:.7rem;font-family:'Montserrat',sans-serif;
-  cursor:pointer;flex-shrink:0;-webkit-tap-highlight-color:transparent;
-  transition:background .2s;font-weight:700;
-}
+.btn-del{background:rgba(192,57,43,.15);border:1px solid rgba(192,57,43,.3);color:#eb5757;border-radius:7px;padding:.38rem .6rem;font-size:.7rem;font-family:'Montserrat',sans-serif;cursor:pointer;flex-shrink:0;-webkit-tap-highlight-color:transparent;transition:background .2s;font-weight:700;}
 .btn-del:active{background:rgba(192,57,43,.4);}
 .empty-list{text-align:center;padding:2.5rem 1rem;color:var(--gris);font-size:.78rem;line-height:1.6;}
 
-/* ===== FOND D'ÉCRAN PICKER ===== */
-.bg-grid{
-  display:grid;grid-template-columns:repeat(3,1fr);
-  gap:.7rem;margin-bottom:1rem;
-}
-.bg-thumb{
-  aspect-ratio:16/9;border-radius:10px;overflow:hidden;
-  border:2px solid transparent;cursor:pointer;
-  transition:border-color .25s,transform .2s;
-  position:relative;-webkit-tap-highlight-color:transparent;
-}
+/* BG PICKER */
+.bg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem;margin-bottom:1rem;}
+.bg-thumb{aspect-ratio:16/9;border-radius:10px;overflow:hidden;border:2px solid transparent;cursor:pointer;transition:border-color .25s,transform .2s;position:relative;-webkit-tap-highlight-color:transparent;}
 .bg-thumb:hover{transform:scale(1.03);}
 .bg-thumb.selected{border-color:var(--or);box-shadow:0 0 16px rgba(201,168,76,.4);}
 .bg-thumb img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;}
-.bg-thumb .check{
-  position:absolute;top:4px;right:4px;
-  background:var(--or);border-radius:50%;
-  width:18px;height:18px;
-  display:none;align-items:center;justify-content:center;
-  font-size:.6rem;color:#000;font-weight:900;
-}
+.bg-thumb .check{position:absolute;top:4px;right:4px;background:var(--or);border-radius:50%;width:18px;height:18px;display:none;align-items:center;justify-content:center;font-size:.6rem;color:#000;font-weight:900;}
 .bg-thumb.selected .check{display:flex;}
-
-/* Upload fond custom */
-.bg-upload-zone{
-  border:2px dashed rgba(201,168,76,.3);border-radius:12px;
-  padding:1.2rem;text-align:center;cursor:pointer;
-  transition:all .25s;-webkit-tap-highlight-color:transparent;
-  margin-top:.5rem;
-}
+.bg-upload-zone{border:2px dashed rgba(201,168,76,.3);border-radius:12px;padding:1.2rem;text-align:center;cursor:pointer;transition:all .25s;-webkit-tap-highlight-color:transparent;margin-top:.5rem;}
 .bg-upload-zone:hover{border-color:var(--or);background:rgba(201,168,76,.06);}
 .bg-upload-zone input{display:none;}
 .bg-upload-zone p{font-size:.7rem;color:var(--gris);margin-top:.4rem;}
+.bg-section-title{font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--or);margin:.8rem 0 .5rem;font-weight:700;}
 
-/* ===== QR ===== */
+/* HALO COLOR PICKER */
+.halo-section{display:flex;align-items:center;gap:.8rem;flex-wrap:wrap;margin-top:.4rem;}
+.halo-presets{display:flex;flex-wrap:wrap;gap:.5rem;}
+.halo-preset{width:30px;height:30px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:all .2s;-webkit-tap-highlight-color:transparent;}
+.halo-preset:hover,.halo-preset.active{border-color:#fff;transform:scale(1.15);box-shadow:0 0 10px currentColor;}
+
+/* QR */
 .qr-box{text-align:center;padding:1.2rem;background:rgba(0,0,0,.3);border-radius:10px;border:1px solid var(--bord);}
 .qr-url{font-size:.58rem;color:var(--gris);margin-top:.7rem;word-break:break-all;line-height:1.6;}
-
-/* LOADER */
 .mini-loader{display:inline-block;width:13px;height:13px;border:2px solid rgba(0,0,0,.2);border-top-color:#000;border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle;margin-right:5px;}
 @keyframes spin{to{transform:rotate(360deg)}}
-
 .prod-count{display:inline-block;background:rgba(201,168,76,.12);border:1px solid var(--bord);border-radius:50px;font-size:.56rem;color:var(--or);padding:.14rem .55rem;margin-left:.4rem;vertical-align:middle;}
 </style>
 </head>
 <body>
-
 <div class="bg-fixed" id="bgFixed"></div>
 <div class="bg-overlay"></div>
 
-<!-- HEADER -->
 <header class="hdr">
   <div class="hdr-logo">KHALED WATCH</div>
   <div class="hdr-right">
@@ -238,119 +143,110 @@ select option{background:#111;}
   </div>
 </header>
 
-<!-- TABS -->
 <div class="tabs">
   <button class="tab active" onclick="showTab('config')">⚙ Config</button>
-  <button class="tab" onclick="showTab('add')">＋ Ajouter</button>
-  <button class="tab" onclick="showTab('list')">📦 Produits</button>
-  <button class="tab" onclick="showTab('bg')">🖼 Fond</button>
-  <button class="tab" onclick="showTab('qr')">📲 QR Code</button>
+  <button class="tab" onclick="showTab('add')">＋ Produit</button>
+  <button class="tab" onclick="showTab('list')">📦 Stock</button>
+  <button class="tab" onclick="showTab('design')">🎨 Design</button>
+  <button class="tab" onclick="showTab('qr')">📲 QR</button>
 </div>
 
-<!-- ===== CONFIG ===== -->
+<!-- CONFIG -->
 <div class="section show" id="sec-config">
   <div class="card">
     <div class="card-title">⚙ Accès GitHub</div>
     <div id="st-config" class="status"></div>
-    <div class="field">
-      <label>Personal Access Token</label>
-      <input type="password" id="ghToken" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off">
-    </div>
-    <div class="field">
-      <label>Pseudo GitHub</label>
-      <input type="text" id="ghUser" placeholder="mon-pseudo">
-    </div>
-    <div class="field">
-      <label>Nom du Dépôt</label>
-      <input type="text" id="ghRepo" placeholder="khaled-watch">
-    </div>
+    <div class="field"><label>Personal Access Token</label><input type="password" id="ghToken" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off"></div>
+    <div class="field"><label>Pseudo GitHub</label><input type="text" id="ghUser" placeholder="mon-pseudo"></div>
+    <div class="field"><label>Nom du Dépôt</label><input type="text" id="ghRepo" placeholder="khaled-watch"></div>
     <button class="btn-gold" onclick="saveConfig()">Sauvegarder &amp; Connecter</button>
-  </div>
-  <div class="card" style="font-size:.72rem;line-height:1.9;color:var(--gris);">
-    <div class="card-title">📖 Guide rapide</div>
-    <p>1. Créez un repo GitHub <strong style="color:var(--or)">public</strong></p>
-    <p>2. <strong style="color:var(--or)">Settings → Pages → Branch: main</strong></p>
-    <p>3. Token : <strong style="color:var(--or)">Developer Settings → Tokens (classic) → repo</strong></p>
-    <p>4. Remplissez les champs ci-dessus et sauvegardez</p>
-    <p>5. Uploadez les 3 fichiers sur votre repo</p>
   </div>
 </div>
 
-<!-- ===== AJOUTER PRODUIT ===== -->
+<!-- AJOUTER PRODUIT -->
 <div class="section" id="sec-add">
   <div class="card">
     <div class="card-title">＋ Nouveau Produit</div>
     <div id="st-add" class="status"></div>
-
-    <div class="field">
-      <label>Nom du produit *</label>
-      <input type="text" id="fNom" placeholder="Montre Royal Gold">
-    </div>
-    <div class="field">
-      <label>Prix en FCFA *</label>
-      <input type="number" id="fPrix" placeholder="75000" inputmode="numeric">
-    </div>
+    <div class="field"><label>Nom *</label><input type="text" id="fNom" placeholder="Montre Royal Gold"></div>
+    <div class="field"><label>Prix FCFA *</label><input type="number" id="fPrix" placeholder="75000" inputmode="numeric"></div>
     <div class="field">
       <label>Catégorie *</label>
       <select id="fCat">
         <option value="">— Sélectionner —</option>
-        <option>Montres</option>
-        <option>Montres Luxueuses</option>
-        <option>Chaînes</option>
-        <option>Bracelets</option>
-        <option>Colliers</option>
-        <option>Bagues</option>
-        <option>Autres</option>
+        <option>Montres</option><option>Montres Luxueuses</option><option>Chaînes</option>
+        <option>Bracelets</option><option>Colliers</option><option>Bagues</option><option>Autres</option>
       </select>
     </div>
     <div class="field">
       <label>Genre *</label>
       <select id="fGenre">
         <option value="">— Sélectionner —</option>
-        <option>Homme</option>
-        <option>Femme</option>
-        <option>Unisexe</option>
+        <option>Homme</option><option>Femme</option><option>Unisexe</option>
       </select>
     </div>
 
-    <!-- PHOTO PRODUIT : URL ou Appareil -->
+    <!-- PHOTO PRINCIPALE -->
     <div class="field">
-      <label>Photo du produit *</label>
-
-      <!-- Onglets de source -->
+      <label>Photo principale *</label>
       <div class="img-source-tabs">
-        <button class="src-tab active" onclick="switchImgSrc('url',this)">🔗 Lien URL</button>
-        <button class="src-tab" onclick="switchImgSrc('device',this)">📱 Mon Appareil</button>
+        <button class="src-tab active" onclick="switchImgSrc('url',this)">🔗 URL</button>
+        <button class="src-tab" onclick="switchImgSrc('device',this)">📱 Appareil</button>
       </div>
-
-      <!-- Panneau URL -->
-      <div id="pane-url">
-        <input type="url" id="fImage" placeholder="https://exemple.com/photo.jpg"
-               oninput="onUrlInput(this.value)">
-      </div>
-
-      <!-- Panneau Appareil -->
+      <div id="pane-url"><input type="url" id="fImage" placeholder="https://..." oninput="onUrlInput(this.value)"></div>
       <div id="pane-device" style="display:none;">
-        <div class="drop-zone" onclick="document.getElementById('fileInput').click()"
-             id="dropZone"
+        <div class="drop-zone" onclick="document.getElementById('fileInput').click()" id="dropZone"
              ondragover="event.preventDefault();this.classList.add('drag-over')"
              ondragleave="this.classList.remove('drag-over')"
              ondrop="handleDrop(event)">
           <input type="file" id="fileInput" accept="image/*" onchange="handleFile(this.files[0])">
           <div class="drop-icon">📷</div>
-          <div class="drop-txt">
-            <strong>Appuyez pour choisir une photo</strong><br>
-            ou glissez-déposez une image ici<br>
-            <span style="font-size:.58rem">JPG · PNG · WEBP · max 2 Mo</span>
-          </div>
+          <div class="drop-txt"><strong>Appuyer pour choisir</strong><br>JPG · PNG · WEBP · max 2 Mo</div>
         </div>
       </div>
-
-      <!-- Aperçu commun -->
       <div class="img-preview-wrap" id="previewWrap">
         <img id="imgPrev" src="" alt="Aperçu">
         <div class="img-filename" id="imgFilename"></div>
-        <button onclick="clearImage()" style="margin-top:.4rem;background:rgba(192,57,43,.15);border:1px solid rgba(192,57,43,.3);color:#eb5757;border-radius:6px;padding:.3rem .7rem;font-size:.6rem;cursor:pointer;font-family:'Montserrat',sans-serif;">✕ Supprimer</button>
+        <button onclick="clearImage()" style="margin-top:.4rem;background:rgba(192,57,43,.15);border:1px solid rgba(192,57,43,.3);color:#eb5757;border-radius:6px;padding:.3rem .7rem;font-size:.6rem;cursor:pointer;font-family:'Montserrat',sans-serif;">✕ Effacer</button>
+      </div>
+    </div>
+
+    <!-- COULEURS DISPONIBLES -->
+    <div class="field">
+      <label>🎨 Couleurs disponibles (optionnel)</label>
+      <div style="font-size:.62rem;color:var(--gris);margin-bottom:.6rem;line-height:1.6;">Ajoutez les couleurs du produit. Pour chaque couleur vous pouvez associer une photo différente.</div>
+
+      <div class="color-list" id="colorList"></div>
+
+      <!-- Formulaire ajout couleur -->
+      <div class="add-color-box">
+        <div style="font-size:.6rem;letter-spacing:.15em;color:var(--or);text-transform:uppercase;margin-bottom:.6rem;">Ajouter une couleur</div>
+        <div class="field" style="margin-bottom:.5rem;"><label>Nom de la couleur</label><input type="text" id="cNom" placeholder="Or Rose, Noir, Argent…"></div>
+        <div class="color-picker-wrap" style="margin-bottom:.5rem;">
+          <label style="display:inline;margin-right:.5rem;">Couleur :</label>
+          <input type="color" id="cHex" value="#C9A84C">
+          <span id="cHexVal" style="font-size:.7rem;color:var(--gris);margin-left:.3rem;">#C9A84C</span>
+        </div>
+        <!-- Photo optionnelle pour cette couleur -->
+        <div class="field" style="margin-bottom:.6rem;">
+          <label>Photo pour cette couleur (optionnel)</label>
+          <div class="img-source-tabs" style="margin-bottom:.4rem;">
+            <button class="src-tab active" onclick="switchColorImgSrc('url',this)">🔗 URL</button>
+            <button class="src-tab" onclick="switchColorImgSrc('device',this)">📱 Appareil</button>
+          </div>
+          <div id="cpane-url"><input type="url" id="cImage" placeholder="https://... (optionnel)" oninput="onColorUrlInput(this.value)"></div>
+          <div id="cpane-device" style="display:none;">
+            <div class="drop-zone" onclick="document.getElementById('cFileInput').click()" style="padding:1rem;">
+              <input type="file" id="cFileInput" accept="image/*" onchange="handleColorFile(this.files[0])">
+              <div class="drop-txt"><strong>Choisir photo</strong> pour cette couleur</div>
+            </div>
+          </div>
+          <div class="img-preview-wrap" id="cPreviewWrap">
+            <img id="cImgPrev" src="" alt="" style="max-height:80px;">
+            <button onclick="clearColorImg()" style="margin-top:.3rem;background:rgba(192,57,43,.12);border:1px solid rgba(192,57,43,.25);color:#eb5757;border-radius:5px;padding:.25rem .5rem;font-size:.58rem;cursor:pointer;font-family:'Montserrat',sans-serif;">✕</button>
+          </div>
+        </div>
+        <button class="btn-gold btn-sm" onclick="addColor()">＋ Ajouter cette couleur</button>
       </div>
     </div>
 
@@ -358,401 +254,410 @@ select option{background:#111;}
   </div>
 </div>
 
-<!-- ===== LISTE PRODUITS ===== -->
+<!-- LISTE -->
 <div class="section" id="sec-list">
   <div class="card">
-    <div class="card-title">
-      📦 Produits en ligne
-      <span class="prod-count" id="prodCountBadge">0</span>
-    </div>
+    <div class="card-title">📦 Produits en ligne <span class="prod-count" id="prodCountBadge">0</span></div>
     <div id="st-list" class="status"></div>
-    <button class="btn-gold" onclick="loadProducts()" style="margin-bottom:1rem;">↻ Actualiser depuis GitHub</button>
-    <div id="prodList"><div class="empty-list">Configurez d'abord l'accès GitHub dans l'onglet ⚙ Config.</div></div>
+    <button class="btn-gold" onclick="loadProducts()" style="margin-bottom:1rem;">↻ Actualiser</button>
+    <div id="prodList"><div class="empty-list">Configurez l'accès GitHub dans ⚙ Config.</div></div>
   </div>
 </div>
 
-<!-- ===== FOND D'ÉCRAN ===== -->
-<div class="section" id="sec-bg">
+<!-- DESIGN -->
+<div class="section" id="sec-design">
+
+  <!-- FOND ADMIN -->
   <div class="card">
-    <div class="card-title">🖼 Fond d'écran Admin</div>
-    <p style="font-size:.7rem;color:var(--gris);margin-bottom:1rem;line-height:1.6;">
-      Choisissez un fond parmi les thèmes de luxe ci-dessous, ou importez votre propre image depuis votre appareil.
-    </p>
-
-    <!-- Fonds prédéfinis -->
+    <div class="card-title">🖼 Fond Admin</div>
     <div class="bg-grid" id="bgGrid">
-
-      <div class="bg-thumb selected" data-url="https://images.unsplash.com/photo-1548169874-53e85f753f1e?w=1600&q=80" onclick="selectBg(this)">
-        <img src="https://images.unsplash.com/photo-1548169874-53e85f753f1e?w=300&q=70" alt="Montre">
-        <div class="check">✓</div>
-      </div>
-
-      <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1566041510394-cf7c1b1edc13?w=1600&q=80" onclick="selectBg(this)">
-        <img src="https://images.unsplash.com/photo-1566041510394-cf7c1b1edc13?w=300&q=70" alt="Marbre noir">
-        <div class="check">✓</div>
-      </div>
-
-      <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1615455195225-8cca8b3f0c93?w=1600&q=80" onclick="selectBg(this)">
-        <img src="https://images.unsplash.com/photo-1615455195225-8cca8b3f0c93?w=300&q=70" alt="Or luxe">
-        <div class="check">✓</div>
-      </div>
-
-      <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1591337676887-a217a6970a8a?w=1600&q=80" onclick="selectBg(this)">
-        <img src="https://images.unsplash.com/photo-1591337676887-a217a6970a8a?w=300&q=70" alt="Cuir sombre">
-        <div class="check">✓</div>
-      </div>
-
-      <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1600&q=80" onclick="selectBg(this)">
-        <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=300&q=70" alt="Montagne nuit">
-        <div class="check">✓</div>
-      </div>
-
-      <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1489675567284-e6c56df80ada?w=1600&q=80" onclick="selectBg(this)">
-        <img src="https://images.unsplash.com/photo-1489675567284-e6c56df80ada?w=300&q=70" alt="Atelier luxe">
-        <div class="check">✓</div>
-      </div>
-
-      <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1462556791646-c201b8241a94?w=1600&q=80" onclick="selectBg(this)">
-        <img src="https://images.unsplash.com/photo-1462556791646-c201b8241a94?w=300&q=70" alt="Bijoux">
-        <div class="check">✓</div>
-      </div>
-
-      <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1533090161767-e6ffed986c88?w=1600&q=80" onclick="selectBg(this)">
-        <img src="https://images.unsplash.com/photo-1533090161767-e6ffed986c88?w=300&q=70" alt="Sombre texture">
-        <div class="check">✓</div>
-      </div>
-
-      <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?w=1600&q=80" onclick="selectBg(this)">
-        <img src="https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?w=300&q=70" alt="Galaxie">
-        <div class="check">✓</div>
-      </div>
-
+      <div class="bg-thumb selected" data-url="https://images.unsplash.com/photo-1548169874-53e85f753f1e?w=1600&q=80" onclick="selectAdminBg(this)"><img src="https://images.unsplash.com/photo-1548169874-53e85f753f1e?w=300&q=70" alt=""><div class="check">✓</div></div>
+      <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1566041510394-cf7c1b1edc13?w=1600&q=80" onclick="selectAdminBg(this)"><img src="https://images.unsplash.com/photo-1566041510394-cf7c1b1edc13?w=300&q=70" alt=""><div class="check">✓</div></div>
+      <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1615455195225-8cca8b3f0c93?w=1600&q=80" onclick="selectAdminBg(this)"><img src="https://images.unsplash.com/photo-1615455195225-8cca8b3f0c93?w=300&q=70" alt=""><div class="check">✓</div></div>
+      <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1591337676887-a217a6970a8a?w=1600&q=80" onclick="selectAdminBg(this)"><img src="https://images.unsplash.com/photo-1591337676887-a217a6970a8a?w=300&q=70" alt=""><div class="check">✓</div></div>
+      <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1600&q=80" onclick="selectAdminBg(this)"><img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=300&q=70" alt=""><div class="check">✓</div></div>
+      <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1462556791646-c201b8241a94?w=1600&q=80" onclick="selectAdminBg(this)"><img src="https://images.unsplash.com/photo-1462556791646-c201b8241a94?w=300&q=70" alt=""><div class="check">✓</div></div>
+      <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?w=1600&q=80" onclick="selectAdminBg(this)"><img src="https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?w=300&q=70" alt=""><div class="check">✓</div></div>
+      <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1533090161767-e6ffed986c88?w=1600&q=80" onclick="selectAdminBg(this)"><img src="https://images.unsplash.com/photo-1533090161767-e6ffed986c88?w=300&q=70" alt=""><div class="check">✓</div></div>
+      <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1489675567284-e6c56df80ada?w=1600&q=80" onclick="selectAdminBg(this)"><img src="https://images.unsplash.com/photo-1489675567284-e6c56df80ada?w=300&q=70" alt=""><div class="check">✓</div></div>
     </div>
-
-    <!-- Upload fond custom -->
-    <div class="bg-upload-zone" onclick="document.getElementById('bgFileInput').click()" id="bgUploadZone">
-      <input type="file" id="bgFileInput" accept="image/*" onchange="handleBgUpload(this.files[0])">
-      <div style="font-size:1.8rem;">📁</div>
-      <p>Importer mon propre fond depuis mon appareil</p>
-    </div>
-
-    <!-- Aperçu fond actuel -->
-    <div id="bgCurrentWrap" style="margin-top:1rem;display:none;">
-      <label>Fond actuel (personnalisé)</label>
-      <img id="bgCurrentImg" style="width:100%;border-radius:10px;border:2px solid var(--or);margin-top:.4rem;max-height:120px;object-fit:cover;" alt="Fond actuel">
+    <div class="bg-upload-zone" onclick="document.getElementById('bgFileAdmin').click()">
+      <input type="file" id="bgFileAdmin" accept="image/*" onchange="handleAdminBgUpload(this.files[0])">
+      <div style="font-size:1.6rem;">📁</div>
+      <p>Importer depuis mon appareil</p>
     </div>
   </div>
+
+  <!-- FOND PAGE CLIENTS -->
+  <div class="card">
+    <div class="card-title">🌐 Fond Page Clients</div>
+    <p style="font-size:.68rem;color:var(--gris);margin-bottom:1rem;line-height:1.7;">Ce fond sera affiché sur le catalogue visible par vos clients. Il est sauvegardé dans leur navigateur au premier chargement.</p>
+    <div class="bg-grid" id="bgClientGrid">
+      <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1548169874-53e85f753f1e?w=1600&q=80" onclick="selectClientBg(this)"><img src="https://images.unsplash.com/photo-1548169874-53e85f753f1e?w=300&q=70" alt=""><div class="check">✓</div></div>
+      <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1566041510394-cf7c1b1edc13?w=1600&q=80" onclick="selectClientBg(this)"><img src="https://images.unsplash.com/photo-1566041510394-cf7c1b1edc13?w=300&q=70" alt=""><div class="check">✓</div></div>
+      <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1615455195225-8cca8b3f0c93?w=1600&q=80" onclick="selectClientBg(this)"><img src="https://images.unsplash.com/photo-1615455195225-8cca8b3f0c93?w=300&q=70" alt=""><div class="check">✓</div></div>
+      <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1591337676887-a217a6970a8a?w=1600&q=80" onclick="selectClientBg(this)"><img src="https://images.unsplash.com/photo-1591337676887-a217a6970a8a?w=300&q=70" alt=""><div class="check">✓</div></div>
+      <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1600&q=80" onclick="selectClientBg(this)"><img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=300&q=70" alt=""><div class="check">✓</div></div>
+      <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1462556791646-c201b8241a94?w=1600&q=80" onclick="selectClientBg(this)"><img src="https://images.unsplash.com/photo-1462556791646-c201b8241a94?w=300&q=70" alt=""><div class="check">✓</div></div>
+      <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?w=1600&q=80" onclick="selectClientBg(this)"><img src="https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?w=300&q=70" alt=""><div class="check">✓</div></div>
+      <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1533090161767-e6ffed986c88?w=1600&q=80" onclick="selectClientBg(this)"><img src="https://images.unsplash.com/photo-1533090161767-e6ffed986c88?w=300&q=70" alt=""><div class="check">✓</div></div>
+      <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1489675567284-e6c56df80ada?w=1600&q=80" onclick="selectClientBg(this)"><img src="https://images.unsplash.com/photo-1489675567284-e6c56df80ada?w=300&q=70" alt=""><div class="check">✓</div></div>
+    </div>
+    <div class="bg-upload-zone" onclick="document.getElementById('bgFileClient').click()">
+      <input type="file" id="bgFileClient" accept="image/*" onchange="handleClientBgUpload(this.files[0])">
+      <div style="font-size:1.6rem;">📁</div>
+      <p>Importer mon propre fond pour les clients</p>
+    </div>
+    <div id="clientBgPreview" style="margin-top:.8rem;display:none;">
+      <img id="clientBgImg" style="width:100%;border-radius:10px;border:2px solid var(--or);max-height:100px;object-fit:cover;" alt="">
+    </div>
+  </div>
+
+  <!-- COULEUR HALO BOXES -->
+  <div class="card">
+    <div class="card-title">✨ Couleur Halo des Boxes Produits</div>
+    <p style="font-size:.68rem;color:var(--gris);margin-bottom:.8rem;line-height:1.7;">Choisissez la couleur du brillant animé autour des cartes produits visibles par vos clients.</p>
+
+    <div class="halo-section">
+      <div class="halo-presets" id="haloPresets">
+        <div class="halo-preset active" style="background:#C9A84C;" data-color="rgba(201,168,76,0.4)" onclick="setHaloColor(this)" title="Or"></div>
+        <div class="halo-preset" style="background:#E8C97A;" data-color="rgba(232,201,122,0.45)" onclick="setHaloColor(this)" title="Or clair"></div>
+        <div class="halo-preset" style="background:#fff;" data-color="rgba(255,255,255,0.35)" onclick="setHaloColor(this)" title="Blanc"></div>
+        <div class="halo-preset" style="background:#4FC3F7;" data-color="rgba(79,195,247,0.4)" onclick="setHaloColor(this)" title="Bleu ciel"></div>
+        <div class="halo-preset" style="background:#CE93D8;" data-color="rgba(206,147,216,0.4)" onclick="setHaloColor(this)" title="Violet"></div>
+        <div class="halo-preset" style="background:#EF9A9A;" data-color="rgba(239,154,154,0.4)" onclick="setHaloColor(this)" title="Rose"></div>
+        <div class="halo-preset" style="background:#A5D6A7;" data-color="rgba(165,214,167,0.4)" onclick="setHaloColor(this)" title="Vert"></div>
+        <div class="halo-preset" style="background:#FF6F00;" data-color="rgba(255,111,0,0.4)" onclick="setHaloColor(this)" title="Orange"></div>
+        <div class="halo-preset" style="background:#F44336;" data-color="rgba(244,67,54,0.38)" onclick="setHaloColor(this)" title="Rouge"></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:.5rem;margin-top:.6rem;">
+        <input type="color" id="haloCustom" value="#C9A84C" onchange="setHaloCustom(this.value)">
+        <span style="font-size:.65rem;color:var(--gris);">Couleur personnalisée</span>
+      </div>
+    </div>
+
+    <div style="margin-top:.9rem;padding:.7rem;background:rgba(0,0,0,.3);border-radius:8px;border:1px solid var(--bord);">
+      <div style="font-size:.6rem;color:var(--gris);margin-bottom:.4rem;letter-spacing:.1em;text-transform:uppercase;">Aperçu du halo</div>
+      <div id="haloPreview" style="width:100%;height:50px;border-radius:10px;border:1px solid var(--bord);animation:haloDemo 2s ease-in-out infinite;"></div>
+    </div>
+    <style>
+    @keyframes haloDemo{
+      0%,100%{box-shadow:0 0 8px 2px var(--card-glow-color,rgba(201,168,76,0.3)),inset 0 0 0 1px var(--card-glow-color,rgba(201,168,76,0.15));}
+      50%{box-shadow:0 0 24px 6px var(--card-glow-color,rgba(201,168,76,0.5)),inset 0 0 0 1px var(--card-glow-color,rgba(201,168,76,0.3));}
+    }
+    </style>
+  </div>
+
 </div>
 
-<!-- ===== QR CODE ===== -->
+<!-- QR -->
 <div class="section" id="sec-qr">
   <div class="card">
     <div class="card-title">📲 QR Code Catalogue</div>
-    <div class="qr-box" id="qrBox">
-      <div style="color:var(--gris);font-size:.78rem;line-height:1.6;">Configurez votre accès GitHub d'abord.</div>
-    </div>
+    <div class="qr-box" id="qrBox"><div style="color:var(--gris);font-size:.78rem;">Configurez GitHub d'abord.</div></div>
   </div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
-// ============================================================
-//  CONFIG GITHUB
-// ============================================================
-let cfg = {token:'',user:'',repo:''};
-
+// CONFIG
+let cfg={token:'',user:'',repo:''};
 function loadConfig(){
-  try{ const s=localStorage.getItem('kw-cfg'); if(s) cfg=JSON.parse(s); }catch{}
-  document.getElementById('ghToken').value = cfg.token||'';
-  document.getElementById('ghUser').value  = cfg.user||'';
-  document.getElementById('ghRepo').value  = cfg.repo||'';
-  if(cfg.token && cfg.user && cfg.repo){ loadProducts(); generateQR(); }
+  try{const s=localStorage.getItem('kw-cfg');if(s)cfg=JSON.parse(s);}catch{}
+  document.getElementById('ghToken').value=cfg.token||'';
+  document.getElementById('ghUser').value=cfg.user||'';
+  document.getElementById('ghRepo').value=cfg.repo||'';
+  if(cfg.token&&cfg.user&&cfg.repo){loadProducts();generateQR();}
 }
-
 function saveConfig(){
-  cfg.token = document.getElementById('ghToken').value.trim();
-  cfg.user  = document.getElementById('ghUser').value.trim();
-  cfg.repo  = document.getElementById('ghRepo').value.trim();
-  if(!cfg.token||!cfg.user||!cfg.repo){ showSt('config','err','⚠ Remplissez tous les champs.'); return; }
-  localStorage.setItem('kw-cfg', JSON.stringify(cfg));
-  showSt('config','ok','✓ Configuration sauvegardée !');
-  loadProducts(); generateQR();
-  setTimeout(()=>showTab('list'), 1200);
+  cfg.token=document.getElementById('ghToken').value.trim();
+  cfg.user=document.getElementById('ghUser').value.trim();
+  cfg.repo=document.getElementById('ghRepo').value.trim();
+  if(!cfg.token||!cfg.user||!cfg.repo){showSt('config','err','⚠ Remplissez tous les champs.');return;}
+  localStorage.setItem('kw-cfg',JSON.stringify(cfg));
+  showSt('config','ok','✓ Sauvegardé !');
+  loadProducts();generateQR();
+  setTimeout(()=>showTab('list'),1200);
 }
 
-// ============================================================
-//  GITHUB API
-// ============================================================
-const BRANCH='main', FILE='produits.json';
-const apiURL  = ()=>`https://api.github.com/repos/${cfg.user}/${cfg.repo}/contents/${FILE}`;
-const ghHdrs  = ()=>({'Authorization':'token '+cfg.token,'Content-Type':'application/json','Accept':'application/vnd.github+json'});
-
+// GITHUB API
+const BRANCH='main',FILE='produits.json';
+const apiURL=()=>`https://api.github.com/repos/${cfg.user}/${cfg.repo}/contents/${FILE}`;
+const ghH=()=>({'Authorization':'token '+cfg.token,'Content-Type':'application/json','Accept':'application/vnd.github+json'});
 async function getFile(){
-  const r = await fetch(apiURL()+'?ref='+BRANCH, {headers:ghHdrs()});
-  if(r.status===404) return {sha:null, products:[]};
-  if(!r.ok) throw new Error('GitHub '+r.status);
-  const d = await r.json();
-  return {sha:d.sha, products:JSON.parse(atob(d.content.replace(/\n/g,'')))};
+  const r=await fetch(apiURL()+'?ref='+BRANCH,{headers:ghH()});
+  if(r.status===404)return{sha:null,products:[]};
+  if(!r.ok)throw new Error('GitHub '+r.status);
+  const d=await r.json();
+  return{sha:d.sha,products:JSON.parse(atob(d.content.replace(/\n/g,'')))};
+}
+async function commitFile(products,sha,msg){
+  const content=btoa(unescape(encodeURIComponent(JSON.stringify(products,null,2))));
+  const body={message:msg,content,branch:BRANCH};
+  if(sha)body.sha=sha;
+  const r=await fetch(apiURL(),{method:'PUT',headers:ghH(),body:JSON.stringify(body)});
+  if(!r.ok){const e=await r.json();throw new Error(e.message||'Erreur GitHub');}
 }
 
-async function commitFile(products, sha, msg){
-  const content = btoa(unescape(encodeURIComponent(JSON.stringify(products,null,2))));
-  const body = {message:msg, content, branch:BRANCH};
-  if(sha) body.sha = sha;
-  const r = await fetch(apiURL(), {method:'PUT', headers:ghHdrs(), body:JSON.stringify(body)});
-  if(!r.ok){ const e=await r.json(); throw new Error(e.message||'Erreur GitHub'); }
-}
-
-// ============================================================
-//  PRODUITS
-// ============================================================
-let prods = [];
-
+// PRODUITS
+let prods=[];
 async function loadProducts(){
-  if(!cfg.token){ showSt('list','err','Configurez d\'abord l\'accès GitHub.'); return; }
-  showSt('list','load','⌛ Chargement depuis GitHub…');
+  if(!cfg.token){showSt('list','err','Configurez GitHub d\'abord.');return;}
+  showSt('list','load','⌛ Chargement…');
   try{
-    const {products} = await getFile();
-    prods = products;
-    renderList();
-    showSt('list','ok',`✓ ${prods.length} produit(s) chargé(s).`);
-  }catch(e){ showSt('list','err','Erreur : '+e.message); }
+    const{products}=await getFile();
+    prods=products;renderList();
+    showSt('list','ok',`✓ ${prods.length} produit(s).`);
+  }catch(e){showSt('list','err','Erreur : '+e.message);}
 }
-
 function renderList(){
-  const el = document.getElementById('prodList');
-  document.getElementById('prodCountBadge').textContent = prods.length;
-  if(!prods.length){
-    el.innerHTML='<div class="empty-list">Aucun produit. Ajoutez-en un dans l\'onglet ＋ Ajouter.</div>';
-    return;
-  }
-  el.innerHTML = prods.map((p,i)=>`
+  const el=document.getElementById('prodList');
+  document.getElementById('prodCountBadge').textContent=prods.length;
+  if(!prods.length){el.innerHTML='<div class="empty-list">Aucun produit. Ajoutez-en un !</div>';return;}
+  el.innerHTML=prods.map((p,i)=>`
     <div class="prod-row">
-      <img src="${h(p.image)}" alt=""
-           onerror="this.src='https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=80&q=60'">
+      <img src="${h(p.image)}" alt="" onerror="this.src='https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=80&q=60'">
       <div class="prod-row-info">
         <div class="prod-row-name">${h(p.nom)}</div>
-        <div class="prod-row-meta">${h(p.categorie)} · ${h(p.genre)}</div>
+        <div class="prod-row-meta">${h(p.categorie)} · ${h(p.genre)}${p.couleurs&&p.couleurs.length?' · '+p.couleurs.length+' couleur(s)':''}</div>
       </div>
-      <div class="prod-row-price">${fmt(p.prix)} F</div>
+      <div class="prod-row-price">${fmt(p.prix)}F</div>
       <button class="btn-del" onclick="deleteProduct(${i})">🗑</button>
     </div>
   `).join('');
 }
-
 async function addProduct(){
-  const nom   = document.getElementById('fNom').value.trim();
-  const prix  = parseFloat(document.getElementById('fPrix').value);
-  const cat   = document.getElementById('fCat').value;
-  const genre = document.getElementById('fGenre').value;
-  const img   = currentImageData; // URL ou base64
-
-  if(!nom||!prix||!cat||!genre||!img){
-    showSt('add','err','⚠ Remplissez tous les champs et choisissez une photo.');
-    return;
-  }
-  if(!cfg.token){ showSt('add','err','Configurez d\'abord l\'accès GitHub.'); return; }
-
-  const btn = document.getElementById('btnAdd');
-  btn.disabled=true; btn.innerHTML='<span class="mini-loader"></span>Publication…';
-  showSt('add','load','⌛ Commit GitHub en cours…');
-
+  const nom=document.getElementById('fNom').value.trim();
+  const prix=parseFloat(document.getElementById('fPrix').value);
+  const cat=document.getElementById('fCat').value;
+  const genre=document.getElementById('fGenre').value;
+  const img=currentImageData;
+  if(!nom||!prix||!cat||!genre||!img){showSt('add','err','⚠ Remplissez tous les champs et choisissez une photo principale.');return;}
+  if(!cfg.token){showSt('add','err','Configurez GitHub d\'abord.');return;}
+  const btn=document.getElementById('btnAdd');
+  btn.disabled=true;btn.innerHTML='<span class="mini-loader"></span>Publication…';
+  showSt('add','load','⌛ Commit GitHub…');
   try{
-    const {sha, products} = await getFile();
-    const np = {
-      id: Date.now().toString(),
-      nom, prix, categorie:cat, genre,
-      image: img,
-      createdAt: new Date().toISOString()
-    };
-    await commitFile([...products, np], sha, `✨ Ajout : ${nom}`);
-    prods = [...products, np];
-    renderList();
-    showSt('add','ok',`✓ "${nom}" publié avec succès !`);
+    const{sha,products}=await getFile();
+    const np={id:Date.now().toString(),nom,prix,categorie:cat,genre,image:img,couleurs:pendingColors,createdAt:new Date().toISOString()};
+    await commitFile([...products,np],sha,`✨ Ajout : ${nom}`);
+    prods=[...products,np];renderList();
+    showSt('add','ok',`✓ "${nom}" publié !`);
     clearForm();
-  }catch(e){ showSt('add','err','Erreur : '+e.message); }
-  finally{ btn.disabled=false; btn.textContent='Publier sur GitHub'; }
+  }catch(e){showSt('add','err','Erreur : '+e.message);}
+  finally{btn.disabled=false;btn.textContent='Publier sur GitHub';}
 }
-
 async function deleteProduct(idx){
-  const p = prods[idx];
-  if(!confirm(`Supprimer "${p.nom}" ? Cette action est irréversible.`)) return;
-  showSt('list','load','⌛ Suppression en cours…');
+  const p=prods[idx];
+  if(!confirm(`Supprimer "${p.nom}" ?`))return;
+  showSt('list','load','⌛ Suppression…');
   try{
-    const {sha, products} = await getFile();
-    const upd = products.filter(x => x.id !== p.id);
-    await commitFile(upd, sha, `🗑 Suppression : ${p.nom}`);
-    prods = upd; renderList();
+    const{sha,products}=await getFile();
+    const upd=products.filter(x=>x.id!==p.id);
+    await commitFile(upd,sha,`🗑 Suppression : ${p.nom}`);
+    prods=upd;renderList();
     showSt('list','ok',`✓ "${p.nom}" supprimé.`);
-  }catch(e){ showSt('list','err','Erreur : '+e.message); }
+  }catch(e){showSt('list','err','Erreur : '+e.message);}
 }
 
-// ============================================================
-//  IMAGE PRODUIT — URL ou Appareil
-// ============================================================
-let currentImageData = '';   // stocke URL ou base64
-let imgSourceMode    = 'url'; // 'url' | 'device'
-
-function switchImgSrc(mode, btn){
-  imgSourceMode = mode;
-  document.querySelectorAll('.src-tab').forEach(t=>t.classList.remove('active'));
+// IMAGE PRINCIPALE
+let currentImageData='';
+let imgSrcMode='url';
+function switchImgSrc(mode,btn){
+  imgSrcMode=mode;
+  document.querySelectorAll('.img-source-tabs .src-tab').forEach(t=>t.classList.remove('active'));
   btn.classList.add('active');
-  document.getElementById('pane-url').style.display    = mode==='url'    ? 'block':'none';
-  document.getElementById('pane-device').style.display = mode==='device' ? 'block':'none';
+  document.getElementById('pane-url').style.display=mode==='url'?'block':'none';
+  document.getElementById('pane-device').style.display=mode==='device'?'block':'none';
   clearImage();
 }
-
-function onUrlInput(url){
-  if(!url){ clearImage(); return; }
-  currentImageData = url;
-  showPreview(url, '');
-}
-
+function onUrlInput(url){if(!url){clearImage();return;}currentImageData=url;showPreview(url,'');}
 function handleFile(file){
-  if(!file) return;
-  if(file.size > 2*1024*1024){
-    alert('⚠ Image trop lourde (max 2 Mo). Réduisez la taille ou utilisez un lien URL.');
-    return;
-  }
-  const reader = new FileReader();
-  reader.onload = e => {
-    currentImageData = e.target.result; // base64 data URL
-    showPreview(e.target.result, file.name);
-  };
+  if(!file)return;
+  if(file.size>2*1024*1024){alert('⚠ Image trop lourde (max 2 Mo).');return;}
+  const reader=new FileReader();
+  reader.onload=e=>{currentImageData=e.target.result;showPreview(e.target.result,file.name);};
   reader.readAsDataURL(file);
 }
-
 function handleDrop(e){
   e.preventDefault();
   document.getElementById('dropZone').classList.remove('drag-over');
-  const file = e.dataTransfer.files[0];
-  if(file && file.type.startsWith('image/')) handleFile(file);
+  const file=e.dataTransfer.files[0];
+  if(file&&file.type.startsWith('image/'))handleFile(file);
 }
-
-function showPreview(src, name){
-  const wrap = document.getElementById('previewWrap');
-  const img  = document.getElementById('imgPrev');
-  const fname= document.getElementById('imgFilename');
-  img.src = src;
-  fname.textContent = name;
-  wrap.style.display = 'block';
+function showPreview(src,name){
+  document.getElementById('imgPrev').src=src;
+  document.getElementById('imgFilename').textContent=name;
+  document.getElementById('previewWrap').style.display='block';
 }
-
 function clearImage(){
-  currentImageData = '';
-  document.getElementById('imgPrev').src = '';
-  document.getElementById('previewWrap').style.display = 'none';
-  document.getElementById('fImage').value = '';
-  document.getElementById('imgFilename').textContent = '';
+  currentImageData='';
+  document.getElementById('imgPrev').src='';
+  document.getElementById('previewWrap').style.display='none';
+  document.getElementById('fImage').value='';
+  document.getElementById('imgFilename').textContent='';
 }
-
 function clearForm(){
-  ['fNom','fPrix'].forEach(id => document.getElementById(id).value='');
-  document.getElementById('fCat').value='';
-  document.getElementById('fGenre').value='';
-  clearImage();
+  ['fNom','fPrix'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('fCat').value='';document.getElementById('fGenre').value='';
+  clearImage();pendingColors=[];renderColorList();
 }
 
-// ============================================================
-//  FOND D'ÉCRAN ADMIN
-// ============================================================
-const DEFAULT_BG = 'https://images.unsplash.com/photo-1548169874-53e85f753f1e?w=1600&q=80';
+// COULEURS PRODUIT
+let pendingColors=[];
+let colorImgData='';
 
-function applyBg(url){
-  document.getElementById('bgFixed').style.backgroundImage = `url('${url}')`;
-  localStorage.setItem('kw-admin-bg', url);
+document.getElementById('cHex').addEventListener('input',e=>{
+  document.getElementById('cHexVal').textContent=e.target.value;
+});
+
+function switchColorImgSrc(mode,btn){
+  document.querySelectorAll('#sec-add .add-color-box .src-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('cpane-url').style.display=mode==='url'?'block':'none';
+  document.getElementById('cpane-device').style.display=mode==='device'?'block':'none';
+  clearColorImg();
+}
+function onColorUrlInput(url){if(!url){clearColorImg();return;}colorImgData=url;document.getElementById('cImgPrev').src=url;document.getElementById('cPreviewWrap').style.display='block';}
+function handleColorFile(file){
+  if(!file)return;
+  if(file.size>2*1024*1024){alert('⚠ Image trop lourde.');return;}
+  const reader=new FileReader();
+  reader.onload=e=>{colorImgData=e.target.result;document.getElementById('cImgPrev').src=e.target.result;document.getElementById('cPreviewWrap').style.display='block';};
+  reader.readAsDataURL(file);
+}
+function clearColorImg(){colorImgData='';document.getElementById('cImgPrev').src='';document.getElementById('cPreviewWrap').style.display='none';document.getElementById('cImage').value='';}
+
+function addColor(){
+  const nom=document.getElementById('cNom').value.trim();
+  const hex=document.getElementById('cHex').value;
+  if(!nom){alert('Entrez un nom de couleur.');return;}
+  pendingColors.push({nom,hex,image:colorImgData});
+  document.getElementById('cNom').value='';
+  clearColorImg();
+  document.getElementById('cImage').value='';
+  renderColorList();
+}
+function removeColor(i){pendingColors.splice(i,1);renderColorList();}
+function renderColorList(){
+  const el=document.getElementById('colorList');
+  if(!pendingColors.length){el.innerHTML='<div style="font-size:.65rem;color:var(--gris);text-align:center;padding:.5rem;">Aucune couleur ajoutée.</div>';return;}
+  el.innerHTML=pendingColors.map((c,i)=>`
+    <div class="color-row">
+      <div class="color-dot-preview" style="background:${h(c.hex)};"></div>
+      <div class="color-row-info">
+        <div class="color-row-name">${h(c.nom)}</div>
+        <div class="color-row-hex">${h(c.hex)} ${c.image?'· Photo ✓':''}</div>
+      </div>
+      <button class="btn-del-color" onclick="removeColor(${i})">✕</button>
+    </div>
+  `).join('');
+}
+renderColorList();
+
+// FOND ADMIN
+const DEFAULT_ADMIN_BG='https://images.unsplash.com/photo-1548169874-53e85f753f1e?w=1600&q=80';
+function applyAdminBg(url){document.getElementById('bgFixed').style.backgroundImage=`url('${url}')`;localStorage.setItem('kw-admin-bg',url);}
+function selectAdminBg(thumb){
+  document.querySelectorAll('#bgGrid .bg-thumb').forEach(t=>t.classList.remove('selected'));
+  thumb.classList.add('selected');applyAdminBg(thumb.dataset.url);
+}
+function handleAdminBgUpload(file){
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{applyAdminBg(e.target.result);document.querySelectorAll('#bgGrid .bg-thumb').forEach(t=>t.classList.remove('selected'));};
+  reader.readAsDataURL(file);
 }
 
-function selectBg(thumb){
-  document.querySelectorAll('.bg-thumb').forEach(t=>t.classList.remove('selected'));
+// FOND CLIENT
+const DEFAULT_CLIENT_BG='https://images.unsplash.com/photo-1548169874-53e85f753f1e?w=1600&q=85';
+function selectClientBg(thumb){
+  document.querySelectorAll('#bgClientGrid .bg-thumb').forEach(t=>t.classList.remove('selected'));
   thumb.classList.add('selected');
-  const url = thumb.dataset.url;
-  applyBg(url);
-  // Cacher l'aperçu custom si on choisit un prédéfini
-  document.getElementById('bgCurrentWrap').style.display='none';
+  localStorage.setItem('kw-client-bg',thumb.dataset.url);
+  document.getElementById('clientBgPreview').style.display='none';
+  showSt('add','ok','✓ Fond clients sauvegardé !');// réutilise un status visible
+  alert('✓ Fond clients sauvegardé ! Les clients verront ce fond à leur prochain chargement de la page.');
 }
-
-function handleBgUpload(file){
-  if(!file) return;
-  const reader = new FileReader();
-  reader.onload = e => {
-    const dataUrl = e.target.result;
-    applyBg(dataUrl);
-    // Désélectionner les prédéfinis
-    document.querySelectorAll('.bg-thumb').forEach(t=>t.classList.remove('selected'));
-    // Afficher aperçu
-    const wrap = document.getElementById('bgCurrentWrap');
-    document.getElementById('bgCurrentImg').src = dataUrl;
-    wrap.style.display = 'block';
+function handleClientBgUpload(file){
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    localStorage.setItem('kw-client-bg',e.target.result);
+    document.querySelectorAll('#bgClientGrid .bg-thumb').forEach(t=>t.classList.remove('selected'));
+    document.getElementById('clientBgImg').src=e.target.result;
+    document.getElementById('clientBgPreview').style.display='block';
+    alert('✓ Fond clients personnalisé sauvegardé !');
   };
   reader.readAsDataURL(file);
 }
 
-function initBg(){
-  const saved = localStorage.getItem('kw-admin-bg') || DEFAULT_BG;
-  document.getElementById('bgFixed').style.backgroundImage = `url('${saved}')`;
-
-  // Marquer le bon thumb comme sélectionné
-  const thumbs = document.querySelectorAll('.bg-thumb');
-  let found = false;
-  thumbs.forEach(t => {
-    t.classList.remove('selected');
-    if(t.dataset.url === saved){ t.classList.add('selected'); found=true; }
-  });
-
-  // Si c'est un fond personnalisé (base64 ou URL externe non listée)
-  if(!found && saved !== DEFAULT_BG){
-    const wrap = document.getElementById('bgCurrentWrap');
-    document.getElementById('bgCurrentImg').src = saved;
-    wrap.style.display = 'block';
-  }
+// HALO COULEUR
+function setHaloColor(preset){
+  document.querySelectorAll('.halo-preset').forEach(p=>p.classList.remove('active'));
+  preset.classList.add('active');
+  const color=preset.dataset.color;
+  localStorage.setItem('kw-card-glow',color);
+  document.documentElement.style.setProperty('--card-glow-color',color);
+  document.getElementById('haloPreview').style.setProperty('--card-glow-color',color);
+}
+function setHaloCustom(hex){
+  // Convertir hex en rgba
+  const r=parseInt(hex.slice(1,3),16);
+  const g=parseInt(hex.slice(3,5),16);
+  const b=parseInt(hex.slice(5,7),16);
+  const color=`rgba(${r},${g},${b},0.4)`;
+  document.querySelectorAll('.halo-preset').forEach(p=>p.classList.remove('active'));
+  localStorage.setItem('kw-card-glow',color);
+  document.documentElement.style.setProperty('--card-glow-color',color);
+  document.getElementById('haloPreview').style.setProperty('--card-glow-color',color);
 }
 
-// ============================================================
-//  QR CODE
-// ============================================================
+// INIT DESIGN
+function initDesign(){
+  // Admin BG
+  const adminBg=localStorage.getItem('kw-admin-bg')||DEFAULT_ADMIN_BG;
+  document.getElementById('bgFixed').style.backgroundImage=`url('${adminBg}')`;
+  document.querySelectorAll('#bgGrid .bg-thumb').forEach(t=>{t.classList.remove('selected');if(t.dataset.url===adminBg)t.classList.add('selected');});
+
+  // Client BG
+  const clientBg=localStorage.getItem('kw-client-bg')||DEFAULT_CLIENT_BG;
+  document.querySelectorAll('#bgClientGrid .bg-thumb').forEach(t=>{t.classList.remove('selected');if(t.dataset.url===clientBg)t.classList.add('selected');});
+
+  // Halo
+  const glow=localStorage.getItem('kw-card-glow')||'rgba(201,168,76,0.4)';
+  document.documentElement.style.setProperty('--card-glow-color',glow);
+  document.getElementById('haloPreview').style.setProperty('--card-glow-color',glow);
+}
+
+// QR
 function generateQR(){
-  const u = cfg.user || document.getElementById('ghUser').value.trim();
-  const r = cfg.repo || document.getElementById('ghRepo').value.trim();
-  if(!u||!r) return;
-  const url = `https://${u}.github.io/${r}/`;
-  const box = document.getElementById('qrBox');
-  box.innerHTML = `<div id="qrCanvas"></div><div class="qr-url">${url}</div>`;
-  new QRCode(document.getElementById('qrCanvas'),{
-    text:url, width:180, height:180,
-    colorDark:'#C9A84C', colorLight:'#0a0a0a',
-    correctLevel: QRCode.CorrectLevel.H
-  });
+  const u=cfg.user||document.getElementById('ghUser').value.trim();
+  const r=cfg.repo||document.getElementById('ghRepo').value.trim();
+  if(!u||!r)return;
+  const url=`https://${u}.github.io/${r}/`;
+  const box=document.getElementById('qrBox');
+  box.innerHTML=`<div id="qrCanvas"></div><div class="qr-url">${url}</div>`;
+  new QRCode(document.getElementById('qrCanvas'),{text:url,width:180,height:180,colorDark:'#C9A84C',colorLight:'#0a0a0a',correctLevel:QRCode.CorrectLevel.H});
 }
 
-// ============================================================
-//  TABS
-// ============================================================
+// TABS
 function showTab(t){
-  const TABS = ['config','add','list','bg','qr'];
-  document.querySelectorAll('.tab').forEach((el,i)=>el.classList.toggle('active', TABS[i]===t));
+  const TABS=['config','add','list','design','qr'];
+  document.querySelectorAll('.tab').forEach((el,i)=>el.classList.toggle('active',TABS[i]===t));
   document.querySelectorAll('.section').forEach(el=>el.classList.remove('show'));
   document.getElementById('sec-'+t).classList.add('show');
-  if(t==='list' && prods.length===0 && cfg.token) loadProducts();
-  if(t==='qr') generateQR();
+  if(t==='list'&&prods.length===0&&cfg.token)loadProducts();
+  if(t==='qr')generateQR();
 }
 
-// ============================================================
-//  UTILS
-// ============================================================
-function showSt(id, type, msg){
-  const el = document.getElementById('st-'+id);
-  el.className = 'status '+type;
-  el.textContent = msg;
-  if(type==='ok') setTimeout(()=>el.style.display='none', 4000);
-}
-function h(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-function fmt(n){ return Number(n||0).toLocaleString('fr-FR'); }
+// UTILS
+function showSt(id,type,msg){const el=document.getElementById('st-'+id);el.className='status '+type;el.textContent=msg;if(type==='ok')setTimeout(()=>el.style.display='none',4000);}
+function h(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function fmt(n){return Number(n||0).toLocaleString('fr-FR');}
 
-// ============================================================
-//  INIT
-// ============================================================
-initBg();
+// INIT
+initDesign();
 loadConfig();
 </script>
 </body>
