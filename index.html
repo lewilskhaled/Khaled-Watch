@@ -5,268 +5,250 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>KHALED WATCH — Prestige</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
   --or:#C9A84C;--or-l:#E8C97A;--or-d:#8B6914;
   --bg:#080808;--bg2:#111;--bg3:#1c1c1c;
   --txt:#F5F0E8;--txt2:#ccbfa8;--gris:#999;
-  --wa:#25D366;--vip:#FFD700;
-  --glass:rgba(255,255,255,0.06);
-  --bord:rgba(201,168,76,0.3);
-  --card-glow:rgba(201,168,76,0.35);
-  --card-glow-intensity:1;
+  --wa:#25D366;
+  --glass:rgba(255,255,255,0.05);
+  --bord:rgba(201,168,76,0.28);
+  --card-glow:#C9A84C; /* couleur halo boxes — modifiable par admin */
   --safe-bottom:env(safe-area-inset-bottom,0px);
 }
-body.light{--bg:#F2EDE0;--bg2:#E8E1CF;--bg3:#DDD5C0;--txt:#1A1208;--txt2:#3A2E18;--gris:#5A4E38;--glass:rgba(0,0,0,0.07);--bord:rgba(139,105,20,0.4);}
+body.light{
+  --bg:#F2EDE0;--bg2:#E8E1CF;--bg3:#DDD5C0;
+  --txt:#1A1208;--txt2:#3A2E18;--gris:#5A4E38;
+  --glass:rgba(0,0,0,0.06);--bord:rgba(139,105,20,0.4);
+}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html{-webkit-text-size-adjust:100%; height: 100%;}
+html{-webkit-text-size-adjust:100%;}
 body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;overflow-x:hidden;transition:background .35s,color .35s;}
 
-/* SPLASH */
-#splash{position:fixed;inset:0;z-index:9999;background:#000;display:flex;align-items:center;justify-content:center;flex-direction:column;animation:splashOut .7s 3.6s forwards;}
-.splash-txt{font-family:'Cormorant Garamond',serif;font-size:clamp(1.2rem,5.5vw,2.2rem);color:var(--or);letter-spacing:.12em;text-align:center;padding:0 1.5rem;opacity:0;animation:fadeUp 1.1s .4s forwards;}
-.splash-bar{width:0;height:1px;margin-top:1.4rem;background:linear-gradient(90deg,transparent,var(--or),transparent);animation:barIn .9s 1.1s forwards;}
-.splash-sub{font-size:.6rem;letter-spacing:.4em;color:#888;text-transform:uppercase;margin-top:.9rem;opacity:0;animation:fadeUp .8s 1.7s forwards;}
+/* ===== SPLASH ===== */
+#splash{position:fixed;inset:0;z-index:9999;background:#000;display:flex;align-items:center;justify-content:center;flex-direction:column;animation:splashOut .7s ease-in-out 3.6s forwards;}
+.splash-txt{font-family:'Cormorant Garamond',serif;font-size:clamp(1.2rem,5.5vw,2.2rem);font-weight:300;color:var(--or);letter-spacing:.12em;text-align:center;padding:0 1.5rem;opacity:0;animation:fadeUp 1.1s ease-out .4s forwards;}
+.splash-bar{width:0;height:1px;margin-top:1.4rem;background:linear-gradient(90deg,transparent,var(--or),transparent);animation:barIn .9s ease-out 1.1s forwards;}
+.splash-sub{font-size:.6rem;letter-spacing:.4em;color:#888;text-transform:uppercase;margin-top:.9rem;opacity:0;animation:fadeUp .8s ease-out 1.7s forwards;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-@keyframes barIn{to{width:160px}}
-@keyframes splashOut{to{opacity:0;pointer-events:none;visibility:hidden}}
+@keyframes barIn{from{width:0}to{width:160px}}
+@keyframes splashOut{from{opacity:1;pointer-events:all}to{opacity:0;pointer-events:none;visibility:hidden}}
 
-/* FOND RESPONSIVE PAR APPAREIL */
-#bgLayer{position:fixed;inset:0;z-index:-2;background-size:cover;background-position:center;background-repeat:no-repeat;transition:background-image .6s;}
-#bgOverlay{position:fixed;inset:0;z-index:-1;background:linear-gradient(170deg,rgba(8,8,8,.92) 0%,rgba(12,12,12,.95) 100%);transition:background .35s;}
-body.light #bgOverlay{background:linear-gradient(170deg,rgba(242,237,224,.82) 0%,rgba(242,237,224,.65) 60%,rgba(242,237,224,.86) 100%);}
+/* ===== FOND ===== */
+#bgLayer{position:fixed;inset:0;z-index:-2;background-size:cover;background-position:center;transition:background-image .6s ease;}
+#bgOverlay{position:fixed;inset:0;z-index:-1;background:linear-gradient(170deg,rgba(8,8,8,.92) 0%,rgba(8,8,8,.76) 60%,rgba(8,8,8,.95) 100%);transition:background .35s;}
+body.light #bgOverlay{background:linear-gradient(170deg,rgba(242,237,224,.94) 0%,rgba(242,237,224,.86) 60%,rgba(242,237,224,.96) 100%);}
 
-/* HEADER */
-.app-header{position:sticky;top:0;z-index:200;background:rgba(6,6,6,.88);backdrop-filter:blur(18px);border-bottom:1px solid var(--bord);padding:.85rem 1rem;display:flex;align-items:center;justify-content:space-between;gap:.5rem;}
-body.light .app-header{background:rgba(242,237,224,.92);}
-.logo-txt{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;letter-spacing:.15em;background:linear-gradient(130deg,var(--or-d),var(--or-l),var(--or),var(--or-d));background-size:200% 200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:goldShift 4s ease-in-out infinite;}
+/* ===== HEADER ===== */
+.app-header{position:sticky;top:0;z-index:200;background:rgba(6,6,6,.88);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid var(--bord);padding:.85rem 1rem;display:flex;align-items:center;justify-content:space-between;}
+body.light .app-header{background:rgba(242,237,224,.92);border-bottom-color:rgba(139,105,20,.3);}
+.logo-txt{font-family:'Cormorant Garamond',serif;font-size:1.55rem;font-weight:700;letter-spacing:.15em;background:linear-gradient(130deg,var(--or-d),var(--or-l),var(--or),var(--or-d));background-size:200% 200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:goldShift 4s ease-in-out infinite;}
 @keyframes goldShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
-.hdr-right{display:flex;align-items:center;gap:.4rem;}
-.btn-theme{background:var(--glass);border:1px solid var(--bord);border-radius:50px;padding:.32rem .8rem;cursor:pointer;color:var(--or);font-size:.68rem;font-family:'Montserrat',sans-serif;-webkit-tap-highlight-color:transparent;}
-.btn-profile{width:34px;height:34px;border-radius:50%;border:2px solid var(--or);overflow:hidden;cursor:pointer;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:.9rem;-webkit-tap-highlight-color:transparent;flex-shrink:0;}
-.btn-profile img{width:100%;height:100%;object-fit:cover;}
+.btn-theme{background:var(--glass);border:1px solid var(--bord);border-radius:50px;padding:.35rem .9rem;cursor:pointer;color:var(--or);font-size:.7rem;font-family:'Montserrat',sans-serif;letter-spacing:.1em;-webkit-tap-highlight-color:transparent;}
+body.light .btn-theme{color:var(--or-d);}
 
-/* HOME */
-.home-hero{text-align:center;padding:2.5rem 1.2rem 1.5rem;}
-.home-subtitle{font-size:.6rem;letter-spacing:.35em;color:var(--or);text-transform:uppercase;margin-bottom:.5rem;}
+/* ===== HERO ===== */
+.home-hero{text-align:center;padding:2rem 1.2rem 1.2rem;}
+.home-subtitle{font-size:.6rem;letter-spacing:.35em;color:var(--or);text-transform:uppercase;margin-bottom:.5rem;opacity:.85;}
 .home-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,9vw,4rem);font-weight:700;background:linear-gradient(130deg,var(--or-d),var(--or-l),var(--or));background-size:200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:goldShift 4s ease-in-out infinite;letter-spacing:.18em;line-height:1.05;}
-.home-desc{font-size:.72rem;color:var(--txt2);margin-top:.8rem;line-height:1.7;padding:0 0.5rem;}
+.home-desc{font-size:.72rem;color:var(--txt2);margin-top:.8rem;line-height:1.7;letter-spacing:.04em;}
 
-/* GRILLE CATÉGORIES */
-.cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.9rem;padding:1rem 1rem 8rem;max-width:600px;margin:0 auto;}
-.cat-card{background:var(--glass);border:1px solid var(--bord);border-radius:16px;padding:1.3rem .7rem 1rem;display:flex;flex-direction:column;align-items:center;gap:.6rem;cursor:pointer;transition:transform .25s,box-shadow .25s,border-color .25s;backdrop-filter:blur(12px);-webkit-tap-highlight-color:transparent;}
-body.light .cat-card{background:rgba(255,255,255,.55);border-color:rgba(139,105,20,.35);}
+/* ===== GRILLE CATÉGORIES ===== */
+.cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.9rem;padding:1rem 1rem 6rem;max-width:600px;margin:0 auto;}
+.cat-card{background:var(--glass);border:1px solid var(--bord);border-radius:16px;padding:1.3rem .7rem 1rem;display:flex;flex-direction:column;align-items:center;gap:.6rem;cursor:pointer;transition:transform .25s,box-shadow .25s,border-color .25s;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);-webkit-tap-highlight-color:transparent;}
+body.light .cat-card{background:rgba(255,255,255,.55);border-color:rgba(139,105,20,.35);box-shadow:0 2px 12px rgba(0,0,0,.08);}
 .cat-card:active{transform:scale(.94);}
-.cat-card:hover{transform:translateY(-4px);border-color:var(--or);box-shadow:0 12px 36px rgba(201,168,76,.18);}
-.cat-card.offre-card{background:linear-gradient(135deg,rgba(201,168,76,.14),rgba(232,201,122,.08));border-color:rgba(201,168,76,.5);animation:offreGlow 2s ease-in-out infinite alternate;}
-@keyframes offreGlow{from{box-shadow:0 0 10px rgba(201,168,76,.2)}to{box-shadow:0 0 24px rgba(201,168,76,.45)}}
-.cat-icon{font-size:2rem;filter:drop-shadow(0 0 7px rgba(201,168,76,.45));}
+.cat-card:hover{transform:translateY(-4px);box-shadow:0 12px 36px rgba(201,168,76,.18);border-color:var(--or);}
+/* Carte OFFRE spéciale */
+.cat-card.offre-card{background:linear-gradient(135deg,rgba(201,168,76,.12),rgba(232,201,122,.08));border-color:rgba(201,168,76,.5);position:relative;overflow:hidden;}
+.cat-card.offre-card::before{content:'';position:absolute;inset:0;border-radius:16px;background:linear-gradient(135deg,rgba(201,168,76,.05),transparent);animation:offreGlow 2s ease-in-out infinite alternate;}
+@keyframes offreGlow{from{opacity:.4}to{opacity:1}}
+.cat-icon{font-size:2rem;line-height:1;filter:drop-shadow(0 0 7px rgba(201,168,76,.45));}
 .cat-label{font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--or);font-weight:700;text-align:center;line-height:1.35;}
 body.light .cat-label{color:var(--or-d);}
-.cat-count{font-size:.54rem;color:var(--gris);}
+.cat-count{font-size:.54rem;color:var(--gris);letter-spacing:.08em;}
 
-/* PAGE CAT */
-#page-cat,#page-offre,#page-profile,#page-register{display:none;}
-.page-header{display:flex;align-items:center;gap:.85rem;padding:.95rem 1rem .4rem;}
+/* ===== PAGE CATÉGORIE ===== */
+#page-cat,#page-offre{display:none;}
+.page-cat-header{display:flex;align-items:center;gap:.85rem;padding:.95rem 1rem .4rem;}
 .btn-back{background:var(--glass);border:1px solid var(--bord);border-radius:50%;width:38px;height:38px;flex-shrink:0;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--or);font-size:1.1rem;font-weight:700;-webkit-tap-highlight-color:transparent;}
-.page-title{font-family:'Cormorant Garamond',serif;font-size:1.55rem;font-weight:700;background:linear-gradient(130deg,var(--or-d),var(--or-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+body.light .btn-back{background:rgba(255,255,255,.7);color:var(--or-d);}
+.cat-page-title{font-family:'Cormorant Garamond',serif;font-size:1.55rem;font-weight:700;background:linear-gradient(130deg,var(--or-d),var(--or-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.cat-page-icon{font-size:1.4rem;}
 
-/* FILTRES GENRE */
+/* Filtres genre */
 .gender-tabs{display:flex;gap:.5rem;padding:.4rem 1rem .7rem;}
 .g-tab{flex:1;text-align:center;padding:.42rem 0;border-radius:50px;font-size:.63rem;letter-spacing:.16em;text-transform:uppercase;border:1px solid rgba(201,168,76,.22);color:var(--gris);cursor:pointer;background:transparent;font-family:'Montserrat',sans-serif;transition:all .22s;-webkit-tap-highlight-color:transparent;}
 .g-tab.active{background:rgba(201,168,76,.14);border-color:var(--or);color:var(--or);font-weight:700;}
-body.light .g-tab.active{color:var(--or-d);border-color:var(--or-d);}
+body.light .g-tab{color:var(--gris);border-color:rgba(139,105,20,.3);}
+body.light .g-tab.active{color:var(--or-d);border-color:var(--or-d);background:rgba(139,105,20,.1);}
 
-/* GRILLE PRODUITS */
+/* ===== GRILLE PRODUITS ===== */
 .prod-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.85rem;padding:.2rem .9rem 6rem;}
 @media(min-width:600px){.prod-grid{grid-template-columns:repeat(3,1fr);}}
 @media(min-width:900px){.prod-grid{grid-template-columns:repeat(4,1fr);}}
 
-/* CARTE PRODUIT */
-.prod-card{background:var(--glass);border:1px solid var(--bord);border-radius:14px;overflow:hidden;backdrop-filter:blur(12px);transition:transform .28s;animation:cardPop .4s ease-out both;position:relative;}
+/* ===== CARTE PRODUIT — HALO ANIMÉ COULEUR ADMIN ===== */
+.prod-card{
+  background:var(--glass);
+  border:1px solid rgba(var(--card-glow-rgb),0.3);
+  border-radius:14px;overflow:hidden;
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  transition:transform .28s,box-shadow .28s;
+  animation:cardPop .4s ease-out both;
+  position:relative;
+}
 @keyframes cardPop{from{opacity:0;transform:scale(.93) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
-body.light .prod-card{background:rgba(255,255,255,.65);}
+body.light .prod-card{background:rgba(255,255,255,.65);border-color:rgba(139,105,20,.3);box-shadow:0 2px 10px rgba(0,0,0,.07);}
 .prod-card:hover{transform:translateY(-4px);}
 .prod-card:active{transform:scale(.97);}
-.prod-card::after{content:'';position:absolute;inset:0;border-radius:14px;pointer-events:none;animation:cardHalo 2.5s ease-in-out infinite;}
+
+/* HALO ANIMÉ — utilise la variable CSS injectée par admin */
+.prod-card::after{
+  content:'';position:absolute;inset:0;border-radius:14px;pointer-events:none;
+  animation:cardHalo 2.5s ease-in-out infinite;
+}
 @keyframes cardHalo{
-  0%,100%{box-shadow:0 0 calc(8px * var(--card-glow-intensity,1)) calc(1px * var(--card-glow-intensity,1)) var(--card-glow),inset 0 0 0 1px var(--card-glow);}
-  50%{box-shadow:0 0 calc(26px * var(--card-glow-intensity,1)) calc(5px * var(--card-glow-intensity,1)) var(--card-glow),inset 0 0 0 1px var(--card-glow);}
+  0%,100%{box-shadow:0 0 8px 1px var(--card-glow-color, rgba(201,168,76,0.15)), inset 0 0 0 1px var(--card-glow-color, rgba(201,168,76,0.1));}
+  50%{box-shadow:0 0 22px 4px var(--card-glow-color, rgba(201,168,76,0.35)), inset 0 0 0 1px var(--card-glow-color, rgba(201,168,76,0.25));}
 }
 
-/* GALERIE IMAGES PRODUIT */
-.prod-gallery{width:100%;aspect-ratio:1/1;position:relative;overflow:hidden;background:var(--bg3);}
-.prod-gallery .gallery-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .3s;}
-.prod-gallery .gallery-img.active{opacity:1;}
-.gallery-dots{position:absolute;bottom:5px;left:0;right:0;display:flex;justify-content:center;gap:4px;z-index:2;}
-.gallery-dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.4);cursor:pointer;transition:background .2s;}
-.gallery-dot.active{background:#fff;}
-.gallery-arrows{position:absolute;inset:0;display:flex;align-items:center;justify-content:space-between;padding:0 6px;z-index:2;opacity:0;transition:opacity .2s;}
-.prod-gallery:hover .gallery-arrows,.prod-gallery:active .gallery-arrows{opacity:1;}
-.garr{background:rgba(0,0,0,.45);border:none;color:#fff;border-radius:50%;width:26px;height:26px;font-size:.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent;}
-
+.prod-img{width:100%;aspect-ratio:1/1;object-fit:cover;background:var(--bg3);display:block;transition:transform .4s;}
+.prod-card:hover .prod-img{transform:scale(1.05);}
 .prod-body{padding:.7rem .7rem .85rem;}
 .prod-badge{font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;color:var(--or);border:1px solid rgba(201,168,76,.35);border-radius:50px;padding:.17rem .52rem;display:inline-block;margin-bottom:.38rem;}
-body.light .prod-badge{color:var(--or-d);}
+body.light .prod-badge{color:var(--or-d);border-color:rgba(139,105,20,.4);}
 .prod-name{font-family:'Cormorant Garamond',serif;font-size:.97rem;font-weight:700;line-height:1.25;color:var(--txt);margin-bottom:.18rem;}
-.prod-genre{font-size:.54rem;letter-spacing:.14em;color:var(--gris);text-transform:uppercase;margin-bottom:.45rem;}
+.prod-genre{font-size:.54rem;letter-spacing:.14em;color:var(--gris);text-transform:uppercase;margin-bottom:.48rem;}
 .prod-price{font-family:'Cormorant Garamond',serif;font-size:1.08rem;font-weight:700;background:linear-gradient(90deg,var(--or-d),var(--or-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .prod-price small{font-family:'Montserrat',sans-serif;font-size:.58rem;}
 
-/* COULEURS */
-.color-section{margin:.45rem 0 .5rem;}
-.color-lbl{font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gris);margin-bottom:.3rem;}
-.color-swatches{display:flex;flex-wrap:wrap;gap:.3rem;}
-.cswatch{width:20px;height:20px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:transform .18s,border-color .18s,box-shadow .18s;-webkit-tap-highlight-color:transparent;}
-.cswatch:hover{transform:scale(1.2);}
-.cswatch.active{border-color:#fff;box-shadow:0 0 0 2px var(--or);transform:scale(1.15);}
-body.light .cswatch.active{border-color:#333;box-shadow:0 0 0 2px var(--or-d);}
+/* ===== SÉLECTEUR DE COULEURS ===== */
+.color-section{margin:.5rem 0 .55rem;}
+.color-label{font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gris);margin-bottom:.35rem;}
+.color-swatches{display:flex;flex-wrap:wrap;gap:.35rem;}
+.color-swatch{
+  width:22px;height:22px;border-radius:50%;
+  border:2px solid transparent;
+  cursor:pointer;
+  transition:transform .18s,border-color .18s,box-shadow .18s;
+  -webkit-tap-highlight-color:transparent;
+  position:relative;flex-shrink:0;
+}
+.color-swatch:hover{transform:scale(1.18);}
+.color-swatch.active{border-color:#fff;box-shadow:0 0 0 2px var(--or);transform:scale(1.15);}
+body.light .color-swatch.active{border-color:#333;box-shadow:0 0 0 2px var(--or-d);}
 
-.btn-wa{display:flex;align-items:center;justify-content:center;gap:.35rem;margin-top:.6rem;width:100%;background:linear-gradient(135deg,#0f7a5e,#25D366);border:none;border-radius:8px;color:#fff;font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-family:'Montserrat',sans-serif;padding:.55rem .4rem;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:opacity .22s;}
-.btn-wa:active{opacity:.8;}
+.btn-wa{display:flex;align-items:center;justify-content:center;gap:.35rem;margin-top:.62rem;width:100%;background:linear-gradient(135deg,#0f7a5e,#25D366);border:none;border-radius:8px;color:#fff;font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-family:'Montserrat',sans-serif;padding:.55rem .4rem;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:opacity .22s,transform .15s;}
+.btn-wa:active{opacity:.8;transform:scale(.97);}
 
-/* ====== PAGE PROFIL ====== */
-.profile-wrap{padding:1rem 1rem 6rem;}
-.profile-avatar-big{width:90px;height:90px;border-radius:50%;border:3px solid var(--or);overflow:hidden;margin:0 auto 1rem;display:flex;align-items:center;justify-content:center;font-size:2.5rem;background:var(--bg3);cursor:pointer;position:relative;}
-.profile-avatar-big img{width:100%;height:100%;object-fit:cover;}
-.profile-avatar-big .cam-overlay{position:absolute;inset:0;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s;border-radius:50%;font-size:1.3rem;}
-.profile-avatar-big:hover .cam-overlay{opacity:1;}
-.profile-username{font-family:'Cormorant Garamond',serif;font-size:1.5rem;text-align:center;font-weight:700;color:var(--txt);}
-.profile-tag{font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;text-align:center;margin-top:.2rem;margin-bottom:1.2rem;}
-.profile-tag.normal{color:var(--gris);}
-.profile-tag.vip{color:var(--vip);font-weight:700;}
-.profile-tag.premium{color:var(--vip);}
+/* ===== PAGE OFFRES ===== */
+.offre-hero{text-align:center;padding:1.5rem 1.2rem 1rem;}
+.offre-title{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;background:linear-gradient(130deg,var(--or-d),var(--or-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:.1em;}
+.offre-subtitle{font-size:.65rem;color:var(--txt2);letter-spacing:.12em;margin-top:.4rem;line-height:1.7;}
 
-/* BARRE DE PROGRESSION OR */
-.prog-card{background:var(--glass);border:1px solid var(--bord);border-radius:14px;padding:1.1rem;margin-bottom:.9rem;backdrop-filter:blur(12px);}
-body.light .prog-card{background:rgba(255,255,255,.55);}
-.prog-title{font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--or);font-weight:700;margin-bottom:.7rem;display:flex;justify-content:space-between;align-items:center;}
-body.light .prog-title{color:var(--or-d);}
-.prog-count{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;color:var(--txt);}
-.prog-bar-wrap{height:10px;background:rgba(201,168,76,.15);border-radius:50px;overflow:hidden;margin:.4rem 0 .3rem;}
-.prog-bar-fill{height:100%;border-radius:50px;background:linear-gradient(90deg,var(--or-d),var(--or-l));transition:width .6s ease;position:relative;}
-.prog-bar-fill::after{content:'';position:absolute;top:0;right:0;bottom:0;width:20px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.4));animation:shimmer 1.5s ease-in-out infinite;}
-@keyframes shimmer{0%,100%{opacity:0}50%{opacity:1}}
-.prog-milestones{display:flex;justify-content:space-between;font-size:.55rem;color:var(--gris);margin-top:.2rem;}
-.prog-milestone{text-align:center;}
-.prog-milestone span{display:block;font-weight:700;color:var(--or);}
-body.light .prog-milestone span{color:var(--or-d);}
-
-/* STATUT VIP */
-.vip-badge{display:inline-flex;align-items:center;gap:.4rem;background:linear-gradient(135deg,#8B6914,#FFD700,#8B6914);background-size:200%;animation:goldShift 3s infinite;color:#000;border-radius:50px;padding:.35rem .9rem;font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.9rem;}
-.normal-badge{display:inline-flex;align-items:center;gap:.4rem;background:var(--glass);border:1px solid var(--bord);color:var(--gris);border-radius:50px;padding:.32rem .8rem;font-size:.62rem;letter-spacing:.1em;margin-bottom:.9rem;}
-.warn-card{background:rgba(192,57,43,.1);border:1px solid rgba(192,57,43,.3);border-radius:10px;padding:.75rem;font-size:.68rem;color:#eb5757;line-height:1.6;margin-bottom:.9rem;}
-
-/* ====== PAGE REGISTER ====== */
-.register-wrap{padding:1.5rem 1.2rem 6rem;max-width:400px;margin:0 auto;}
-.register-title{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:700;text-align:center;background:linear-gradient(130deg,var(--or-d),var(--or-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.4rem;}
-.register-sub{font-size:.68rem;color:var(--gris);text-align:center;line-height:1.6;margin-bottom:1.5rem;}
-.avatar-pick{width:80px;height:80px;border-radius:50%;border:3px dashed var(--or);display:flex;align-items:center;justify-content:center;margin:0 auto 1.2rem;cursor:pointer;font-size:2rem;overflow:hidden;background:var(--bg3);-webkit-tap-highlight-color:transparent;}
-.avatar-pick img{width:100%;height:100%;object-fit:cover;}
-.reg-field{margin-bottom:.85rem;}
-.reg-field label{display:block;font-size:.6rem;letter-spacing:.2em;color:var(--gris);text-transform:uppercase;margin-bottom:.4rem;}
-.reg-field input{width:100%;background:rgba(0,0,0,.35);border:1px solid rgba(201,168,76,.2);border-radius:8px;color:var(--txt);padding:.7rem .85rem;font-size:.9rem;font-family:'Montserrat',sans-serif;outline:none;transition:border .25s;}
-.reg-field input:focus{border-color:var(--or);}
-.btn-register{width:100%;padding:.85rem;background:linear-gradient(135deg,var(--or-d),var(--or));color:#000;border:none;border-radius:10px;font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;font-weight:700;font-family:'Montserrat',sans-serif;cursor:pointer;margin-top:.4rem;-webkit-tap-highlight-color:transparent;}
-.btn-register:active{opacity:.82;}
-
-/* ====== PAGE OFFRES ====== */
-.offre-hero{text-align:center;padding:1.3rem 1.2rem .8rem;}
-.offre-main-title{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:700;background:linear-gradient(130deg,var(--or-d),var(--or-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:.08em;}
-.offre-sub{font-size:.65rem;color:var(--txt2);line-height:1.7;margin-top:.4rem;}
-.offre-section{padding:0 1rem 1rem;}
-.offre-section-title{font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--or);margin-bottom:.7rem;display:flex;align-items:center;gap:.4rem;}
+.offre-section{padding:0 1rem 1.5rem;}
+.offre-section-title{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--or);margin-bottom:.8rem;display:flex;align-items:center;gap:.4rem;letter-spacing:.06em;}
 body.light .offre-section-title{color:var(--or-d);}
-.offre-card{background:var(--glass);border:1px solid var(--bord);border-radius:14px;padding:1rem;margin-bottom:.75rem;backdrop-filter:blur(12px);display:flex;align-items:flex-start;gap:.85rem;}
-body.light .offre-card{background:rgba(255,255,255,.6);}
-.offre-icon{font-size:1.8rem;flex-shrink:0;filter:drop-shadow(0 0 5px rgba(201,168,76,.35));}
-.offre-body{flex:1;}
-.offre-badge{display:inline-block;background:linear-gradient(135deg,var(--or-d),var(--or));color:#000;font-size:.54rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:.2rem .6rem;border-radius:50px;margin-bottom:.4rem;}
-.offre-ttl{font-family:'Cormorant Garamond',serif;font-size:.95rem;font-weight:700;color:var(--txt);margin-bottom:.25rem;}
-.offre-desc{font-size:.66rem;color:var(--txt2);line-height:1.65;}
-body.light .offre-desc{color:var(--gris);}
 
-/* VIP CARD SPÉCIALE */
-.vip-offre-card{background:linear-gradient(135deg,rgba(139,105,20,.2),rgba(255,215,0,.08),rgba(139,105,20,.2));border:2px solid rgba(255,215,0,.5);border-radius:16px;padding:1.2rem;margin-bottom:1rem;position:relative;overflow:hidden;}
-.vip-offre-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent,rgba(255,215,0,.06),transparent);animation:vipShine 3s ease-in-out infinite;}
-@keyframes vipShine{0%,100%{opacity:.4}50%{opacity:1}}
-.vip-crown{font-size:2.2rem;text-align:center;margin-bottom:.6rem;filter:drop-shadow(0 0 10px rgba(255,215,0,.6));}
-.vip-title{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:700;text-align:center;color:var(--vip);margin-bottom:.4rem;letter-spacing:.08em;}
-.vip-desc{font-size:.66rem;color:var(--txt2);line-height:1.7;text-align:center;}
-.stream-row{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.7rem;justify-content:center;}
-.stream-pill{display:flex;align-items:center;gap:.3rem;background:rgba(255,255,255,.07);border:1px solid rgba(201,168,76,.22);border-radius:50px;padding:.3rem .7rem;font-size:.62rem;color:var(--txt2);cursor:pointer;-webkit-tap-highlight-color:transparent;transition:all .2s;}
-.stream-pill.chosen{background:rgba(201,168,76,.18);border-color:var(--or);color:var(--txt);}
-.offre-cta{width:100%;margin-top:.8rem;background:linear-gradient(135deg,var(--or-d),var(--or));color:#000;border:none;border-radius:10px;font-family:'Montserrat',sans-serif;font-size:.68rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;padding:.72rem;cursor:pointer;-webkit-tap-highlight-color:transparent;}
-.offre-cta:active{opacity:.82;}
+.offre-card{
+  background:var(--glass);border:1px solid var(--bord);
+  border-radius:14px;padding:1.1rem;margin-bottom:.8rem;
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  display:flex;align-items:flex-start;gap:.9rem;
+  transition:transform .22s,box-shadow .22s;
+}
+body.light .offre-card{background:rgba(255,255,255,.6);border-color:rgba(139,105,20,.3);}
+.offre-card:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(201,168,76,.14);}
+.offre-card-icon{font-size:2rem;flex-shrink:0;line-height:1;filter:drop-shadow(0 0 6px rgba(201,168,76,.4));}
+.offre-card-body{flex:1;}
+.offre-card-title{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:700;color:var(--txt);margin-bottom:.25rem;}
+.offre-card-desc{font-size:.68rem;color:var(--txt2);line-height:1.65;letter-spacing:.03em;}
+body.light .offre-card-desc{color:var(--gris);}
+.offre-badge{display:inline-block;background:linear-gradient(135deg,var(--or-d),var(--or));color:#000;font-size:.55rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:.22rem .65rem;border-radius:50px;margin-bottom:.5rem;}
 
-/* BOTTOM NAV */
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:300;background:rgba(6,6,6,.92);backdrop-filter:blur(22px);border-top:1px solid var(--bord);display:flex;padding-bottom:var(--safe-bottom);}
+/* Abonnements streaming */
+.stream-grid{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.6rem;}
+.stream-pill{display:flex;align-items:center;gap:.35rem;background:rgba(255,255,255,.07);border:1px solid rgba(201,168,76,.2);border-radius:50px;padding:.32rem .75rem;font-size:.62rem;color:var(--txt2);letter-spacing:.05em;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:all .2s;}
+body.light .stream-pill{background:rgba(0,0,0,.06);color:var(--gris);}
+.stream-pill:hover,.stream-pill.chosen{background:rgba(201,168,76,.15);border-color:var(--or);color:var(--txt);}
+body.light .stream-pill.chosen{color:var(--or-d);border-color:var(--or-d);}
+.stream-pill span{font-size:.95rem;}
+
+.offre-cta{
+  width:100%;margin-top:.9rem;
+  background:linear-gradient(135deg,var(--or-d),var(--or));
+  color:#000;border:none;border-radius:10px;
+  font-family:'Montserrat',sans-serif;font-size:.7rem;
+  font-weight:700;letter-spacing:.2em;text-transform:uppercase;
+  padding:.75rem;cursor:pointer;-webkit-tap-highlight-color:transparent;
+  transition:opacity .22s,transform .15s;
+}
+.offre-cta:active{opacity:.82;transform:scale(.98);}
+
+.palier-bar{margin:.6rem 0 .3rem;position:relative;height:6px;background:rgba(201,168,76,.15);border-radius:50px;overflow:hidden;}
+.palier-bar-fill{height:100%;border-radius:50px;background:linear-gradient(90deg,var(--or-d),var(--or-l));transition:width .4s;}
+.palier-labels{display:flex;justify-content:space-between;font-size:.55rem;color:var(--gris);margin-top:.2rem;}
+
+/* ===== ÉTAT VIDE ===== */
+.empty-cat{grid-column:1/-1;text-align:center;padding:3.5rem 1.5rem;}
+.empty-cat h3{font-family:'Cormorant Garamond',serif;font-size:1.45rem;color:var(--or);margin-bottom:.4rem;}
+.empty-cat p{font-size:.75rem;color:var(--gris);line-height:1.7;}
+body.light .empty-cat h3{color:var(--or-d);}
+
+/* ===== BOTTOM NAV ===== */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:300;background:rgba(6,6,6,.92);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);border-top:1px solid var(--bord);display:flex;padding-bottom:var(--safe-bottom);}
 body.light .bottom-nav{background:rgba(242,237,224,.95);border-top-color:rgba(139,105,20,.3);}
-.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:.18rem;padding:.6rem .2rem .5rem;cursor:pointer;color:var(--gris);font-size:.48rem;letter-spacing:.1em;text-transform:uppercase;border:none;background:none;font-family:'Montserrat',sans-serif;transition:color .2s;-webkit-tap-highlight-color:transparent;}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:.18rem;padding:.6rem .2rem .5rem;cursor:pointer;-webkit-tap-highlight-color:transparent;color:var(--gris);font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;border:none;background:none;font-family:'Montserrat',sans-serif;transition:color .2s;}
 .nav-item.active{color:var(--or);}
 body.light .nav-item.active{color:var(--or-d);}
-.nav-icon{font-size:1.15rem;line-height:1;position:relative;}
-.nav-offre .pulse-dot{position:absolute;top:-2px;right:-4px;width:7px;height:7px;background:#ff4444;border-radius:50%;animation:pulseDot 1.5s ease-in-out infinite;}
-@keyframes pulseDot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.4)}}
+body.light .nav-item{color:var(--gris);}
+.nav-icon{font-size:1.2rem;line-height:1;}
+/* Badge OFFRE clignotant */
+.nav-offre{position:relative;}
+.nav-offre .pulse-dot{position:absolute;top:2px;right:50%;transform:translateX(60%);width:8px;height:8px;background:#ff4444;border-radius:50%;animation:pulseDot 1.5s ease-in-out infinite;}
+@keyframes pulseDot{0%,100%{opacity:1;transform:translateX(60%) scale(1);}50%{opacity:.5;transform:translateX(60%) scale(1.4);}}
 
-/* WA FLOAT */
+/* ===== WHATSAPP ===== */
 .wa-float{position:fixed;bottom:calc(var(--safe-bottom) + 68px);right:1rem;z-index:400;width:52px;height:52px;border-radius:50%;background:var(--wa);display:flex;align-items:center;justify-content:center;text-decoration:none;animation:waPulse 2s ease-in-out infinite;}
-@keyframes waPulse{0%{box-shadow:0 0 0 0 rgba(37,211,102,.6)}70%{box-shadow:0 0 0 16px rgba(37,211,102,0)}100%{box-shadow:0 0 0 0 rgba(37,211,102,0)}}
+@keyframes waPulse{0%{box-shadow:0 0 0 0 rgba(37,211,102,.6);}70%{box-shadow:0 0 0 16px rgba(37,211,102,0);}100%{box-shadow:0 0 0 0 rgba(37,211,102,0);}}
+.wa-float:active{transform:scale(.92);}
 .wa-float svg{width:28px;height:28px;}
 
-/* LOADER */
+/* Loader */
 .loader-wrap{grid-column:1/-1;display:flex;justify-content:center;padding:3rem;}
 .loader{width:30px;height:30px;border-radius:50%;border:2px solid rgba(201,168,76,.2);border-top-color:var(--or);animation:spin .7s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
-
-/* STYLE DU MODAL DE CONNEXION RÉTACRÉ PROPREMENT */
-.modal-login {
-  position: fixed;
-  inset: 0;
-  z-index: 2000;
-  background: rgba(0,0,0,0.85);
-  backdrop-filter: blur(10px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1.5rem;
-}
-.modal-content {
-  background: var(--bg2);
-  border: 1px solid var(--bord);
-  border-radius: 16px;
-  width: 100%;
-  max-width: 380px;
-  padding: 1.5rem;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-}
 </style>
 </head>
 <body>
 
-<div id="splash"><div class="splash-txt">Bienvenue sur ma page Khaled Watch 😉</div><div class="splash-bar"></div><div class="splash-sub">Collection Prestige · Montres &amp; Bijoux</div></div>
-<div id="bgLayer"></div><div id="bgOverlay"></div>
+<!-- SPLASH -->
+<div id="splash">
+  <div class="splash-txt">Bienvenue sur ma page Khaled Watch 😉</div>
+  <div class="splash-bar"></div>
+  <div class="splash-sub">Collection Prestige · Montres &amp; Bijoux</div>
+</div>
 
+<!-- FOND DYNAMIQUE -->
+<div id="bgLayer"></div>
+<div id="bgOverlay"></div>
+
+<!-- HEADER -->
 <header class="app-header">
   <div class="logo-txt">KHALED WATCH</div>
-  <div class="hdr-right">
-    <button class="btn-theme" id="btnTheme" onclick="toggleTheme()">☀ Clair</button>
-    <div class="btn-profile" id="btnProfile" onclick="openProfile()">
-      <img id="profileThumb" src="" alt="" style="display:none;">
-      <span id="profileInitial">👤</span>
-    </div>
-  </div>
+  <button class="btn-theme" id="btnTheme" onclick="toggleTheme()">☀ Clair</button>
 </header>
 
-<!-- PAGE ACCUEIL -->
+<!-- ======== PAGE ACCUEIL ======== -->
 <div id="page-home">
   <div class="home-hero">
     <div class="home-subtitle">Collection Prestige 2025</div>
     <div class="home-title">Khaled Watch</div>
-    <div class="home-desc">Découvrez l'élite des garde-temps et chaînes luxueuses à Cotonou. Accédez à vos privilèges VIP via votre profil personnalisé.</div>
+    <div class="home-desc">Explorez notre sélection exclusive de montres &amp; bijoux de prestige.</div>
   </div>
-  
   <div class="cat-grid">
     <div class="cat-card" onclick="openCat('Montres')"><div class="cat-icon">⌚</div><div class="cat-label">Montres</div><div class="cat-count" id="cnt-Montres">—</div></div>
     <div class="cat-card" onclick="openCat('Montres Luxueuses')"><div class="cat-icon">💎</div><div class="cat-label">Montres Luxe</div><div class="cat-count" id="cnt-Montres Luxueuses">—</div></div>
@@ -275,185 +257,318 @@ body.light .nav-item.active{color:var(--or-d);}
     <div class="cat-card" onclick="openCat('Colliers')"><div class="cat-icon">📿</div><div class="cat-label">Colliers</div><div class="cat-count" id="cnt-Colliers">—</div></div>
     <div class="cat-card" onclick="openCat('Bagues')"><div class="cat-icon">💍</div><div class="cat-label">Bagues</div><div class="cat-count" id="cnt-Bagues">—</div></div>
     <div class="cat-card" onclick="openCat('Autres')"><div class="cat-icon">✨</div><div class="cat-label">Autres</div><div class="cat-count" id="cnt-Autres">—</div></div>
-    <div class="cat-card offre-card" onclick="openOffres()"><div class="cat-icon">🎁</div><div class="cat-label" style="color:#FFD700">Offres</div><div class="cat-count" style="color:var(--or)">Promos &amp; VIP</div></div>
+    <!-- ICÔNE OFFRE -->
+    <div class="cat-card offre-card" onclick="openOffres()"><div class="cat-icon">🎁</div><div class="cat-label" style="color:#FFD700;">Offres</div><div class="cat-count" style="color:var(--or);">Promos &amp; Cadeaux</div></div>
   </div>
 </div>
 
-<!-- PAGE CATÉGORIE -->
+<!-- ======== PAGE CATÉGORIE ======== -->
 <div id="page-cat">
-  <div class="page-header">
+  <div class="page-cat-header">
     <div class="btn-back" onclick="goHome()">←</div>
-    <span id="catPageIcon" style="font-size:1.4rem;"></span>
-    <div class="page-title" id="catPageTitle"></div>
+    <span class="cat-page-icon" id="catPageIcon"></span>
+    <div class="cat-page-title" id="catPageTitle"></div>
   </div>
   <div class="gender-tabs">
     <button class="g-tab active" data-g="tous" onclick="setGender(this)">Tous</button>
     <button class="g-tab" data-g="Homme" onclick="setGender(this)">Homme</button>
     <button class="g-tab" data-g="Femme" onclick="setGender(this)">Femme</button>
   </div>
-  <div class="prod-grid" id="prodGrid"><div class="loader-wrap"><div class="loader"></div></div></div>
+  <div class="prod-grid" id="prodGrid">
+    <div class="loader-wrap"><div class="loader"></div></div>
+  </div>
 </div>
 
-<!-- PAGE OFFRES -->
+<!-- ======== PAGE OFFRES ======== -->
 <div id="page-offre">
-  <div class="page-header"><div class="btn-back" onclick="goHome()">←</div><span style="font-size:1.4rem;">🎁</span><div class="page-title">Offres &amp; Avantages</div></div>
+  <div class="page-cat-header">
+    <div class="btn-back" onclick="goHome()">←</div>
+    <span class="cat-page-icon">🎁</span>
+    <div class="cat-page-title">Offres Spéciales</div>
+  </div>
+
   <div class="offre-hero">
-    <div class="offre-main-title">Programme Fidélité</div>
-    <div class="offre-sub">Plus vous achetez, plus vous gagnez.<br>Des avantages exclusifs réservés à nos clients.</div>
+    <div class="offre-title">Récompenses &amp; Cadeaux</div>
+    <div class="offre-subtitle">Plus vous achetez, plus vous gagnez.<br>Des avantages exclusifs réservés à nos clients fidèles.</div>
   </div>
 
+  <!-- PALIER LIVRAISON GRATUITE -->
   <div class="offre-section">
-    <div class="offre-section-title">🚀 Comment ça marche ?</div>
+    <div class="offre-section-title">🚚 Livraison Gratuite</div>
     <div class="offre-card">
-      <div class="offre-icon">📊</div>
-      <div class="offre-body">
-        <div class="offre-ttl">Votre progression</div>
-        <div class="offre-desc">Chaque commande validée par Khaled Watch fait avancer votre barre de progression dorée. Suivez votre niveau dans votre profil 👤</div>
+      <div class="offre-card-icon">🚚</div>
+      <div class="offre-card-body">
+        <div class="offre-badge">Dès le 1er achat</div>
+        <div class="offre-card-title">Livraison offerte partout au Bénin</div>
+        <div class="offre-card-desc">Chaque commande passée via WhatsApp bénéficie de la livraison gratuite à domicile sur Cotonou et ses environs.</div>
+        <button class="offre-cta" onclick="ctaOffre('Livraison gratuite')">Commander maintenant</button>
       </div>
     </div>
   </div>
 
+  <!-- PALIER 3 PRODUITS -->
   <div class="offre-section">
-    <div class="offre-section-title">🚚 Palier 5 commandes — Livraison gratuite</div>
+    <div class="offre-section-title">🎁 Cadeau dès 3 produits achetés</div>
+
     <div class="offre-card">
-      <div class="offre-icon">🚚</div>
-      <div class="offre-body">
-        <div class="offre-badge">À partir de 5 commandes</div>
-        <div class="offre-ttl">Livraison offerte à Cotonou</div>
-        <div class="offre-desc">Dès votre 5ème commande validée, vous bénéficiez de la <strong style="color:var(--or)">livraison gratuite à domicile</strong> sur Cotonou et ses environs pour toutes vos commandes suivantes.</div>
+      <div class="offre-card-icon">🎬</div>
+      <div class="offre-card-body">
+        <div class="offre-badge">3 produits achetés</div>
+        <div class="offre-card-title">1 mois d'abonnement streaming offert</div>
+        <div class="offre-card-desc">Achetez 3 produits et choisissez votre abonnement streaming gratuit pendant 1 mois !</div>
+        <div class="stream-grid">
+          <div class="stream-pill" onclick="choixStream(this,'Netflix')"><span>🎬</span> Netflix</div>
+          <div class="stream-pill" onclick="choixStream(this,'Amazon Prime')"><span>📦</span> Amazon Prime</div>
+          <div class="stream-pill" onclick="choixStream(this,'Spotify')"><span>🎵</span> Spotify</div>
+          <div class="stream-pill" onclick="choixStream(this,'Apple Music')"><span>🎶</span> Apple Music</div>
+        </div>
+        <button class="offre-cta" id="btnStream" onclick="ctaStream()" style="margin-top:.9rem;">Je choisis mon cadeau</button>
+      </div>
+    </div>
+
+    <div class="offre-card">
+      <div class="offre-card-icon">💰</div>
+      <div class="offre-card-body">
+        <div class="offre-badge">Plus le produit est cher</div>
+        <div class="offre-card-title">Cadeau à la hauteur de votre achat</div>
+        <div class="offre-card-desc">
+          Les cadeaux s'adaptent au montant total de vos achats :<br><br>
+          <strong style="color:var(--or);">≥ 50 000 F</strong> → Spotify ou Apple Music 1 mois<br>
+          <strong style="color:var(--or);">≥ 100 000 F</strong> → Netflix ou Amazon Prime 1 mois<br>
+          <strong style="color:var(--or);">≥ 200 000 F</strong> → Abonnement au choix + réduction 10%
+        </div>
       </div>
     </div>
   </div>
 
+  <!-- PALIER 5 PRODUITS -->
   <div class="offre-section">
-    <div class="offre-section-title">👑 Palier 10 commandes — Statut VIP PREMIUM</div>
-    <div class="vip-offre-card">
-      <div class="vip-crown">👑</div>
-      <div class="vip-title">Bienvenue dans l'élite VIP</div>
-      <div class="vip-desc">
-        Achetez <strong style="color:var(--vip)">10 produits</strong> et rejoignez le cercle d'élite Khaled Watch.<br><br>
-        En tant que VIP vous recevez :<br>
-        ✦ <strong style="color:var(--vip)">1 mois d'abonnement streaming gratuit</strong> au choix<br>
-        ✦ <strong style="color:var(--vip)">Livraison gratuite permanente</strong> à Cotonou<br>
-        ✦ <strong style="color:var(--vip)">Accès prioritaire</strong> aux nouvelles collections<br><br>
-        <em style="font-size:.62rem;color:var(--gris)">Pour maintenir votre statut VIP, au moins 1 achat par semaine est requis.</em>
+    <div class="offre-section-title">🔥 Réduction dès 5 produits achetés</div>
+    <div class="offre-card">
+      <div class="offre-card-icon">🔥</div>
+      <div class="offre-card-body">
+        <div class="offre-badge">5 produits achetés</div>
+        <div class="offre-card-title">Réduction sur votre prochaine commande</div>
+        <div class="offre-card-desc">
+          Achetez 5 produits ou plus et profitez d'une réduction progressive :<br><br>
+          <strong style="color:var(--or);">5 produits</strong> → <strong style="color:#6fcf97;">-5%</strong> sur la prochaine commande<br>
+          <strong style="color:var(--or);">7 produits</strong> → <strong style="color:#6fcf97;">-10%</strong> sur la prochaine commande<br>
+          <strong style="color:var(--or);">10 produits</strong> → <strong style="color:#6fcf97;">-15%</strong> + cadeau surprise
+        </div>
+        <button class="offre-cta" onclick="ctaOffre('Réduction fidélité')">Profiter de l'offre</button>
       </div>
-      <div style="margin-top:.8rem;font-size:.65rem;color:var(--txt2);text-align:center;font-weight:600;letter-spacing:.1em;text-transform:uppercase;">Choisissez votre abonnement VIP :</div>
-      <div class="stream-row">
-        <div class="stream-pill" onclick="choixStream(this,'Netflix')"><span>🎬</span> Netflix</div>
-        <div class="stream-pill" onclick="choixStream(this,'Amazon Prime')"><span>📦</span> Amazon Prime</div>
-        <div class="stream-pill" onclick="choixStream(this,'Spotify Premium')"><span>🎵</span> Spotify Premium</div>
-        <div class="stream-pill" onclick="choixStream(this,'Apple Music')"><span>🎶</span> Apple Music</div>
-      </div>
-      <button class="offre-cta" onclick="ctaVip()">👑 Réclamer mon avantage VIP</button>
     </div>
   </div>
 
-  <div style="padding:0 1rem 6rem;text-align:center;font-size:.62rem;color:var(--gris);line-height:1.9;">
-    Les avantages sont validés par Khaled Watch sur présentation de vos achats via WhatsApp.<br>
-    Créez votre compte pour suivre votre progression en temps réel.
+  <div style="padding:0 1rem 6rem;text-align:center;">
+    <div style="font-size:.65rem;color:var(--gris);line-height:1.8;letter-spacing:.06em;">
+      Les offres sont valables sur présentation de vos achats via WhatsApp.<br>
+      Contactez-nous pour valider votre cadeau.
+    </div>
   </div>
 </div>
 
-<!-- PAGE PROFIL -->
-<div id="page-profile">
-  <div class="page-header"><div class="btn-back" onclick="goHome()">←</div><div class="page-title">Mon Profil</div></div>
-  <div class="profile-wrap">
-    <div class="profile-avatar-big" id="profileAvatarBig" onclick="changeAvatar()">
-      <img id="profileAvatarImg" src="" alt="" style="display:none;">
-      <span id="profileAvatarInitial">👤</span>
-      <div class="cam-overlay">📷</div>
-    </div>
-    <input type="file" id="avatarChangeInput" accept="image/*" style="display:none;" onchange="handleAvatarChange(this.files[0])">
-    <div class="profile-username" id="profileNameDisplay"></div>
-    <div style="text-align:center;margin-top:.3rem;" id="profileStatusBadgeWrap"></div>
-
-    <!-- BARRE PROGRESSION -->
-    <div class="prog-card" style="margin-top:1rem;">
-      <div class="prog-title">
-        <span>Progression Fidélité</span>
-        <span class="prog-count" id="progCount">0 / 10</span>
-      </div>
-      <div class="prog-bar-wrap"><div class="prog-bar-fill" id="progFill" style="width:0%;"></div></div>
-      <div class="prog-milestones">
-        <div class="prog-milestone"><span>🚚</span>5 cmd</div>
-        <div class="prog-milestone"><span>👑</span>10 cmd</div>
-      </div>
-      <div id="progMessage" style="font-size:.65rem;color:var(--gris);margin-top:.6rem;line-height:1.6;text-align:center;"></div>
-    </div>
-
-    <!-- AVERTISSEMENT VIP -->
-    <div class="warn-card" id="vipWarnCard" style="display:none;">
-      ⚠ <strong>Attention !</strong> Pour conserver votre statut VIP, vous devez effectuer au moins 1 achat par semaine. Sans achat dans les 7 jours, vous perdez votre statut VIP et recommencez à 5 commandes.
-    </div>
-
-    <!-- INFOS -->
-    <div class="prog-card">
-      <div class="prog-title">Informations</div>
-      <div style="font-size:.75rem;line-height:2;color:var(--txt2);">
-        <div>👤 Nom : <strong style="color:var(--txt)" id="infoName">—</strong></div>
-        <div>📅 Membre depuis : <strong style="color:var(--txt)" id="infoDate">—</strong></div>
-        <div>🛒 Commandes : <strong style="color:var(--or)" id="infoOrders">0</strong></div>
-      </div>
-    </div>
-
-    <button onclick="logout()" style="width:100%;padding:.75rem;background:rgba(192,57,43,.15);border:1px solid rgba(192,57,43,.3);color:#eb5757;border-radius:10px;font-size:.7rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;font-family:'Montserrat',sans-serif;cursor:pointer;margin-top:.5rem;">Se déconnecter</button>
-  </div>
-</div>
-
-<!-- PAGE INSCRIPTION -->
-<div id="page-register">
-  <div class="register-wrap">
-    <div class="register-title">Créer mon compte</div>
-    <div class="register-sub">Rejoignez Khaled Watch et suivez vos avantages fidélité en temps réel. Une seule inscription suffit !</div>
-
-    <div class="avatar-pick" id="avatarPick" onclick="document.getElementById('avatarInput').click()">
-      <img id="avatarPreview" src="" alt="" style="display:none;width:100%;height:100%;object-fit:cover;">
-      <span id="avatarPickIcon">📷</span>
-    </div>
-    <input type="file" id="avatarInput" accept="image/*" style="display:none;" onchange="handleAvatarPick(this.files[0])">
-    <div style="text-align:center;font-size:.6rem;color:var(--gris);margin-bottom:1rem;">Appuyez pour choisir une photo</div>
-
-    <div class="reg-field"><label>Nom d'utilisateur *</label><input type="text" id="regName" placeholder="Votre prénom ou pseudo" maxlength="30"></div>
-    <div class="reg-field"><label>Mot de passe *</label><input type="password" id="regPass" placeholder="Créez un mot de passe" minlength="4"></div>
-    <div class="reg-field"><label>Confirmer le mot de passe *</label><input type="password" id="regPass2" placeholder="Répétez le mot de passe"></div>
-
-    <div id="regErr" style="font-size:.7rem;color:#eb5757;margin-bottom:.7rem;display:none;"></div>
-    <button class="btn-register" onclick="doRegister()">Créer mon compte</button>
-    <div style="text-align:center;margin-top:.8rem;font-size:.65rem;color:var(--gris);">Déjà un compte ? <span style="color:var(--or);cursor:pointer;" onclick="showLogin()">Se connecter</span></div>
-  </div>
-</div>
-
-<!-- MODAL LOGIN CORRIGÉ ET FERMÉ PROPREMENT -->
-<div id="modalLogin" class="modal-login" style="display:none;">
-  <div class="modal-content">
-    <div class="register-title" style="font-size:1.5rem; margin-bottom:1rem;">Se connecter</div>
-    <div class="reg-field"><label>Nom d'utilisateur</label><input type="text" id="loginName" placeholder="Votre pseudo"></div>
-    <div class="reg-field"><label>Mot de passe</label><input type="password" id="loginPass" placeholder="Votre mot de passe"></div>
-    <div id="loginErr" style="font-size:.7rem;color:#eb5757;margin-bottom:.7rem;display:none;"></div>
-    <button class="btn-register" onclick="doLogin()">Connexion</button>
-    <div style="text-align:center;margin-top:.8rem;font-size:.65rem;color:var(--gris);">Pas de compte ? <span style="color:var(--or);cursor:pointer;" onclick="showRegister()">S'inscrire</span></div>
-  </div>
-</div>
-
-<!-- NAVIGATION INFÉRIEURE -->
+<!-- BOTTOM NAV -->
 <nav class="bottom-nav">
-  <button class="nav-item active" onclick="goHome()"><span class="nav-icon">🏠</span><span>Accueil</span></button>
-  <button class="nav-item nav-offre" onclick="openOffres()"><span class="nav-icon">🎁<span class="pulse-dot"></span></span><span>Offres</span></button>
-  <button class="nav-item" onclick="openProfile()"><span class="nav-icon">👤</span><span>Profil</span></button>
+  <button class="nav-item active" id="nav-home" onclick="goHome()"><span class="nav-icon">🏠</span>Accueil</button>
+  <button class="nav-item" onclick="openCat('Montres')"><span class="nav-icon">⌚</span>Montres</button>
+  <button class="nav-item" onclick="openCat('Chaînes')"><span class="nav-icon">⛓</span>Chaînes</button>
+  <button class="nav-item" onclick="openCat('Bracelets')"><span class="nav-icon">💫</span>Bijoux</button>
+  <button class="nav-item nav-offre" onclick="openOffres()">
+    <span class="nav-icon">🎁</span>Offres
+    <div class="pulse-dot"></div>
+  </button>
 </nav>
 
-<!-- BOUTON FLOTTANT WHATSAPP -->
-<a href="https://wa.me/message/YOUR_LINK" class="wa-float" target="_blank" rel="noopener noreferrer">
-  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M12.004 2C6.48 2 2 6.48 2 12.004c0 1.83.497 3.543 1.357 5.02L2 22l5.12-1.313a9.932 9.932 0 004.884 1.317C17.52 22.004 22 17.524 22 12.004 22 6.48 17.52 2 12.004 2zm4.98 12.443c-.206.583-1.203 1.127-1.654 1.18-.42.05-.96.07-2.614-.616-2.112-.876-3.468-3.033-3.573-3.176-.106-.142-.857-1.144-.857-2.182 0-1.037.54-1.545.733-1.753.193-.208.42-.26.56-.26h.403c.12 0 .284-.046.444.335.166.397.568 1.39.617 1.49.05.097.082.213.016.345-.065.132-.097.213-.194.327-.096.113-.203.254-.29.345-.097.103-.2.213-.086.41.114.197.507.832 1.087 1.35.748.667 1.378.874 1.576.974.197.1.314.083.431-.053.117-.136.502-.584.636-.782.135-.198.27-.165.454-.097.185.067 1.173.553 1.375.655.202.102.336.15.385.234.05.084.05.487-.156 1.07z" fill="#FFF"/>
-  </svg>
+<!-- WHATSAPP -->
+<a class="wa-float" href="https://wa.me/2290169515730" target="_blank" rel="noopener">
+  <svg viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
 </a>
 
-<!-- EN ATTENTE DE TON CODE JAVASCRIPT CI-DESSOUS -->
 <script>
-// Tes fonctions JS actuelles (toggleTheme, openCat, openOffres, openProfile, etc.) viendront se placer ici pour faire fonctionner tout ton catalogue !
-</script>
+const WA = '2290169515730';
+const CAT_ICONS = {'Montres':'⌚','Montres Luxueuses':'💎','Chaînes':'⛓','Bracelets':'💫','Colliers':'📿','Bagues':'💍','Autres':'✨'};
+const DEFAULT_BG = 'https://images.unsplash.com/photo-1548169874-53e85f753f1e?w=1600&q=85';
 
+let allProducts = [];
+let currentCat = '';
+let currentGender = 'tous';
+let selectedStream = '';
+
+/* ===== FOND CLIENT (défini par admin) ===== */
+function initClientBg(){
+  const saved = localStorage.getItem('kw-client-bg') || DEFAULT_BG;
+  document.getElementById('bgLayer').style.backgroundImage = `url('${saved}')`;
+}
+
+/* ===== HALO COULEUR BOXES (défini par admin) ===== */
+function initCardGlow(){
+  const color = localStorage.getItem('kw-card-glow') || 'rgba(201,168,76,0.25)';
+  document.documentElement.style.setProperty('--card-glow-color', color);
+}
+
+/* ===== CHARGEMENT PRODUITS ===== */
+async function loadProducts(){
+  try{
+    const r = await fetch('produits.json?t='+Date.now());
+    if(!r.ok) throw 0;
+    allProducts = await r.json();
+  }catch{ allProducts=[]; }
+  updateCounts();
+}
+
+function updateCounts(){
+  Object.keys(CAT_ICONS).forEach(c=>{
+    const el = document.getElementById('cnt-'+c);
+    if(!el) return;
+    const n = allProducts.filter(p=>p.categorie===c).length;
+    el.textContent = n+(n<=1?' article':' articles');
+  });
+}
+
+/* ===== NAVIGATION ===== */
+function hideAll(){
+  document.getElementById('page-home').style.display='none';
+  document.getElementById('page-cat').style.display='none';
+  document.getElementById('page-offre').style.display='none';
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+}
+function goHome(){
+  hideAll();
+  document.getElementById('page-home').style.display='block';
+  document.getElementById('nav-home').classList.add('active');
+  window.scrollTo(0,0);
+}
+function openCat(cat){
+  currentCat=cat; currentGender='tous';
+  document.querySelectorAll('.g-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelector('.g-tab[data-g="tous"]').classList.add('active');
+  document.getElementById('catPageTitle').textContent=cat;
+  document.getElementById('catPageIcon').textContent=CAT_ICONS[cat]||'✦';
+  hideAll();
+  document.getElementById('page-cat').style.display='block';
+  window.scrollTo(0,0);
+  renderProducts();
+}
+function openOffres(){
+  hideAll();
+  document.getElementById('page-offre').style.display='block';
+  window.scrollTo(0,0);
+}
+function setGender(btn){
+  document.querySelectorAll('.g-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  currentGender=btn.dataset.g;
+  renderProducts();
+}
+
+/* ===== RENDU PRODUITS AVEC COULEURS ===== */
+const WA_SVG=`<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>`;
+
+function buildColorSwatches(produit, colors){
+  if(!colors||!colors.length) return '';
+  const swatches = colors.map((c,i)=>`
+    <div class="color-swatch ${i===0?'active':''}"
+         style="background:${h(c.hex)};${c.image?'':'opacity:.85;'}"
+         title="${h(c.nom)}"
+         onclick="switchColor(this,'${js(produit.id)}',${i})"
+         data-img="${h(c.image||'')}"
+         data-nom="${h(c.nom)}">
+    </div>
+  `).join('');
+  return `<div class="color-section">
+    <div class="color-label">Couleurs disponibles</div>
+    <div class="color-swatches">${swatches}</div>
+  </div>`;
+}
+
+function switchColor(swatch, prodId, idx){
+  const card = swatch.closest('.prod-card');
+  card.querySelectorAll('.color-swatch').forEach(s=>s.classList.remove('active'));
+  swatch.classList.add('active');
+  const img = swatch.dataset.img;
+  if(img){
+    const prodImg = card.querySelector('.prod-img');
+    prodImg.style.opacity='0';
+    setTimeout(()=>{ prodImg.src=img; prodImg.style.opacity='1'; },150);
+    prodImg.style.transition='opacity .15s';
+  }
+}
+
+function renderProducts(){
+  const grid = document.getElementById('prodGrid');
+  let list = allProducts.filter(p=>p.categorie===currentCat);
+  if(currentGender!=='tous') list=list.filter(p=>p.genre===currentGender);
+
+  if(!list.length){
+    grid.innerHTML=`<div class="empty-cat"><h3>Collection à venir</h3><p>Aucun produit dans cette catégorie pour le moment.<br>Revenez bientôt !</p></div>`;
+    return;
+  }
+
+  grid.innerHTML=list.map((p,i)=>{
+    const colors = p.couleurs && p.couleurs.length ? p.couleurs : [];
+    const mainImg = colors.length && colors[0].image ? colors[0].image : p.image;
+    return `
+    <div class="prod-card" style="animation-delay:${i*.06}s" data-id="${h(p.id||'')}">
+      <img class="prod-img" src="${h(mainImg)}" alt="${h(p.nom)}" loading="lazy"
+        onerror="this.src='https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=70'">
+      <div class="prod-body">
+        <div class="prod-badge">${h(p.categorie)}</div>
+        <div class="prod-name">${h(p.nom)}</div>
+        <div class="prod-genre">${h(p.genre||'')}</div>
+        ${buildColorSwatches(p, colors)}
+        <div class="prod-price">${fmt(p.prix)} <small>FCFA</small></div>
+        <button class="btn-wa" onclick="commander('${js(p.nom)}','${js(p.prix)}')">
+          ${WA_SVG} Commander
+        </button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ===== COMMANDE WA ===== */
+function commander(nom,prix){
+  const msg=`Bonjour Khaled Watch 👋\n\nJe suis intéressé(e) par :\n✦ *${nom}*\n💰 Prix : ${fmt(prix)} FCFA\n\nPouvez-vous me donner plus d'informations ? Merci !`;
+  window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`,'_blank');
+}
+
+/* ===== OFFRES ===== */
+function choixStream(el, nom){
+  document.querySelectorAll('.stream-pill').forEach(p=>p.classList.remove('chosen'));
+  el.classList.add('chosen');
+  selectedStream=nom;
+  document.getElementById('btnStream').textContent=`Réclamer : ${nom} gratuit 1 mois`;
+}
+function ctaStream(){
+  const s=selectedStream||'un abonnement streaming';
+  const msg=`Bonjour Khaled Watch 👋\n\nJ'ai acheté 3 produits et je souhaite réclamer mon cadeau :\n🎁 *${s} gratuit 1 mois*\n\nMerci !`;
+  window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`,'_blank');
+}
+function ctaOffre(type){
+  const msg=`Bonjour Khaled Watch 👋\n\nJe souhaite profiter de l'offre : *${type}*\n\nPouvez-vous me donner plus d'informations ? Merci !`;
+  window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`,'_blank');
+}
+
+/* ===== THÈME ===== */
+function toggleTheme(){
+  const isLight=document.body.classList.toggle('light');
+  document.getElementById('btnTheme').textContent=isLight?'🌙 Sombre':'☀ Clair';
+  localStorage.setItem('kw-theme',isLight?'light':'dark');
+}
+if(localStorage.getItem('kw-theme')==='light'){
+  document.body.classList.add('light');
+  document.getElementById('btnTheme').textContent='🌙 Sombre';
+}
+
+/* ===== UTILS ===== */
+function h(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function js(s){return String(s||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");}
+function fmt(n){return Number(n||0).toLocaleString('fr-FR');}
+
+/* ===== INIT ===== */
+initClientBg();
+initCardGlow();
+loadProducts();
+</script>
 </body>
 </html>
