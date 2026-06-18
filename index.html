@@ -345,44 +345,26 @@ body.light .nav-item{color:var(--gris);}
     color: #888;
     font-style: italic;
 }
-@keyframes eclat-multicolore {
-    /* 0s à 20s : Doré Subtil */
-    0%, 25% {
-        box-shadow: 0 0 10px #ae946d;
-        border-color: rgba(174, 148, 109, 0.5);
-    }
-    /* 20s à 40s : Violet Léger */
-    33%, 58% {
-        box-shadow: 0 0 10px #8a2be2;
-        border-color: rgba(138, 43, 226, 0.5);
-    }
-    /* 40s à 60s : Vert Doux */
-    66%, 91% {
-        box-shadow: 0 0 10px #00ff7f;
-        border-color: rgba(0, 255, 127, 0.5);
-    }
-    /* Retour au Doré */
-    100% {
-        box-shadow: 0 0 10px #ae946d;
-        border-color: rgba(174, 148, 109, 0.5);
-    }
+/* --- RENDRE LE FOND NET, LUMINEUX ET TRÈS REMARKABLE --- */
+
+/* 1. On enlève TOUT le flou sur la couche bgLayer */
+#bgLayer {
+    background: rgba(255, 255, 255, 0.4) !important; /* Un voile blanc plus fort pour éclairer le site */
+    backdrop-filter: none !important; /* SUPPRIME LE FLOU COULISSANT */
+    -webkit-backdrop-filter: none !important;
 }
 
-.box-brillante-auto {
-    animation: eclat-multicolore 60s infinite ease-in-out;
-    transition: all 0.5s ease-in-out;
-    border: 1px solid transparent;
-}
-  /* --- RENDRE LE FOND PLUS LUMINEUX ET TRANSPARENT --- */
+/* 2. On nettoie complètement l'overlay pour qu'il ne cache pas ton image */
 #bgOverlay {
-    background-color: rgba(255, 255, 255, 0.15) !important; /* Fond blanc très léger au lieu de noir */
-    backdrop-filter: blur(3px); /* Un léger flou style "verre dépoli" pour le côté luxueux */
+    background: none !important;
+    background-color: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
 }
 
-/* Si ton texte ou tes titres deviennent durs à lire sur fond clair, 
-   ce code optionnel assure qu'ils restent bien visibles */
-.app-header, #page-home {
-    color: #fff; 
+/* 3. On booste la netteté et la luminosité directement sur l'image du body */
+body {
+    filter: brightness(1.2) contrast(1.1) !important; /* Éclaircit l'image et fait ressortir les détails */
 }
 </style>
 </head>
