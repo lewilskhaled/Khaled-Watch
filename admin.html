@@ -2,86 +2,140 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>KHALED WATCH — Admin</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
-:root{
-  --or:#C9A84C;--or-l:#E8C97A;--or-d:#8B6914;
-  --noir:#090909;--noir3:#1a1a1a;
-  --blanc:#F5F0E8;--gris:#777;--rouge:#C0392B;
-  --glass:rgba(255,255,255,0.05);
-  --bord:rgba(201,168,76,0.28);
-  --safe-bottom:env(safe-area-inset-bottom,0px);
-}
+:root{--or:#C9A84C;--or-l:#E8C97A;--or-d:#8B6914;--noir:#090909;--noir3:#1a1a1a;--blanc:#F5F0E8;--gris:#777;--rouge:#C0392B;--glass:rgba(255,255,255,0.05);--bord:rgba(201,168,76,0.28);--safe-bottom:env(safe-area-inset-bottom,0px);}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{-webkit-text-size-adjust:100%;}
-body{font-family:'Montserrat',sans-serif;background:var(--noir);color:var(--blanc);min-height:100vh;overflow-x:hidden;}
+body{font-family:'Montserrat',sans-serif;background:#090909;color:var(--blanc);min-height:100vh;overflow-x:hidden;}
 .bg-fixed{position:fixed;inset:0;z-index:-2;background-size:cover;background-position:center;background-attachment:fixed;}
-.bg-overlay{position:fixed;inset:0;z-index:-1;background:linear-gradient(170deg,rgba(9,9,9,.93) 0%,rgba(9,9,9,.82) 100%);}
-
-/* HEADER */
-.hdr{position:sticky;top:0;z-index:200;background:rgba(6,6,6,.9);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--bord);padding:.85rem 1rem;display:flex;align-items:center;justify-content:space-between;}
-.hdr-logo{font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:700;letter-spacing:.12em;background:linear-gradient(130deg,var(--or-d),var(--or-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.bg-overlay{position:fixed;inset:0;z-index:-1;background:rgba(9,9,9,.88);}
+.hdr{position:sticky;top:0;z-index:200;background:rgba(6,6,6,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--bord);padding:.82rem 1rem;display:flex;align-items:center;justify-content:space-between;}
+.hdr-logo{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:700;letter-spacing:.12em;background:linear-gradient(130deg,var(--or-d),var(--or-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .hdr-right{display:flex;align-items:center;gap:.5rem;}
-.badge-admin{font-size:.52rem;letter-spacing:.25em;color:var(--rouge);border:1px solid var(--rouge);border-radius:50px;padding:.2rem .55rem;text-transform:uppercase;}
-.btn-view{font-size:.58rem;letter-spacing:.12em;color:var(--or);text-decoration:none;text-transform:uppercase;border:1px solid var(--bord);padding:.32rem .75rem;border-radius:50px;-webkit-tap-highlight-color:transparent;}
-
-/* TABS */
-.tabs{display:flex;border-bottom:1px solid var(--bord);background:rgba(0,0,0,.35);position:sticky;top:55px;z-index:100;overflow-x:auto;scrollbar-width:none;}
+.badge-admin{font-size:.5rem;letter-spacing:.25em;color:var(--rouge);border:1px solid var(--rouge);border-radius:50px;padding:.2rem .5rem;text-transform:uppercase;}
+.btn-view{font-size:.56rem;letter-spacing:.1em;color:var(--or);text-decoration:none;text-transform:uppercase;border:1px solid var(--bord);padding:.3rem .7rem;border-radius:50px;-webkit-tap-highlight-color:transparent;}
+.tabs{display:flex;border-bottom:1px solid var(--bord);background:rgba(0,0,0,.4);position:sticky;top:54px;z-index:100;overflow-x:auto;scrollbar-width:none;}
 .tabs::-webkit-scrollbar{display:none;}
-.tab{flex:none;padding:.75rem .9rem;font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gris);cursor:pointer;border:none;background:none;font-family:'Montserrat',sans-serif;border-bottom:2px solid transparent;-webkit-tap-highlight-color:transparent;transition:color .2s,border-color .2s;white-space:nowrap;}
+.tab{flex:none;padding:.7rem .85rem;font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gris);cursor:pointer;border:none;background:none;font-family:'Montserrat',sans-serif;border-bottom:2px solid transparent;white-space:nowrap;-webkit-tap-highlight-color:transparent;transition:color .2s,border-color .2s;}
 .tab.active{color:var(--or);border-bottom-color:var(--or);}
-
-/* SECTIONS */
 .section{display:none;padding:1rem 1rem calc(var(--safe-bottom) + 2rem);}
 .section.show{display:block;}
-
-/* CARD */
-.card{background:var(--glass);border:1px solid var(--bord);border-radius:14px;padding:1.2rem;margin-bottom:1.2rem;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);}
-.card-title{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:var(--or);margin-bottom:1rem;padding-bottom:.7rem;border-bottom:1px solid var(--bord);display:flex;align-items:center;justify-content:space-between;gap:.4rem;}
-
-/* FORM */
-.field{margin-bottom:.9rem;}
-label{display:block;font-size:.58rem;letter-spacing:.2em;color:var(--gris);text-transform:uppercase;margin-bottom:.4rem;}
-input[type=text],input[type=password],input[type=url],input[type=number],input[type=range],select,textarea{width:100%;background:rgba(0,0,0,.45);border:1px solid rgba(201,168,76,.2);border-radius:8px;color:var(--blanc);padding:.7rem .85rem;font-size:.85rem;font-family:'Montserrat',sans-serif;outline:none;transition:border .25s;}
+.card{background:var(--glass);border:1px solid var(--bord);border-radius:14px;padding:1.2rem;margin-bottom:1.1rem;backdrop-filter:blur(14px);}
+.card-title{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:600;color:var(--or);margin-bottom:.9rem;padding-bottom:.65rem;border-bottom:1px solid var(--bord);display:flex;align-items:center;gap:.4rem;}
+.field{margin-bottom:.85rem;}
+label{display:block;font-size:.56rem;letter-spacing:.2em;color:var(--gris);text-transform:uppercase;margin-bottom:.38rem;}
+input[type=text],input[type=password],input[type=url],input[type=number],select,textarea{width:100%;background:rgba(0,0,0,.45);border:1px solid rgba(201,168,76,.2);border-radius:8px;color:var(--blanc);padding:.68rem .82rem;font-size:.83rem;font-family:'Montserrat',sans-serif;outline:none;transition:border .25s;-webkit-appearance:none;appearance:none;}
 input:focus,select:focus,textarea:focus{border-color:var(--or);}
-
-.btn-gold{width:100%;padding:.85rem;background:linear-gradient(135deg,var(--or-d),var(--or));color:#000;border:none;border-radius:10px;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;font-weight:700;font-family:'Montserrat',sans-serif;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:opacity .25s,transform .15s;margin-top:.4rem;display:flex;align-items:center;justify-content:center;}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23C9A84C'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .82rem center;padding-right:2rem;}
+select option{background:#111;}
+.btn-gold{width:100%;padding:.82rem;background:linear-gradient(135deg,var(--or-d),var(--or));color:#000;border:none;border-radius:10px;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;font-weight:700;font-family:'Montserrat',sans-serif;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:opacity .25s,transform .15s;margin-top:.4rem;}
 .btn-gold:active{opacity:.82;transform:scale(.98);}
-.btn-sm{padding:.4rem .7rem;font-size:.6rem;border-radius:6px;margin-top:0;width:auto;display:inline-block;}
-.btn-danger{background:linear-gradient(135deg,#c0392b,#962d22);color:#fff;}
-
-/* STATUS */
-.status{font-size:.7rem;padding:.65rem .9rem;border-radius:8px;margin-bottom:.85rem;display:none;line-height:1.5;}
+.btn-gold:disabled{opacity:.45;cursor:not-allowed;}
+.status{font-size:.68rem;padding:.62rem .88rem;border-radius:8px;margin-bottom:.82rem;display:none;line-height:1.5;}
 .status.ok{background:rgba(39,174,96,.15);border:1px solid rgba(39,174,96,.3);color:#6fcf97;display:block;}
 .status.err{background:rgba(192,57,43,.15);border:1px solid rgba(192,57,43,.3);color:#eb5757;display:block;}
+.status.load{background:rgba(201,168,76,.1);border:1px solid var(--bord);color:var(--or);display:block;}
 
-/* QR GRID */
-.qr-container-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;}
-.qr-wrapper-card{background:rgba(0,0,0,.4);border:1px solid var(--bord);border-radius:12px;padding:1.2rem;text-align:center;}
-.qr-graphic{display:inline-block;padding:10px;background:#000;border-radius:10px;margin:1rem auto;}
-.qr-label-tag{font-size:.65rem;text-transform:uppercase;letter-spacing:.15em;font-weight:600;margin-bottom:.3rem;}
+/* IMAGE PICKER */
+.src-tabs{display:flex;gap:.5rem;margin-bottom:.6rem;}
+.src-tab{flex:1;text-align:center;padding:.38rem;border-radius:7px;border:1px solid rgba(201,168,76,.2);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gris);cursor:pointer;background:transparent;font-family:'Montserrat',sans-serif;transition:all .2s;-webkit-tap-highlight-color:transparent;}
+.src-tab.active{background:rgba(201,168,76,.12);border-color:var(--or);color:var(--or);font-weight:700;}
+.drop-zone{border:2px dashed rgba(201,168,76,.3);border-radius:10px;padding:1.2rem 1rem;text-align:center;cursor:pointer;transition:all .25s;-webkit-tap-highlight-color:transparent;}
+.drop-zone:hover{border-color:var(--or);background:rgba(201,168,76,.05);}
+.drop-zone input{display:none;}
+.drop-txt{font-size:.68rem;color:var(--gris);line-height:1.6;}
+.drop-txt strong{color:var(--or);}
+.thumb-preview{max-height:100px;max-width:100%;border-radius:8px;border:1px solid var(--bord);margin-top:.5rem;display:none;}
 
-/* USER LIST */
-.user-row{display:flex;align-items:center;justify-content:between;gap:1rem;background:rgba(0,0,0,.3);border:1px solid rgba(201,168,76,.15);border-radius:10px;padding:.8rem;margin-bottom:.6rem;}
-.user-info-meta{display:flex;align-items:center;gap:.7rem;flex:1;}
-.user-avatar-preview{width:40px;height:40px;border-radius:50%;object-fit:cover;border:1px solid var(--or);}
-.user-name-title{font-size:.8rem;font-weight:600;}
-.user-progress-text{font-size:.6rem;color:var(--gris);margin-top:.15rem;}
-.user-badge-status{font-size:.5rem;padding:.15rem .4rem;border-radius:50px;text-transform:uppercase;font-weight:700;}
-.badge-classic{background:rgba(201,168,76,.15);color:var(--or);border:1px solid var(--or);}
-.badge-vip-elite{background:rgba(155,89,182,.2);color:#d4b3ff;border:1px solid #9b59b6;}
-.actions-cell{display:flex;gap:.4rem;}
+/* EXTRA IMAGES */
+.extra-imgs-list{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.5rem;}
+.extra-thumb{position:relative;width:58px;height:58px;border-radius:8px;overflow:hidden;border:1px solid var(--bord);}
+.extra-thumb img{width:100%;height:100%;object-fit:cover;}
+.extra-thumb .rm{position:absolute;top:2px;right:2px;background:rgba(192,57,43,.85);border:none;color:#fff;border-radius:50%;width:16px;height:16px;font-size:.6rem;cursor:pointer;display:flex;align-items:center;justify-content:center;}
 
-/* MULTIPHOTO SELECTION */
-.multiphoto-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:.5rem;margin-top:.5rem;}
-.multiphoto-slot{background:rgba(0,0,0,0.2);border:1px solid rgba(201,168,76,0.15);border-radius:8px;padding:.4rem;text-align:center;position:relative;}
-.multiphoto-slot img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:6px;}
-.multiphoto-slot .color-indicator{width:12px;height:12px;border-radius:50%;display:inline-block;margin-top:.2rem;}
+/* COULEURS */
+.color-row{display:flex;align-items:center;gap:.55rem;background:rgba(0,0,0,.3);border:1px solid rgba(201,168,76,.12);border-radius:8px;padding:.5rem .65rem;margin-bottom:.45rem;}
+.color-dot{width:22px;height:22px;border-radius:50%;border:2px solid rgba(201,168,76,.4);flex-shrink:0;}
+.color-info{flex:1;min-width:0;}
+.color-name-txt{font-size:.75rem;font-weight:600;}
+.color-hex-txt{font-size:.56rem;color:var(--gris);}
+.btn-del-c{background:rgba(192,57,43,.15);border:1px solid rgba(192,57,43,.25);color:#eb5757;border-radius:6px;padding:.26rem .52rem;font-size:.6rem;cursor:pointer;font-family:'Montserrat',sans-serif;flex-shrink:0;}
+.add-color-box{background:rgba(0,0,0,.25);border:1px solid rgba(201,168,76,.14);border-radius:10px;padding:.85rem;margin-top:.5rem;}
+.color-picker-row{display:flex;align-items:center;gap:.6rem;margin-bottom:.5rem;}
+input[type=color]{width:40px;height:36px;border:1px solid rgba(201,168,76,.3);border-radius:6px;background:transparent;cursor:pointer;padding:2px;}
+
+/* PRODUCT LIST */
+.prod-row{display:flex;align-items:center;gap:.7rem;background:rgba(0,0,0,.3);border:1px solid rgba(201,168,76,.1);border-radius:10px;padding:.62rem;margin-bottom:.52rem;transition:border-color .2s;}
+.prod-row:hover{border-color:rgba(201,168,76,.3);}
+.prod-row img{width:44px;height:44px;object-fit:cover;border-radius:7px;flex-shrink:0;background:var(--noir3);}
+.prod-row-info{flex:1;min-width:0;}
+.prod-row-name{font-size:.76rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.prod-row-meta{font-size:.56rem;color:var(--gris);margin-top:.1rem;}
+.prod-row-price{font-family:'Cormorant Garamond',serif;font-size:.9rem;color:var(--or);white-space:nowrap;}
+.btn-del{background:rgba(192,57,43,.15);border:1px solid rgba(192,57,43,.3);color:#eb5757;border-radius:7px;padding:.36rem .58rem;font-size:.68rem;font-family:'Montserrat',sans-serif;cursor:pointer;flex-shrink:0;font-weight:700;-webkit-tap-highlight-color:transparent;}
+.btn-del:active{background:rgba(192,57,43,.4);}
+.empty-list{text-align:center;padding:2.5rem 1rem;color:var(--gris);font-size:.76rem;line-height:1.6;}
+.prod-count{display:inline-block;background:rgba(201,168,76,.12);border:1px solid var(--bord);border-radius:50px;font-size:.54rem;color:var(--or);padding:.12rem .52rem;margin-left:.4rem;vertical-align:middle;}
+
+/* BG GRID */
+.bg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.65rem;margin-bottom:.8rem;}
+.bg-thumb{aspect-ratio:4/3;border-radius:9px;overflow:hidden;border:2px solid transparent;cursor:pointer;transition:all .22s;position:relative;-webkit-tap-highlight-color:transparent;}
+.bg-thumb:hover{transform:scale(1.04);}
+.bg-thumb.selected{border-color:var(--or);box-shadow:0 0 14px rgba(201,168,76,.4);}
+.bg-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
+.bg-thumb .chk{position:absolute;top:4px;right:4px;background:var(--or);border-radius:50%;width:16px;height:16px;display:none;align-items:center;justify-content:center;font-size:.55rem;color:#000;font-weight:900;}
+.bg-thumb.selected .chk{display:flex;}
+.bg-upload{border:2px dashed rgba(201,168,76,.25);border-radius:9px;padding:1rem;text-align:center;cursor:pointer;transition:all .25s;-webkit-tap-highlight-color:transparent;margin-bottom:.6rem;}
+.bg-upload:hover{border-color:var(--or);background:rgba(201,168,76,.05);}
+.bg-upload input{display:none;}
+.bg-upload p{font-size:.66rem;color:var(--gris);margin-top:.3rem;}
+.device-tabs{display:flex;gap:.4rem;margin-bottom:.6rem;}
+.d-tab{flex:1;text-align:center;padding:.35rem;border-radius:7px;border:1px solid rgba(201,168,76,.2);font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gris);cursor:pointer;background:transparent;font-family:'Montserrat',sans-serif;transition:all .2s;-webkit-tap-highlight-color:transparent;}
+.d-tab.active{background:rgba(201,168,76,.12);border-color:var(--or);color:var(--or);font-weight:700;}
+
+/* GLOW CONTROLS */
+.halo-presets{display:flex;flex-wrap:wrap;gap:.45rem;margin-bottom:.6rem;}
+.halo-dot{width:28px;height:28px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:all .2s;-webkit-tap-highlight-color:transparent;}
+.halo-dot:hover,.halo-dot.active{border-color:#fff;transform:scale(1.18);box-shadow:0 0 12px currentColor;}
+.intensity-row{display:flex;align-items:center;gap:.7rem;}
+.intensity-row label{font-size:.58rem;color:var(--gris);white-space:nowrap;margin:0;}
+input[type=range]{flex:1;accent-color:var(--or);height:4px;}
+.intensity-val{font-size:.7rem;color:var(--or);font-weight:700;min-width:30px;}
+.glow-preview{height:44px;border-radius:10px;border:1px solid var(--bord);margin-top:.6rem;animation:glowPrev 2s ease-in-out infinite;}
+@keyframes glowPrev{0%,100%{box-shadow:0 0 8px 2px var(--prev-glow,rgba(201,168,76,.3)),inset 0 0 0 1px var(--prev-glow,rgba(201,168,76,.15));}50%{box-shadow:0 0 24px 5px var(--prev-glow,rgba(201,168,76,.5)),inset 0 0 0 1px var(--prev-glow,rgba(201,168,76,.3));}}
+
+/* VIP USERS */
+.client-row{display:flex;align-items:center;gap:.7rem;background:rgba(0,0,0,.3);border:1px solid rgba(201,168,76,.12);border-radius:10px;padding:.65rem;margin-bottom:.5rem;transition:border-color .2s;}
+.client-row:hover{border-color:rgba(201,168,76,.3);}
+.client-avatar{width:40px;height:40px;border-radius:50%;object-fit:cover;border:2px solid var(--or);flex-shrink:0;}
+.client-info{flex:1;min-width:0;}
+.client-name{font-size:.78rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.client-meta{font-size:.56rem;color:var(--gris);margin-top:.1rem;}
+.client-orders{font-family:'Cormorant Garamond',serif;font-size:.95rem;color:var(--or);white-space:nowrap;text-align:center;}
+.client-orders small{display:block;font-family:'Montserrat',sans-serif;font-size:.5rem;color:var(--gris);}
+.btn-plus{background:rgba(39,174,96,.15);border:1px solid rgba(39,174,96,.3);color:#6fcf97;border-radius:7px;padding:.36rem .58rem;font-size:.72rem;cursor:pointer;font-weight:700;-webkit-tap-highlight-color:transparent;}
+.btn-plus:active{background:rgba(39,174,96,.35);}
+.btn-kick{background:rgba(192,57,43,.15);border:1px solid rgba(192,57,43,.3);color:#eb5757;border-radius:7px;padding:.36rem .58rem;font-size:.68rem;cursor:pointer;font-weight:700;-webkit-tap-highlight-color:transparent;margin-left:.3rem;}
+.vip-tag{display:inline-block;background:linear-gradient(135deg,#1a0a30,#3D1C00);border:1px solid #FFD700;border-radius:50px;padding:.15rem .5rem;font-size:.5rem;color:#FFD700;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-left:.3rem;}
+.progress-mini{height:5px;background:rgba(201,168,76,.12);border-radius:50px;overflow:hidden;margin-top:.25rem;}
+.progress-mini-fill{height:100%;border-radius:50px;background:linear-gradient(90deg,var(--or-d),var(--or-l));}
+
+/* QR CODES */
+.qr-section{text-align:center;padding:1rem;}
+.qr-title{font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;margin-bottom:.5rem;font-weight:700;}
+.qr-desc{font-size:.62rem;color:var(--gris);line-height:1.6;margin-bottom:.8rem;}
+.qr-box{display:inline-block;padding:.8rem;border-radius:12px;margin-bottom:.6rem;}
+.qr-box canvas{display:block;border-radius:8px;}
+.qr-url-txt{font-size:.55rem;word-break:break-all;line-height:1.5;margin-top:.4rem;}
+.btn-print{background:var(--glass);border:1px solid var(--bord);color:var(--or);border-radius:8px;padding:.5rem 1rem;font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;font-family:'Montserrat',sans-serif;margin-top:.5rem;-webkit-tap-highlight-color:transparent;}
+
+.mini-loader{display:inline-block;width:12px;height:12px;border:2px solid rgba(0,0,0,.2);border-top-color:#000;border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle;margin-right:4px;}
+@keyframes spin{to{transform:rotate(360deg)}}
+hr{border:none;border-top:1px solid rgba(201,168,76,.12);margin:1rem 0;}
 </style>
 </head>
 <body>
@@ -89,382 +143,355 @@ input:focus,select:focus,textarea:focus{border-color:var(--or);}
 <div class="bg-overlay"></div>
 
 <header class="hdr">
-  <div class="hdr-logo">KHALED WATCH CONTROL</div>
+  <div class="hdr-logo">KHALED WATCH</div>
   <div class="hdr-right">
-    <div class="badge-admin">Premium Master</div>
-    <a class="btn-view" href="index.html" target="_blank">Voir Catalogue →</a>
+    <div class="badge-admin">Admin</div>
+    <a class="btn-view" href="index.html">← Catalogue</a>
   </div>
 </header>
 
 <div class="tabs">
-  <button class="tab active" onclick="showTab('config')">⚙ Accès</button>
-  <button class="tab" onclick="showTab('add')">＋ Nouveau Box</button>
-  <button class="tab" onclick="showTab('list')">📦 Stocks</button>
-  <button class="tab" onclick="showTab('clients')">👥 Clients &amp; VIP</button>
-  <button class="tab" onclick="showTab('design')">🎨 Style &amp; Lueur</button>
-  <button class="tab" onclick="showTab('qr')">📲 Codes QR</button>
+  <button class="tab active" onclick="showTab('config')">⚙ Config</button>
+  <button class="tab" onclick="showTab('add')">＋ Produit</button>
+  <button class="tab" onclick="showTab('list')">📦 Stock</button>
+  <button class="tab" onclick="showTab('clients')">👥 Clients</button>
+  <button class="tab" onclick="showTab('design')">🎨 Design</button>
+  <button class="tab" onclick="showTab('qr')">📲 QR Codes</button>
 </div>
 
 <div class="section show" id="sec-config">
   <div class="card">
-    <div class="card-title">⚙ Configuration Serveur GitHub</div>
+    <div class="card-title">⚙ Accès GitHub</div>
     <div id="st-config" class="status"></div>
-    <div class="field"><label>Token d'accès personnel GitHub (PAT)</label><input type="password" id="ghToken" placeholder="ghp_xxxxxxxxxxxx"></div>
-    <div class="field"><label>Nom d'utilisateur GitHub</label><input type="text" id="ghUser" placeholder="Ex: khaledwatch"></div>
-    <div class="field"><label>Nom du Repository GitHub</label><input type="text" id="ghRepo" placeholder="Ex: premium-catalog"></div>
-    <button class="btn-gold" onclick="saveConfig()">Initialiser la Synchronisation</button>
+    <div class="field"><label>Personal Access Token</label><input type="password" id="ghToken" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off"></div>
+    <div class="field"><label>Pseudo GitHub</label><input type="text" id="ghUser" placeholder="mon-pseudo"></div>
+    <div class="field"><label>Nom du Dépôt</label><input type="text" id="ghRepo" placeholder="khaled-watch"></div>
+    <button class="btn-gold" onclick="saveConfig()">Sauvegarder &amp; Connecter</button>
   </div>
 </div>
 
 <div class="section" id="sec-add">
   <div class="card">
-    <div class="card-title">＋ Publier un Produit dans un Box</div>
+    <div class="card-title">＋ Nouveau Produit</div>
     <div id="st-add" class="status"></div>
-    <div class="field"><label>Nom du Modèle</label><input type="text" id="fNom" placeholder="Ex: Royal Audemars Chrono"></div>
-    <div class="field"><label>Prix de Vente (FCFA)</label><input type="number" id="fPrix" placeholder="150000"></div>
-    <div class="field">
-      <label>Catégorie de Produit</label>
-      <select id="fCat">
-        <option value="Montres">Montres de Luxe</option>
-        <option value="Chaînes">Chaînes Or &amp; Diamant</option>
-        <option value="Bracelets">Bracelets Prestige</option>
-      </select>
+    <div class="field"><label>Nom *</label><input type="text" id="fNom" placeholder="Montre Royal Gold"></div>
+    <div class="field"><label>Prix FCFA *</label><input type="number" id="fPrix" placeholder="75000" inputmode="numeric"></div>
+    <div class="field"><label>Catégorie *</label>
+      <select id="fCat"><option value="">— Sélectionner —</option><option>Montres</option><option>Montres Luxueuses</option><option>Chaînes</option><option>Bracelets</option><option>Colliers</option><option>Bagues</option><option>Autres</option></select>
     </div>
-    <div class="field">
-      <label>Genre</label>
-      <select id="fGenre">
-        <option value="HOMME">Homme</option>
-        <option value="FEMME">Femme</option>
-        <option value="MIXTE">Mixte</option>
-      </select>
-    </div>
-    
-    <div style="border: 1px dashed var(--or); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
-      <p style="font-size: .65rem; color: var(--or); text-transform: uppercase; margin-bottom: .5rem;">Images Multi-Couleurs Disponibles</p>
-      <div class="field"><label>Nom de la Couleur (Ex: Gold Saphir, Black Diamond)</label><input type="text" id="fColorNom" placeholder="Or Pur"></div>
-      <div class="field"><label>Code Hexadécimal de la couleur</label><input type="text" id="fColorHex" placeholder="#C9A84C"></div>
-      <div class="field"><label>URL de l'image correspondante</label><input type="url" id="fColorUrl" placeholder="https://..."></div>
-      <button class="btn-gold btn-sm" onclick="ajouterVarianteCouleur()">Ajouter cette Couleur au Box</button>
-      <div class="multiphoto-grid" id="variantesPreview"></div>
+    <div class="field"><label>Genre *</label>
+      <select id="fGenre"><option value="">— Sélectionner —</option><option>Homme</option><option>Femme</option><option>Unisexe</option></select>
     </div>
 
-    <button class="btn-gold" onclick="publierProduitBox()">Déployer le Produit sur Github</button>
+    <div class="field">
+      <label>📷 Photo principale *</label>
+      <div class="src-tabs"><button class="src-tab active" onclick="switchSrc('main','url',this)">🔗 URL</button><button class="src-tab" onclick="switchSrc('main','device',this)">📱 Appareil</button></div>
+      <div id="main-pane-url"><input type="url" id="fImage" placeholder="https://..." oninput="onMainUrl(this.value)"></div>
+      <div id="main-pane-device" style="display:none;">
+        <div class="drop-zone" onclick="document.getElementById('mainFile').click()">
+          <input type="file" id="mainFile" accept="image/*" onchange="handleMainFile(this.files[0])">
+          <div class="drop-txt"><strong>Appuyer pour choisir</strong><br>JPG · PNG · WEBP · max 2Mo</div>
+        </div>
+      </div>
+      <img id="mainPreview" class="thumb-preview" alt="Aperçu">
+    </div>
+
+    <div class="field">
+      <label>🖼 Photos supplémentaires (carousel)</label>
+      <div style="font-size:.62rem;color:var(--gris);margin-bottom:.5rem;line-height:1.6;">Ajoutez autant de photos que vous voulez. Le client pourra les faire défiler.</div>
+      <div class="src-tabs"><button class="src-tab active" onclick="switchSrc('extra','url',this)">🔗 URL</button><button class="src-tab" onclick="switchSrc('extra','device',this)">📱 Appareil</button></div>
+      <div id="extra-pane-url" style="display:flex;gap:.5rem;">
+        <input type="url" id="extraUrl" placeholder="https://..." style="flex:1;">
+        <button onclick="addExtraUrl()" style="background:rgba(201,168,76,.15);border:1px solid var(--bord);color:var(--or);border-radius:8px;padding:.5rem .8rem;font-size:.7rem;cursor:pointer;white-space:nowrap;">＋ Ajouter</button>
+      </div>
+      <div id="extra-pane-device" style="display:none;">
+        <div class="drop-zone" onclick="document.getElementById('extraFile').click()">
+          <input type="file" id="extraFile" accept="image/*" multiple onchange="handleExtraFiles(this.files)">
+          <div class="drop-txt"><strong>Choisir photo(s)</strong> — Sélection multiple possible</div>
+        </div>
+      </div>
+      <div class="extra-imgs-list" id="extraImgsList"></div>
+    </div>
+
+    <div class="field">
+      <label>🎨 Couleurs disponibles</label>
+      <div class="color-list" id="colorList"><div style="font-size:.62rem;color:var(--gris);text-align:center;padding:.4rem;">Aucune couleur ajoutée.</div></div>
+      <div class="add-color-box">
+        <div style="font-size:.58rem;letter-spacing:.15em;color:var(--or);text-transform:uppercase;margin-bottom:.55rem;">Ajouter une couleur</div>
+        <div class="field" style="margin-bottom:.5rem;"><label>Nom de la couleur</label><input type="text" id="cNom" placeholder="Or Rose, Noir, Argent…"></div>
+        <div class="color-picker-row"><label>Couleur :</label><input type="color" id="cHex" value="#C9A84C"><span id="cHexVal" style="font-size:.68rem;color:var(--gris);">#C9A84C</span></div>
+        <div style="font-size:.58rem;letter-spacing:.1em;color:var(--gris);margin-bottom:.4rem;text-transform:uppercase;">Photo pour cette couleur</div>
+        <div class="src-tabs"><button class="src-tab active" onclick="switchSrc('color','url',this)">🔗 URL</button><button class="src-tab" onclick="switchSrc('color','device',this)">📱 Appareil</button></div>
+        <div id="color-pane-url"><input type="url" id="cImage" placeholder="https://... (optionnel)" oninput="onColorUrl(this.value)"></div>
+        <div id="color-pane-device" style="display:none;">
+          <div class="drop-zone" onclick="document.getElementById('cFile').click()" style="padding:.9rem;">
+            <input type="file" id="cFile" accept="image/*" onchange="handleColorFile(this.files[0])">
+            <div class="drop-txt"><strong>Photo pour cette couleur</strong></div>
+          </div>
+        </div>
+        <img id="cPreview" class="thumb-preview" alt="">
+        <button class="btn-gold" onclick="addColor()" style="margin-top:.6rem;">＋ Ajouter cette couleur</button>
+      </div>
+    </div>
+
+    <button class="btn-gold" id="btnAdd" onclick="addProduct()">Publier sur GitHub</button>
   </div>
 </div>
 
 <div class="section" id="sec-list">
   <div class="card">
-    <div class="card-title">📦 Gestion des Produits en Ligne</div>
+    <div class="card-title">📦 Produits en ligne <span class="prod-count" id="prodCountBadge">0</span></div>
     <div id="st-list" class="status"></div>
-    <div id="boxProductsContainer"></div>
+    <button class="btn-gold" onclick="loadProducts()" style="margin-bottom:1rem;">↻ Actualiser</button>
+    <div id="prodList"><div class="empty-list">Configurez GitHub dans ⚙ Config.</div></div>
   </div>
 </div>
 
 <div class="section" id="sec-clients">
   <div class="card">
-    <div class="card-title">👥 Suivi des Comptes Clients &amp; Progression Or</div>
-    <div id="st-clients" class="status"></div>
-    <div id="usersContainer"></div>
+    <div class="card-title">👑 Clients VIP Premium</div>
+    <div style="font-size:.66rem;color:var(--gris);line-height:1.7;margin-bottom:.8rem;">Liste des clients ayant atteint 10 commandes. Vous pouvez <strong style="color:var(--or);">augmenter</strong> le compteur de commandes de chaque client ou <strong style="color:#eb5757;">retirer</strong> le statut VIP d'un client inactif.</div>
+    <div id="vipList"><div class="empty-list">Aucun client VIP pour le moment.</div></div>
   </div>
-  
   <div class="card">
-    <div class="card-title" style="color: #9b59b6;">👑 Liste Élite VIP (Activité Hebdomadaire)</div>
-    <p style="font-size: .65rem; color: var(--gris); margin-bottom: 1rem;">Si un membre VIP n'achète aucun produit pendant une semaine complète, cliquez sur le bouton de destitution. Il repassera au niveau de base (5 commandes).</p>
-    <div id="vipEliteContainer"></div>
+    <div class="card-title">👥 Tous les Clients</div>
+    <div id="allClientsList"><div class="empty-list">Aucun client inscrit.</div></div>
   </div>
 </div>
 
 <div class="section" id="sec-design">
   <div class="card">
-    <div class="card-title">🎨 Gestion Globale des Fonds d'Écran Ultra-Réalistes</div>
-    <div id="st-design" class="status"></div>
-    <div class="field"><label>Fond d'écran Mobile (Format Portrait)</label><input type="url" id="bgMobile" placeholder="https://..."></div>
-    <div class="field"><label>Fond d'écran PC (Format Paysage)</label><input type="url" id="bgPc" placeholder="https://..."></div>
-    <div class="field"><label>Fond d'écran Tablette (Format Portrait Spécifique)</label><input type="url" id="bgTablet" placeholder="https://..."></div>
-  </div>
-  <div class="card">
-    <div class="card-title">✨ Intensité de la Brillance des Boxs Clients</div>
-    <div class="field">
-      <label>Puissance du Halo Lumineux (Animation Floue)</label>
-      <input type="range" id="glowIntensity" min="5" max="45" value="20" oninput="updateGlowLabel(this.value)">
-      <span id="glowVal" style="font-size:.7rem; color: var(--or);">20px</span>
+    <div class="card-title">🖼 Fond Admin (cette page)</div>
+    <div class="bg-grid" id="bgAdminGrid">
+      <div class="bg-thumb selected" data-url="https://images.unsplash.com/photo-1548169874-53e85f753f1e?w=1600&q=80" onclick="selectBg('admin',this)"><img src="https://images.unsplash.com/photo-1548169874-53e85f753f1e?w=300&q=70" alt=""><div class="chk">✓</div></div>
+      <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1566041510394-cf7c1b1edc13?w=1600&q=80" onclick="selectBg('admin',this)"><img src="https://images.unsplash.com/photo-1566041510394-cf7c1b1edc13?w=300&q=70" alt=""><div class="chk">✓</div></div>
+      <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1615455195225-8cca8b3f0c93?w=1600&q=80" onclick="selectBg('admin',this)"><img src="https://images.unsplash.com/photo-1615455195225-8cca8b3f0c93?w=300&q=70" alt=""><div class="chk">✓</div></div>
+      <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1591337676887-a217a6970a8a?w=1600&q=80" onclick="selectBg('admin',this)"><img src="https://images.unsplash.com/photo-1591337676887-a217a6970a8a?w=300&q=70" alt=""><div class="chk">✓</div></div>
+      <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1600&q=80" onclick="selectBg('admin',this)"><img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=300&q=70" alt=""><div class="chk">✓</div></div>
+      <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1462556791646-c201b8241a94?w=1600&q=80" onclick="selectBg('admin',this)"><img src="https://images.unsplash.com/photo-1462556791646-c201b8241a94?w=300&q=70" alt=""><div class="chk">✓</div></div>
     </div>
-    <button class="btn-gold" onclick="sauvegarderOptionsDesign()">Mettre à jour l'ambiance visuelle</button>
+    <div class="bg-upload" onclick="document.getElementById('bgAdminFile').click()"><input type="file" id="bgAdminFile" accept="image/*" onchange="handleBgUpload('admin',this.files[0])"><div style="font-size:1.5rem;">📁</div><p>Importer depuis l'appareil</p></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🌐 Fond Page Clients</div>
+    <p style="font-size:.66rem;color:var(--gris);margin-bottom:.7rem;line-height:1.7;">Choisissez un fond différent selon le type d'écran de vos clients.</p>
+    <div class="device-tabs">
+      <button class="d-tab active" onclick="switchDevice(this,'mobile')">📱 Mobile<br><span style="font-size:.5rem;opacity:.7;">Portrait</span></button>
+      <button class="d-tab" onclick="switchDevice(this,'tablet')">📋 Tablette<br><span style="font-size:.5rem;opacity:.7;">Portrait</span></button>
+      <button class="d-tab" onclick="switchDevice(this,'desktop')">🖥 PC<br><span style="font-size:.5rem;opacity:.7;">Paysage</span></button>
+    </div>
+
+    <div id="bg-device-mobile">
+      <p style="font-size:.6rem;color:var(--or);margin-bottom:.5rem;">Format portrait recommandé (9:16)</p>
+      <div class="bg-grid">
+        <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=85" onclick="selectBg('mobile',this)"><img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=200&q=70" alt=""><div class="chk">✓</div></div>
+        <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1548169874-53e85f753f1e?w=800&q=85" onclick="selectBg('mobile',this)"><img src="https://images.unsplash.com/photo-1548169874-53e85f753f1e?w=200&q=70" alt=""><div class="chk">✓</div></div>
+        <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1591337676887-a217a6970a8a?w=800&q=85" onclick="selectBg('mobile',this)"><img src="https://images.unsplash.com/photo-1591337676887-a217a6970a8a?w=200&q=70" alt=""><div class="chk">✓</div></div>
+      </div>
+      <div class="bg-upload" onclick="document.getElementById('bgMobileFile').click()"><input type="file" id="bgMobileFile" accept="image/*" onchange="handleBgUpload('mobile',this.files[0])"><div style="font-size:1.3rem;">📷</div><p>Importer photo portrait depuis galerie</p></div>
+    </div>
+
+    <div id="bg-device-tablet" style="display:none;">
+      <p style="font-size:.6rem;color:var(--or);margin-bottom:.5rem;">Format portrait recommandé (3:4)</p>
+      <div class="bg-grid">
+        <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1566041510394-cf7c1b1edc13?w=1200&q=85" onclick="selectBg('tablet',this)"><img src="https://images.unsplash.com/photo-1566041510394-cf7c1b1edc13?w=200&q=70" alt=""><div class="chk">✓</div></div>
+      </div>
+      <div class="bg-upload" onclick="document.getElementById('bgTabletFile').click()"><input type="file" id="bgTabletFile" accept="image/*" onchange="handleBgUpload('tablet',this.files[0])"><div style="font-size:1.3rem;">📷</div><p>Importer photo tablette</p></div>
+    </div>
+
+    <div id="bg-device-desktop" style="display:none;">
+      <p style="font-size:.6rem;color:var(--or);margin-bottom:.5rem;">Format paysage recommandé (16:9)</p>
+      <div class="bg-grid">
+        <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920&q=85" onclick="selectBg('desktop',this)"><img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=300&q=70" alt=""><div class="chk">✓</div></div>
+      </div>
+      <div class="bg-upload" onclick="document.getElementById('bgDesktopFile').click()"><input type="file" id="bgDesktopFile" accept="image/*" onchange="handleBgUpload('desktop',this.files[0])"><div style="font-size:1.3rem;">📷</div><p>Importer photo paysage PC</p></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">✨ Brillance des Boxes</div>
+    <div class="halo-presets">
+      <div class="halo-dot active" style="background:#C9A84C;" data-color="rgba(201,168,76,ALPHA)" onclick="setHalo(this)"></div>
+      <div class="halo-dot" style="background:#fff;" data-color="rgba(255,255,255,ALPHA)" onclick="setHalo(this)"></div>
+    </div>
+    <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.8rem;">
+      <input type="color" id="haloCustom" value="#C9A84C" onchange="setHaloCustom(this.value)">
+      <span style="font-size:.62rem;color:var(--gris);">Couleur personnalisée</span>
+    </div>
+    <button class="btn-gold" onclick="applyHalo()">Appliquer le design</button>
+    <div class="glow-preview" id="glowPreview"></div>
   </div>
 </div>
 
 <div class="section" id="sec-qr">
+
   <div class="card">
-    <div class="card-title">📲 Générateur de Codes QR de Sécurité &amp; Privilèges</div>
-    <div class="qr-container-grid">
-      <div class="qr-wrapper-card" style="border-color: #a3e635;">
-        <div class="qr-label-tag" style="color:#a3e635;">1. Lien Boutique Global</div>
-        <p style="font-size:.55rem; color: var(--gris);">Vert Citron - À imprimer pour le public</p>
-        <div class="qr-graphic" id="qrBoutique"></div>
+    <div class="qr-section">
+      <div class="qr-title" style="color:#AAFF00;">🟢 QR Code CATALOGUE</div>
+      <div class="qr-desc">Couleur <strong style="color:#AAFF00;">Vert Citron</strong> — Mène au catalogue public Khaled Watch.</div>
+      <div class="qr-box" style="background:#0a0a0a;border:2px solid #AAFF00;box-shadow:0 0 20px rgba(170,255,0,.25);">
+        <div id="qr1Canvas"></div>
+        <div class="qr-url-txt" style="color:#AAFF00;" id="qr1Url">—</div>
       </div>
-      <div class="qr-wrapper-card" style="border-color: #c084fc;">
-        <div class="qr-label-tag" style="color:#c084fc;">2. Accès Bague / Chaîne Direct Admin</div>
-        <p style="font-size:.55rem; color: var(--gris);">Violet Clair - Accès direct et sécurisé sans saisie</p>
-        <div class="qr-graphic" id="qrLienAdmin"></div>
-      </div>
-      <div class="qr-wrapper-card" style="border-color: #d4b3ff;">
-        <div class="qr-label-tag" style="color:var(--or);">3. Accès Privé Élite VIP</div>
-        <p style="font-size:.55rem; color: var(--gris);">Doré Luxueux - Uniquement pour les clients à 10+ achats</p>
-        <div class="qr-graphic" id="qrVipElite"></div>
-      </div>
+      <button class="btn-print" onclick="printQR('qr1Canvas','QR_Catalogue')" style="border-color:#AAFF00;color:#AAFF00;">🖨 Imprimer</button>
     </div>
   </div>
+
+  <div class="card">
+    <div class="qr-section">
+      <div class="qr-title" style="color:#B44FFF;">🟣 QR Code ADMIN (Personnel)</div>
+      <div class="qr-desc">Couleur <strong style="color:#B44FFF;">Violet Clair</strong> — Accès sécurisé à votre gestion. À graver ou incruster.</div>
+      <div class="qr-box" style="background:#0a0005;border:2px solid #B44FFF;box-shadow:0 0 20px rgba(180,79,255,.25);">
+        <div id="qr2Canvas"></div>
+        <div class="qr-url-txt" style="color:#B44FFF;" id="qr2Url">—</div>
+      </div>
+      <button class="btn-print" onclick="printQR('qr2Canvas','QR_Admin_Personnel')" style="border-color:#B44FFF;color:#B44FFF;">🖨 Imprimer</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="qr-section">
+      <div class="qr-title" style="color:#FFD700;">👑 QR Code VIP ÉLITE (Doré)</div>
+      <div class="qr-desc">Couleur <strong style="color:#FFD700;">Or Luxueux</strong> — Réservé aux membres Élite (?vip=1).</div>
+      <div class="qr-box" style="background:#0a0800;border:2px solid #FFD700;box-shadow:0 0 20px rgba(255,215,0,.3);">
+        <div id="qr3Canvas"></div>
+        <div class="qr-url-txt" style="color:#FFD700;" id="qr3Url">—</div>
+      </div>
+      <button class="btn-print" onclick="printQR('qr3Canvas','QR_VIP_Elite')" style="border-color:#FFD700;color:#FFD700;">🖨 Imprimer</button>
+    </div>
+  </div>
+
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
-let cfg = { token: '', user: '', repo: '' };
-let localVariantes = [];
-let dbData = { prods: [], users: {}, design: { mobile: '', pc: '', tablet: '', glow: '20' } };
-let currentSha = null;
+// CONFIG
+let cfg={token:'',user:'',repo:''};
+function loadConfig(){try{const s=localStorage.getItem('kw-cfg');if(s)cfg=JSON.parse(s);}catch{}
+  document.getElementById('ghToken').value=cfg.token||'';document.getElementById('ghUser').value=cfg.user||'';document.getElementById('ghRepo').value=cfg.repo||'';
+  if(cfg.token&&cfg.user&&cfg.repo){loadProducts();generateAllQR();}
+}
+function saveConfig(){
+  cfg.token=document.getElementById('ghToken').value.trim();cfg.user=document.getElementById('ghUser').value.trim();cfg.repo=document.getElementById('ghRepo').value.trim();
+  if(!cfg.token||!cfg.user||!cfg.repo){showSt('config','err','⚠ Remplissez tous les champs.');return;}
+  localStorage.setItem('kw-cfg',JSON.stringify(cfg));showSt('config','ok','✓ Sauvegardé !');
+  loadProducts();generateAllQR();setTimeout(()=>showTab('list'),1200);
+}
 
-function updateGlowLabel(val) {
-  document.getElementById('glowVal').textContent = val + 'px';
+// GITHUB API
+const BRANCH='main',FILE='produits.json';
+const apiURL=()=>`https://api.github.com/repos/${cfg.user}/${cfg.repo}/contents/${FILE}`;
+const ghH=()=>({'Authorization':'token '+cfg.token,'Content-Type':'application/json','Accept':'application/vnd.github+json'});
+async function getFile(){const r=await fetch(apiURL()+'?ref='+BRANCH,{headers:ghH()});if(r.status===404)return{sha:null,products:[]};if(!r.ok)throw new Error('GitHub '+r.status);const d=await r.json();return{sha:d.sha,products:JSON.parse(atob(d.content.replace(/\n/g,'')))};}
+async function commitFile(products,sha,msg){const content=btoa(unescape(encodeURIComponent(JSON.stringify(products,null,2))));const body={message:msg,content,branch:BRANCH};if(sha)body.sha=sha;const r=await fetch(apiURL(),{method:'PUT',headers:ghH(),body:JSON.stringify(body)});if(!r.ok){const e=await r.json();throw new Error(e.message||'Erreur GitHub');}}
+
+// PRODUITS
+let prods=[];
+async function loadProducts(){if(!cfg.token){showSt('list','err','Configurez GitHub d\'abord.');return;}showSt('list','load','⌛ Chargement…');try{const{products}=await getFile();prods=products;renderList();showSt('list','ok',`✓ ${prods.length} produit(s).`);}catch(e){showSt('list','err','Erreur : '+e.message);}}
+function renderList(){const el=document.getElementById('prodList');document.getElementById('prodCountBadge').textContent=prods.length;if(!prods.length){el.innerHTML='<div class="empty-list">Aucun produit.</div>';return;}el.innerHTML=prods.map((p,i)=>`<div class="prod-row"><img src="${h(p.image)}" alt="" onerror="this.src='https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=80&q=60'"><div class="prod-row-info"><div class="prod-row-name">${h(p.nom)}</div><div class="prod-row-meta">${h(p.categorie)} · ${h(p.genre)}</div></div><div class="prod-row-price">${fmt(p.prix)}F</div><button class="btn-del" onclick="deleteProduct(${i})">🗑</button></div>`).join('');}
+
+// DATA PRODUIT
+let mainImgData='';let extraImgDatas=[];let pendingColors=[];let colorImgData='';
+function switchSrc(scope,mode,btn){
+  const group=btn.closest('.src-tabs');group.querySelectorAll('.src-tab').forEach(t=>t.classList.remove('active'));btn.classList.add('active');
+  if(scope==='main'){document.getElementById('main-pane-url').style.display=mode==='url'?'block':'none';document.getElementById('main-pane-device').style.display=mode==='device'?'block':'none';}
+  else if(scope==='extra'){document.getElementById('extra-pane-url').style.display=mode==='url'?'flex':'none';document.getElementById('extra-pane-device').style.display=mode==='device'?'block':'none';}
+  else if(scope==='color'){document.getElementById('color-pane-url').style.display=mode==='url'?'block':'none';document.getElementById('color-pane-device').style.display=mode==='device'?'block':'none';}
+}
+function onMainUrl(url){mainImgData=url;const p=document.getElementById('mainPreview');p.src=url;p.style.display=url?'block':'none';}
+function handleMainFile(file){if(!file)return;if(file.size>2097152){alert('Max 2Mo.');return;}const r=new FileReader();r.onload=e=>{mainImgData=e.target.result;const p=document.getElementById('mainPreview');p.src=mainImgData;p.style.display='block';};r.readAsDataURL(file);}
+function addExtraUrl(){const url=document.getElementById('extraUrl').value.trim();if(!url)return;extraImgDatas.push(url);document.getElementById('extraUrl').value='';renderExtraThumbs();}
+function handleExtraFiles(files){Array.from(files).forEach(file=>{if(file.size>2097152){alert('Max 2Mo par image.');return;}const r=new FileReader();r.onload=e=>{extraImgDatas.push(e.target.result);renderExtraThumbs();};r.readAsDataURL(file);});}
+function renderExtraThumbs(){document.getElementById('extraImgsList').innerHTML=extraImgDatas.map((src,i)=>`<div class="extra-thumb"><img src="${h(src)}" alt=""><button class="rm" onclick="removeExtra(${i})">✕</button></div>`).join('');}
+function removeExtra(i){extraImgDatas.splice(i,1);renderExtraThumbs();}
+function onColorUrl(url){colorImgData=url;const p=document.getElementById('cPreview');p.src=url;p.style.display=url?'block':'none';}
+function handleColorFile(file){if(!file)return;const r=new FileReader();r.onload=e=>{colorImgData=e.target.result;const p=document.getElementById('cPreview');p.src=colorImgData;p.style.display='block';};r.readAsDataURL(file);}
+function addColor(){const nom=document.getElementById('cNom').value.trim();const hex=document.getElementById('cHex').value;if(!nom){alert('Entrez un nom de couleur.');return;}pendingColors.push({nom,hex,image:colorImgData});document.getElementById('cNom').value='';colorImgData='';renderColorList();}
+function removeColor(i){pendingColors.splice(i,1);renderColorList();}
+function renderColorList(){const el=document.getElementById('colorList');if(!pendingColors.length){el.innerHTML='<div style="font-size:.62rem;color:var(--gris);text-align:center;padding:.4rem;">Aucune couleur.</div>';return;}el.innerHTML=pendingColors.map((c,i)=>`<div class="color-row"><div class="color-dot" style="background:${h(c.hex)};"></div><div class="color-info"><div>${h(c.nom)}</div></div><button class="btn-del-c" onclick="removeColor(${i})">✕</button></div>`).join('');}
+
+async function addProduct(){
+  const nom=document.getElementById('fNom').value.trim();const prix=parseFloat(document.getElementById('fPrix').value);const cat=document.getElementById('fCat').value;const genre=document.getElementById('fGenre').value;
+  if(!nom||!prix||!cat||!genre||!mainImgData){showSt('add','err','⚠ Tous les champs sont requis.');return;}
+  const btn=document.getElementById('btnAdd');btn.disabled=true;try{const{sha,products}=await getFile();const np={id:Date.now().toString(),nom,prix,categorie:cat,genre,image:mainImgData,extraImages:extraImgDatas,couleurs:pendingColors,createdAt:new Date().toISOString()};await commitFile([...products,np],sha,`✨ Ajout : ${nom}`);prods=[...products,np];renderList();showSt('add','ok',`✓ Publié !`);clearForm();}catch(e){showSt('add','err','Erreur : '+e.message);}finally{btn.disabled=false;}
+}
+async function deleteProduct(idx){const p=prods[idx];if(!confirm(`Supprimer "${p.nom}" ?`))return;try{const{sha,products}=await getFile();const upd=products.filter(x=>x.id!==p.id);await commitFile(upd,sha,`🗑 ${p.nom}`);prods=upd;renderList();}catch(e){alert(e.message);}}
+function clearForm(){['fNom','fPrix'].forEach(id=>document.getElementById(id).value='');mainImgData='';document.getElementById('mainPreview').style.display='none';extraImgDatas=[];renderExtraThumbs();pendingColors=[];renderColorList();}
+
+// CLIENTS
+function getAllUsers(){try{return JSON.parse(localStorage.getItem('kw-users')||'{}');}catch{return {};}}
+function saveAllUsers(u){localStorage.setItem('kw-users',JSON.stringify(u));}
+function renderClients(){
+  const users=getAllUsers();const keys=Object.keys(users);
+  const vipEl=document.getElementById('vipList');const allEl=document.getElementById('allClientsList');
+  const vips=keys.filter(k=>users[k].isVip);
+  if(!vips.length)vipEl.innerHTML='<div class="empty-list">Aucun VIP.</div>'; else vipEl.innerHTML=vips.map(k=>clientRow(users[k],true)).join('');
+  if(!keys.length)allEl.innerHTML='<div class="empty-list">Aucun inscrit.</div>'; else allEl.innerHTML=keys.map(k=>clientRow(users[k],false)).join('');
+}
+function clientRow(u,isVip){
+  return `<div class="client-row"><div class="client-info"><div>${h(u.username)}</div></div><div class="client-orders">${u.orders||0}<small>cmds</small></div><button class="btn-plus" onclick="addOrder('${u.username}')">＋1</button></div>`;
+}
+function addOrder(username){const users=getAllUsers();if(!users[username])return;users[username].orders=(users[username].orders||0)+1;if(users[username].orders>=10)users[username].isVip=true;saveAllUsers(users);renderClients();}
+
+// FONDS & DESIGN
+function switchDevice(btn,dev){document.querySelectorAll('.d-tab').forEach(t=>t.classList.remove('active'));btn.classList.add('active');['mobile','tablet','desktop'].forEach(d=>document.getElementById('bg-device-'+d).style.display=d===dev?'block':'none');}
+function selectBg(scope,thumb){document.getElementById('bgFixed').style.backgroundImage=`url('${thumb.dataset.url}')`;localStorage.setItem('kw-'+scope+'-bg',thumb.dataset.url);}
+function handleBgUpload(scope,file){const r=new FileReader();r.onload=e=>{document.getElementById('bgFixed').style.backgroundImage=`url('${e.target.result}')`;localStorage.setItem('kw-'+scope+'-bg',e.target.result);};r.readAsDataURL(file);}
+function setHalo(dot){haloBaseColor=dot.dataset.color;}
+function setHaloCustom(hex){const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);haloBaseColor=`rgba(${r},${g},${b},ALPHA)`;}
+function applyHalo(){const c=haloBaseColor.replace('ALPHA','0.5');localStorage.setItem('kw-card-glow',c);document.documentElement.style.setProperty('--prev-glow',c);alert('Design Appliqué !');}
+
+// RE-PROGRAMMATION DES LOGIQUES DE LIENS DES QR CODES (ZÉRO BUG 404 DE LIENS COULISSANTS)
+function generateAllQR(){
+  const u=document.getElementById('ghUser').value.trim()||cfg.user;const r=document.getElementById('ghRepo').value.trim()||cfg.repo;
+  if(!u||!r){
+    document.getElementById('qr1Url').textContent="Configurez votre GitHub pour voir l'adresse";
+    document.getElementById('qr2Url').textContent="Configurez votre GitHub pour voir l'adresse";
+    document.getElementById('qr3Url').textContent="Configurez votre GitHub pour voir l'adresse";
+    return;
+  }
+  
+  // Nettoyage parfait des URL racines
+  const cleansRepo = r.replace('.github.io','');
+  const rootUrl=`https://${u}.github.io/${cleansRepo}`;
+  
+  // Liens définitifs ultra propres injectés dans les moteurs graphiques
+  const urlCatalogue = rootUrl.endsWith('/') ? rootUrl : rootUrl + '/';
+  const urlAdmin = urlCatalogue + 'admin.html';
+  const urlVip = urlCatalogue + '?vip=1';
+
+  makeQR('qr1Canvas', urlCatalogue, document.getElementById('qr1Url'), urlCatalogue, {dark:'#AAFF00',light:'#050a00'});
+  makeQR('qr2Canvas', urlAdmin, document.getElementById('qr2Url'), urlAdmin, {dark:'#B44FFF',light:'#05000a'});
+  makeQR('qr3Canvas', urlVip, document.getElementById('qr3Url'), urlVip, {dark:'#FFD700',light:'#080600'});
+}
+
+function makeQR(canvasId,text,urlEl,displayUrl,colors){
+  const container=document.getElementById(canvasId);container.innerHTML='';urlEl.textContent=displayUrl;
+  new QRCode(container,{text,width:160,height:160,colorDark:colors.dark,colorLight:colors.light,correctLevel:QRCode.CorrectLevel.H});
+}
+
+// CORRECTION SECURISE IMPRESSION SANS PAGE BLANCHE CELLULAIRE
+function printQR(canvasId,filename){
+  const canvas=document.getElementById(canvasId).querySelector('canvas');
+  if(!canvas){alert('Veuillez d\'abord lier votre compte GitHub.');return;}
+  const imgData = canvas.toDataURL('image/png');
+  const win=window.open('','_blank');
+  win.document.write(`<html><head><title>${filename}</title><style>body{margin:0;background:#000;display:flex;align-items:center;justify-content:center;height:100vh;}img{width:280px;height:280px;box-shadow:0 0 20px #fff;border-radius:10px;}</style></head><body><img src="${imgData}" onload="window.print();"></body></html>`);
+  win.document.close();
 }
 
 function showTab(t){
-  document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
-  document.querySelectorAll('.section').forEach(el => el.classList.remove('show'));
-  event.target.classList.add('active');
-  document.getElementById('sec-'+t).classList.add('show');
-  if(t==='list' || t==='clients' || t==='qr') fetchDatabase();
+  ['config','add','list','clients','design','qr'].forEach(x=>document.getElementById('sec-'+x).classList.toggle('show',x===t));
+  document.querySelectorAll('.tab').forEach((b,i)=>b.classList.toggle('active',['config','add','list','clients','design','qr'][i]===t));
+  if(t==='qr')generateAllQR();if(t==='clients')renderClients();
 }
+function showSt(id,type,msg){const el=document.getElementById('st-'+id);el.className='status '+type;el.textContent=msg;el.style.display='block';}
+function h(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function fmt(n){return Number(n||0).toLocaleString('fr-FR');}
 
-function saveConfig(){
-  cfg.token = document.getElementById('ghToken').value.trim();
-  cfg.user = document.getElementById('ghUser').value.trim();
-  cfg.repo = document.getElementById('ghRepo').value.trim();
-  localStorage.setItem('kw_admin_cfg', JSON.stringify(cfg));
-  fetchDatabase();
-}
-
-function initLoad(){
-  const stored = localStorage.getItem('kw_admin_cfg');
-  if(stored){
-    cfg = JSON.parse(stored);
-    document.getElementById('ghToken').value = cfg.token;
-    document.getElementById('ghUser').value = cfg.user;
-    document.getElementById('ghRepo').value = cfg.repo;
-  }
-}
-
-async function fetchDatabase() {
-  if(!cfg.token || !cfg.user || !cfg.repo) return;
-  const url = `https://api.github.com/repos/${cfg.user}/${cfg.repo}/contents/database.json`;
-  try {
-    let res = await fetch(url, { headers: { 'Authorization': `token ${cfg.token}` } });
-    if(res.ok) {
-      let json = await res.json();
-      currentSha = json.sha;
-      dbData = JSON.parse(atob(json.content));
-      renderProducts();
-      renderClients();
-      renderQRCodes();
-      if(dbData.design) {
-        document.getElementById('bgMobile').value = dbData.design.mobile || '';
-        document.getElementById('bgPc').value = dbData.design.pc || '';
-        document.getElementById('bgTablet').value = dbData.design.tablet || '';
-        document.getElementById('glowIntensity').value = dbData.design.glow || '20';
-        updateGlowLabel(dbData.design.glow || '20');
-      }
-    } else {
-      await pushDatabase(true);
-    }
-  } catch(e) { console.error(e); }
-}
-
-async function pushDatabase(isNew = false) {
-  const url = `https://api.github.com/repos/${cfg.user}/${cfg.repo}/contents/database.json`;
-  const body = {
-    message: "Mise à jour catalogue par Khaled Admin",
-    content: btoa(unescape(encodeURIComponent(JSON.stringify(dbData, null, 2)))),
-  };
-  if(!isNew && currentSha) body.sha = currentSha;
-  let res = await fetch(url, {
-    method: 'PUT',
-    headers: { 'Authorization': `token ${cfg.token}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify(body)
-  });
-  if(res.ok) {
-    let rJson = await res.json();
-    currentSha = rJson.content.sha;
-    document.querySelectorAll('.status').forEach(el => {
-      el.className = 'status ok';
-      el.textContent = "Modifications instantanées synchronisées avec GitHub !";
-      el.style.display = 'block';
-    });
-  }
-}
-
-function ajouterVarianteCouleur(){
-  const nom = document.getElementById('fColorNom').value.trim();
-  const hex = document.getElementById('fColorHex').value.trim();
-  const url = document.getElementById('fColorUrl').value.trim();
-  if(!nom || !hex || !url) return;
-  localVariantes.push({ nom, hex, url });
-  document.getElementById('fColorNom').value = '';
-  document.getElementById('fColorHex').value = '';
-  document.getElementById('fColorUrl').value = '';
-  renderVariantesPreview();
-}
-
-function renderVariantesPreview(){
-  const box = document.getElementById('variantesPreview');
-  box.innerHTML = '';
-  localVariantes.forEach((v, i) => {
-    box.innerHTML += `
-      <div class="multiphoto-slot">
-        <img src="${v.url}">
-        <span class="color-indicator" style="background:${v.hex}"></span>
-        <div style="font-size:10px; overflow:hidden;">${v.nom}</div>
-      </div>
-    `;
-  });
-}
-
-function publierProduitBox(){
-  const nom = document.getElementById('fNom').value.trim();
-  const prix = document.getElementById('fPrix').value.trim();
-  const cat = document.getElementById('fCat').value;
-  const genre = document.getElementById('fGenre').value;
-  if(!nom || !prix || localVariantes.length === 0) {
-    alert("Veuillez renseigner le nom, prix, et ajouter au moins une couleur avec photo !");
-    return;
-  }
-  const p = { id: 'p_' + Date.now(), nom, prix, cat, genre, variantes: localVariantes };
-  dbData.prods.push(p);
-  localVariantes = [];
-  document.getElementById('fNom').value = '';
-  document.getElementById('fPrix').value = '';
-  document.getElementById('variantesPreview').innerHTML = '';
-  pushDatabase();
-}
-
-function supprimerProduit(id){
-  dbData.prods = dbData.prods.filter(p => p.id !== id);
-  pushDatabase();
-}
-
-function renderProducts(){
-  const container = document.getElementById('boxProductsContainer');
-  container.innerHTML = dbData.prods.length === 0 ? '<div class="empty-list">Aucun produit en stock</div>' : '';
-  dbData.prods.forEach(p => {
-    container.innerHTML += `
-      <div class="user-row">
-        <div class="user-info-meta">
-          <img src="${p.variantes[0].url}" style="width:45px; height:45px; border-radius:6px; object-fit:cover;">
-          <div>
-            <div class="user-name-title">${p.nom}</div>
-            <div class="user-progress-text">${p.cat} — ${p.prix} FCFA (${p.variantes.length} couleurs)</div>
-          </div>
-        </div>
-        <button class="btn-gold btn-sm btn-danger" onclick="supprimerProduit('${p.id}')">Retirer</button>
-      </div>
-    `;
-  });
-}
-
-function incrementerCommandeClient(username) {
-  if(dbData.users[username]) {
-    dbData.users[username].achats = (dbData.users[username].achats || 0) + 1;
-    if(dbData.users[username].achats >= 10) {
-      dbData.users[username].isVip = true;
-    }
-    pushDatabase();
-  }
-}
-
-function degraderVipInactif(username) {
-  if(dbData.users[username]) {
-    dbData.users[username].isVip = false;
-    dbData.users[username].achats = 5;
-    pushDatabase();
-  }
-}
-
-function renderClients(){
-  const uc = document.getElementById('usersContainer');
-  const vc = document.getElementById('vipEliteContainer');
-  uc.innerHTML = '';
-  vc.innerHTML = '';
-  
-  let userKeys = Object.keys(dbData.users || {});
-  if(userKeys.length === 0) {
-    uc.innerHTML = '<div class="empty-list">Aucun client enregistré pour le moment.</div>';
-    vc.innerHTML = '<div class="empty-list">Aucun VIP Élite répertorié.</div>';
-    return;
-  }
-  
-  userKeys.forEach(k => {
-    const u = dbData.users[k];
-    const isVip = u.achats >= 10;
-    const rowHtml = `
-      <div class="user-row">
-        <div class="user-info-meta">
-          <img src="${u.avatar || 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'40\' height=\'40\'%3E%3Crect width=\'40\' height=\'40\' fill=\'%23333\'/%3E%3C/svg%3E'}" class="user-avatar-preview">
-          <div>
-            <div class="user-name-title">${u.username}</div>
-            <div class="user-progress-text">Commandes validées : <strong>${u.achats || 0} / 10</strong></div>
-          </div>
-        </div>
-        <div class="actions-cell">
-          <span class="user-badge-status ${isVip ? 'badge-vip-elite':'badge-classic'}">${isVip ? 'VIP Élite':'Standard'}</span>
-          <button class="btn-gold btn-sm" onclick="incrementerCommandeClient('${u.username}')">＋ Valider Achat</button>
-        </div>
-      </div>
-    `;
-    uc.innerHTML += rowHtml;
-    
-    if(isVip) {
-      vc.innerHTML += `
-        <div class="user-row" style="border-color: #9b59b6;">
-          <div class="user-info-meta">
-            <img src="${u.avatar}" class="user-avatar-preview" style="border-color:#9b59b6;">
-            <div>
-              <div class="user-name-title" style="color:#d4b3ff;">${u.username} 👑</div>
-              <div class="user-progress-text">Statut autonome activé. Règle d'inactivité en cours.</div>
-            </div>
-          </div>
-          <button class="btn-gold btn-sm btn-danger" onclick="degraderVipInactif('${u.username}')">⚠️ Inactif (Retour à 5)</button>
-        </div>
-      `;
-    }
-  });
-  if(vc.innerHTML === '') vc.innerHTML = '<div class="empty-list">Aucun client n\'a encore atteint les 10 commandes requises.</div>';
-}
-
-function sauvegarderOptionsDesign(){
-  dbData.design = {
-    mobile: document.getElementById('bgMobile').value.trim(),
-    pc: document.getElementById('bgPc').value.trim(),
-    tablet: document.getElementById('bgTablet').value.trim(),
-    glow: document.getElementById('glowIntensity').value
-  };
-  pushDatabase();
-}
-
-function renderQRCodes(){
-  const u = cfg.user || 'pseudo';
-  const r = cfg.repo || 'repo';
-  const baseUrl = `https://${u}.github.io/${r}/`;
-  
-  document.getElementById('qrBoutique').innerHTML = '';
-  document.getElementById('qrLienAdmin').innerHTML = '';
-  document.getElementById('qrVipElite').innerHTML = '';
-  
-  new QRCode(document.getElementById('qrBoutique'), { text: baseUrl, width: 150, height: 150, colorDark: '#a3e635', colorLight: '#000000' });
-  new QRCode(document.getElementById('qrLienAdmin'), { text: baseUrl + 'admin_1.html', width: 150, height: 150, colorDark: '#c084fc', colorLight: '#000000' });
-  new QRCode(document.getElementById('qrVipElite'), { text: baseUrl + '?view=vip_claim', width: 150, height: 150, colorDark: '#C9A84C', colorLight: '#000000' });
-}
-
-window.onload = function(){
-  initLoad();
-  fetchDatabase();
-};
+let haloBaseColor='rgba(201,168,76,ALPHA)';
+loadConfig();
 </script>
 </body>
 </html>
