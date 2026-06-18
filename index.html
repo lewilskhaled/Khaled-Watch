@@ -236,6 +236,31 @@ body.light .nav-item{color:var(--gris);}
 .loader-wrap{grid-column:1/-1;display:flex;justify-content:center;padding:3rem;}
 .loader{width:30px;height:30px;border-radius:50%;border:2px solid rgba(201,168,76,.2);border-top-color:var(--or);animation:spin .7s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
+  /* --- AMÉLIORATION DE L'AFFICHAGE DES PRODUITS SUR MOBILE --- */
+@media (max-width: 767px) {
+    
+    /* 1. On agrandit la box blanche qui contient la montre */
+    /* Remplace '.product-image-container' par le nom de ta classe actuelle si elle est différente */
+    .product-image-container, 
+    .product-card > div:first-child { 
+        height: 380px !important; /* Augmente la hauteur pour que la montre soit bien grande */
+        padding: 10px !important;  /* Ajoute un petit espace pour ne pas que la montre colle aux bords */
+        background-color: #ffffff !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    /* 2. On force l'image à s'afficher EN ENTIER (pas coupée, pas cachée) */
+    /* Remplace '.product-img' par le nom de ta classe d'image actuelle si besoin */
+    .product-img, 
+    .product-image-container img,
+    .product-card img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: contain !important; /* La montre s'adapte parfaitement et devient 100% visible */
+    }
+}
 </style>
 </head>
 <body>
