@@ -345,27 +345,7 @@ body.light .nav-item{color:var(--gris);}
     color: #888;
     font-style: italic;
 }
-/* --- RENDRE LE FOND NET, LUMINEUX ET TRÈS REMARKABLE --- */
 
-/* 1. On enlève TOUT le flou sur la couche bgLayer */
-#bgLayer {
-    background: rgba(255, 255, 255, 0.4) !important; /* Un voile blanc plus fort pour éclairer le site */
-    backdrop-filter: none !important; /* SUPPRIME LE FLOU COULISSANT */
-    -webkit-backdrop-filter: none !important;
-}
-
-/* 2. On nettoie complètement l'overlay pour qu'il ne cache pas ton image */
-#bgOverlay {
-    background: none !important;
-    background-color: transparent !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-}
-
-/* 3. On booste la netteté et la luminosité directement sur l'image du body */
-body {
-    filter: brightness(1.2) contrast(1.1) !important; /* Éclaircit l'image et fait ressortir les détails */
-}
 </style>
 </head>
 <body>
