@@ -373,6 +373,17 @@ body.light .nav-item{color:var(--gris);}
     transition: all 0.5s ease-in-out;
     border: 1px solid transparent;
 }
+  /* --- RENDRE LE FOND PLUS LUMINEUX ET TRANSPARENT --- */
+#bgOverlay {
+    background-color: rgba(255, 255, 255, 0.15) !important; /* Fond blanc très léger au lieu de noir */
+    backdrop-filter: blur(3px); /* Un léger flou style "verre dépoli" pour le côté luxueux */
+}
+
+/* Si ton texte ou tes titres deviennent durs à lire sur fond clair, 
+   ce code optionnel assure qu'ils restent bien visibles */
+.app-header, #page-home {
+    color: #fff; 
+}
 </style>
 </head>
 <body>
