@@ -8,6 +8,21 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
+  /* Style pour le carrousel des variantes de montres */
+.carousel-track img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+.color-circle:hover {
+    transform: scale(1.2);
+    box-shadow: 0 0 8px rgba(201, 168, 76, 0.6);
+}
+.carousel-dot.active {
+    background: #C9A84C !important;
+    transform: scale(1.2);
+}
 :root{
   --or:#C9A84C;--or-l:#E8C97A;--or-d:#8B6914;
   --bg:#080808;--bg2:#111;--bg3:#1c1c1c;
@@ -569,6 +584,43 @@ function fmt(n){return Number(n||0).toLocaleString('fr-FR');}
 initClientBg();
 initCardGlow();
 loadProducts();
+// Cette fonction s'occupe de faire défiler les photos (Variantes) au clic sur les flèches
+let positionsCarrousels = {};
+function déplacerCarrousel(indexProduit, direction) {
+    const box = document.getElementById(`prod-box-${indexProduit}`);
+    const piste = box.querySelector('.carousel-track');
+    const images = piste.querySelectorAll('img');
+    const points = box.querySelectorAll('.carousel-dot');
+    
+    if (!positionsCarrousels[indexProduit]) positionsCarrousels[indexProduit] = 0;
+    
+    let nouvellePos = positionsCarrousels[indexProduit] + direction;
+    if (nouvellePos < 0) nouvellePos = images.length - 1;
+    if (nouvellePos >= images.length) nouvellePos = 0;
+    
+    positionsCarrousels[indexProduit] = nouvellePos;
+    piste.style.transform = `translateX(-${nouvellePos * 100}%)`;
+    
+    // Met à jour les petits points indicateurs
+    points.forEach((pt, i) => pt.classList.toggle('active', i === nouvellePos));
+}
+
+// Cette fonction s'occupe de changer la photo instantanément quand le client clique sur une pastille de couleur
+function changerCouleurProduit(indexProduit, urlImageVariante, elementPastille) {
+    const box = document.getElementById(`prod-box-${indexProduit}`);
+    const piste = box.querySelector('.carousel-track');
+    const images = piste.querySelectorAll('img');
+    
+    // On remet le carrousel au début et on change la première image par celle de la couleur choisie
+    positionsCarrousels[indexProduit] = 0;
+    piste.style.transform = `translateX(0%)`;
+    images[0].src = urlImageVariante;
+    
+    // Met en valeur la couleur sélectionnée
+    const toutesLesPastilles = elementPastille.parentNode.querySelectorAll('.color-circle');
+    toutesLesPastilles.forEach(p => p.style.borderColor = 'transparent');
+    elementPastille.style.borderColor = '#C9A84C';
+}
 </script>
 </body>
 </html>
