@@ -345,7 +345,55 @@ body.light .nav-item{color:var(--gris);}
     color: #888;
     font-style: italic;
 }
+/* --- STYLE DE LA GALERIE PLEIN ÉCRAN --- */
+.galerie-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.92); /* Fond noir transparent très classe */
+    z-index: 10000; /* Passe au-dessus de tout le reste */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
 
+.galerie-overlay.actif {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.galerie-img {
+    max-width: 90%;
+    max-height: 80%;
+    border-radius: 8px;
+    box-shadow: 0 0 30px rgba(174, 148, 109, 0.3); /* Un léger halo doré autour de la grande image */
+    transform: scale(0.9);
+    transition: transform 0.4s ease;
+}
+
+.galerie-overlay.actif .galerie-img {
+    transform: scale(1);
+}
+
+.galerie-close {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    color: #ae946d;
+    font-size: 35px;
+    font-weight: 300;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.galerie-close:hover {
+    transform: scale(1.1);
+}
 </style>
 </head>
 <body>
@@ -366,7 +414,11 @@ body.light .nav-item{color:var(--gris);}
   <div class="logo-txt">KHALED WATCH</div>
   <button class="btn-theme" id="btnTheme" onclick="toggleTheme()">☀ Clair</button>
 </header>
-
+<!-- Boîte de la galerie (cachée par défaut) -->
+<div id="customGalerie" class="galerie-overlay">
+    <span class="galerie-close">&times;</span>
+    <img id="galerieTargetImg" class="galerie-img" src="" alt="Zoom Montre">
+</div>
 <!-- ======== PAGE ACCUEIL ======== -->
 <div id="page-home">
   <div class="home-hero">
@@ -668,7 +720,7 @@ function renderProducts(){
     const mainImg = colors.length && colors[0].image ? colors[0].image : p.image;
     return `
     <div class="prod-card box-brillante-auto" style="animation-delay:${i*.06}s" data-id="${h(p.id||'')}">
-      <img class="prod-img" src="${h(mainImg)}" alt="${h(p.nom)}" loading="lazy"
+      <img class="prod-img" src="${h(mainImg)}" alt="${h(p.nom)}" loading="lazy"onclick="ouvrirGalerie('${h(mainImg)}')" style="cursor: pointer;"
         onerror="this.src='https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=70'">
       <div class="prod-body">
         <div class="prod-badge">${h(p.categorie)}</div>
@@ -821,6 +873,32 @@ function openWatchGallery(productId) {
 function closeGallery() {
     document.getElementById('galleryModal').style.display = 'none';
 }
+  // Fonction pour ouvrir la galerie avec la bonne image
+function ouvrirGalerie(imageSrc) {
+    const galerie = document.getElementById('customGalerie');
+    const galerieImg = document.getElementById('galerieTargetImg');
+    
+    galerieImg.src = imageSrc; // On injecte l'image de la montre cliquée
+    galerie.classList.add('actif'); // On affiche la galerie
+}
+
+// Code pour fermer la galerie quand on clique sur la croix ou sur le fond noir
+document.addEventListener('DOMContentLoaded', () => {
+    const galerie = document.getElementById('customGalerie');
+    const croix = document.querySelector('.galerie-close');
+    
+    // Fermer avec la croix
+    croix.addEventListener('click', () => {
+        galerie.classList.remove('actif');
+    });
+    
+    // Fermer en cliquant n'importe où sur le fond noir
+    galerie.addEventListener('click', (e) => {
+        if (e.target === galerie) {
+            galerie.classList.remove('actif');
+        }
+    });
+});
   
 </script>
 </body>
