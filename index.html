@@ -345,28 +345,33 @@ body.light .nav-item{color:var(--gris);}
     color: #888;
     font-style: italic;
 }
-  /* --- ANIMATION DE SCINTILLEMENT DYNAMIQUE --- */
-@keyframes scintillement-luxueux {
-    0% {
-        box-shadow: 0 0 5px var(--couleur-scintillement, #ae946d), 
-                    inset 0 0 5px var(--couleur-scintillement, #ae946d);
+ @keyframes eclat-multicolore {
+    /* 0s à 20s : Doré Ultra Lumineux */
+    0%, 25% {
+        box-shadow: 0 0 25px 5px #ae946d, inset 0 0 15px 2px #ae946d;
+        border-color: #ae946d;
     }
-    50% {
-        /* L'intensité va multiplier la taille du halo lumineux */
-        box-shadow: 0 0 calc(var(--intensite-scintillement, 1) * 15px) var(--couleur-scintillement, #ae946d), 
-                    inset 0 0 calc(var(--intensite-scintillement, 1) * 8px) var(--couleur-scintillement, #ae946d);
+    /* 20s à 40s : Violet Néon Puissant */
+    33%, 58% {
+        box-shadow: 0 0 25px 5px #8a2be2, inset 0 0 15px 2px #8a2be2;
+        border-color: #8a2be2;
     }
+    /* 40s à 60s : Vert Émeraude Intense */
+    66%, 91% {
+        box-shadow: 0 0 25px 5px #00ff7f, inset 0 0 15px 2px #00ff7f;
+        border-color: #00ff7f;
+    }
+    /* Retour au Doré */
     100% {
-        box-shadow: 0 0 5px var(--couleur-scintillement, #ae946d), 
-                    inset 0 0 5px var(--couleur-scintillement, #ae946d);
+        box-shadow: 0 0 25px 5px #ae946d, inset 0 0 15px 2px #ae946d;
+        border-color: #ae946d;
     }
 }
 
-/* La classe à appliquer sur les box que tu veux faire briller */
-.box-scintillante {
-    /* On applique l'animation. Plus l'intensité est forte, plus ça va vite */
-    animation: scintillement-luxueux calc(3s / var(--intensite-scintillement, 1)) infinite ease-in-out;
-    transition: all 0.3s ease;
+.box-brillante-auto {
+    animation: eclat-multicolore 60s infinite ease-in-out;
+    transition: all 0.5s ease-in-out;
+    border: 1px solid transparent; /* Permet à la bordure de s'allumer aussi */
 }
 </style>
 </head>
@@ -689,7 +694,7 @@ function renderProducts(){
     const colors = p.couleurs && p.couleurs.length ? p.couleurs : [];
     const mainImg = colors.length && colors[0].image ? colors[0].image : p.image;
     return `
-    <div class="prod-card" style="animation-delay:${i*.06}s" data-id="${h(p.id||'')}">
+    <div class="prod-card box-brillante-auto" style="animation-delay:${i*.06}s" data-id="${h(p.id||'')}">
       <img class="prod-img" src="${h(mainImg)}" alt="${h(p.nom)}" loading="lazy"
         onerror="this.src='https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=70'">
       <div class="prod-body">
