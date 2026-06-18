@@ -345,6 +345,29 @@ body.light .nav-item{color:var(--gris);}
     color: #888;
     font-style: italic;
 }
+  /* --- ANIMATION DE SCINTILLEMENT DYNAMIQUE --- */
+@keyframes scintillement-luxueux {
+    0% {
+        box-shadow: 0 0 5px var(--couleur-scintillement, #ae946d), 
+                    inset 0 0 5px var(--couleur-scintillement, #ae946d);
+    }
+    50% {
+        /* L'intensité va multiplier la taille du halo lumineux */
+        box-shadow: 0 0 calc(var(--intensite-scintillement, 1) * 15px) var(--couleur-scintillement, #ae946d), 
+                    inset 0 0 calc(var(--intensite-scintillement, 1) * 8px) var(--couleur-scintillement, #ae946d);
+    }
+    100% {
+        box-shadow: 0 0 5px var(--couleur-scintillement, #ae946d), 
+                    inset 0 0 5px var(--couleur-scintillement, #ae946d);
+    }
+}
+
+/* La classe à appliquer sur les box que tu veux faire briller */
+.box-scintillante {
+    /* On applique l'animation. Plus l'intensité est forte, plus ça va vite */
+    animation: scintillement-luxueux calc(3s / var(--intensite-scintillement, 1)) infinite ease-in-out;
+    transition: all 0.3s ease;
+}
 </style>
 </head>
 <body>
@@ -531,6 +554,15 @@ body.light .nav-item{color:var(--gris);}
             <p class="gallery-swipe-hint">← Faites glisser pour voir les autres couleurs →</p>
         </div>
     </div>
+</div>
+  <!-- Exemple 1 : Montre Tissot - Scintillement Doré, Intensité Normale (1) -->
+<div class="product-card box-scintillante" style="--couleur-scintillement: #ae946d; --intensite-scintillement: 1;">
+    <!-- Le contenu de ton produit (image, titre, prix) -->
+</div>
+
+<!-- Exemple 2 : Autre Montre - Scintillement Rouge, Intensité Forte (2.5) -->
+<div class="product-card box-scintillante" style="--couleur-scintillement: #ff0055; --intensite-scintillement: 2.5;">
+    <!-- Le contenu de ton produit -->
 </div>
 
 <script>
