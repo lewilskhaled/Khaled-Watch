@@ -13,562 +13,409 @@
   --bg:#080808;--bg2:#111;--bg3:#1c1c1c;
   --txt:#F5F0E8;--txt2:#ccbfa8;--gris:#999;
   --wa:#25D366;
-  --glass:rgba(255,255,255,0.05);
-  --bord:rgba(201,168,76,0.28);
-  --card-glow:#C9A84C; /* couleur halo boxes — modifiable par admin */
+  --glass:rgba(255,255,255,0.07);
+  --bord:rgba(201,168,76,0.35);
+  --card-glow-color:#C9A84C;
+  --glow-blur: 20px;
   --safe-bottom:env(safe-area-inset-bottom,0px);
 }
 body.light{
   --bg:#F2EDE0;--bg2:#E8E1CF;--bg3:#DDD5C0;
   --txt:#1A1208;--txt2:#3A2E18;--gris:#5A4E38;
-  --glass:rgba(0,0,0,0.06);--bord:rgba(139,105,20,0.4);
+  --glass:rgba(0,0,0,0.09);--bord:rgba(139,105,20,0.5);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{-webkit-text-size-adjust:100%;}
-body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;overflow-x:hidden;transition:background .35s,color .35s;}
+body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;overflow-x:hidden;}
 
-/* ===== SPLASH ===== */
-#splash{position:fixed;inset:0;z-index:9999;background:#000;display:flex;align-items:center;justify-content:center;flex-direction:column;animation:splashOut .7s ease-in-out 3.6s forwards;}
-.splash-txt{font-family:'Cormorant Garamond',serif;font-size:clamp(1.2rem,5.5vw,2.2rem);font-weight:300;color:var(--or);letter-spacing:.12em;text-align:center;padding:0 1.5rem;opacity:0;animation:fadeUp 1.1s ease-out .4s forwards;}
-.splash-bar{width:0;height:1px;margin-top:1.4rem;background:linear-gradient(90deg,transparent,var(--or),transparent);animation:barIn .9s ease-out 1.1s forwards;}
-.splash-sub{font-size:.6rem;letter-spacing:.4em;color:#888;text-transform:uppercase;margin-top:.9rem;opacity:0;animation:fadeUp .8s ease-out 1.7s forwards;}
-@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-@keyframes barIn{from{width:0}to{width:160px}}
-@keyframes splashOut{from{opacity:1;pointer-events:all}to{opacity:0;pointer-events:none;visibility:hidden}}
+/* ARRIÈRE PLAN VISIBLE */
+#bgLayer{position:fixed;inset:0;z-index:-2;background-size:cover;background-position:center;transition:background-image .5s ease;}
+#bgOverlay{position:fixed;inset:0;z-index:-1;background:linear-gradient(170deg,rgba(8,8,8,.78) 0%,rgba(8,8,8,.65) 60%,rgba(8,8,8,.82) 100%);}
+body.light #bgOverlay{background:linear-gradient(170deg,rgba(242,237,224,.82) 0%,rgba(242,237,224,.72) 60%,rgba(242,237,224,.85) 100%);}
 
-/* ===== FOND ===== */
-#bgLayer{position:fixed;inset:0;z-index:-2;background-size:cover;background-position:center;transition:background-image .6s ease;}
-#bgOverlay{position:fixed;inset:0;z-index:-1;background:linear-gradient(170deg,rgba(8,8,8,.92) 0%,rgba(8,8,8,.76) 60%,rgba(8,8,8,.95) 100%);transition:background .35s;}
-body.light #bgOverlay{background:linear-gradient(170deg,rgba(242,237,224,.94) 0%,rgba(242,237,224,.86) 60%,rgba(242,237,224,.96) 100%);}
+/* HEADER */
+.app-header{position:sticky;top:0;z-index:200;background:rgba(6,6,6,.92);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid var(--bord);padding:.85rem 1rem;display:flex;align-items:center;justify-content:space-between;}
+.logo-txt{font-family:'Cormorant Garamond',serif;font-size:1.55rem;font-weight:700;letter-spacing:.15em;background:linear-gradient(130deg,var(--or-d),var(--or-l),var(--or));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 
-/* ===== HEADER ===== */
-.app-header{position:sticky;top:0;z-index:200;background:rgba(6,6,6,.88);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid var(--bord);padding:.85rem 1rem;display:flex;align-items:center;justify-content:space-between;}
-body.light .app-header{background:rgba(242,237,224,.92);border-bottom-color:rgba(139,105,20,.3);}
-.logo-txt{font-family:'Cormorant Garamond',serif;font-size:1.55rem;font-weight:700;letter-spacing:.15em;background:linear-gradient(130deg,var(--or-d),var(--or-l),var(--or),var(--or-d));background-size:200% 200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:goldShift 4s ease-in-out infinite;}
-@keyframes goldShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
-.btn-theme{background:var(--glass);border:1px solid var(--bord);border-radius:50px;padding:.35rem .9rem;cursor:pointer;color:var(--or);font-size:.7rem;font-family:'Montserrat',sans-serif;letter-spacing:.1em;-webkit-tap-highlight-color:transparent;}
-body.light .btn-theme{color:var(--or-d);}
+.user-profile-header-btn{display:flex;align-items:center;gap:.5rem;background:var(--glass);border:1px solid var(--bord);padding:.3rem .6rem;border-radius:50px;cursor:pointer;}
+.user-profile-header-btn img{width:22px;height:22px;border-radius:50%;object-fit:cover;}
 
-/* ===== HERO ===== */
-.home-hero{text-align:center;padding:2rem 1.2rem 1.2rem;}
-.home-subtitle{font-size:.6rem;letter-spacing:.35em;color:var(--or);text-transform:uppercase;margin-bottom:.5rem;opacity:.85;}
-.home-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,9vw,4rem);font-weight:700;background:linear-gradient(130deg,var(--or-d),var(--or-l),var(--or));background-size:200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:goldShift 4s ease-in-out infinite;letter-spacing:.18em;line-height:1.05;}
-.home-desc{font-size:.72rem;color:var(--txt2);margin-top:.8rem;line-height:1.7;letter-spacing:.04em;}
+/* GRILLES ET BOXS */
+.cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.9rem;padding:1rem;max-width:600px;margin:0 auto;}
+.cat-card{background:var(--glass);border:1px solid var(--bord);border-radius:16px;padding:1.3rem .7rem 1rem;display:flex;flex-direction:column;align-items:center;gap:.6rem;cursor:pointer;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);}
 
-/* ===== GRILLE CATÉGORIES ===== */
-.cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.9rem;padding:1rem 1rem 6rem;max-width:600px;margin:0 auto;}
-.cat-card{background:var(--glass);border:1px solid var(--bord);border-radius:16px;padding:1.3rem .7rem 1rem;display:flex;flex-direction:column;align-items:center;gap:.6rem;cursor:pointer;transition:transform .25s,box-shadow .25s,border-color .25s;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);-webkit-tap-highlight-color:transparent;}
-body.light .cat-card{background:rgba(255,255,255,.55);border-color:rgba(139,105,20,.35);box-shadow:0 2px 12px rgba(0,0,0,.08);}
-.cat-card:active{transform:scale(.94);}
-.cat-card:hover{transform:translateY(-4px);box-shadow:0 12px 36px rgba(201,168,76,.18);border-color:var(--or);}
-/* Carte OFFRE spéciale */
-.cat-card.offre-card{background:linear-gradient(135deg,rgba(201,168,76,.12),rgba(232,201,122,.08));border-color:rgba(201,168,76,.5);position:relative;overflow:hidden;}
-.cat-card.offre-card::before{content:'';position:absolute;inset:0;border-radius:16px;background:linear-gradient(135deg,rgba(201,168,76,.05),transparent);animation:offreGlow 2s ease-in-out infinite alternate;}
-@keyframes offreGlow{from{opacity:.4}to{opacity:1}}
-.cat-icon{font-size:2rem;line-height:1;filter:drop-shadow(0 0 7px rgba(201,168,76,.45));}
-.cat-label{font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--or);font-weight:700;text-align:center;line-height:1.35;}
-body.light .cat-label{color:var(--or-d);}
-.cat-count{font-size:.54rem;color:var(--gris);letter-spacing:.08em;}
-
-/* ===== PAGE CATÉGORIE ===== */
-#page-cat,#page-offre{display:none;}
-.page-cat-header{display:flex;align-items:center;gap:.85rem;padding:.95rem 1rem .4rem;}
-.btn-back{background:var(--glass);border:1px solid var(--bord);border-radius:50%;width:38px;height:38px;flex-shrink:0;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--or);font-size:1.1rem;font-weight:700;-webkit-tap-highlight-color:transparent;}
-body.light .btn-back{background:rgba(255,255,255,.7);color:var(--or-d);}
-.cat-page-title{font-family:'Cormorant Garamond',serif;font-size:1.55rem;font-weight:700;background:linear-gradient(130deg,var(--or-d),var(--or-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.cat-page-icon{font-size:1.4rem;}
-
-/* Filtres genre */
-.gender-tabs{display:flex;gap:.5rem;padding:.4rem 1rem .7rem;}
-.g-tab{flex:1;text-align:center;padding:.42rem 0;border-radius:50px;font-size:.63rem;letter-spacing:.16em;text-transform:uppercase;border:1px solid rgba(201,168,76,.22);color:var(--gris);cursor:pointer;background:transparent;font-family:'Montserrat',sans-serif;transition:all .22s;-webkit-tap-highlight-color:transparent;}
-.g-tab.active{background:rgba(201,168,76,.14);border-color:var(--or);color:var(--or);font-weight:700;}
-body.light .g-tab{color:var(--gris);border-color:rgba(139,105,20,.3);}
-body.light .g-tab.active{color:var(--or-d);border-color:var(--or-d);background:rgba(139,105,20,.1);}
-
-/* ===== GRILLE PRODUITS ===== */
-.prod-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.85rem;padding:.2rem .9rem 6rem;}
-@media(min-width:600px){.prod-grid{grid-template-columns:repeat(3,1fr);}}
-@media(min-width:900px){.prod-grid{grid-template-columns:repeat(4,1fr);}}
-
-/* ===== CARTE PRODUIT — HALO ANIMÉ COULEUR ADMIN ===== */
-.prod-card{
-  background:var(--glass);
-  border:1px solid rgba(var(--card-glow-rgb),0.3);
-  border-radius:14px;overflow:hidden;
-  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-  transition:transform .28s,box-shadow .28s;
-  animation:cardPop .4s ease-out both;
-  position:relative;
-}
-@keyframes cardPop{from{opacity:0;transform:scale(.93) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
-body.light .prod-card{background:rgba(255,255,255,.65);border-color:rgba(139,105,20,.3);box-shadow:0 2px 10px rgba(0,0,0,.07);}
-.prod-card:hover{transform:translateY(-4px);}
-.prod-card:active{transform:scale(.97);}
-
-/* HALO ANIMÉ — utilise la variable CSS injectée par admin */
+/* BOX DE PRODUIT AVEC EXTRA BRILLANCE PAR ADMIN */
+.prod-card{background:var(--glass);border:1px solid var(--bord);border-radius:14px;overflow:hidden;position:relative;transition:transform .25s;}
 .prod-card::after{
   content:'';position:absolute;inset:0;border-radius:14px;pointer-events:none;
-  animation:cardHalo 2.5s ease-in-out infinite;
-}
-@keyframes cardHalo{
-  0%,100%{box-shadow:0 0 8px 1px var(--card-glow-color, rgba(201,168,76,0.15)), inset 0 0 0 1px var(--card-glow-color, rgba(201,168,76,0.1));}
-  50%{box-shadow:0 0 22px 4px var(--card-glow-color, rgba(201,168,76,0.35)), inset 0 0 0 1px var(--card-glow-color, rgba(201,168,76,0.25));}
+  box-shadow:0 0 var(--glow-blur) calc(var(--glow-blur) / 4) var(--card-glow-color);
+  opacity:0.75;
 }
 
-.prod-img{width:100%;aspect-ratio:1/1;object-fit:cover;background:var(--bg3);display:block;transition:transform .4s;}
-.prod-card:hover .prod-img{transform:scale(1.05);}
-.prod-body{padding:.7rem .7rem .85rem;}
-.prod-badge{font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;color:var(--or);border:1px solid rgba(201,168,76,.35);border-radius:50px;padding:.17rem .52rem;display:inline-block;margin-bottom:.38rem;}
-body.light .prod-badge{color:var(--or-d);border-color:rgba(139,105,20,.4);}
-.prod-name{font-family:'Cormorant Garamond',serif;font-size:.97rem;font-weight:700;line-height:1.25;color:var(--txt);margin-bottom:.18rem;}
-.prod-genre{font-size:.54rem;letter-spacing:.14em;color:var(--gris);text-transform:uppercase;margin-bottom:.48rem;}
-.prod-price{font-family:'Cormorant Garamond',serif;font-size:1.08rem;font-weight:700;background:linear-gradient(90deg,var(--or-d),var(--or-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.prod-price small{font-family:'Montserrat',sans-serif;font-size:.58rem;}
+.prod-img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;}
+.prod-body{padding:.7rem;}
+.prod-name{font-family:'Cormorant Garamond',serif;font-size:.95rem;font-weight:700;color:var(--txt);}
+.prod-price{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--or);font-weight:700;}
 
-/* ===== SÉLECTEUR DE COULEURS ===== */
-.color-section{margin:.5rem 0 .55rem;}
-.color-label{font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gris);margin-bottom:.35rem;}
-.color-swatches{display:flex;flex-wrap:wrap;gap:.35rem;}
-.color-swatch{
-  width:22px;height:22px;border-radius:50%;
-  border:2px solid transparent;
-  cursor:pointer;
-  transition:transform .18s,border-color .18s,box-shadow .18s;
-  -webkit-tap-highlight-color:transparent;
-  position:relative;flex-shrink:0;
-}
-.color-swatch:hover{transform:scale(1.18);}
-.color-swatch.active{border-color:#fff;box-shadow:0 0 0 2px var(--or);transform:scale(1.15);}
-body.light .color-swatch.active{border-color:#333;box-shadow:0 0 0 2px var(--or-d);}
+/* SECTIONS COMMUNE */
+#page-cat, #page-offre, #page-auth, #page-account, #page-vip-claim {display:none;padding:1rem 1rem 5rem;}
 
-.btn-wa{display:flex;align-items:center;justify-content:center;gap:.35rem;margin-top:.62rem;width:100%;background:linear-gradient(135deg,#0f7a5e,#25D366);border:none;border-radius:8px;color:#fff;font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-family:'Montserrat',sans-serif;padding:.55rem .4rem;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:opacity .22s,transform .15s;}
-.btn-wa:active{opacity:.8;transform:scale(.97);}
+/* AUTH & ACCOUNT COMPTE */
+.auth-box{max-width:400px;margin:2rem auto;background:var(--glass);border:1px solid var(--bord);border-radius:16px;padding:1.5rem;}
+.input-premium{width:100%;background:rgba(0,0,0,0.5);border:1px solid var(--bord);padding:.75rem;border-radius:8px;color:#fff;margin-bottom:1rem;font-family:inherit;}
+.btn-gold-action{width:100%;background:linear-gradient(135deg,var(--or-d),var(--or));color:#000;border:none;padding:.85rem;border-radius:8px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;cursor:pointer;}
 
-/* ===== PAGE OFFRES ===== */
-.offre-hero{text-align:center;padding:1.5rem 1.2rem 1rem;}
-.offre-title{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;background:linear-gradient(130deg,var(--or-d),var(--or-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:.1em;}
-.offre-subtitle{font-size:.65rem;color:var(--txt2);letter-spacing:.12em;margin-top:.4rem;line-height:1.7;}
+/* BARRE D'AVANCEMENT OR */
+.gold-progress-track{width:100%;height:14px;background:rgba(0,0,0,0.6);border-radius:50px;border:1px solid var(--bord);overflow:hidden;margin:1rem 0;position:relative;}
+.gold-progress-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--or-d),var(--or),var(--or-l));border-radius:50px;transition:width 0.6s cubic-bezier(0.1, 0.8, 0.3, 1);}
 
-.offre-section{padding:0 1rem 1.5rem;}
-.offre-section-title{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--or);margin-bottom:.8rem;display:flex;align-items:center;gap:.4rem;letter-spacing:.06em;}
-body.light .offre-section-title{color:var(--or-d);}
+.color-dot-selector{width:20px;height:20px;border-radius:50%;display:inline-block;margin-right:.4rem;cursor:pointer;border:2px solid transparent;}
+.color-dot-selector.active{border-color:#fff;box-shadow:0 0 5px var(--or);}
 
-.offre-card{
-  background:var(--glass);border:1px solid var(--bord);
-  border-radius:14px;padding:1.1rem;margin-bottom:.8rem;
-  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-  display:flex;align-items:flex-start;gap:.9rem;
-  transition:transform .22s,box-shadow .22s;
-}
-body.light .offre-card{background:rgba(255,255,255,.6);border-color:rgba(139,105,20,.3);}
-.offre-card:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(201,168,76,.14);}
-.offre-card-icon{font-size:2rem;flex-shrink:0;line-height:1;filter:drop-shadow(0 0 6px rgba(201,168,76,.4));}
-.offre-card-body{flex:1;}
-.offre-card-title{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:700;color:var(--txt);margin-bottom:.25rem;}
-.offre-card-desc{font-size:.68rem;color:var(--txt2);line-height:1.65;letter-spacing:.03em;}
-body.light .offre-card-desc{color:var(--gris);}
-.offre-badge{display:inline-block;background:linear-gradient(135deg,var(--or-d),var(--or));color:#000;font-size:.55rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:.22rem .65rem;border-radius:50px;margin-bottom:.5rem;}
-
-/* Abonnements streaming */
-.stream-grid{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.6rem;}
-.stream-pill{display:flex;align-items:center;gap:.35rem;background:rgba(255,255,255,.07);border:1px solid rgba(201,168,76,.2);border-radius:50px;padding:.32rem .75rem;font-size:.62rem;color:var(--txt2);letter-spacing:.05em;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:all .2s;}
-body.light .stream-pill{background:rgba(0,0,0,.06);color:var(--gris);}
-.stream-pill:hover,.stream-pill.chosen{background:rgba(201,168,76,.15);border-color:var(--or);color:var(--txt);}
-body.light .stream-pill.chosen{color:var(--or-d);border-color:var(--or-d);}
-.stream-pill span{font-size:.95rem;}
-
-.offre-cta{
-  width:100%;margin-top:.9rem;
-  background:linear-gradient(135deg,var(--or-d),var(--or));
-  color:#000;border:none;border-radius:10px;
-  font-family:'Montserrat',sans-serif;font-size:.7rem;
-  font-weight:700;letter-spacing:.2em;text-transform:uppercase;
-  padding:.75rem;cursor:pointer;-webkit-tap-highlight-color:transparent;
-  transition:opacity .22s,transform .15s;
-}
-.offre-cta:active{opacity:.82;transform:scale(.98);}
-
-.palier-bar{margin:.6rem 0 .3rem;position:relative;height:6px;background:rgba(201,168,76,.15);border-radius:50px;overflow:hidden;}
-.palier-bar-fill{height:100%;border-radius:50px;background:linear-gradient(90deg,var(--or-d),var(--or-l));transition:width .4s;}
-.palier-labels{display:flex;justify-content:space-between;font-size:.55rem;color:var(--gris);margin-top:.2rem;}
-
-/* ===== ÉTAT VIDE ===== */
-.empty-cat{grid-column:1/-1;text-align:center;padding:3.5rem 1.5rem;}
-.empty-cat h3{font-family:'Cormorant Garamond',serif;font-size:1.45rem;color:var(--or);margin-bottom:.4rem;}
-.empty-cat p{font-size:.75rem;color:var(--gris);line-height:1.7;}
-body.light .empty-cat h3{color:var(--or-d);}
-
-/* ===== BOTTOM NAV ===== */
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:300;background:rgba(6,6,6,.92);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);border-top:1px solid var(--bord);display:flex;padding-bottom:var(--safe-bottom);}
-body.light .bottom-nav{background:rgba(242,237,224,.95);border-top-color:rgba(139,105,20,.3);}
-.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:.18rem;padding:.6rem .2rem .5rem;cursor:pointer;-webkit-tap-highlight-color:transparent;color:var(--gris);font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;border:none;background:none;font-family:'Montserrat',sans-serif;transition:color .2s;}
-.nav-item.active{color:var(--or);}
-body.light .nav-item.active{color:var(--or-d);}
-body.light .nav-item{color:var(--gris);}
-.nav-icon{font-size:1.2rem;line-height:1;}
-/* Badge OFFRE clignotant */
-.nav-offre{position:relative;}
-.nav-offre .pulse-dot{position:absolute;top:2px;right:50%;transform:translateX(60%);width:8px;height:8px;background:#ff4444;border-radius:50%;animation:pulseDot 1.5s ease-in-out infinite;}
-@keyframes pulseDot{0%,100%{opacity:1;transform:translateX(60%) scale(1);}50%{opacity:.5;transform:translateX(60%) scale(1.4);}}
-
-/* ===== WHATSAPP ===== */
-.wa-float{position:fixed;bottom:calc(var(--safe-bottom) + 68px);right:1rem;z-index:400;width:52px;height:52px;border-radius:50%;background:var(--wa);display:flex;align-items:center;justify-content:center;text-decoration:none;animation:waPulse 2s ease-in-out infinite;}
-@keyframes waPulse{0%{box-shadow:0 0 0 0 rgba(37,211,102,.6);}70%{box-shadow:0 0 0 16px rgba(37,211,102,0);}100%{box-shadow:0 0 0 0 rgba(37,211,102,0);}}
-.wa-float:active{transform:scale(.92);}
-.wa-float svg{width:28px;height:28px;}
-
-/* Loader */
-.loader-wrap{grid-column:1/-1;display:flex;justify-content:center;padding:3rem;}
-.loader{width:30px;height:30px;border-radius:50%;border:2px solid rgba(201,168,76,.2);border-top-color:var(--or);animation:spin .7s linear infinite;}
-@keyframes spin{to{transform:rotate(360deg)}}
+/* OFFRES */
+.offre-row-card{background:var(--glass);border:1px solid var(--bord);border-radius:12px;padding:1rem;margin-bottom:1rem;}
+.offre-badge{background:var(--or-d);color:#000;padding:.2rem .5rem;border-radius:4px;font-size:.6rem;font-weight:700;display:inline-block;margin-bottom:.5rem;}
 </style>
 </head>
 <body>
 
-<!-- SPLASH -->
-<div id="splash">
-  <div class="splash-txt">Bienvenue sur ma page Khaled Watch 😉</div>
-  <div class="splash-bar"></div>
-  <div class="splash-sub">Collection Prestige · Montres &amp; Bijoux</div>
-</div>
-
-<!-- FOND DYNAMIQUE -->
 <div id="bgLayer"></div>
 <div id="bgOverlay"></div>
 
-<!-- HEADER -->
 <header class="app-header">
-  <div class="logo-txt">KHALED WATCH</div>
-  <button class="btn-theme" id="btnTheme" onclick="toggleTheme()">☀ Clair</button>
+  <div class="logo-txt" onclick="window.location.reload()">KHALED WATCH</div>
+  <div id="authHeaderZone">
+    <button class="user-profile-header-btn" onclick="ouvrirEspaceCompte()">
+      <span style="font-size:.65rem; color:var(--or);">Mon Espace</span>
+    </button>
+  </div>
 </header>
 
-<!-- ======== PAGE ACCUEIL ======== -->
-<div id="page-home">
+<div id="main-hub">
   <div class="home-hero">
-    <div class="home-subtitle">Collection Prestige 2025</div>
-    <div class="home-title">Khaled Watch</div>
-    <div class="home-desc">Explorez notre sélection exclusive de montres &amp; bijoux de prestige.</div>
+    <div class="home-subtitle">Haute Horlogerie &amp; Joaillerie</div>
+    <div class="home-title">PRESTIGE</div>
+    <p class="home-desc">Découvrez l'élite des garde-temps et chaînes luxueuses à Cotonou. Accédez à vos privilèges VIP via votre profil personnalisé.</p>
   </div>
+
   <div class="cat-grid">
-    <div class="cat-card" onclick="openCat('Montres')"><div class="cat-icon">⌚</div><div class="cat-label">Montres</div><div class="cat-count" id="cnt-Montres">—</div></div>
-    <div class="cat-card" onclick="openCat('Montres Luxueuses')"><div class="cat-icon">💎</div><div class="cat-label">Montres Luxe</div><div class="cat-count" id="cnt-Montres Luxueuses">—</div></div>
-    <div class="cat-card" onclick="openCat('Chaînes')"><div class="cat-icon">⛓</div><div class="cat-label">Chaînes</div><div class="cat-count" id="cnt-Chaînes">—</div></div>
-    <div class="cat-card" onclick="openCat('Bracelets')"><div class="cat-icon">💫</div><div class="cat-label">Bracelets</div><div class="cat-count" id="cnt-Bracelets">—</div></div>
-    <div class="cat-card" onclick="openCat('Colliers')"><div class="cat-icon">📿</div><div class="cat-label">Colliers</div><div class="cat-count" id="cnt-Colliers">—</div></div>
-    <div class="cat-card" onclick="openCat('Bagues')"><div class="cat-icon">💍</div><div class="cat-label">Bagues</div><div class="cat-count" id="cnt-Bagues">—</div></div>
-    <div class="cat-card" onclick="openCat('Autres')"><div class="cat-icon">✨</div><div class="cat-label">Autres</div><div class="cat-count" id="cnt-Autres">—</div></div>
-    <!-- ICÔNE OFFRE -->
-    <div class="cat-card offre-card" onclick="openOffres()"><div class="cat-icon">🎁</div><div class="cat-label" style="color:#FFD700;">Offres</div><div class="cat-count" style="color:var(--or);">Promos &amp; Cadeaux</div></div>
+    <div class="cat-card" onclick="ouvrirCategorie('Montres')">
+      <span class="cat-icon">⌚</span><span class="cat-label">Montres</span>
+    </div>
+    <div class="cat-card" onclick="ouvrirCategorie('Chaînes')">
+      <span class="cat-icon">📿</span><span class="cat-label">Chaînes</span>
+    </div>
+    <div class="cat-card" onclick="navigationVueOffres()">
+      <span class="cat-icon">🎁</span><span class="cat-label">Offres</span>
+    </div>
   </div>
 </div>
 
-<!-- ======== PAGE CATÉGORIE ======== -->
 <div id="page-cat">
-  <div class="page-cat-header">
-    <div class="btn-back" onclick="goHome()">←</div>
-    <span class="cat-page-icon" id="catPageIcon"></span>
-    <div class="cat-page-title" id="catPageTitle"></div>
-  </div>
-  <div class="gender-tabs">
-    <button class="g-tab active" data-g="tous" onclick="setGender(this)">Tous</button>
-    <button class="g-tab" data-g="Homme" onclick="setGender(this)">Homme</button>
-    <button class="g-tab" data-g="Femme" onclick="setGender(this)">Femme</button>
-  </div>
-  <div class="prod-grid" id="prodGrid">
-    <div class="loader-wrap"><div class="loader"></div></div>
-  </div>
+  <button class="btn-gold-action" style="width:auto; padding:.4rem 1rem; margin-bottom:1rem;" onclick="retourHub()">← Retour</button>
+  <h2 class="cat-page-title" id="catTitleView" style="margin-bottom:1rem; text-transform:uppercase;"></h2>
+  <div class="prod-grid" id="productsDisplayGrid"></div>
 </div>
 
-<!-- ======== PAGE OFFRES ======== -->
 <div id="page-offre">
-  <div class="page-cat-header">
-    <div class="btn-back" onclick="goHome()">←</div>
-    <span class="cat-page-icon">🎁</span>
-    <div class="cat-page-title">Offres Spéciales</div>
+  <button class="btn-gold-action" style="width:auto; padding:.4rem 1rem; margin-bottom:1rem;" onclick="retourHub()">← Retour</button>
+  <h2 class="cat-page-title" style="margin-bottom:1rem;">🎁 PROGRAMME DE FIDÉLITÉ PRIVILÈGES</h2>
+  
+  <div class="offre-row-card">
+    <span class="offre-badge">PALIER 5 COMMANDES</span>
+    <h3>Livraison Gratuite Directe</h3>
+    <p style="font-size:.75rem; margin-top:.3rem; color:var(--txt2);">Dès votre 5ème commande validée par Khaled, la livraison à Cotonou devient entièrement gratuite sur tous vos achats en cours.</p>
   </div>
 
-  <div class="offre-hero">
-    <div class="offre-title">Récompenses &amp; Cadeaux</div>
-    <div class="offre-subtitle">Plus vous achetez, plus vous gagnez.<br>Des avantages exclusifs réservés à nos clients fidèles.</div>
-  </div>
-
-  <!-- PALIER LIVRAISON GRATUITE -->
-  <div class="offre-section">
-    <div class="offre-section-title">🚚 Livraison Gratuite</div>
-    <div class="offre-card">
-      <div class="offre-card-icon">🚚</div>
-      <div class="offre-card-body">
-        <div class="offre-badge">Dès le 1er achat</div>
-        <div class="offre-card-title">Livraison offerte partout au Bénin</div>
-        <div class="offre-card-desc">Chaque commande passée via WhatsApp bénéficie de la livraison gratuite à domicile sur Cotonou et ses environs.</div>
-        <button class="offre-cta" onclick="ctaOffre('Livraison gratuite')">Commander maintenant</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- PALIER 3 PRODUITS -->
-  <div class="offre-section">
-    <div class="offre-section-title">🎁 Cadeau dès 3 produits achetés</div>
-
-    <div class="offre-card">
-      <div class="offre-card-icon">🎬</div>
-      <div class="offre-card-body">
-        <div class="offre-badge">3 produits achetés</div>
-        <div class="offre-card-title">1 mois d'abonnement streaming offert</div>
-        <div class="offre-card-desc">Achetez 3 produits et choisissez votre abonnement streaming gratuit pendant 1 mois !</div>
-        <div class="stream-grid">
-          <div class="stream-pill" onclick="choixStream(this,'Netflix')"><span>🎬</span> Netflix</div>
-          <div class="stream-pill" onclick="choixStream(this,'Amazon Prime')"><span>📦</span> Amazon Prime</div>
-          <div class="stream-pill" onclick="choixStream(this,'Spotify')"><span>🎵</span> Spotify</div>
-          <div class="stream-pill" onclick="choixStream(this,'Apple Music')"><span>🎶</span> Apple Music</div>
-        </div>
-        <button class="offre-cta" id="btnStream" onclick="ctaStream()" style="margin-top:.9rem;">Je choisis mon cadeau</button>
-      </div>
-    </div>
-
-    <div class="offre-card">
-      <div class="offre-card-icon">💰</div>
-      <div class="offre-card-body">
-        <div class="offre-badge">Plus le produit est cher</div>
-        <div class="offre-card-title">Cadeau à la hauteur de votre achat</div>
-        <div class="offre-card-desc">
-          Les cadeaux s'adaptent au montant total de vos achats :<br><br>
-          <strong style="color:var(--or);">≥ 50 000 F</strong> → Spotify ou Apple Music 1 mois<br>
-          <strong style="color:var(--or);">≥ 100 000 F</strong> → Netflix ou Amazon Prime 1 mois<br>
-          <strong style="color:var(--or);">≥ 200 000 F</strong> → Abonnement au choix + réduction 10%
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- PALIER 5 PRODUITS -->
-  <div class="offre-section">
-    <div class="offre-section-title">🔥 Réduction dès 5 produits achetés</div>
-    <div class="offre-card">
-      <div class="offre-card-icon">🔥</div>
-      <div class="offre-card-body">
-        <div class="offre-badge">5 produits achetés</div>
-        <div class="offre-card-title">Réduction sur votre prochaine commande</div>
-        <div class="offre-card-desc">
-          Achetez 5 produits ou plus et profitez d'une réduction progressive :<br><br>
-          <strong style="color:var(--or);">5 produits</strong> → <strong style="color:#6fcf97;">-5%</strong> sur la prochaine commande<br>
-          <strong style="color:var(--or);">7 produits</strong> → <strong style="color:#6fcf97;">-10%</strong> sur la prochaine commande<br>
-          <strong style="color:var(--or);">10 produits</strong> → <strong style="color:#6fcf97;">-15%</strong> + cadeau surprise
-        </div>
-        <button class="offre-cta" onclick="ctaOffre('Réduction fidélité')">Profiter de l'offre</button>
-      </div>
-    </div>
-  </div>
-
-  <div style="padding:0 1rem 6rem;text-align:center;">
-    <div style="font-size:.65rem;color:var(--gris);line-height:1.8;letter-spacing:.06em;">
-      Les offres sont valables sur présentation de vos achats via WhatsApp.<br>
-      Contactez-nous pour valider votre cadeau.
-    </div>
+  <div class="offre-row-card" style="border-color:var(--or);">
+    <span class="offre-badge" style="background:var(--or);">PALIER 10 COMMANDES — VIP ÉLITE</span>
+    <h3>Abonnement de Streaming Premium Offert</h3>
+    <p style="font-size:.75rem; margin-top:.3rem; color:var(--txt2);">Devenez un membre de l'Élite. Obtenez 1 mois d'abonnement gratuit au choix (Netflix, Amazon Prime, Spotify, ou Apple Music) + Livraison Gratuite Illimitée.</p>
   </div>
 </div>
 
-<!-- BOTTOM NAV -->
-<nav class="bottom-nav">
-  <button class="nav-item active" id="nav-home" onclick="goHome()"><span class="nav-icon">🏠</span>Accueil</button>
-  <button class="nav-item" onclick="openCat('Montres')"><span class="nav-icon">⌚</span>Montres</button>
-  <button class="nav-item" onclick="openCat('Chaînes')"><span class="nav-icon">⛓</span>Chaînes</button>
-  <button class="nav-item" onclick="openCat('Bracelets')"><span class="nav-icon">💫</span>Bijoux</button>
-  <button class="nav-item nav-offre" onclick="openOffres()">
-    <span class="nav-icon">🎁</span>Offres
-    <div class="pulse-dot"></div>
-  </button>
-</nav>
+<div id="page-auth">
+  <div class="auth-box">
+    <h3 style="color:var(--or); margin-bottom:1rem; text-align:center;">Créer un profil / Se Connecter</h3>
+    <div id="authError" style="color:red; font-size:.7rem; margin-bottom:.5rem;"></div>
+    <input type="text" id="authUser" class="input-premium" placeholder="Nom d'utilisateur">
+    <input type="password" id="authPass" class="input-premium" placeholder="Mot de passe">
+    
+    <label style="font-size:.6rem; color:var(--gris); display:block; margin-bottom:.4rem;">PHOTO DE PROFIL (DEPUIS VOTRE GALERIE)</label>
+    <input type="file" id="authFile" accept="image/*" class="input-premium" style="padding:.4rem;">
+    
+    <button class="btn-gold-action" onclick="creerOuConnecterCompte()">Valider mon Compte Unique</button>
+  </div>
+</div>
 
-<!-- WHATSAPP -->
-<a class="wa-float" href="https://wa.me/2290169515730" target="_blank" rel="noopener">
-  <svg viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-</a>
+<div id="page-account">
+  <button class="btn-gold-action" style="width:auto; padding:.4rem 1rem; margin-bottom:1rem;" onclick="retourHub()">← Quitter</button>
+  <div class="auth-box" style="border-color:var(--or);">
+    <div style="text-align:center; margin-bottom:1rem;">
+      <img id="userDisplayAvatar" src="" style="width:70px; height:70px; border-radius:50%; object-fit:cover; border:2px solid var(--or);">
+      <h3 id="userDisplayName" style="color:var(--or); margin-top:.5rem;"></h3>
+      <span id="userDisplayStatus" style="font-size:.6rem; text-transform:uppercase; letter-spacing:.1em;"></span>
+    </div>
+
+    <label style="font-size:.6rem; letter-spacing:.1em; color:var(--or);"> Progression vers le Statut VIP Élite :</label>
+    <div class="gold-progress-track">
+      <div class="gold-progress-bar" id="userGoldBar"></div>
+    </div>
+    <p id="progressStatusLabel" style="font-size:.7rem; text-align:center; color:var(--txt2);"></p>
+  </div>
+</div>
+
+<div id="page-vip-claim">
+  <div class="auth-box" style="border-color: #9b59b6; text-align:center;">
+    <h2 style="font-family:'Cormorant Garamond'; color:var(--or); margin-bottom:1rem;">👑 ESPACE ÉLITE VIP : Réclamer Cadeau</h2>
+    <p style="font-size:.75rem; margin-bottom:1.5rem;">Félicitations, vous faites partie de l'élite Khaled Watch. Sélectionnez l'abonnement de 1 mois que vous désirez activer gratuitement :</p>
+    
+    <select id="vipGiftChoice" class="input-premium" style="background:#111;">
+      <option value="Netflix Gratuit 1 Mois">Netflix Premium (1 Mois)</option>
+      <option value="Amazon Prime Vidéo Gratuit 1 Mois">Amazon Prime Video (1 Mois)</option>
+      <option value="Spotify Premium Gratuit 1 Mois">Spotify Premium (1 Mois)</option>
+      <option value="Apple Musique Gratuit 1 Mois">Apple Music (1 Mois)</option>
+    </select>
+    
+    <button class="btn-gold-action" onclick="envoyerCommandeVipWhatsApp()">Commander via WhatsApp avec Livraison Offerte</button>
+  </div>
+</div>
 
 <script>
-const WA = '2290169515730';
-const CAT_ICONS = {'Montres':'⌚','Montres Luxueuses':'💎','Chaînes':'⛓','Bracelets':'💫','Colliers':'📿','Bagues':'💍','Autres':'✨'};
-const DEFAULT_BG = 'https://images.unsplash.com/photo-1548169874-53e85f753f1e?w=1600&q=85';
+// Remplacer automatiquement par les infos configurées dans l'admin
+const G_USER = "khaledwatch"; 
+const G_REPO = "premium-catalog"; 
+const WA_PHONE = "229XXXXXXXX"; // Votre numéro WhatsApp béninois
 
-let allProducts = [];
-let currentCat = '';
-let currentGender = 'tous';
-let selectedStream = '';
+let dbData = { prods: [], users: {}, design: {} };
+let sessionUser = null;
 
-/* ===== FOND CLIENT (défini par admin) ===== */
-function initClientBg(){
-  const saved = localStorage.getItem('kw-client-bg') || DEFAULT_BG;
-  document.getElementById('bgLayer').style.backgroundImage = `url('${saved}')`;
+async function syncLoadDatabase() {
+  const url = `https://api.github.com/repos/${G_USER}/${G_REPO}/contents/database.json`;
+  try {
+    let res = await fetch(url);
+    if(res.ok) {
+      let json = await res.json();
+      dbData = JSON.parse(atob(json.content));
+      appliquerDesignOptions();
+    }
+  } catch(e){ console.error(e); }
 }
 
-/* ===== HALO COULEUR BOXES (défini par admin) ===== */
-function initCardGlow(){
-  const color = localStorage.getItem('kw-card-glow') || 'rgba(201,168,76,0.25)';
-  document.documentElement.style.setProperty('--card-glow-color', color);
+function appliquerDesignOptions(){
+  if(!dbData.design) return;
+  const design = dbData.design;
+  
+  // Gestion intelligente adaptative des fonds d'écran selon l'appareil
+  const w = window.innerWidth;
+  let selectedBg = design.mobile;
+  if(w >= 1024 && design.pc) { selectedBg = design.pc; }
+  else if(w >= 600 && w < 1024 && design.tablet) { selectedBg = design.tablet; }
+  
+  if(selectedBg) {
+    document.getElementById('bgLayer').style.backgroundImage = `url('${selectedBg}')`;
+  }
+  
+  // Intensité de la brillance (Halo) des boxs
+  if(design.glow) {
+    document.documentElement.style.setProperty('--glow-blur', design.glow + 'px');
+  }
 }
 
-/* ===== CHARGEMENT PRODUITS ===== */
-async function loadProducts(){
-  try{
-    const r = await fetch('produits.json?t='+Date.now());
-    if(!r.ok) throw 0;
-    allProducts = await r.json();
-  }catch{ allProducts=[]; }
-  updateCounts();
+function verifierPersistanceConnexion(){
+  const local = localStorage.getItem('kw_logged_user');
+  if(local && dbData.users && dbData.users[local]) {
+    sessionUser = dbData.users[local];
+    modifierHeaderEspace();
+  }
 }
 
-function updateCounts(){
-  Object.keys(CAT_ICONS).forEach(c=>{
-    const el = document.getElementById('cnt-'+c);
-    if(!el) return;
-    const n = allProducts.filter(p=>p.categorie===c).length;
-    el.textContent = n+(n<=1?' article':' articles');
+function modifierHeaderEspace(){
+  if(sessionUser) {
+    document.getElementById('authHeaderZone').innerHTML = `
+      <div class="user-profile-header-btn" onclick="ouvrirEspaceCompte()">
+        <img src="${sessionUser.avatar}">
+        <span style="font-size:.65rem; color:var(--or); font-weight:600;">${sessionUser.username}</span>
+      </div>
+    `;
+  }
+}
+
+function ouvrirEspaceCompte(){
+  cacherToutesLesPages();
+  if(!sessionUser) {
+    document.getElementById('page-auth').style.display = 'block';
+  } else {
+    // Re-synchroniser les scores de l'utilisateur depuis l'admin
+    const freshUser = dbData.users[sessionUser.username];
+    if(freshUser) sessionUser = freshUser;
+
+    document.getElementById('page-account').style.display = 'block';
+    document.getElementById('userDisplayName').textContent = sessionUser.username;
+    document.getElementById('userDisplayAvatar').src = sessionUser.avatar;
+    
+    const score = sessionUser.achats || 0;
+    const pourcent = Math.min((score / 10) * 100, 100);
+    document.getElementById('userGoldBar').style.width = pourcent + '%';
+    
+    let label = `Commandes : ${score}/10. `;
+    if(score >= 10) {
+      label += "👑 Statut VIP Élite Activé !";
+      document.getElementById('userDisplayStatus').textContent = "Membre Élite VIP";
+      document.getElementById('userDisplayStatus').style.color = "var(--or)";
+    } else if(score >= 5) {
+      label += "🚚 Livraison gratuite à Cotonou activée !";
+      document.getElementById('userDisplayStatus').textContent = "Client Privilège";
+      document.getElementById('userDisplayStatus').style.color = "#6fcf97";
+    } else {
+      label += `Encore ${5 - score} achat(s) avant la livraison gratuite !`;
+      document.getElementById('userDisplayStatus').textContent = "Membre Standard";
+      document.getElementById('userDisplayStatus').style.color = "#fff";
+    }
+    document.getElementById('progressStatusLabel').innerHTML = label;
+  }
+}
+
+function creerOuConnecterCompte(){
+  const user = document.getElementById('authUser').value.trim();
+  const pass = document.getElementById('authPass').value.trim();
+  const fileInput = document.getElementById('authFile');
+  
+  if(!user || !pass) {
+    document.getElementById('authError').textContent = "Veuillez remplir les identifiants.";
+    return;
+  }
+  
+  // Si le client existe déjà dans la base distribuée
+  if(dbData.users && dbData.users[user]) {
+    if(dbData.users[user].password === pass) {
+      sessionUser = dbData.users[user];
+      localStorage.setItem('kw_logged_user', user);
+      modifierHeaderEspace();
+      ouvrirEspaceCompte();
+    } else {
+      document.getElementById('authError').textContent = "Mot de passe incorrect.";
+    }
+  } else {
+    // Inscription d'un nouveau compte avec photo
+    if(fileInput.files.length === 0) {
+      document.getElementById('authError').textContent = "Veuillez choisir une photo de profil.";
+      return;
+    }
+    
+    const reader = new FileReader();
+    reader.onload = async function(e) {
+      const base64Img = e.target.result;
+      
+      // Préparation du nouveau profil utilisateur autonome
+      const newProfile = { username: user, password: pass, avatar: base64Img, achats: 0, isVip: false };
+      
+      // Enregistrement asynchrone direct sur la db via proxy ou stockage local temporaire avant validation admin
+      dbData.users[user] = newProfile;
+      sessionUser = newProfile;
+      localStorage.setItem('kw_logged_user', user);
+      
+      // Simuler l'envoi immédiat ou informer Khaled
+      modifierHeaderEspace();
+      ouvrirEspaceCompte();
+      
+      // Envoi d'une alerte discrète WhatsApp pour création de compte
+      const msg = `Bonjour Khaled Watch, je viens de créer mon compte client sous le nom : *${user}*. Veuillez lier mes futures commandes !`;
+      window.open(`https://wa.me/${WA_PHONE}?text=${encodeURIComponent(msg)}`, '_blank');
+    };
+    reader.readAsDataURL(fileInput.files[0]);
+  }
+}
+
+function ouvrirCategorie(cat) {
+  cacherToutesLesPages();
+  document.getElementById('page-cat').style.display = 'block';
+  document.getElementById('catTitleView').textContent = cat;
+  
+  const grid = document.getElementById('productsDisplayGrid');
+  grid.innerHTML = '';
+  
+  const filtrer = dbData.prods.filter(p => p.cat === cat);
+  if(filtrer.length === 0) {
+    grid.innerHTML = '<p style="grid-column: 1/-1; text-align:center; color:var(--gris);">Aucun box disponible.</p>';
+    return;
+  }
+  
+  filtrer.forEach(p => {
+    // Construction dynamique des boutons pastilles de couleurs pour les photos
+    let colorSwatchesHtml = '';
+    p.variantes.forEach((v, index) => {
+      colorSwatchesHtml += `<span class="color-dot-selector ${index===0?'active':''}" style="background:${v.hex};" onclick="switchBoxImage(this, '${p.id}', '${v.url}', '${v.nom}')"></span>`;
+    });
+
+    grid.innerHTML += `
+      <div class="prod-card" id="card_${p.id}">
+        <img src="${p.variantes[0].url}" class="prod-img" id="img_${p.id}">
+        <div class="prod-body">
+          <h4 class="prod-name">${p.nom}</h4>
+          <div style="margin:.4rem 0;">${colorSwatchesHtml}</div>
+          <div style="font-size:10px; color:var(--gris); margin-bottom:.4rem;" id="variant_label_${p.id}">Couleur : ${p.variantes[0].nom}</div>
+          <div class="prod-price">${p.prix} <small>FCFA</small></div>
+          <button class="btn-gold-action" style="padding:.5rem; font-size:.65rem; margin-top:.5rem;" onclick="commanderProduitWhatsApp('${p.nom}', '${p.prix}')">Commander via WhatsApp</button>
+        </div>
+      </div>
+    `;
   });
 }
 
-/* ===== NAVIGATION ===== */
-function hideAll(){
-  document.getElementById('page-home').style.display='none';
-  document.getElementById('page-cat').style.display='none';
-  document.getElementById('page-offre').style.display='none';
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-}
-function goHome(){
-  hideAll();
-  document.getElementById('page-home').style.display='block';
-  document.getElementById('nav-home').classList.add('active');
-  window.scrollTo(0,0);
-}
-function openCat(cat){
-  currentCat=cat; currentGender='tous';
-  document.querySelectorAll('.g-tab').forEach(t=>t.classList.remove('active'));
-  document.querySelector('.g-tab[data-g="tous"]').classList.add('active');
-  document.getElementById('catPageTitle').textContent=cat;
-  document.getElementById('catPageIcon').textContent=CAT_ICONS[cat]||'✦';
-  hideAll();
-  document.getElementById('page-cat').style.display='block';
-  window.scrollTo(0,0);
-  renderProducts();
-}
-function openOffres(){
-  hideAll();
-  document.getElementById('page-offre').style.display='block';
-  window.scrollTo(0,0);
-}
-function setGender(btn){
-  document.querySelectorAll('.g-tab').forEach(t=>t.classList.remove('active'));
-  btn.classList.add('active');
-  currentGender=btn.dataset.g;
-  renderProducts();
+function switchBoxImage(element, prodId, url, nomCouleur) {
+  document.getElementById(`img_${prodId}`).src = url;
+  document.getElementById(`variant_label_${prodId}`).textContent = "Couleur : " + nomCouleur;
+  
+  // Activer la pastille sélectionnée
+  const parent = element.parentElement;
+  parent.querySelectorAll('.color-dot-selector').forEach(el => el.classList.remove('active'));
+  element.classList.add('active');
 }
 
-/* ===== RENDU PRODUITS AVEC COULEURS ===== */
-const WA_SVG=`<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>`;
-
-function buildColorSwatches(produit, colors){
-  if(!colors||!colors.length) return '';
-  const swatches = colors.map((c,i)=>`
-    <div class="color-swatch ${i===0?'active':''}"
-         style="background:${h(c.hex)};${c.image?'':'opacity:.85;'}"
-         title="${h(c.nom)}"
-         onclick="switchColor(this,'${js(produit.id)}',${i})"
-         data-img="${h(c.image||'')}"
-         data-nom="${h(c.nom)}">
-    </div>
-  `).join('');
-  return `<div class="color-section">
-    <div class="color-label">Couleurs disponibles</div>
-    <div class="color-swatches">${swatches}</div>
-  </div>`;
+function commanderProduitWhatsApp(nom, prix) {
+  let userLabel = sessionUser ? `Compte Client : *${sessionUser.username}*` : "Client Invité";
+  let livraisonMsg = (sessionUser && sessionUser.achats >= 5) ? "🎁 _Livraison Gratuite Cotonou Éligible_" : "_Livraison standard à Cotonou_";
+  
+  const msg = `Bonjour Khaled Watch 👋\n\nJe souhaite valider la commande du produit suivant :\n📦 Modèle : *${nom}*\n💰 Prix : *${prix} FCFA*\n👤 ${userLabel}\n🚚 ${livraisonMsg}\n\nMerci de valider l'achat sur mon espace d'administration !`;
+  window.open(`https://wa.me/${WA_PHONE}?text=${encodeURIComponent(msg)}`, '_blank');
 }
 
-function switchColor(swatch, prodId, idx){
-  const card = swatch.closest('.prod-card');
-  card.querySelectorAll('.color-swatch').forEach(s=>s.classList.remove('active'));
-  swatch.classList.add('active');
-  const img = swatch.dataset.img;
-  if(img){
-    const prodImg = card.querySelector('.prod-img');
-    prodImg.style.opacity='0';
-    setTimeout(()=>{ prodImg.src=img; prodImg.style.opacity='1'; },150);
-    prodImg.style.transition='opacity .15s';
+function envoyerCommandeVipWhatsApp(){
+  const choix = document.getElementById('vipGiftChoice').value;
+  const msg = `👑 *COMMANDE ÉLITE VIP KHALED WATCH* 👑\n\nBonjour Khaled, j'ai atteint le palier des 10 commandes. Je souhaite réclamer mon cadeau VIP d'abonnement :\n🎁 Cadeau Choisi : *${choix}*\n🚚 Avantage inclus : *Livraison Offerte Gratuite à Cotonou*\n👤 Nom d'utilisateur : *${sessionUser.username}*`;
+  window.open(`https://wa.me/${WA_PHONE}?text=${encodeURIComponent(msg)}`, '_blank');
+}
+
+function navigationVueOffres(){ cacherToutesLesPages(); document.getElementById('page-offre').style.display = 'block'; }
+function retourHub(){ cacherToutesLesPages(); document.getElementById('main-hub').style.display = 'block'; }
+function cacherToutesLesPages(){
+  document.getElementById('main-hub').style.display = 'none';
+  document.getElementById('page-cat').style.display = 'none';
+  document.getElementById('page-offre').style.display = 'none';
+  document.getElementById('page-auth').style.display = 'none';
+  document.getElementById('page-account').style.display = 'none';
+  document.getElementById('page-vip-claim').style.display = 'none';
+}
+
+window.onload = async function(){
+  await syncLoadDatabase();
+  verifierPersistanceConnexion();
+  
+  // Routeur automatique si le client a scanné le QR doré VIP
+  const params = new URLSearchParams(window.location.search);
+  if(params.get('view') === 'vip_claim') {
+    cacherToutesLesPages();
+    if(!sessionUser) {
+      ouvrirEspaceCompte();
+    } else if(sessionUser.achats >= 10) {
+      document.getElementById('page-vip-claim').style.display = 'block';
+    } else {
+      ouvrirEspaceCompte();
+    }
   }
-}
-
-function renderProducts(){
-  const grid = document.getElementById('prodGrid');
-  let list = allProducts.filter(p=>p.categorie===currentCat);
-  if(currentGender!=='tous') list=list.filter(p=>p.genre===currentGender);
-
-  if(!list.length){
-    grid.innerHTML=`<div class="empty-cat"><h3>Collection à venir</h3><p>Aucun produit dans cette catégorie pour le moment.<br>Revenez bientôt !</p></div>`;
-    return;
-  }
-
-  grid.innerHTML=list.map((p,i)=>{
-    const colors = p.couleurs && p.couleurs.length ? p.couleurs : [];
-    const mainImg = colors.length && colors[0].image ? colors[0].image : p.image;
-    return `
-    <div class="prod-card" style="animation-delay:${i*.06}s" data-id="${h(p.id||'')}">
-      <img class="prod-img" src="${h(mainImg)}" alt="${h(p.nom)}" loading="lazy"
-        onerror="this.src='https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=70'">
-      <div class="prod-body">
-        <div class="prod-badge">${h(p.categorie)}</div>
-        <div class="prod-name">${h(p.nom)}</div>
-        <div class="prod-genre">${h(p.genre||'')}</div>
-        ${buildColorSwatches(p, colors)}
-        <div class="prod-price">${fmt(p.prix)} <small>FCFA</small></div>
-        <button class="btn-wa" onclick="commander('${js(p.nom)}','${js(p.prix)}')">
-          ${WA_SVG} Commander
-        </button>
-      </div>
-    </div>`;
-  }).join('');
-}
-
-/* ===== COMMANDE WA ===== */
-function commander(nom,prix){
-  const msg=`Bonjour Khaled Watch 👋\n\nJe suis intéressé(e) par :\n✦ *${nom}*\n💰 Prix : ${fmt(prix)} FCFA\n\nPouvez-vous me donner plus d'informations ? Merci !`;
-  window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`,'_blank');
-}
-
-/* ===== OFFRES ===== */
-function choixStream(el, nom){
-  document.querySelectorAll('.stream-pill').forEach(p=>p.classList.remove('chosen'));
-  el.classList.add('chosen');
-  selectedStream=nom;
-  document.getElementById('btnStream').textContent=`Réclamer : ${nom} gratuit 1 mois`;
-}
-function ctaStream(){
-  const s=selectedStream||'un abonnement streaming';
-  const msg=`Bonjour Khaled Watch 👋\n\nJ'ai acheté 3 produits et je souhaite réclamer mon cadeau :\n🎁 *${s} gratuit 1 mois*\n\nMerci !`;
-  window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`,'_blank');
-}
-function ctaOffre(type){
-  const msg=`Bonjour Khaled Watch 👋\n\nJe souhaite profiter de l'offre : *${type}*\n\nPouvez-vous me donner plus d'informations ? Merci !`;
-  window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`,'_blank');
-}
-
-/* ===== THÈME ===== */
-function toggleTheme(){
-  const isLight=document.body.classList.toggle('light');
-  document.getElementById('btnTheme').textContent=isLight?'🌙 Sombre':'☀ Clair';
-  localStorage.setItem('kw-theme',isLight?'light':'dark');
-}
-if(localStorage.getItem('kw-theme')==='light'){
-  document.body.classList.add('light');
-  document.getElementById('btnTheme').textContent='🌙 Sombre';
-}
-
-/* ===== UTILS ===== */
-function h(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-function js(s){return String(s||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");}
-function fmt(n){return Number(n||0).toLocaleString('fr-FR');}
-
-/* ===== INIT ===== */
-initClientBg();
-initCardGlow();
-loadProducts();
+};
+window.onresize = appliquerDesignOptions;
 </script>
 </body>
 </html>
