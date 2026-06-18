@@ -264,6 +264,7 @@ input[type=color]{width:42px;height:38px;border:1px solid rgba(201,168,76,.3);bo
           <input type="color" id="cHex" value="#C9A84C">
           <span id="cHexVal" style="font-size:.7rem;color:var(--gris);margin-left:.3rem;">#C9A84C</span>
         </div>
+        
         <!-- Photo optionnelle pour cette couleur -->
         <div class="field" style="margin-bottom:.6rem;">
           <label>Photo pour cette couleur (optionnel)</label>
@@ -286,6 +287,15 @@ input[type=color]{width:42px;height:38px;border:1px solid rgba(201,168,76,.3);bo
         <button class="btn-gold btn-sm" onclick="addColor()">＋ Ajouter cette couleur</button>
       </div>
     </div>
+    <div class="form-group" style="margin-bottom: 15px;">
+    <label for="productGlowColor" style="color: #fff; display: block; margin-bottom: 5px;">Couleur du scintillement :</label>
+    <input type="color" id="productGlowColor" value="#ae946d" style="width: 100%; height: 40px; border: none; cursor: pointer;">
+</div>
+
+<div class="form-group" style="margin-bottom: 15px;">
+    <label for="productGlowIntensity" style="color: #fff; display: block; margin-bottom: 5px;">Intensité du scintillement : <span id="intensityValue" style="color: #ae946d;">1x</span></label>
+    <input type="range" id="productGlowIntensity" min="0.5" max="3" step="0.1" value="1" style="width: 100%;">
+</div>
 
     <button class="btn-gold" id="btnAdd" onclick="addProduct()">Publier sur GitHub</button>
   </div>
@@ -695,7 +705,45 @@ function fmt(n){return Number(n||0).toLocaleString('fr-FR');}
 
 // INIT
 initDesign();
+  // SYSTÈME DE CAPTURE DU SCINTILLEMENT POUR KHALED WATCH
+// Ce code s'exécute automatiquement dès que tu cliques sur ton bouton "Poster"
+document.addEventListener('click', function(e) {
+    // On vérifie si tu as cliqué sur un bouton dans ton formulaire
+    const btnEnregistrer = e.target.closest('button, input[type="submit"]');
+    if (!btnEnregistrer) return;
+
+    // 1. On récupère la couleur et l'intensité choisies sur ton admin
+    const couleurScintillement = document.getElementById('productGlowColor')?.value || '#ae946d';
+    const intensiteScintillement = document.getElementById('productGlowIntensity')?.value || '1';
+
+    // 2. On injecte AUTOMATIQUEMENT ces styles dans ton formulaire pour qu'ils soient sauvegardés
+    // On crée temporairement deux champs invisibles avec les valeurs pour ton script existant
+    let hiddenColor = document.getElementById('hidden_glow_color');
+    let hiddenIntensity = document.getElementById('hidden_glow_intensity');
+
+    if (!hiddenColor) {
+        hiddenColor = document.createElement('input');
+        hiddenColor.type = 'hidden';
+        hiddenColor.id = 'hidden_glow_color';
+        hiddenColor.name = 'couleur_scintillement'; // Clé qui sera envoyée
+        e.target.closest('form')?.appendChild(hiddenColor);
+    }
+    if (!hiddenIntensity) {
+        hiddenIntensity = document.createElement('input');
+        hiddenIntensity.type = 'hidden';
+        hiddenIntensity.id = 'hidden_glow_intensity';
+        hiddenIntensity.name = 'intensite_scintillement'; // Clé qui sera envoyée
+        e.target.closest('form')?.appendChild(hiddenIntensity);
+    }
+
+    hiddenColor.value = couleurScintillement;
+    hiddenIntensity.value = intensiteScintillement;
+});
 loadConfig();
+  // Ce code affiche la valeur du curseur en direct sur ton écran admin
+document.getElementById('productGlowIntensity').addEventListener('input', function(e) {
+    document.getElementById('intensityValue').innerText = e.target.value + 'x';
+});
 </script>
 </body>
 </html>
