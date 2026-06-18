@@ -238,27 +238,25 @@ body.light .nav-item{color:var(--gris);}
 @keyframes spin{to{transform:rotate(360deg)}}
   /* --- AMÉLIORATION DE L'AFFICHAGE DES PRODUITS SUR MOBILE --- */
 @media (max-width: 767px) {
-    
-    /* 1. On agrandit la box blanche qui contient la montre */
-    /* Remplace '.product-image-container' par le nom de ta classe actuelle si elle est différente */
-    .product-image-container, 
-    .product-card > div:first-child { 
-        height: 380px !important; /* Augmente la hauteur pour que la montre soit bien grande */
-        padding: 10px !important;  /* Ajoute un petit espace pour ne pas que la montre colle aux bords */
+    @media (max-width: 767px) {
+    /* On cible TOUTES les images qui se trouvent dans tes blocs de produits */
+    div[class*="card"] img, 
+    div[class*="product"] img, 
+    .product-card img,
+    img[src*="montre"] {
+        width: 100% !important;
+        height: auto !important;
+        max-height: 350px !important;
+        object-fit: contain !important; /* Force l'image à s'afficher en entier */
+    }
+
+    /* On force le conteneur de l'image à s'agrandir */
+    div[class*="image"], div[class*="img-container"] {
+        height: 380px !important;
         background-color: #ffffff !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
-    }
-
-    /* 2. On force l'image à s'afficher EN ENTIER (pas coupée, pas cachée) */
-    /* Remplace '.product-img' par le nom de ta classe d'image actuelle si besoin */
-    .product-img, 
-    .product-image-container img,
-    .product-card img {
-        width: 100% !important;
-        height: 100% !important;
-        object-fit: contain !important; /* La montre s'adapte parfaitement et devient 100% visible */
     }
 }
 </style>
