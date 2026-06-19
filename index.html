@@ -345,114 +345,55 @@ body.light .nav-item{color:var(--gris);}
     color: #888;
     font-style: italic;
 }
-  /* ==========================================================================
-   STUDIO VIRTUEL : MIX & MATCH + COMPARATEUR DE POIGNET
-   ========================================================================== */
-.studio-box {
-    background: rgba(255, 255, 255, 0.4) !important; /* Lumineux comme ton nouveau fond */
-    border: 1px solid rgba(174, 148, 109, 0.3);
-    border-radius: 16px;
-    padding: 20px;
-    margin: 20px auto;
-    max-width: 500px;
-    text-align: center;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-}
-
-.studio-title {
-    color: #000;
-    font-size: 18px;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 5px;
-}
-
-.studio-subtitle {
-    color: #555;
-    font-size: 13px;
-    margin-bottom: 20px;
-}
-
-/* Zone de visualisation du poignet */
-.studio-display {
-    position: relative;
-    width: 280px;
-    height: 220px;
-    margin: 0 auto 20px auto;
-    border: 2px dashed rgba(174, 148, 109, 0.4);
-    border-radius: 12px;
+/* --- STYLE DE LA GALERIE PLEIN ÉCRAN --- */
+.galerie-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.92); /* Fond noir transparent très classe */
+    z-index: 10000; /* Passe au-dessus de tout le reste */
     display: flex;
     justify-content: center;
     align-items: center;
-    background: rgba(255, 255, 255, 0.2);
-    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
 }
 
-/* Silhouette du poignet */
-.studio-poignet {
-    position: absolute;
-    width: 140px;
-    height: 180px;
-    border: 3px solid rgba(0, 0, 0, 0.1);
-    border-radius: 60px / 90px;
-    transition: transform 0.4s ease;
-    z-index: 1;
+.galerie-overlay.actif {
+    opacity: 1;
+    pointer-events: auto;
 }
 
-/* Emplacements des produits superposés sur le poignet */
-.slot-montre, .slot-bijou {
-    position: absolute;
-    max-width: 90px;
-    max-height: 90px;
-    object-fit: contain;
-    z-index: 2;
-    transition: all 0.3s ease;
-}
-
-/* Positionnement pour qu'ils s'associent joliment */
-.slot-montre { transform: translate(-20px, 0px); }
-.slot-bijou { transform: translate(30px, 10px); }
-
-/* Boutons de contrôle */
-.studio-controls {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin-bottom: 20px;
-}
-
-.studio-btn {
-    background: #1a1a1a;
-    color: #fff;
-    border: none;
-    padding: 8px 14px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 12px;
-    transition: all 0.3s;
-}
-
-.studio-btn.active {
-    background: #ae946d;
-    color: #000;
-    font-weight: bold;
-}
-
-.studio-order-btn {
-    background: #25d366;
-    color: white;
-    border: none;
-    padding: 12px 20px;
+.galerie-img {
+    max-width: 90%;
+    max-height: 80%;
     border-radius: 8px;
-    font-weight: bold;
-    cursor: pointer;
-    width: 100%;
-    display: none; /* Apparaît quand un combo est fait */
-    transition: background 0.3s;
+    box-shadow: 0 0 30px rgba(174, 148, 109, 0.3); /* Un léger halo doré autour de la grande image */
+    transform: scale(0.9);
+    transition: transform 0.4s ease;
 }
-.studio-order-btn:hover { background: #20ba59; }
 
+.galerie-overlay.actif .galerie-img {
+    transform: scale(1);
+}
+
+.galerie-close {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    color: #ae946d;
+    font-size: 35px;
+    font-weight: 300;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.galerie-close:hover {
+    transform: scale(1.1);
+}
 </style>
 </head>
 <body>
@@ -469,35 +410,21 @@ body.light .nav-item{color:var(--gris);}
 <div id="bgOverlay"></div>
 
 <!-- HEADER -->
-  <!-- STUDIO VIRTUEL KHALED WATCH -->
-<div class="studio-box">
-    <div class="studio-title">✨ Le Studio Khaled Watch</div>
-    <div class="studio-subtitle">Créez votre parure idéale et ajustez votre poignet</div>
-    
-    <!-- Zone Visuelle -->
-    <div class="studio-display">
-        <div id="studioPoignet" class="studio-poignet"></div>
-        <img id="slotMontre" class="slot-montre" src="" style="display: none;">
-        <img id="slotBijou" class="slot-bijou" src="" style="display: none;">
-    </div>
-
-    <!-- Contrôles du Poignet -->
-    <div class="studio-controls">
-        <button class="studio-btn" onclick="studioAjusterPoignet(0.8, this)">Poignet Fin</button>
-        <button class="studio-btn active" onclick="studioAjusterPoignet(1, this)">Normal</button>
-        <button class="studio-btn" onclick="studioAjusterPoignet(1.2, this)">Large</button>
-    </div>
-
-    <!-- Bouton commander le pack -->
-    <button id="studioOrderBtn" class="studio-order-btn" onclick="commanderParure()">
-        🛍️ Commander cette parure personnalisée
-    </button>
+<header class="app-header">
+  <div class="logo-txt">KHALED WATCH</div>
+  <button class="btn-theme" id="btnTheme" onclick="toggleTheme()">☀ Clair</button>
+</header>
+<!-- Boîte de la galerie (cachée par défaut) -->
+<div id="customGalerie" class="galerie-overlay">
+    <span class="galerie-close">&times;</span>
+    <img id="galerieTargetImg" class="galerie-img" src="" alt="Zoom Montre">
 </div>
+<!-- ======== PAGE ACCUEIL ======== -->
 <div id="page-home">
   <div class="home-hero">
     <div class="home-subtitle">Collection Prestige 2025</div>
     <div class="home-title">Khaled Watch</div>
-    <div class="home-desc">Explorez ma sélection exclusive de montres &amp; bijoux de prestige.</div>
+    <div class="home-desc">Explorez notre sélection exclusive de montres &amp; bijoux de prestige.</div>
   </div>
   <div class="cat-grid">
     <div class="cat-card" onclick="openCat('Montres')"><div class="cat-icon">⌚</div><div class="cat-label">Montres</div><div class="cat-count" id="cnt-Montres">—</div></div>
@@ -793,7 +720,7 @@ function renderProducts(){
     const mainImg = colors.length && colors[0].image ? colors[0].image : p.image;
     return `
     <div class="prod-card box-brillante-auto" style="animation-delay:${i*.06}s" data-id="${h(p.id||'')}">
-      <img class="prod-img" src="${h(mainImg)}" alt="${h(p.nom)}" loading="lazy"
+      <img class="prod-img" src="${h(mainImg)}" alt="${h(p.nom)}" loading="lazy"onclick="ouvrirGalerie('${h(mainImg)}')" style="cursor: pointer;"
         onerror="this.src='https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=70'">
       <div class="prod-body">
         <div class="prod-badge">${h(p.categorie)}</div>
@@ -802,13 +729,8 @@ function renderProducts(){
         ${buildColorSwatches(p, colors)}
         <div class="prod-price">${fmt(p.prix)} <small>FCFA</small></div>
         <button class="btn-wa" onclick="commander('${js(p.nom)}','${js(p.prix)}')">
-    ${WA_SVG} Commander
-</button>
-
-<button onclick="ajouterAuStudio('${js(p.nom)}', '${h(mainImg)}', (['Montres', 'Montres Luxueuses'].includes('${js(p.categorie)}') ? 'montre' : 'bijou'), '${js(p.prix)}')" style="background:#000; color:#ae946d; border:1px solid #ae946d; padding:8px; font-size:12px; margin-top:8px; cursor:pointer; width:100%; border-radius:4px; font-weight:bold;">
-    ✨ Essayer au poignet
-</button>
-
+          ${WA_SVG} Commander
+        </button>
       </div>
     </div>`;
   }).join('');
@@ -947,71 +869,36 @@ function openWatchGallery(productId) {
         },
     });
 }
-  // Variables pour stocker la parure en cours de création
-let parureActuelle = {
-    montre: { nom: "", prix: 0 },
-    bijou: { nom: "", prix: 0 }
-};
 
-// Fonction pour envoyer un produit dans le studio (Idée 4 : Mix & Match)
-function ajouterAuStudio(nom, imgUrl, type, prix) {
-    const slotImg = type === 'montre' ? document.getElementById('slotMontre') : document.getElementById('slotBijou');
+function closeGallery() {
+    document.getElementById('galleryModal').style.display = 'none';
+}
+  // Fonction pour ouvrir la galerie avec la bonne image
+function ouvrirGalerie(imageSrc) {
+    const galerie = document.getElementById('customGalerie');
+    const galerieImg = document.getElementById('galerieTargetImg');
     
-    // Nettoyage propre du prix (on retire les espaces et on convertit en nombre alternatif)
-    let prixNet = parseInt(prix.toString().replace(/\s/g, '')) || 0;
+    galerieImg.src = imageSrc; // On injecte l'image de la montre cliquée
+    galerie.classList.add('actif'); // On affiche la galerie
+}
 
-    // Mise à jour des données
-    parureActuelle[type].nom = nom;
-    parureActuelle[type].prix = prixNet;
-
-    // Mise à jour visuelle du slot
-    slotImg.src = imgUrl;
-    slotImg.style.display = 'block';
+// Code pour fermer la galerie quand on clique sur la croix ou sur le fond noir
+document.addEventListener('DOMContentLoaded', () => {
+    const galerie = document.getElementById('customGalerie');
+    const croix = document.querySelector('.galerie-close');
     
-    // Animation flash pop-up pour montrer que c'est chargé
-    slotImg.style.transform = type === 'montre' ? 'translate(-20px, 0px) scale(1.2)' : 'translate(30px, 10px) scale(1.2)';
-    setTimeout(() => {
-        slotImg.style.transform = type === 'montre' ? 'translate(-20px, 0px) scale(1)' : 'translate(30px, 10px) scale(1)';
-    }, 200);
-
-    // Afficher le bouton commander si au moins un élément est sélectionné
-    if(parureActuelle.montre.nom || parureActuelle.bijou.nom) {
-        document.getElementById('studioOrderBtn').style.display = 'block';
-    }
-}
-
-// Fonction pour ajuster la taille du poignet (Idée 2 : Comparateur)
-function studioAjusterPoignet(multiplicateur, boutonActive) {
-    const poignet = document.getElementById('studioPoignet');
-    poignet.style.transform = `scale(${multiplicateur})`;
-
-    // Style des boutons
-    const parents = boutonActive.parentElement.querySelectorAll('.studio-btn');
-    parents.forEach(btn => btn.classList.remove('active'));
-    boutonActive.classList.add('active');
-}
-
-// Fonction pour envoyer le combo final sur WhatsApp
-function commanderParure() {
-    let message = "Bonjour Khaled Watch ! 🔥\nJe viens de composer une parure sur votre Studio Virtuel :\n";
-    let total = 0;
-
-    if(parureActuelle.montre.nom) {
-        message += `- Montre : ${parureActuelle.montre.nom} (${parureActuelle.montre.prix} FCFA)\n`;
-        total += parureActuelle.montre.prix;
-    }
-    if(parureActuelle.bijou.nom) {
-        message += `- Bijou assorti : ${parureActuelle.bijou.nom} (${parureActuelle.bijou.prix} FCFA)\n`;
-        total += parureActuelle.bijou.prix;
-    }
-
-    message += `\n💰 Total Parure : ${total} FCFA\nEst-elle disponible ?`;
-
-    // Met ton vrai numéro WhatsApp à la place des X (ex: 22961XXXXXX)
-    const numeroWA = "229XXXXXXXX"; 
-    const url = `https://wa.me/${numeroWA}?text=${encodeURIComponent(message)}`;
-    window.open(url, '_blank');
-}
+    // Fermer avec la croix
+    croix.addEventListener('click', () => {
+        galerie.classList.remove('actif');
+    });
+    
+    // Fermer en cliquant n'importe où sur le fond noir
+    galerie.addEventListener('click', (e) => {
+        if (e.target === galerie) {
+            galerie.classList.remove('actif');
+        }
+    });
+});
   
 </script>
 </body>
