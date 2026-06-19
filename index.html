@@ -378,6 +378,34 @@ body.light-theme .prod-card, body[data-theme="light"] .prod-card {
     background: rgba(0, 0, 0, 0.7) !important;
     backdrop-filter: blur(10px) !important;
 }
+  @keyframes eclat-multicolore {
+    /* 0s à 20s : Doré Subtil */
+    0%, 25% {
+        box-shadow: 0 0 10px #ae946d;
+        border-color: rgba(174, 148, 109, 0.5);
+    }
+    /* 20s à 40s : Violet Léger */
+    33%, 58% {
+        box-shadow: 0 0 10px #8a2be2;
+        border-color: rgba(138, 43, 226, 0.5);
+    }
+    /* 40s à 60s : Vert Doux */
+    66%, 91% {
+        box-shadow: 0 0 10px #00ff7f;
+        border-color: rgba(0, 255, 127, 0.5);
+    }
+    /* Retour au Doré */
+    100% {
+        box-shadow: 0 0 10px #ae946d;
+        border-color: rgba(174, 148, 109, 0.5);
+    }
+}
+
+.box-brillante-auto {
+    animation: eclat-multicolore 60s infinite ease-in-out;
+    transition: all 0.5s ease-in-out;
+    border: 1px solid transparent;
+}
 
 </style>
 </head>
