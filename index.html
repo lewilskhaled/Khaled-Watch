@@ -345,6 +345,39 @@ body.light .nav-item{color:var(--gris);}
     color: #888;
     font-style: italic;
 }
+  /* --- CODE POUR RENDRE LE FOND TOTALEMENT VISIBLE ET PROPRE --- */
+
+/* 1. On applique ton image sur le body de façon fixe et centrée */
+body {
+    background-image: url('image.png') !important; /* Mets le nom exact de ton fichier image */
+    background-size: cover !important;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+    background-attachment: fixed !important;
+}
+
+/* 2. On rend les cartes produits transparentes pour laisser passer ton fond */
+.prod-card, .prod-body {
+    background: rgba(0, 0, 0, 0.4) !important; /* Un voile noir très léger pour que le texte reste lisible */
+    backdrop-filter: none !important; /* On retire le gros flou qui cache ton image */
+    -webkit-backdrop-filter: none !important;
+    border: 1px solid rgba(174, 148, 109, 0.2) !important; /* Une fine bordure dorée subtile */
+}
+
+/* 3. Adaptation automatique pour le MODE CLAIR */
+body.light-theme, body[data-theme="light"] {
+    /* On garde la MEME image de fond, mais on peut éclaircir très légèrement les cartes */
+}
+body.light-theme .prod-card, body[data-theme="light"] .prod-card {
+    background: rgba(255, 255, 255, 0.6) !important; /* Voile blanc ultra-léger en mode clair */
+    color: #000 !important;
+}
+
+/* 4. On s'assure que le menu du bas (navigation) ne cache pas tout */
+.bottom-nav, footer {
+    background: rgba(0, 0, 0, 0.7) !important;
+    backdrop-filter: blur(10px) !important;
+}
 
 </style>
 </head>
