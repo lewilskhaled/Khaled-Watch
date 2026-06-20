@@ -530,6 +530,28 @@ body.light .btn-theme{color:var(--or-d);}
 </style>
 </head>
 <body>
+  <!-- Fenêtre Plein Écran (Modale) pour voir le produit en grand -->
+<div id="productModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.9); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); z-index: 9999; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box;">
+    
+    <div style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; max-width: 500px; width: 100%; padding: 25px; box-sizing: border-box; position: relative; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.8);">
+        
+        <!-- Bouton Fermer -->
+        <span onclick="closeModal()" style="position: absolute; top: 15px; right: 20px; color: #fff; font-size: 2rem; cursor: pointer; text-shadow: 0 2px 10px #000;">&times;</span>
+        
+        <!-- Image en Grand -->
+        <div style="width: 100%; height: 300px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+            <img id="modalImg" src="" alt="" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+        </div>
+        
+        <!-- Infos du Produit -->
+        <h2 id="modalTitle" style="color: #fff; font-size: 1.8rem; margin: 10px 0; text-shadow: 1px 1px 5px #000; letter-spacing: 1px;"></h2>
+        <div id="modalPrice" style="color: #e7c996; font-size: 1.5rem; font-weight: bold; margin-bottom: 15px; text-shadow: 1px 1px 3px #000;"></div>
+        <p id="modalDesc" style="color: #ccc; font-size: 1rem; line-height: 1.5; margin-bottom: 20px; text-shadow: 1px 1px 2px #000; max-height: 100px; overflow-y: auto;"></p>
+        
+        <!-- Bouton d'action -->
+        <a id="modalOrderBtn" href="#" style="display: block; background: #25d366; color: white; text-decoration: none; padding: 14px; border-radius: 10px; font-weight: bold; font-size: 1.1rem; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);">🟢 Commander ce modèle</a>
+    </div>
+</div>
   <!-- Fichiers audio de haute qualité pré-configurés -->
 <audio id="bgMusic" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" loop></audio>
 <audio id="clickSound" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-84.wav" preload="auto"></audio>
@@ -1027,6 +1049,44 @@ function closeGallery() {
         event.target.classList.add('active');
     }
     renderProducts(cat);
+}
+  // Fonction pour ouvrir la fenêtre et afficher les détails en grand
+function openModal(boxElement) {
+    // Récupère les données directement depuis la box cliquée
+    const imgUrl = boxElement.querySelector('img').src;
+    const title = boxElement.querySelector('.product-title')?.innerText || boxElement.querySelector('h3')?.innerText || "Produit";
+    const price = boxElement.querySelector('.product-price')?.innerText || boxElement.querySelector('p')?.innerText || "";
+    
+    // Si tu as une description cachée ou un attribut data-desc, on le prend, sinon texte par défaut
+    const desc = boxElement.getAttribute('data-description') || "Modèle exclusif de la collection Khaled Watch disponible immédiatement à Cotonou.";
+
+    // Injecte les infos dans la fenêtre grand écran
+    document.getElementById('modalImg').src = imgUrl;
+    document.getElementById('modalTitle').innerText = title;
+    document.getElementById('modalPrice').innerText = price;
+    document.getElementById('modalDesc').innerText = desc;
+    
+    // Configure le lien du bouton WhatsApp (récupère l'ancien lien de la box si existant)
+    const oldBtn = boxElement.querySelector('a');
+    if (oldBtn) {
+        document.getElementById('modalOrderBtn').href = oldBtn.href;
+    }
+
+    // Affiche la fenêtre avec un effet flex
+    document.getElementById('productModal').style.display = 'flex';
+}
+
+// Fonction pour fermer la fenêtre
+function closeModal() {
+    document.getElementById('productModal').style.display = 'none';
+}
+
+// Ferme aussi si le client clique n'importe où en dehors du cadre
+window.onclick = function(event) {
+    const modal = document.getElementById('productModal');
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
 }
   
 </script>
