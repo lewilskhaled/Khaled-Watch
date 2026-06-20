@@ -530,6 +530,9 @@ body.light .btn-theme{color:var(--or-d);}
 </style>
 </head>
 <body>
+  <!-- Fichiers audio de haute qualité pré-configurés -->
+<audio id="bgMusic" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" loop></audio>
+<audio id="clickSound" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-84.wav" preload="auto"></audio>
 
 <!-- SPLASH -->
 <div id="splash">
@@ -1001,6 +1004,29 @@ function openWatchGallery(productId) {
 
 function closeGallery() {
     document.getElementById('galleryModal').style.display = 'none';
+}
+  function filterCategory(cat) {
+    // 1. Déclenche le petit bruit mécanique au clic
+    const soundClick = document.getElementById('clickSound');
+    if (soundClick) {
+        soundClick.currentTime = 0;
+        soundClick.volume = 0.4; // Volume discret
+        soundClick.play().catch(e => console.log("Audio bloqué"));
+    }
+
+    // 2. Lance la musique de fond en douceur au tout premier clic du client
+    const bgMusic = document.getElementById('bgMusic');
+    if (bgMusic && bgMusic.paused) {
+        bgMusic.volume = 0.15; // Volume de fond très léger (15%) pour rester luxe
+        bgMusic.play().catch(e => console.log("En attente d'interaction"));
+    }
+
+    // 3. Ton code de filtrage classique qui change les produits
+    document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+    if (event && event.target) {
+        event.target.classList.add('active');
+    }
+    renderProducts(cat);
 }
   
 </script>
