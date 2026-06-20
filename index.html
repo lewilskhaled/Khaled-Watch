@@ -458,6 +458,47 @@ body.light-theme .prod-card, body[data-theme="light"] .prod-card {
   -webkit-tap-highlight-color:transparent;transition:background .25s;
 }
 body.light .btn-theme{color:var(--or-d);}
+  /* --- LE LOGO KHALED WATCH : SCINTILLEMENT DORÉ CONTINU --- */
+.logo-khaled {
+    font-size: 2.5rem; /* Taille imposante et luxueuse */
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 4px; /* Donne de l'espace pour un look premium */
+    text-align: center;
+    margin: 20px auto;
+    display: block;
+    
+    /* Dégradé de texture dorée avec le reflet brillant au centre (le blanc) */
+    background: linear-gradient(
+        90deg, 
+        #b9935a 0%, 
+        #e7c996 25%, 
+        #ffffff 50%, 
+        #e7c996 75%, 
+        #b9935a 100%
+    );
+    background-size: 200% auto; /* Permet au reflet de voyager */
+    
+    /* Masque pour appliquer le dégradé uniquement sur le texte */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    
+    /* Ombrage fluide à l'arrière pour détacher le logo du fond */
+    filter: drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.7));
+    
+    /* Animation fluide et continue */
+    animation: goldShimmer 3.5s linear infinite;
+}
+
+/* L'animation @keyframes qui fait traverser le reflet de gauche à droite */
+@keyframes goldShimmer {
+    0% {
+        background-position: 200% center;
+    }
+    100% {
+        background-position: 0% center;
+    }
+}
 
 </style>
 </head>
