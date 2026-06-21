@@ -188,9 +188,15 @@ body.light .prod-card{background:rgba(255,255,255,.35);border-color:rgba(139,105
 }
 
 /* Zone image */
-.prod-img-zone{width:100%;height:200px;overflow:hidden;background:rgba(0,0,0,.2);display:flex;align-items:center;justify-content:center;position:relative;}
-@media(min-width:400px){.prod-img-zone{height:220px;}}
-.prod-img{width:100%;height:100%;object-fit:contain;display:block;padding:10px;transition:transform .4s,opacity .22s;}
+.prod-img-zone{
+  width:100%;height:240px;overflow:hidden;
+  background:linear-gradient(145deg,rgba(201,168,76,.08) 0%,rgba(139,105,20,.12) 50%,rgba(201,168,76,.06) 100%);
+  border-bottom:1px solid rgba(201,168,76,.2);
+  display:flex;align-items:center;justify-content:center;position:relative;
+}
+@media(min-width:400px){.prod-img-zone{height:260px;}}
+@media(min-width:600px){.prod-img-zone{height:280px;}}
+.prod-img{width:100%;height:100%;object-fit:contain;display:block;padding:6px;transition:transform .4s,opacity .22s;}
 .prod-card:hover .prod-img{transform:scale(1.05);}
 
 /* Corps */
@@ -220,7 +226,8 @@ body.light .prod-badge{color:var(--or-d);background:rgba(255,255,255,.4);}
 #prodModal{
   position:fixed;inset:0;z-index:9000;
   display:none;flex-direction:column;
-  background:rgba(0,0,0,.97);
+  /* Fond doré sombre — luxueux, pas noir pur */
+  background:linear-gradient(160deg,rgba(20,14,3,.97) 0%,rgba(35,22,2,.95) 40%,rgba(20,14,3,.98) 100%);
   backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
   overflow:hidden;
 }
@@ -230,8 +237,8 @@ body.light .prod-badge{color:var(--or-d);background:rgba(255,255,255,.4);}
 .modal-topbar{
   display:flex;align-items:center;justify-content:space-between;
   padding:.85rem 1rem;
-  background:rgba(0,0,0,.6);
-  border-bottom:1px solid rgba(201,168,76,.3);
+  background:rgba(30,18,2,.75);
+  border-bottom:1px solid rgba(201,168,76,.4);
   flex-shrink:0;z-index:2;
 }
 .modal-close-btn{
@@ -269,16 +276,21 @@ body.light .prod-badge{color:var(--or-d);background:rgba(255,255,255,.4);}
 .modal-img-wrap{
   flex:0 0 auto;
   width:100%;
-  height:clamp(250px,55vw,420px);
-  background:#000;
+  /* Beaucoup plus grande que dans la box */
+  height:clamp(300px,65vw,520px);
+  /* Fond doré transparent luxueux */
+  background:linear-gradient(145deg,rgba(201,168,76,.1) 0%,rgba(139,105,20,.15) 50%,rgba(201,168,76,.08) 100%);
+  border-bottom:1px solid rgba(201,168,76,.25);
   display:flex;align-items:center;justify-content:center;
   position:relative;
-  padding:12px;
+  padding:8px;
 }
 .modal-img-wrap img{
   max-width:100%;max-height:100%;
   object-fit:contain;
   border-radius:8px;
+  /* Légère ombre pour détacher le produit du fond */
+  filter:drop-shadow(0 4px 20px rgba(201,168,76,.15));
 }
 
 /* Miniatures couleurs (swipe image) */
@@ -298,6 +310,7 @@ body.light .prod-badge{color:var(--or-d);background:rgba(255,255,255,.4);}
 /* Infos produit */
 .modal-info{
   flex:1;padding:1rem 1.1rem calc(var(--safe-bottom) + 1rem);
+  background:rgba(20,12,2,.6);
 }
 .modal-badge{
   font-size:.54rem;letter-spacing:.2em;text-transform:uppercase;
