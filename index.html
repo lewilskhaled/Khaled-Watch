@@ -276,8 +276,8 @@ body.light .prod-badge{color:var(--or-d);background:rgba(255,255,255,.4);}
 .modal-img-wrap{
   flex:0 0 auto;
   width:100%;
-  /* Beaucoup plus grande que dans la box */
-  height:clamp(300px,65vw,520px);
+  /* Grande — bien visible sans être trop grande */
+  height:clamp(340px,72vw,580px);
   /* Fond doré transparent luxueux */
   background:linear-gradient(145deg,rgba(201,168,76,.1) 0%,rgba(139,105,20,.15) 50%,rgba(201,168,76,.08) 100%);
   border-bottom:1px solid rgba(201,168,76,.25);
@@ -402,6 +402,49 @@ body.light .nav-item.active{color:var(--or-d);}
 .loader-wrap{grid-column:1/-1;display:flex;justify-content:center;padding:3rem;}
 .loader{width:30px;height:30px;border-radius:50%;border:2px solid rgba(201,168,76,.2);border-top-color:var(--or);animation:spin .7s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
+
+/* ============================================================
+   360° VIEWER dans le modal
+   ============================================================ */
+/* Badge 360 */
+.badge360{
+  position:absolute;top:10px;left:10px;z-index:5;
+  background:rgba(0,0,0,.72);border:1px solid rgba(201,168,76,.6);
+  color:var(--or-l);font-size:.52rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;border-radius:8px;padding:.3rem .6rem;
+  text-align:center;line-height:1.4;
+  animation:badge360pulse 2s ease-in-out infinite;
+}
+.badge360 span{font-size:.44rem;opacity:.8;display:block;}
+@keyframes badge360pulse{0%,100%{box-shadow:0 0 6px rgba(201,168,76,.3);}50%{box-shadow:0 0 16px rgba(201,168,76,.6);}}
+
+/* Flèches 360 */
+.arr360{
+  position:absolute;top:50%;transform:translateY(-50%);z-index:5;
+  background:rgba(0,0,0,.6);border:1px solid rgba(201,168,76,.5);
+  color:var(--or-l);border-radius:50%;width:36px;height:36px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.2rem;font-weight:700;cursor:pointer;
+  -webkit-tap-highlight-color:transparent;transition:background .2s;
+}
+.arr360:active{background:rgba(201,168,76,.25);}
+.arr360-l{left:8px;}
+.arr360-r{right:8px;}
+
+/* Points d'angle 360 */
+.view360-dots{
+  position:absolute;bottom:8px;left:50%;transform:translateX(-50%);
+  display:flex;gap:5px;z-index:5;
+}
+.dot360{
+  width:6px;height:6px;border-radius:50%;
+  background:rgba(255,255,255,.3);cursor:pointer;
+  transition:background .2s,transform .2s;
+}
+.dot360.active{background:var(--or-l);transform:scale(1.4);}
+
+/* Curseur sur la zone 360 desktop */
+.modal-img-wrap[ontouchstart]{cursor:ew-resize;}
 </style>
 </head>
 <body>
@@ -721,14 +764,43 @@ function closeModal(){
   document.body.style.overflow = '';
 }
 
+/* =========================================================
+   360° — état par slide
+   ========================================================= */
+const view360 = {}; /* { slideIdx: { frames, cur, startX, active } } */
+
+/* Récupère tous les angles d'un produit + couleur active */
+function getAngles(p, colorIdx){
+  const c = (p.couleurs && p.couleurs[colorIdx]) || null;
+  const frames = [];
+  const push = src => { if(src && !frames.includes(src)) frames.push(src); };
+
+  if(c){
+    push(c.image || p.image);
+    push(c.img_gauche || p.img_gauche);
+    push(c.img_droit  || p.img_droit);
+    push(c.img_dos    || p.img_dos);
+  }
+  push(p.image);
+  push(p.img_gauche);
+  push(p.img_droit);
+  push(p.img_dos);
+  return frames.filter(Boolean).length ? frames.filter(Boolean) : [p.image || FALLBACK_IMG];
+}
+
 /* ---- Construit tous les slides de la liste courante ---- */
 function buildAllSlides(){
   const track = document.getElementById('modalTrack');
   const dots  = document.getElementById('modalDots');
 
   track.innerHTML = currentList.map((p, i) => {
-    const colors = p.couleurs && p.couleurs.length ? p.couleurs : [];
+    const colors  = p.couleurs && p.couleurs.length ? p.couleurs : [];
     const mainImg = colors.length && colors[0].image ? colors[0].image : (p.image || FALLBACK_IMG);
+    const frames  = getAngles(p, 0);
+    const has360  = frames.length > 1;
+
+    /* Init état 360 */
+    view360[i] = { frames, cur: 0, startX: 0, active: false, colorIdx: 0 };
 
     /* Bande de miniatures couleurs */
     const colorStrip = colors.length > 1 ? `
@@ -742,12 +814,34 @@ function buildAllSlides(){
         `).join('')}
       </div>` : '';
 
+    /* Indicateurs de points 360 */
+    const dots360 = has360 ? `
+      <div class="view360-dots" id="dots360-${i}">
+        ${frames.map((_,fi) => `<div class="dot360${fi===0?' active':''}" onclick="jumpAngle(${i},${fi})"></div>`).join('')}
+      </div>` : '';
+
+    /* Flèches 360 */
+    const arrows360 = has360 ? `
+      <button class="arr360 arr360-l" onclick="stepAngle(${i},-1)">‹</button>
+      <button class="arr360 arr360-r" onclick="stepAngle(${i},1)">›</button>` : '';
+
     return `
     <div class="modal-slide" data-slide="${i}">
-      <!-- Grande photo -->
-      <div class="modal-img-wrap">
+      <!-- Zone image avec 360° -->
+      <div class="modal-img-wrap" id="wrap360-${i}"
+           ${has360 ? `
+           ontouchstart="start360(event,${i})"
+           ontouchmove="move360(event,${i})"
+           ontouchend="end360(event,${i})"
+           onmousedown="mdown360(event,${i})"` : ''}>
+
         <img id="mimg-${i}" src="${h(mainImg)}" alt="${h(p.nom)}"
-             onerror="this.src='${FALLBACK_IMG}'">
+             onerror="this.src='${FALLBACK_IMG}'"
+             draggable="false">
+
+        ${has360 ? `<div class="badge360">🔄 360°<br><span>Glisser</span></div>` : ''}
+        ${arrows360}
+        ${dots360}
       </div>
 
       ${colorStrip}
@@ -767,12 +861,84 @@ function buildAllSlides(){
     </div>`;
   }).join('');
 
-  /* Points indicateurs */
+  /* Points indicateurs produits */
   dots.innerHTML = currentList.map((_,i) =>
     `<div class="modal-dot${i===modalIdx?' active':''}" onclick="goToSlide(${i},true)"></div>`
   ).join('');
 
   updateModalNav();
+  initMouseDrag360();
+}
+
+/* =========================================================
+   FONCTIONS 360°
+   ========================================================= */
+function showAngle(slideIdx, frameIdx){
+  const s = view360[slideIdx];
+  if(!s) return;
+  s.cur = ((frameIdx % s.frames.length) + s.frames.length) % s.frames.length;
+  const img = document.getElementById('mimg-' + slideIdx);
+  if(img){
+    img.style.opacity = '.7';
+    img.src = s.frames[s.cur];
+    img.onload = () => { img.style.opacity = '1'; };
+  }
+  /* Mettre à jour les points */
+  const dotsEl = document.getElementById('dots360-' + slideIdx);
+  if(dotsEl) dotsEl.querySelectorAll('.dot360').forEach((d,i) => d.classList.toggle('active', i===s.cur));
+}
+
+function stepAngle(slideIdx, dir){
+  const s = view360[slideIdx];
+  if(!s) return;
+  showAngle(slideIdx, s.cur + dir);
+}
+
+function jumpAngle(slideIdx, frameIdx){
+  showAngle(slideIdx, frameIdx);
+}
+
+/* Touch */
+function start360(e, idx){
+  const s = view360[idx];
+  if(!s || s.frames.length <= 1) return;
+  s.startX = e.touches[0].clientX;
+  s.active = true;
+}
+function move360(e, idx){
+  const s = view360[idx];
+  if(!s || !s.active || s.frames.length <= 1) return;
+  const dx = e.touches[0].clientX - s.startX;
+  /* Tous les 40px on change d'angle */
+  if(Math.abs(dx) > 40){
+    const dir = dx < 0 ? 1 : -1;
+    showAngle(idx, s.cur + dir);
+    s.startX = e.touches[0].clientX;
+    e.stopPropagation(); /* empêche le swipe produit */
+  }
+}
+function end360(e, idx){
+  const s = view360[idx];
+  if(s) s.active = false;
+}
+
+/* Souris desktop — initialisé après injection HTML */
+function initMouseDrag360(){
+  document.querySelectorAll('.modal-img-wrap[ontouchstart]').forEach(wrap => {
+    let down = false, startX = 0;
+    const idxStr = wrap.id?.replace('wrap360-','');
+    const idx = parseInt(idxStr);
+    wrap.addEventListener('mousedown', e => { down=true; startX=e.clientX; wrap.style.cursor='ew-resize'; });
+    window.addEventListener('mousemove', e => {
+      if(!down) return;
+      const dx = e.clientX - startX;
+      if(Math.abs(dx) > 35){
+        stepAngle(idx, dx < 0 ? 1 : -1);
+        startX = e.clientX;
+      }
+    });
+    window.addEventListener('mouseup', () => { down=false; wrap.style.cursor=''; });
+  });
 }
 
 /* ---- Navigation entre slides ---- */
