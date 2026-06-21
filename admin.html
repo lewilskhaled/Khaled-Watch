@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>KHALED WATCH — Admin</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -20,41 +19,58 @@
 html{-webkit-text-size-adjust:100%;}
 body{font-family:'Montserrat',sans-serif;background:var(--noir);color:var(--blanc);min-height:100vh;overflow-x:hidden;}
 .bg-fixed{position:fixed;inset:0;z-index:-2;background-size:cover;background-position:center;background-attachment:fixed;}
-.bg-overlay{position:fixed;inset:0;z-index:-1;background:linear-gradient(170deg,rgba(9,9,9,.93) 0%,rgba(9,9,9,.82) 100%);}
+.bg-overlay{position:fixed;inset:0;z-index:-1;background:linear-gradient(170deg,rgba(9,9,9,.93)0%,rgba(9,9,9,.82)100%);}
 
 /* HEADER */
 .hdr{position:sticky;top:0;z-index:200;background:rgba(6,6,6,.9);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--bord);padding:.85rem 1rem;display:flex;align-items:center;justify-content:space-between;}
-.hdr-logo{font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:700;letter-spacing:.12em;background:linear-gradient(130deg,var(--or-d),var(--or-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hdr-logo{font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:700;letter-spacing:.12em;background:linear-gradient(90deg,var(--or-d),var(--or-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .hdr-right{display:flex;align-items:center;gap:.5rem;}
-.badge-admin{font-size:.52rem;letter-spacing:.25em;color:var(--rouge);border:1px solid var(--rouge);border-radius:50px;padding:.2rem .55rem;text-transform:uppercase;}
-.btn-view{font-size:.58rem;letter-spacing:.12em;color:var(--or);text-decoration:none;text-transform:uppercase;border:1px solid var(--bord);padding:.32rem .75rem;border-radius:50px;-webkit-tap-highlight-color:transparent;}
+.badge-admin{font-size:.52rem;letter-spacing:.25em;color:#eb5757;border:1px solid #eb5757;border-radius:50px;padding:.2rem .55rem;text-transform:uppercase;font-weight:700;}
+.btn-view{font-size:.58rem;letter-spacing:.12em;color:var(--or-l);text-decoration:none;text-transform:uppercase;border:1px solid rgba(201,168,76,.5);padding:.32rem .75rem;border-radius:50px;font-weight:700;}
 
 /* TABS */
 .tabs{display:flex;border-bottom:1px solid var(--bord);background:rgba(0,0,0,.35);position:sticky;top:55px;z-index:100;overflow-x:auto;scrollbar-width:none;}
 .tabs::-webkit-scrollbar{display:none;}
-.tab{flex:none;padding:.75rem .9rem;font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gris);cursor:pointer;border:none;background:none;font-family:'Montserrat',sans-serif;border-bottom:2px solid transparent;-webkit-tap-highlight-color:transparent;transition:color .2s,border-color .2s;white-space:nowrap;}
+.tab{flex:none;padding:.75rem .9rem;font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:#B8AB92;cursor:pointer;border:none;background:none;font-family:'Montserrat',sans-serif;border-bottom:2px solid transparent;-webkit-tap-highlight-color:transparent;transition:color .2s,border-color .2s;white-space:nowrap;font-weight:600;}
 .tab.active{color:var(--or);border-bottom-color:var(--or);}
 
 /* SECTIONS */
-.section{display:none;padding:1rem 1rem calc(var(--safe-bottom) + 2rem);}
+.section{display:none;padding:1rem 1rem calc(var(--safe-bottom)+2rem);}
 .section.show{display:block;}
 
 /* CARD */
 .card{background:var(--glass);border:1px solid var(--bord);border-radius:14px;padding:1.2rem;margin-bottom:1.2rem;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);}
 .card-title{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:var(--or);margin-bottom:1rem;padding-bottom:.7rem;border-bottom:1px solid var(--bord);display:flex;align-items:center;gap:.4rem;}
+.card-sub{font-size:.65rem;color:#D0C4AA;margin-bottom:.8rem;line-height:1.7;padding:.5rem .7rem;background:rgba(0,0,0,.5);border-radius:8px;border-left:2px solid var(--or);font-weight:500;}
 
 /* FORM */
-.field{margin-bottom:.9rem;}
-label{display:block;font-size:.58rem;letter-spacing:.2em;color:var(--gris);text-transform:uppercase;margin-bottom:.4rem;}
-input[type=text],input[type=password],input[type=url],input[type=number],select,textarea{width:100%;background:rgba(0,0,0,.45);border:1px solid rgba(201,168,76,.2);border-radius:8px;color:var(--blanc);padding:.7rem .85rem;font-size:.85rem;font-family:'Montserrat',sans-serif;outline:none;transition:border .25s;-webkit-appearance:none;appearance:none;}
+.field{margin-bottom:.85rem;}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:.85rem;}
+label{display:block;font-size:.58rem;letter-spacing:.2em;color:#C8BDA0;text-transform:uppercase;margin-bottom:.38rem;font-weight:600;}
+input[type=text],input[type=password],input[type=url],input[type=number],input[type=datetime-local],select,textarea{
+  width:100%;background:rgba(0,0,0,.45);border:1px solid rgba(201,168,76,.2);border-radius:8px;
+  color:var(--blanc);padding:.7rem .85rem;font-size:.85rem;font-family:'Montserrat',sans-serif;
+  outline:none;transition:border .25s;-webkit-appearance:none;appearance:none;
+}
 input:focus,select:focus,textarea:focus{border-color:var(--or);}
 select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23C9A84C'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .85rem center;padding-right:2rem;}
 select option{background:#111;}
 
+/* Checkbox & toggle */
+.toggle-row{display:flex;align-items:center;gap:.7rem;padding:.5rem 0;}
+.toggle-row input[type=checkbox]{width:18px;height:18px;accent-color:var(--or);cursor:pointer;flex-shrink:0;}
+.toggle-row label{font-size:.72rem;color:var(--blanc);letter-spacing:.08em;margin-bottom:0;text-transform:none;cursor:pointer;}
+
+/* Mood checkboxes */
+.mood-checks{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.3rem;}
+.mood-check{display:flex;align-items:center;gap:.35rem;background:rgba(201,168,76,.07);border:1px solid rgba(201,168,76,.2);border-radius:50px;padding:.3rem .7rem;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:all .2s;}
+.mood-check.active{background:rgba(201,168,76,.18);border-color:var(--or);}
+.mood-check input{display:none;}
+.mood-check span{font-size:.65rem;color:var(--or-l);letter-spacing:.08em;font-weight:700;}
+
 .btn-gold{width:100%;padding:.85rem;background:linear-gradient(135deg,var(--or-d),var(--or));color:#000;border:none;border-radius:10px;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;font-weight:700;font-family:'Montserrat',sans-serif;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:opacity .25s,transform .15s;margin-top:.4rem;}
 .btn-gold:active{opacity:.82;transform:scale(.98);}
 .btn-gold:disabled{opacity:.45;cursor:not-allowed;}
-.btn-sm{padding:.5rem .85rem;font-size:.65rem;border-radius:8px;margin-top:0;}
 
 /* STATUS */
 .status{font-size:.7rem;padding:.65rem .9rem;border-radius:8px;margin-bottom:.85rem;display:none;line-height:1.5;}
@@ -63,78 +79,105 @@ select option{background:#111;}
 .status.load{background:rgba(201,168,76,.1);border:1px solid var(--bord);color:var(--or);display:block;}
 
 /* IMAGE SOURCE TABS */
-.img-source-tabs{display:flex;gap:.5rem;margin-bottom:.7rem;}
-.src-tab{flex:1;text-align:center;padding:.4rem;border-radius:8px;border:1px solid rgba(201,168,76,.2);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gris);cursor:pointer;background:transparent;font-family:'Montserrat',sans-serif;transition:all .2s;-webkit-tap-highlight-color:transparent;}
-.src-tab.active{background:rgba(201,168,76,.12);border-color:var(--or);color:var(--or);font-weight:700;}
-.drop-zone{border:2px dashed rgba(201,168,76,.3);border-radius:12px;padding:1.5rem 1rem;text-align:center;cursor:pointer;transition:all .25s;-webkit-tap-highlight-color:transparent;}
+.img-tabs{display:flex;gap:.45rem;margin-bottom:.55rem;}
+.img-tab{flex:1;text-align:center;padding:.38rem;border-radius:8px;border:1px solid rgba(201,168,76,.2);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gris);cursor:pointer;background:transparent;font-family:'Montserrat',sans-serif;transition:all .2s;-webkit-tap-highlight-color:transparent;}
+.img-tab.active{background:rgba(201,168,76,.12);border-color:var(--or);color:var(--or);font-weight:700;}
+
+/* DROP ZONE */
+.drop-zone{border:2px dashed rgba(201,168,76,.3);border-radius:10px;padding:1.2rem;text-align:center;cursor:pointer;transition:all .25s;-webkit-tap-highlight-color:transparent;}
 .drop-zone:hover,.drop-zone.drag-over{border-color:var(--or);background:rgba(201,168,76,.06);}
 .drop-zone input[type=file]{display:none;}
-.drop-icon{font-size:2rem;margin-bottom:.5rem;}
-.drop-txt{font-size:.7rem;color:var(--gris);line-height:1.6;}
-.drop-txt strong{color:var(--or);}
-.img-preview-wrap{margin-top:.7rem;text-align:center;display:none;}
-.img-preview-wrap img{max-height:130px;max-width:100%;border-radius:10px;border:1px solid var(--bord);object-fit:cover;}
-.img-filename{font-size:.6rem;color:var(--gris);margin-top:.35rem;}
+.drop-txt{font-size:.68rem;color:#C8BDA0;line-height:1.6;font-weight:500;}
+.drop-txt strong{color:var(--or-l);font-weight:700;}
+.img-preview{max-height:110px;max-width:100%;border-radius:8px;border:1px solid var(--bord);object-fit:contain;margin-top:.5rem;display:none;}
+.img-preview-wrap{text-align:center;}
 
-/* ===== COULEURS PRODUIT ===== */
+/* Champs 360° */
+.angles-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-top:.5rem;}
+.angle-block{background:rgba(0,0,0,.25);border:1px solid rgba(201,168,76,.12);border-radius:8px;padding:.7rem;}
+.angle-block label{font-size:.55rem;color:var(--or-l);letter-spacing:.15em;text-transform:uppercase;margin-bottom:.35rem;font-weight:700;text-shadow:0 0 10px rgba(201,168,76,.6);}
+
+/* COULEURS */
 .color-list{display:flex;flex-direction:column;gap:.5rem;margin-top:.5rem;}
-.color-row{display:flex;align-items:center;gap:.6rem;background:rgba(0,0,0,.3);border:1px solid rgba(201,168,76,.15);border-radius:8px;padding:.5rem .7rem;}
-.color-dot-preview{width:24px;height:24px;border-radius:50%;border:2px solid rgba(201,168,76,.4);flex-shrink:0;}
+.color-row{display:flex;align-items:center;gap:.65rem;background:rgba(0,0,0,.3);border:1px solid rgba(201,168,76,.12);border-radius:8px;padding:.5rem .65rem;}
+.color-dot{width:22px;height:22px;border-radius:50%;border:2px solid rgba(201,168,76,.4);flex-shrink:0;}
 .color-row-info{flex:1;min-width:0;}
-.color-row-name{font-size:.75rem;font-weight:600;}
-.color-row-hex{font-size:.58rem;color:var(--gris);}
-.btn-del-color{background:rgba(192,57,43,.15);border:1px solid rgba(192,57,43,.25);color:#eb5757;border-radius:6px;padding:.28rem .55rem;font-size:.62rem;cursor:pointer;-webkit-tap-highlight-color:transparent;font-family:'Montserrat',sans-serif;flex-shrink:0;}
+.color-row-name{font-size:.75rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#F0EBD8;}
+.color-row-hex{font-size:.58rem;color:#B8AB92;font-weight:500;}
+.btn-del-color{background:rgba(192,57,43,.15);border:1px solid rgba(192,57,43,.25);color:#eb5757;border-radius:6px;padding:.28rem .55rem;font-size:.6rem;cursor:pointer;-webkit-tap-highlight-color:transparent;font-family:'Montserrat',sans-serif;flex-shrink:0;}
 
-/* ADD COLOR FORM */
-.add-color-box{background:rgba(0,0,0,.25);border:1px solid rgba(201,168,76,.15);border-radius:10px;padding:.9rem;margin-top:.6rem;}
-.add-color-box .row3{display:grid;grid-template-columns:1fr 90px auto;gap:.5rem;align-items:end;}
-.color-picker-wrap{display:flex;align-items:center;gap:.5rem;}
-input[type=color]{width:42px;height:38px;border:1px solid rgba(201,168,76,.3);border-radius:6px;background:transparent;cursor:pointer;padding:2px;}
+.add-color-box{background:rgba(0,0,0,.22);border:1px solid rgba(201,168,76,.14);border-radius:10px;padding:.9rem;margin-top:.6rem;}
+.color-picker-row{display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem;}
+input[type=color]{width:40px;height:36px;border:1px solid rgba(201,168,76,.3);border-radius:6px;background:transparent;cursor:pointer;padding:2px;-webkit-appearance:none;appearance:none;}
+.btn-sm{padding:.5rem .85rem;font-size:.63rem;border-radius:8px;margin-top:0;}
 
 /* PRODUCT LIST */
-.prod-row{display:flex;align-items:center;gap:.75rem;background:rgba(0,0,0,.3);border:1px solid rgba(201,168,76,.1);border-radius:10px;padding:.65rem;margin-bottom:.55rem;transition:border-color .2s;}
+.prod-row{display:flex;align-items:center;gap:.75rem;background:rgba(0,0,0,.3);border:1px solid rgba(201,168,76,.1);border-radius:10px;padding:.65rem;margin-bottom:.5rem;transition:border-color .2s;}
 .prod-row:hover{border-color:rgba(201,168,76,.3);}
-.prod-row img{width:46px;height:46px;object-fit:cover;border-radius:7px;flex-shrink:0;background:var(--noir3);}
+.prod-row img{width:44px;height:44px;object-fit:contain;border-radius:6px;flex-shrink:0;background:var(--noir3);padding:2px;}
 .prod-row-info{flex:1;min-width:0;}
-.prod-row-name{font-size:.78rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.prod-row-meta{font-size:.58rem;color:var(--gris);margin-top:.12rem;}
-.prod-row-price{font-family:'Cormorant Garamond',serif;font-size:.92rem;color:var(--or);white-space:nowrap;margin-right:.2rem;}
-.btn-del{background:rgba(192,57,43,.15);border:1px solid rgba(192,57,43,.3);color:#eb5757;border-radius:7px;padding:.38rem .6rem;font-size:.7rem;font-family:'Montserrat',sans-serif;cursor:pointer;flex-shrink:0;-webkit-tap-highlight-color:transparent;transition:background .2s;font-weight:700;}
+.prod-row-name{font-size:.78rem;font-weight:700;color:#F0EBD8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.prod-row-meta{font-size:.56rem;color:#B8AB92;margin-top:.1rem;font-weight:500;}
+.prod-row-price{font-family:'Cormorant Garamond',serif;font-size:.9rem;color:var(--or);white-space:nowrap;}
+.btn-del{background:rgba(192,57,43,.15);border:1px solid rgba(192,57,43,.3);color:#eb5757;border-radius:7px;padding:.35rem .55rem;font-size:.68rem;font-family:'Montserrat',sans-serif;cursor:pointer;flex-shrink:0;-webkit-tap-highlight-color:transparent;font-weight:700;}
 .btn-del:active{background:rgba(192,57,43,.4);}
-.empty-list{text-align:center;padding:2.5rem 1rem;color:var(--gris);font-size:.78rem;line-height:1.6;}
+.empty-list{text-align:center;padding:2.5rem 1rem;color:#C8BDA0;font-size:.78rem;line-height:1.6;font-weight:500;}
 
 /* BG PICKER */
-.bg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem;margin-bottom:1rem;}
-.bg-thumb{aspect-ratio:16/9;border-radius:10px;overflow:hidden;border:2px solid transparent;cursor:pointer;transition:border-color .25s,transform .2s;position:relative;-webkit-tap-highlight-color:transparent;}
+.bg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;margin-bottom:.9rem;}
+.bg-thumb{aspect-ratio:16/9;border-radius:9px;overflow:hidden;border:2px solid transparent;cursor:pointer;transition:border-color .22s,transform .18s;position:relative;-webkit-tap-highlight-color:transparent;}
 .bg-thumb:hover{transform:scale(1.03);}
-.bg-thumb.selected{border-color:var(--or);box-shadow:0 0 16px rgba(201,168,76,.4);}
+.bg-thumb.selected{border-color:var(--or);box-shadow:0 0 14px rgba(201,168,76,.4);}
 .bg-thumb img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;}
-.bg-thumb .check{position:absolute;top:4px;right:4px;background:var(--or);border-radius:50%;width:18px;height:18px;display:none;align-items:center;justify-content:center;font-size:.6rem;color:#000;font-weight:900;}
+.bg-thumb .check{position:absolute;top:3px;right:3px;background:var(--or);border-radius:50%;width:16px;height:16px;display:none;align-items:center;justify-content:center;font-size:.55rem;color:#000;font-weight:900;}
 .bg-thumb.selected .check{display:flex;}
-.bg-upload-zone{border:2px dashed rgba(201,168,76,.3);border-radius:12px;padding:1.2rem;text-align:center;cursor:pointer;transition:all .25s;-webkit-tap-highlight-color:transparent;margin-top:.5rem;}
-.bg-upload-zone:hover{border-color:var(--or);background:rgba(201,168,76,.06);}
-.bg-upload-zone input{display:none;}
-.bg-upload-zone p{font-size:.7rem;color:var(--gris);margin-top:.4rem;}
-.bg-section-title{font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--or);margin:.8rem 0 .5rem;font-weight:700;}
 
-/* HALO COLOR PICKER */
-.halo-section{display:flex;align-items:center;gap:.8rem;flex-wrap:wrap;margin-top:.4rem;}
-.halo-presets{display:flex;flex-wrap:wrap;gap:.5rem;}
-.halo-preset{width:30px;height:30px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:all .2s;-webkit-tap-highlight-color:transparent;}
-.halo-preset:hover,.halo-preset.active{border-color:#fff;transform:scale(1.15);box-shadow:0 0 10px currentColor;}
+.bg-upload-zone{border:2px dashed rgba(201,168,76,.28);border-radius:10px;padding:1rem;text-align:center;cursor:pointer;transition:all .22s;-webkit-tap-highlight-color:transparent;}
+.bg-upload-zone:hover{border-color:var(--or);background:rgba(201,168,76,.05);}
+.bg-upload-zone input{display:none;}
+.bg-upload-zone p{font-size:.68rem;color:var(--gris);margin-top:.35rem;}
+
+/* HALO PICKER */
+.halo-presets{display:flex;flex-wrap:wrap;gap:.5rem;margin:.4rem 0;}
+.halo-dot{width:28px;height:28px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:all .2s;-webkit-tap-highlight-color:transparent;}
+.halo-dot.active{border-color:#fff;box-shadow:0 0 10px currentColor;transform:scale(1.15);}
+
+/* Intensité slider */
+input[type=range]{width:100%;accent-color:var(--or);cursor:pointer;}
+
+/* Halo preview */
+#haloPreview{width:100%;height:50px;border-radius:10px;border:1px solid var(--bord);margin-top:.6rem;}
+@keyframes haloDemo{
+  0%,100%{box-shadow:0 0 8px 2px var(--glow-color,rgba(201,168,76,.3)),inset 0 0 0 1px var(--glow-color,rgba(201,168,76,.15));}
+  50%{box-shadow:0 0 24px 6px var(--glow-color,rgba(201,168,76,.5)),inset 0 0 0 1px var(--glow-color,rgba(201,168,76,.3));}
+}
+#haloPreview{animation:haloDemo 2.5s ease-in-out infinite;}
 
 /* QR */
-.qr-box{text-align:center;padding:1.2rem;background:rgba(0,0,0,.3);border-radius:10px;border:1px solid var(--bord);}
-.qr-url{font-size:.58rem;color:var(--gris);margin-top:.7rem;word-break:break-all;line-height:1.6;}
+.qr-box{
+  text-align:center;padding:1.2rem;
+  background:rgba(0,0,0,.3);border-radius:10px;
+  border:1px solid var(--bord);
+}
+.qr-box img, .qr-box canvas{
+  border-radius:10px;
+  /* Assure que le QR s'affiche bien sur mobile */
+  max-width:100%;height:auto;
+}
+.qr-url{font-size:.58rem;color:var(--gris);margin-top:.65rem;word-break:break-all;line-height:1.6;}
 .mini-loader{display:inline-block;width:13px;height:13px;border:2px solid rgba(0,0,0,.2);border-top-color:#000;border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle;margin-right:5px;}
 @keyframes spin{to{transform:rotate(360deg)}}
-.prod-count{display:inline-block;background:rgba(201,168,76,.12);border:1px solid var(--bord);border-radius:50px;font-size:.56rem;color:var(--or);padding:.14rem .55rem;margin-left:.4rem;vertical-align:middle;}
+.prod-count{display:inline-block;background:rgba(201,168,76,.12);border:1px solid var(--bord);border-radius:50px;font-size:.55rem;color:var(--or);padding:.13rem .5rem;margin-left:.4rem;vertical-align:middle;}
+
+/* SECTION DIVIDER */
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--bord),transparent);margin:1rem 0;}
 </style>
 </head>
 <body>
 <div class="bg-fixed" id="bgFixed"></div>
 <div class="bg-overlay"></div>
 
+<!-- HEADER -->
 <header class="hdr">
   <div class="hdr-logo">KHALED WATCH</div>
   <div class="hdr-right">
@@ -142,44 +185,8 @@ input[type=color]{width:42px;height:38px;border:1px solid rgba(201,168,76,.3);bo
     <a class="btn-view" href="index.html">← Catalogue</a>
   </div>
 </header>
- <!-- Début du bloc QR Code Admin Violet -->
-<div class="qr-admin-container" style="
-    display: flex; 
-    flex-direction: column; 
-    align-items: center; 
-    justify-content: center; 
-    margin: 20px auto; 
-    padding: 20px; 
-    border: 2px solid #B44FFF; 
-    border-radius: 12px; 
-    background-color: #0d0d0d; 
-    max-width: 220px;
-    text-align: center;
-    box-shadow: 0 0 15px rgba(180, 79, 255, 0.2);
-">
-    <span style="
-        color: #B44FFF; 
-        font-family: sans-serif; 
-        font-size: 13px; 
-        font-weight: bold; 
-        margin-bottom: 12px;
-        letter-spacing: 0.5px;
-    ">ACCÈS MOBILE KHAlED-WATCH</span>
-    
-    <!-- Image du QR Code Violet avec le lien GitHub Pages -->
-    <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://lewilskhaled.github.io/Khaled-Watch/admin.html&color=B44FFF&bgcolor=0d0d0d" 
-         alt="QR Code Admin" 
-         style="border-radius: 6px; width: 180px; height: 180px;" />
-         
-    <span style="
-        color: #666; 
-        font-family: monospace; 
-        font-size: 9px; 
-        margin-top: 10px;
-        word-break: break-all;
-    ">https://lewilskhaled.github.io/Khaled-Watch/admin.html</span>
-</div>
-<!-- Fin du bloc QR Code Admin Violet -->
+
+<!-- TABS -->
 <div class="tabs">
   <button class="tab active" onclick="showTab('config')">⚙ Config</button>
   <button class="tab" onclick="showTab('add')">＋ Produit</button>
@@ -188,7 +195,9 @@ input[type=color]{width:42px;height:38px;border:1px solid rgba(201,168,76,.3);bo
   <button class="tab" onclick="showTab('qr')">📲 QR</button>
 </div>
 
-<!-- CONFIG -->
+<!-- =====================================================
+     CONFIG GITHUB
+     ===================================================== -->
 <div class="section show" id="sec-config">
   <div class="card">
     <div class="card-title">⚙ Accès GitHub</div>
@@ -200,91 +209,153 @@ input[type=color]{width:42px;height:38px;border:1px solid rgba(201,168,76,.3);bo
   </div>
 </div>
 
-<!-- AJOUTER PRODUIT -->
+<!-- =====================================================
+     AJOUTER PRODUIT
+     ===================================================== -->
 <div class="section" id="sec-add">
   <div class="card">
     <div class="card-title">＋ Nouveau Produit</div>
     <div id="st-add" class="status"></div>
+
+    <!-- Infos de base -->
     <div class="field"><label>Nom *</label><input type="text" id="fNom" placeholder="Montre Royal Gold"></div>
-    <div class="field"><label>Prix FCFA *</label><input type="number" id="fPrix" placeholder="75000" inputmode="numeric"></div>
-    <div class="field">
-      <label>Catégorie *</label>
-      <select id="fCat">
-        <option value="">— Sélectionner —</option>
-        <option>Montres</option><option>Montres Luxueuses</option><option>Chaînes</option>
-        <option>Bracelets</option><option>Colliers</option><option>Bagues</option><option>Autres</option>
-      </select>
+    <div class="field-row">
+      <div><label>Prix FCFA *</label><input type="number" id="fPrix" placeholder="75000" inputmode="numeric"></div>
+      <div>
+        <label>Halo Cadran</label>
+        <select id="fHalo">
+          <option value="or">🟡 Or</option>
+          <option value="argent">⚪ Argent</option>
+          <option value="sombre">⚫ Sombre</option>
+        </select>
+      </div>
     </div>
-    <div class="field">
-      <label>Genre *</label>
-      <select id="fGenre">
-        <option value="">— Sélectionner —</option>
-        <option>Homme</option><option>Femme</option><option>Unisexe</option>
-      </select>
+    <div class="field-row">
+      <div>
+        <label>Catégorie *</label>
+        <select id="fCat">
+          <option value="">— Choisir —</option>
+          <option>Montres</option><option>Montres Luxueuses</option><option>Chaînes</option>
+          <option>Bracelets</option><option>Colliers</option><option>Bagues</option><option>Autres</option>
+        </select>
+      </div>
+      <div>
+        <label>Genre *</label>
+        <select id="fGenre">
+          <option value="">— Choisir —</option>
+          <option>Homme</option><option>Femme</option><option>Unisexe</option>
+        </select>
+      </div>
     </div>
 
-    <!-- PHOTO PRINCIPALE -->
+    <!-- Choix du Patron -->
+    <div class="toggle-row">
+      <input type="checkbox" id="fPatron">
+      <label for="fPatron">⭐ Marquer comme "Choix du Patron" (animation dorée spéciale)</label>
+    </div>
+
+    <!-- Tags Humeur & Occasion -->
     <div class="field">
-      <label>Photo principale *</label>
-      <div class="img-source-tabs">
-        <button class="src-tab active" onclick="switchImgSrc('url',this)">🔗 URL</button>
-        <button class="src-tab" onclick="switchImgSrc('device',this)">📱 Appareil</button>
+      <label>Humeur &amp; Occasion</label>
+      <div class="mood-checks">
+        <div class="mood-check" onclick="toggleMood(this,'Business')"><span>💼 Business</span></div>
+        <div class="mood-check" onclick="toggleMood(this,'Gala')"><span>🥂 Gala</span></div>
+        <div class="mood-check" onclick="toggleMood(this,'Discret')"><span>🤫 Discret</span></div>
+        <div class="mood-check" onclick="toggleMood(this,'Cadeau')"><span>🎁 Cadeau</span></div>
       </div>
-      <div id="pane-url"><input type="url" id="fImage" placeholder="https://..." oninput="onUrlInput(this.value)"></div>
-      <div id="pane-device" style="display:none;">
-        <div class="drop-zone" onclick="document.getElementById('fileInput').click()" id="dropZone"
-             ondragover="event.preventDefault();this.classList.add('drag-over')"
-             ondragleave="this.classList.remove('drag-over')"
-             ondrop="handleDrop(event)">
-          <input type="file" id="fileInput" accept="image/*" onchange="handleFile(this.files[0])">
-          <div class="drop-icon">📷</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ===== PHOTO PRINCIPALE ===== -->
+    <div class="field">
+      <label>📷 Photo Principale *</label>
+      <div class="img-tabs">
+        <button class="img-tab active" onclick="switchImgSrc('url',this,'mainPane')">🔗 URL</button>
+        <button class="img-tab" onclick="switchImgSrc('device',this,'mainPane')">📱 Appareil</button>
+      </div>
+      <div id="mainPane-url"><input type="url" id="fImage" placeholder="https://..." oninput="previewField(this,'prevMain')"></div>
+      <div id="mainPane-device" style="display:none;">
+        <div class="drop-zone" onclick="document.getElementById('fileMain').click()">
+          <input type="file" id="fileMain" accept="image/*" onchange="handleFileField(this,'fImage','prevMain')">
           <div class="drop-txt"><strong>Appuyer pour choisir</strong><br>JPG · PNG · WEBP · max 2 Mo</div>
         </div>
       </div>
-      <div class="img-preview-wrap" id="previewWrap">
-        <img id="imgPrev" src="" alt="Aperçu">
-        <div class="img-filename" id="imgFilename"></div>
-        <button onclick="clearImage()" style="margin-top:.4rem;background:rgba(192,57,43,.15);border:1px solid rgba(192,57,43,.3);color:#eb5757;border-radius:6px;padding:.3rem .7rem;font-size:.6rem;cursor:pointer;font-family:'Montserrat',sans-serif;">✕ Effacer</button>
+      <div class="img-preview-wrap"><img id="prevMain" class="img-preview"></div>
+    </div>
+
+    <!-- ===== INSPECTEUR 360° ===== -->
+    <div class="card-sub">🔄 <strong>Inspecteur 360°</strong> — Le client peut faire glisser le doigt pour voir la montre sous tous les angles. Laissez vide pour désactiver.</div>
+    <div class="angles-grid">
+      <!-- Gauche -->
+      <div class="angle-block">
+        <label>⬅ Profil Gauche</label>
+        <div class="img-tabs">
+          <button class="img-tab active" onclick="switchImgSrc('url',this,'gPane')">🔗</button>
+          <button class="img-tab" onclick="switchImgSrc('device',this,'gPane')">📱</button>
+        </div>
+        <div id="gPane-url"><input type="url" id="fImgGauche" placeholder="URL profil gauche" oninput="previewField(this,'prevG')"></div>
+        <div id="gPane-device" style="display:none;"><div class="drop-zone" onclick="document.getElementById('fileG').click()"><input type="file" id="fileG" accept="image/*" onchange="handleFileField(this,'fImgGauche','prevG')"><div class="drop-txt"><strong>Choisir</strong></div></div></div>
+        <div class="img-preview-wrap"><img id="prevG" class="img-preview"></div>
+      </div>
+      <!-- Droit -->
+      <div class="angle-block">
+        <label>➡ Profil Droit</label>
+        <div class="img-tabs">
+          <button class="img-tab active" onclick="switchImgSrc('url',this,'dPane')">🔗</button>
+          <button class="img-tab" onclick="switchImgSrc('device',this,'dPane')">📱</button>
+        </div>
+        <div id="dPane-url"><input type="url" id="fImgDroit" placeholder="URL profil droit" oninput="previewField(this,'prevD')"></div>
+        <div id="dPane-device" style="display:none;"><div class="drop-zone" onclick="document.getElementById('fileD').click()"><input type="file" id="fileD" accept="image/*" onchange="handleFileField(this,'fImgDroit','prevD')"><div class="drop-txt"><strong>Choisir</strong></div></div></div>
+        <div class="img-preview-wrap"><img id="prevD" class="img-preview"></div>
+      </div>
+      <!-- Dos -->
+      <div class="angle-block">
+        <label>🔙 Vue Dos</label>
+        <div class="img-tabs">
+          <button class="img-tab active" onclick="switchImgSrc('url',this,'dosPane')">🔗</button>
+          <button class="img-tab" onclick="switchImgSrc('device',this,'dosPane')">📱</button>
+        </div>
+        <div id="dosPane-url"><input type="url" id="fImgDos" placeholder="URL vue dos" oninput="previewField(this,'prevDos')"></div>
+        <div id="dosPane-device" style="display:none;"><div class="drop-zone" onclick="document.getElementById('fileDos').click()"><input type="file" id="fileDos" accept="image/*" onchange="handleFileField(this,'fImgDos','prevDos')"><div class="drop-txt"><strong>Choisir</strong></div></div></div>
+        <div class="img-preview-wrap"><img id="prevDos" class="img-preview"></div>
       </div>
     </div>
 
-    <!-- COULEURS DISPONIBLES -->
+    <div class="divider"></div>
+
+    <!-- ===== VENTE FLASH ===== -->
+    <div class="card-sub">⚡ <strong>Vente Flash</strong> — Laissez vide pour désactiver. Le client verra un compte à rebours animé et le prix soldé.</div>
+    <div class="field-row">
+      <div><label>Réduction (FCFA)</label><input type="number" id="fFlashReduction" placeholder="5000" inputmode="numeric"></div>
+      <div><label>Fin de l'offre</label><input type="datetime-local" id="fFlashFin"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ===== COULEURS DISPONIBLES ===== -->
     <div class="field">
-      <label>🎨 Couleurs disponibles (optionnel)</label>
-      <div style="font-size:.62rem;color:var(--gris);margin-bottom:.6rem;line-height:1.6;">Ajoutez les couleurs du produit. Pour chaque couleur vous pouvez associer une photo différente.</div>
+      <label>🎨 Couleurs disponibles</label>
+      <div class="card-sub">Chaque couleur peut avoir ses propres angles 360°. Laissez les angles vides pour utiliser ceux de la photo principale.</div>
+      <div class="color-list" id="colorList"><div style="font-size:.65rem;color:var(--gris);text-align:center;padding:.5rem;">Aucune couleur.</div></div>
 
-      <div class="color-list" id="colorList"></div>
-
-      <!-- Formulaire ajout couleur -->
       <div class="add-color-box">
-        <div style="font-size:.6rem;letter-spacing:.15em;color:var(--or);text-transform:uppercase;margin-bottom:.6rem;">Ajouter une couleur</div>
-        <div class="field" style="margin-bottom:.5rem;"><label>Nom de la couleur</label><input type="text" id="cNom" placeholder="Or Rose, Noir, Argent…"></div>
-        <div class="color-picker-wrap" style="margin-bottom:.5rem;">
-          <label style="display:inline;margin-right:.5rem;">Couleur :</label>
+        <div style="font-size:.6rem;letter-spacing:.14em;color:var(--or);text-transform:uppercase;margin-bottom:.6rem;">Ajouter une couleur</div>
+        <div class="field" style="margin-bottom:.5rem;"><label>Nom de la couleur</label><input type="text" id="cNom" placeholder="Or Rose, Noir Mat…"></div>
+        <div class="color-picker-row">
           <input type="color" id="cHex" value="#C9A84C">
-          <span id="cHexVal" style="font-size:.7rem;color:var(--gris);margin-left:.3rem;">#C9A84C</span>
+          <span id="cHexVal" style="font-size:.7rem;color:var(--gris);">#C9A84C</span>
         </div>
-        
-        <!-- Photo optionnelle pour cette couleur -->
-        <div class="field" style="margin-bottom:.6rem;">
-          <label>Photo pour cette couleur (optionnel)</label>
-          <div class="img-source-tabs" style="margin-bottom:.4rem;">
-            <button class="src-tab active" onclick="switchColorImgSrc('url',this)">🔗 URL</button>
-            <button class="src-tab" onclick="switchColorImgSrc('device',this)">📱 Appareil</button>
-          </div>
-          <div id="cpane-url"><input type="url" id="cImage" placeholder="https://... (optionnel)" oninput="onColorUrlInput(this.value)"></div>
-          <div id="cpane-device" style="display:none;">
-            <div class="drop-zone" onclick="document.getElementById('cFileInput').click()" style="padding:1rem;">
-              <input type="file" id="cFileInput" accept="image/*" onchange="handleColorFile(this.files[0])">
-              <div class="drop-txt"><strong>Choisir photo</strong> pour cette couleur</div>
-            </div>
-          </div>
-          <div class="img-preview-wrap" id="cPreviewWrap">
-            <img id="cImgPrev" src="" alt="" style="max-height:80px;">
-            <button onclick="clearColorImg()" style="margin-top:.3rem;background:rgba(192,57,43,.12);border:1px solid rgba(192,57,43,.25);color:#eb5757;border-radius:5px;padding:.25rem .5rem;font-size:.58rem;cursor:pointer;font-family:'Montserrat',sans-serif;">✕</button>
-          </div>
+        <div class="field" style="margin-bottom:.5rem;"><label>Photo (URL ou Appareil)</label><input type="url" id="cImage" placeholder="https://..." oninput="previewField(this,'prevColor')"></div>
+        <div class="img-preview-wrap"><img id="prevColor" class="img-preview"></div>
+        <!-- Angles 360° pour cette couleur -->
+        <div style="font-size:.58rem;color:var(--gris);margin:.5rem 0 .35rem;letter-spacing:.1em;text-transform:uppercase;">Angles 360° (optionnel)</div>
+        <div class="angles-grid" style="margin-top:0;">
+          <div class="angle-block"><label>⬅ Gauche</label><input type="url" id="cImgGauche" placeholder="URL gauche"></div>
+          <div class="angle-block"><label>➡ Droit</label><input type="url" id="cImgDroit" placeholder="URL droit"></div>
+          <div class="angle-block"><label>🔙 Dos</label><input type="url" id="cImgDos" placeholder="URL dos"></div>
         </div>
-        <button class="btn-gold btn-sm" onclick="addColor()">＋ Ajouter cette couleur</button>
+        <button class="btn-gold btn-sm" onclick="addColor()" style="width:auto;padding:.5rem 1.2rem;margin-top:.6rem;">＋ Ajouter</button>
       </div>
     </div>
 
@@ -292,20 +363,24 @@ input[type=color]{width:42px;height:38px;border:1px solid rgba(201,168,76,.3);bo
   </div>
 </div>
 
-<!-- LISTE -->
+<!-- =====================================================
+     LISTE PRODUITS
+     ===================================================== -->
 <div class="section" id="sec-list">
   <div class="card">
     <div class="card-title">📦 Produits en ligne <span class="prod-count" id="prodCountBadge">0</span></div>
     <div id="st-list" class="status"></div>
     <button class="btn-gold" onclick="loadProducts()" style="margin-bottom:1rem;">↻ Actualiser</button>
-    <div id="prodList"><div class="empty-list">Configurez l'accès GitHub dans ⚙ Config.</div></div>
+    <div id="prodList"><div class="empty-list">Configurez GitHub dans ⚙ Config.</div></div>
   </div>
 </div>
 
-<!-- DESIGN -->
+<!-- =====================================================
+     DESIGN
+     ===================================================== -->
 <div class="section" id="sec-design">
 
-  <!-- FOND ADMIN -->
+  <!-- Fond Admin -->
   <div class="card">
     <div class="card-title">🖼 Fond Admin</div>
     <div class="bg-grid" id="bgGrid">
@@ -315,21 +390,17 @@ input[type=color]{width:42px;height:38px;border:1px solid rgba(201,168,76,.3);bo
       <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1591337676887-a217a6970a8a?w=1600&q=80" onclick="selectAdminBg(this)"><img src="https://images.unsplash.com/photo-1591337676887-a217a6970a8a?w=300&q=70" alt=""><div class="check">✓</div></div>
       <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1600&q=80" onclick="selectAdminBg(this)"><img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=300&q=70" alt=""><div class="check">✓</div></div>
       <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1462556791646-c201b8241a94?w=1600&q=80" onclick="selectAdminBg(this)"><img src="https://images.unsplash.com/photo-1462556791646-c201b8241a94?w=300&q=70" alt=""><div class="check">✓</div></div>
-      <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?w=1600&q=80" onclick="selectAdminBg(this)"><img src="https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?w=300&q=70" alt=""><div class="check">✓</div></div>
-      <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1533090161767-e6ffed986c88?w=1600&q=80" onclick="selectAdminBg(this)"><img src="https://images.unsplash.com/photo-1533090161767-e6ffed986c88?w=300&q=70" alt=""><div class="check">✓</div></div>
-      <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1489675567284-e6c56df80ada?w=1600&q=80" onclick="selectAdminBg(this)"><img src="https://images.unsplash.com/photo-1489675567284-e6c56df80ada?w=300&q=70" alt=""><div class="check">✓</div></div>
     </div>
     <div class="bg-upload-zone" onclick="document.getElementById('bgFileAdmin').click()">
       <input type="file" id="bgFileAdmin" accept="image/*" onchange="handleAdminBgUpload(this.files[0])">
-      <div style="font-size:1.6rem;">📁</div>
-      <p>Importer depuis mon appareil</p>
+      <div style="font-size:1.6rem;">📁</div><p>Importer depuis mon appareil</p>
     </div>
   </div>
 
-  <!-- FOND PAGE CLIENTS -->
+  <!-- Fond Clients -->
   <div class="card">
     <div class="card-title">🌐 Fond Page Clients</div>
-    <p style="font-size:.68rem;color:var(--gris);margin-bottom:1rem;line-height:1.7;">Ce fond sera affiché sur le catalogue visible par vos clients. Il est sauvegardé dans leur navigateur au premier chargement.</p>
+    <p style="font-size:.68rem;color:#C8BDA0;margin-bottom:.9rem;line-height:1.7;font-weight:500;">Ce fond s'affiche sur la page visible par vos clients. Il est mémorisé dans leur navigateur.</p>
     <div class="bg-grid" id="bgClientGrid">
       <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1548169874-53e85f753f1e?w=1600&q=80" onclick="selectClientBg(this)"><img src="https://images.unsplash.com/photo-1548169874-53e85f753f1e?w=300&q=70" alt=""><div class="check">✓</div></div>
       <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1566041510394-cf7c1b1edc13?w=1600&q=80" onclick="selectClientBg(this)"><img src="https://images.unsplash.com/photo-1566041510394-cf7c1b1edc13?w=300&q=70" alt=""><div class="check">✓</div></div>
@@ -337,255 +408,305 @@ input[type=color]{width:42px;height:38px;border:1px solid rgba(201,168,76,.3);bo
       <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1591337676887-a217a6970a8a?w=1600&q=80" onclick="selectClientBg(this)"><img src="https://images.unsplash.com/photo-1591337676887-a217a6970a8a?w=300&q=70" alt=""><div class="check">✓</div></div>
       <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1600&q=80" onclick="selectClientBg(this)"><img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=300&q=70" alt=""><div class="check">✓</div></div>
       <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1462556791646-c201b8241a94?w=1600&q=80" onclick="selectClientBg(this)"><img src="https://images.unsplash.com/photo-1462556791646-c201b8241a94?w=300&q=70" alt=""><div class="check">✓</div></div>
-      <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?w=1600&q=80" onclick="selectClientBg(this)"><img src="https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?w=300&q=70" alt=""><div class="check">✓</div></div>
-      <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1533090161767-e6ffed986c88?w=1600&q=80" onclick="selectClientBg(this)"><img src="https://images.unsplash.com/photo-1533090161767-e6ffed986c88?w=300&q=70" alt=""><div class="check">✓</div></div>
-      <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1489675567284-e6c56df80ada?w=1600&q=80" onclick="selectClientBg(this)"><img src="https://images.unsplash.com/photo-1489675567284-e6c56df80ada?w=300&q=70" alt=""><div class="check">✓</div></div>
     </div>
     <div class="bg-upload-zone" onclick="document.getElementById('bgFileClient').click()">
       <input type="file" id="bgFileClient" accept="image/*" onchange="handleClientBgUpload(this.files[0])">
-      <div style="font-size:1.6rem;">📁</div>
-      <p>Importer mon propre fond pour les clients</p>
-    </div>
-    <div id="clientBgPreview" style="margin-top:.8rem;display:none;">
-      <img id="clientBgImg" style="width:100%;border-radius:10px;border:2px solid var(--or);max-height:100px;object-fit:cover;" alt="">
+      <div style="font-size:1.6rem;">📁</div><p>Importer mon propre fond pour les clients</p>
     </div>
   </div>
 
-  <!-- COULEUR HALO BOXES -->
+  <!-- Teinte Verre Dépoli -->
   <div class="card">
-    <div class="card-title">✨ Couleur Halo des Boxes Produits</div>
-    <p style="font-size:.68rem;color:var(--gris);margin-bottom:.8rem;line-height:1.7;">Choisissez la couleur du brillant animé autour des cartes produits visibles par vos clients.</p>
-
-    <div class="halo-section">
-      <div class="halo-presets" id="haloPresets">
-        <div class="halo-preset active" style="background:#C9A84C;" data-color="rgba(201,168,76,0.4)" onclick="setHaloColor(this)" title="Or"></div>
-        <div class="halo-preset" style="background:#E8C97A;" data-color="rgba(232,201,122,0.45)" onclick="setHaloColor(this)" title="Or clair"></div>
-        <div class="halo-preset" style="background:#fff;" data-color="rgba(255,255,255,0.35)" onclick="setHaloColor(this)" title="Blanc"></div>
-        <div class="halo-preset" style="background:#4FC3F7;" data-color="rgba(79,195,247,0.4)" onclick="setHaloColor(this)" title="Bleu ciel"></div>
-        <div class="halo-preset" style="background:#CE93D8;" data-color="rgba(206,147,216,0.4)" onclick="setHaloColor(this)" title="Violet"></div>
-        <div class="halo-preset" style="background:#EF9A9A;" data-color="rgba(239,154,154,0.4)" onclick="setHaloColor(this)" title="Rose"></div>
-        <div class="halo-preset" style="background:#A5D6A7;" data-color="rgba(165,214,167,0.4)" onclick="setHaloColor(this)" title="Vert"></div>
-        <div class="halo-preset" style="background:#FF6F00;" data-color="rgba(255,111,0,0.4)" onclick="setHaloColor(this)" title="Orange"></div>
-        <div class="halo-preset" style="background:#F44336;" data-color="rgba(244,67,54,0.38)" onclick="setHaloColor(this)" title="Rouge"></div>
-      </div>
-      <div style="display:flex;align-items:center;gap:.5rem;margin-top:.6rem;">
-        <input type="color" id="haloCustom" value="#C9A84C" onchange="setHaloCustom(this.value)">
-        <span style="font-size:.65rem;color:var(--gris);">Couleur personnalisée</span>
-      </div>
+    <div class="card-title">🪟 Teinte Verre Dépoli (Clients)</div>
+    <p style="font-size:.68rem;color:#C8BDA0;margin-bottom:.9rem;line-height:1.7;font-weight:500;">Définit la teinte de couleur du glassmorphism sur la page client. La transparence et le flou sont conservés.</p>
+    <div class="field-row" style="align-items:end;">
+      <div><label>Couleur de teinte</label><input type="color" id="glassTintColor" value="#C9A84C" style="width:100%;height:42px;"></div>
+      <div><label>Opacité (0–30%)</label><input type="range" id="glassTintOpacity" min="0" max="30" value="6" oninput="updateGlassTint()"></div>
     </div>
+    <div style="font-size:.65rem;color:var(--gris);margin-top:.3rem;">Aperçu teinte : <span id="glassTintValue">rgba(201,168,76,0.06)</span></div>
+    <button class="btn-gold btn-sm" onclick="saveGlassTint()" style="width:auto;padding:.5rem 1.2rem;margin-top:.7rem;">Appliquer aux clients</button>
+  </div>
 
-    <div style="margin-top:.9rem;padding:.7rem;background:rgba(0,0,0,.3);border-radius:8px;border:1px solid var(--bord);">
-      <div style="font-size:.6rem;color:var(--gris);margin-bottom:.4rem;letter-spacing:.1em;text-transform:uppercase;">Aperçu du halo</div>
-      <div id="haloPreview" style="width:100%;height:50px;border-radius:10px;border:1px solid var(--bord);animation:haloDemo 2s ease-in-out infinite;"></div>
+  <!-- Halo Boxes -->
+  <div class="card">
+    <div class="card-title">✨ Halo des Boxes Produits</div>
+    <label style="margin-bottom:.4rem;">Couleur du brillant</label>
+    <div class="halo-presets" id="haloPresets">
+      <div class="halo-dot active" style="background:#C9A84C;" data-color="rgba(201,168,76,0.42)" onclick="setHalo(this)" title="Or"></div>
+      <div class="halo-dot" style="background:#E8C97A;" data-color="rgba(232,201,122,0.45)" onclick="setHalo(this)" title="Or clair"></div>
+      <div class="halo-dot" style="background:#fff;"    data-color="rgba(255,255,255,0.35)"   onclick="setHalo(this)" title="Blanc"></div>
+      <div class="halo-dot" style="background:#4FC3F7;" data-color="rgba(79,195,247,0.42)"    onclick="setHalo(this)" title="Bleu"></div>
+      <div class="halo-dot" style="background:#CE93D8;" data-color="rgba(206,147,216,0.42)"   onclick="setHalo(this)" title="Violet"></div>
+      <div class="halo-dot" style="background:#EF9A9A;" data-color="rgba(239,154,154,0.42)"   onclick="setHalo(this)" title="Rose"></div>
+      <div class="halo-dot" style="background:#A5D6A7;" data-color="rgba(165,214,167,0.42)"   onclick="setHalo(this)" title="Vert"></div>
+      <div class="halo-dot" style="background:#FF6F00;" data-color="rgba(255,111,0,0.42)"     onclick="setHalo(this)" title="Orange"></div>
+      <div class="halo-dot" style="background:#F44336;" data-color="rgba(244,67,54,0.4)"      onclick="setHalo(this)" title="Rouge"></div>
     </div>
-    <style>
-    @keyframes haloDemo{
-      0%,100%{box-shadow:0 0 8px 2px var(--card-glow-color,rgba(201,168,76,0.3)),inset 0 0 0 1px var(--card-glow-color,rgba(201,168,76,0.15));}
-      50%{box-shadow:0 0 24px 6px var(--card-glow-color,rgba(201,168,76,0.5)),inset 0 0 0 1px var(--card-glow-color,rgba(201,168,76,0.3));}
-    }
-    </style>
+    <div style="display:flex;align-items:center;gap:.5rem;margin:.4rem 0;">
+      <input type="color" id="haloCustom" value="#C9A84C" onchange="setHaloCustom(this.value)">
+      <span style="font-size:.65rem;color:var(--gris);">Couleur personnalisée</span>
+    </div>
+    <div class="field">
+      <label>Intensité du brillant — <span id="intensiteVal">1.0</span>×</label>
+      <input type="range" id="glowIntensity" min="0.2" max="3" step="0.1" value="1"
+             oninput="updateIntensity(this.value)">
+    </div>
+    <div id="haloPreview"></div>
   </div>
 
 </div>
 
-<!-- QR -->
+<!-- =====================================================
+     QR CODES
+     ===================================================== -->
 <div class="section" id="sec-qr">
+
+  <!-- QR CATALOGUE — vert citron — à distribuer aux clients -->
   <div class="card">
-    <div class="card-title">📲 QR Code Catalogue</div>
+    <div class="card-title" style="color:#C9A84C;">📲 QR Code Catalogue Clients</div>
+    <p style="font-size:.68rem;color:#C8BDA0;margin-bottom:.9rem;line-height:1.7;font-weight:500;">
+      QR code <strong style="color:#C9A84C;">doré</strong> — à imprimer et partager avec vos clients.
+      Pointe vers votre catalogue public.
+    </p>
     <div class="qr-box" id="qrBox"><div style="color:var(--gris);font-size:.78rem;">Configurez GitHub d'abord.</div></div>
+    <button class="btn-gold" onclick="telechargerQR('qrCanvas','qr-catalogue.png')" style="margin-top:.8rem;background:linear-gradient(135deg,#8B6914,#C9A84C);color:#000;">
+      ⬇ Télécharger QR Catalogue
+    </button>
   </div>
+
+  <!-- QR ADMIN — violet — UNIQUEMENT pour le propriétaire -->
+  <div class="card" style="border-color:rgba(160,80,220,0.5);">
+    <div class="card-title" style="color:#CE93D8;">🔐 QR Code Raccourci Admin</div>
+    <p style="font-size:.68rem;color:#C8BDA0;margin-bottom:.9rem;line-height:1.7;font-weight:500;">
+      QR code <strong style="color:#CE93D8;">violet exclusif</strong> — réservé uniquement à vous.
+      Scannez-le depuis votre bague, bracelet ou montre pour accéder instantanément à la gestion.
+      <strong style="color:#eb5757;">Ne le partagez jamais.</strong>
+    </p>
+    <div class="qr-box" id="qrAdminBox" style="border-color:rgba(160,80,220,0.4);background:rgba(80,0,120,0.1);">
+      <div style="color:var(--gris);font-size:.78rem;">Configurez GitHub d'abord.</div>
+    </div>
+    <button class="btn-gold" onclick="telechargerQR('qrAdminCanvas','qr-admin-prive.png')" style="margin-top:.8rem;background:linear-gradient(135deg,#4a0080,#CE93D8);color:#fff;">
+      ⬇ Télécharger QR Admin (Privé)
+    </button>
+    <div style="margin-top:.7rem;font-size:.6rem;color:rgba(160,80,220,.7);letter-spacing:.1em;text-align:center;text-transform:uppercase;">
+      🔒 Usage strictement personnel — à incruster sur un objet physique
+    </div>
+  </div>
+
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
-// CONFIG
-let cfg={token:'',user:'',repo:''};
+/* ============================================================
+   CONFIG GITHUB
+   ============================================================ */
+let cfg = {token:'',user:'',repo:''};
 function loadConfig(){
-  try{const s=localStorage.getItem('kw-cfg');if(s)cfg=JSON.parse(s);}catch{}
-  document.getElementById('ghToken').value=cfg.token||'';
-  document.getElementById('ghUser').value=cfg.user||'';
-  document.getElementById('ghRepo').value=cfg.repo||'';
-  if(cfg.token&&cfg.user&&cfg.repo){loadProducts();generateQR();}
+  try{ const s=localStorage.getItem('kw-cfg'); if(s) cfg=JSON.parse(s); }catch{}
+  document.getElementById('ghToken').value = cfg.token||'';
+  document.getElementById('ghUser').value  = cfg.user||'';
+  document.getElementById('ghRepo').value  = cfg.repo||'';
+  if(cfg.token&&cfg.user&&cfg.repo){ loadProducts(); generateQR(); }
 }
 function saveConfig(){
-  cfg.token=document.getElementById('ghToken').value.trim();
-  cfg.user=document.getElementById('ghUser').value.trim();
-  cfg.repo=document.getElementById('ghRepo').value.trim();
-  if(!cfg.token||!cfg.user||!cfg.repo){showSt('config','err','⚠ Remplissez tous les champs.');return;}
-  localStorage.setItem('kw-cfg',JSON.stringify(cfg));
+  cfg.token = document.getElementById('ghToken').value.trim();
+  cfg.user  = document.getElementById('ghUser').value.trim();
+  cfg.repo  = document.getElementById('ghRepo').value.trim();
+  if(!cfg.token||!cfg.user||!cfg.repo){ showSt('config','err','⚠ Remplissez tous les champs.'); return; }
+  localStorage.setItem('kw-cfg', JSON.stringify(cfg));
   showSt('config','ok','✓ Sauvegardé !');
-  loadProducts();generateQR();
-  setTimeout(()=>showTab('list'),1200);
+  loadProducts(); generateQR();
+  setTimeout(()=>showTab('list'),1100);
 }
 
-// GITHUB API
-const BRANCH='main',FILE='produits.json';
-const apiURL=()=>`https://api.github.com/repos/${cfg.user}/${cfg.repo}/contents/${FILE}`;
-const ghH=()=>({'Authorization':'token '+cfg.token,'Content-Type':'application/json','Accept':'application/vnd.github+json'});
+/* ============================================================
+   GITHUB API
+   ============================================================ */
+const BRANCH='main', FILE='produits.json';
+const apiURL  = ()=>`https://api.github.com/repos/${cfg.user}/${cfg.repo}/contents/${FILE}`;
+const ghH     = ()=>({'Authorization':'token '+cfg.token,'Content-Type':'application/json','Accept':'application/vnd.github+json'});
+
 async function getFile(){
-  const r=await fetch(apiURL()+'?ref='+BRANCH,{headers:ghH()});
-  if(r.status===404)return{sha:null,products:[]};
-  if(!r.ok)throw new Error('GitHub '+r.status);
-  const d=await r.json();
-  return{sha:d.sha,products:JSON.parse(atob(d.content.replace(/\n/g,'')))};
+  const r = await fetch(apiURL()+'?ref='+BRANCH, {headers:ghH()});
+  if(r.status===404) return {sha:null, products:[]};
+  if(!r.ok) throw new Error('GitHub '+r.status);
+  const d = await r.json();
+  return {sha:d.sha, products:JSON.parse(atob(d.content.replace(/\n/g,'')))};
 }
-async function commitFile(products,sha,msg){
-  const content=btoa(unescape(encodeURIComponent(JSON.stringify(products,null,2))));
-  const body={message:msg,content,branch:BRANCH};
-  if(sha)body.sha=sha;
-  const r=await fetch(apiURL(),{method:'PUT',headers:ghH(),body:JSON.stringify(body)});
-  if(!r.ok){const e=await r.json();throw new Error(e.message||'Erreur GitHub');}
+async function commitFile(products, sha, msg){
+  const content = btoa(unescape(encodeURIComponent(JSON.stringify(products,null,2))));
+  const body = {message:msg, content, branch:BRANCH};
+  if(sha) body.sha = sha;
+  const r = await fetch(apiURL(), {method:'PUT', headers:ghH(), body:JSON.stringify(body)});
+  if(!r.ok){ const e=await r.json(); throw new Error(e.message||'Erreur GitHub'); }
 }
 
-// PRODUITS
-let prods=[];
+/* ============================================================
+   PRODUITS
+   ============================================================ */
+let prods = [];
 async function loadProducts(){
-  if(!cfg.token){showSt('list','err','Configurez GitHub d\'abord.');return;}
+  if(!cfg.token){ showSt('list','err','Configurez GitHub d\'abord.'); return; }
   showSt('list','load','⌛ Chargement…');
   try{
-    const{products}=await getFile();
-    prods=products;renderList();
+    const {products} = await getFile();
+    prods = products; renderList();
     showSt('list','ok',`✓ ${prods.length} produit(s).`);
-  }catch(e){showSt('list','err','Erreur : '+e.message);}
+  }catch(e){ showSt('list','err','Erreur : '+e.message); }
 }
+
 function renderList(){
-  const el=document.getElementById('prodList');
-  document.getElementById('prodCountBadge').textContent=prods.length;
-  if(!prods.length){el.innerHTML='<div class="empty-list">Aucun produit. Ajoutez-en un !</div>';return;}
-  el.innerHTML=prods.map((p,i)=>`
+  const el = document.getElementById('prodList');
+  document.getElementById('prodCountBadge').textContent = prods.length;
+  if(!prods.length){ el.innerHTML='<div class="empty-list">Aucun produit. Ajoutez-en un !</div>'; return; }
+  el.innerHTML = prods.map((p,i)=>`
     <div class="prod-row">
       <img src="${h(p.image)}" alt="" onerror="this.src='https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=80&q=60'">
       <div class="prod-row-info">
-        <div class="prod-row-name">${h(p.nom)}</div>
-        <div class="prod-row-meta">${h(p.categorie)} · ${h(p.genre)}${p.couleurs&&p.couleurs.length?' · '+p.couleurs.length+' couleur(s)':''}</div>
+        <div class="prod-row-name">${h(p.nom)}${p.is_patron?' ⭐':''}</div>
+        <div class="prod-row-meta">${h(p.categorie)} · ${h(p.genre)}${p.couleurs&&p.couleurs.length?' · '+p.couleurs.length+' couleur(s)':''}${p.img_gauche?' · 360°':''}${p.flash_fin?' · ⚡Flash':''}</div>
       </div>
       <div class="prod-row-price">${fmt(p.prix)}F</div>
       <button class="btn-del" onclick="deleteProduct(${i})">🗑</button>
     </div>
   `).join('');
 }
+
 async function addProduct(){
-  const nom=document.getElementById('fNom').value.trim();
-  const prix=parseFloat(document.getElementById('fPrix').value);
-  const cat=document.getElementById('fCat').value;
-  const genre=document.getElementById('fGenre').value;
-  const img=currentImageData;
-  if(!nom||!prix||!cat||!genre||!img){showSt('add','err','⚠ Remplissez tous les champs et choisissez une photo principale.');return;}
-  if(!cfg.token){showSt('add','err','Configurez GitHub d\'abord.');return;}
-  const btn=document.getElementById('btnAdd');
-  btn.disabled=true;btn.innerHTML='<span class="mini-loader"></span>Publication…';
+  const nom   = document.getElementById('fNom').value.trim();
+  const prix  = parseFloat(document.getElementById('fPrix').value);
+  const cat   = document.getElementById('fCat').value;
+  const genre = document.getElementById('fGenre').value;
+  const img   = document.getElementById('fImage').value.trim();
+  if(!nom||!prix||!cat||!genre||!img){ showSt('add','err','⚠ Remplissez les champs obligatoires (*).'); return; }
+  if(!cfg.token){ showSt('add','err','Configurez GitHub d\'abord.'); return; }
+
+  const btn = document.getElementById('btnAdd');
+  btn.disabled=true; btn.innerHTML='<span class="mini-loader"></span>Publication…';
   showSt('add','load','⌛ Commit GitHub…');
+
+  /* Récupérer les tags humeur */
+  const moods = [];
+  document.querySelectorAll('.mood-check.active').forEach(el=>{
+    moods.push(el.dataset.mood);
+  });
+
+  /* Flash */
+  const flashFin       = document.getElementById('fFlashFin').value;
+  const flashReduction = parseFloat(document.getElementById('fFlashReduction').value)||0;
+
+  const np = {
+    id:         Date.now().toString(),
+    nom, prix, categorie:cat, genre,
+    image:      img,
+    img_gauche: document.getElementById('fImgGauche').value.trim()||'',
+    img_droit:  document.getElementById('fImgDroit').value.trim()||'',
+    img_dos:    document.getElementById('fImgDos').value.trim()||'',
+    halo_cadran:document.getElementById('fHalo').value,
+    is_patron:  document.getElementById('fPatron').checked,
+    moods,
+    flash_fin:       flashFin ? new Date(flashFin).toISOString() : '',
+    flash_reduction: flashFin ? flashReduction : 0,
+    couleurs:   pendingColors,
+    createdAt:  new Date().toISOString()
+  };
+
   try{
-    const{sha,products}=await getFile();
-    const np={id:Date.now().toString(),nom,prix,categorie:cat,genre,image:img,couleurs:pendingColors,createdAt:new Date().toISOString()};
-    await commitFile([...products,np],sha,`✨ Ajout : ${nom}`);
-    prods=[...products,np];renderList();
+    const {sha, products} = await getFile();
+    await commitFile([...products, np], sha, `✨ Ajout : ${nom}`);
+    prods = [...products, np]; renderList();
     showSt('add','ok',`✓ "${nom}" publié !`);
     clearForm();
-  }catch(e){showSt('add','err','Erreur : '+e.message);}
-  finally{btn.disabled=false;btn.textContent='Publier sur GitHub';}
+  }catch(e){ showSt('add','err','Erreur : '+e.message); }
+  finally{ btn.disabled=false; btn.textContent='Publier sur GitHub'; }
 }
+
 async function deleteProduct(idx){
-  const p=prods[idx];
-  if(!confirm(`Supprimer "${p.nom}" ?`))return;
+  const p = prods[idx];
+  if(!confirm(`Supprimer "${p.nom}" ?`)) return;
   showSt('list','load','⌛ Suppression…');
   try{
-    const{sha,products}=await getFile();
-    const upd=products.filter(x=>x.id!==p.id);
-    await commitFile(upd,sha,`🗑 Suppression : ${p.nom}`);
-    prods=upd;renderList();
+    const {sha, products} = await getFile();
+    const upd = products.filter(x=>x.id!==p.id);
+    await commitFile(upd, sha, `🗑 Suppression : ${p.nom}`);
+    prods=upd; renderList();
     showSt('list','ok',`✓ "${p.nom}" supprimé.`);
-  }catch(e){showSt('list','err','Erreur : '+e.message);}
+  }catch(e){ showSt('list','err','Erreur : '+e.message); }
 }
 
-// IMAGE PRINCIPALE
-let currentImageData='';
-let imgSrcMode='url';
-function switchImgSrc(mode,btn){
-  imgSrcMode=mode;
-  document.querySelectorAll('.img-source-tabs .src-tab').forEach(t=>t.classList.remove('active'));
+/* ============================================================
+   FORMULAIRE — IMAGES (URL ou Appareil)
+   ============================================================ */
+function switchImgSrc(mode, btn, paneName){
+  btn.closest('.img-tabs').querySelectorAll('.img-tab').forEach(t=>t.classList.remove('active'));
   btn.classList.add('active');
-  document.getElementById('pane-url').style.display=mode==='url'?'block':'none';
-  document.getElementById('pane-device').style.display=mode==='device'?'block':'none';
-  clearImage();
+  document.getElementById(paneName+'-url').style.display    = mode==='url'    ? 'block':'none';
+  document.getElementById(paneName+'-device').style.display = mode==='device' ? 'block':'none';
 }
-function onUrlInput(url){if(!url){clearImage();return;}currentImageData=url;showPreview(url,'');}
-function handleFile(file){
-  if(!file)return;
-  if(file.size>2*1024*1024){alert('⚠ Image trop lourde (max 2 Mo).');return;}
-  const reader=new FileReader();
-  reader.onload=e=>{currentImageData=e.target.result;showPreview(e.target.result,file.name);};
+
+function previewField(input, previewId){
+  const img = document.getElementById(previewId);
+  if(!input.value){ img.style.display='none'; return; }
+  img.src = input.value;
+  img.style.display = 'block';
+  img.onerror = ()=>{ img.style.display='none'; };
+}
+
+function handleFileField(input, fieldId, previewId){
+  const file = input.files[0]; if(!file) return;
+  if(file.size > 2*1024*1024){ alert('⚠ Image max 2 Mo.'); return; }
+  const reader = new FileReader();
+  reader.onload = e => {
+    document.getElementById(fieldId).value = e.target.result;
+    const img = document.getElementById(previewId);
+    img.src = e.target.result; img.style.display = 'block';
+  };
   reader.readAsDataURL(file);
 }
-function handleDrop(e){
-  e.preventDefault();
-  document.getElementById('dropZone').classList.remove('drag-over');
-  const file=e.dataTransfer.files[0];
-  if(file&&file.type.startsWith('image/'))handleFile(file);
-}
-function showPreview(src,name){
-  document.getElementById('imgPrev').src=src;
-  document.getElementById('imgFilename').textContent=name;
-  document.getElementById('previewWrap').style.display='block';
-}
-function clearImage(){
-  currentImageData='';
-  document.getElementById('imgPrev').src='';
-  document.getElementById('previewWrap').style.display='none';
-  document.getElementById('fImage').value='';
-  document.getElementById('imgFilename').textContent='';
-}
-function clearForm(){
-  ['fNom','fPrix'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('fCat').value='';document.getElementById('fGenre').value='';
-  clearImage();pendingColors=[];renderColorList();
+
+/* Tags humeur */
+function toggleMood(el, mood){
+  el.classList.toggle('active');
+  el.dataset.mood = mood;
 }
 
-// COULEURS PRODUIT
-let pendingColors=[];
-let colorImgData='';
+/* ============================================================
+   COULEURS PRODUIT
+   ============================================================ */
+let pendingColors = [];
 
-document.getElementById('cHex').addEventListener('input',e=>{
-  document.getElementById('cHexVal').textContent=e.target.value;
+document.getElementById('cHex').addEventListener('input', e => {
+  document.getElementById('cHexVal').textContent = e.target.value;
 });
 
-function switchColorImgSrc(mode,btn){
-  document.querySelectorAll('#sec-add .add-color-box .src-tab').forEach(t=>t.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('cpane-url').style.display=mode==='url'?'block':'none';
-  document.getElementById('cpane-device').style.display=mode==='device'?'block':'none';
-  clearColorImg();
-}
-function onColorUrlInput(url){if(!url){clearColorImg();return;}colorImgData=url;document.getElementById('cImgPrev').src=url;document.getElementById('cPreviewWrap').style.display='block';}
-function handleColorFile(file){
-  if(!file)return;
-  if(file.size>2*1024*1024){alert('⚠ Image trop lourde.');return;}
-  const reader=new FileReader();
-  reader.onload=e=>{colorImgData=e.target.result;document.getElementById('cImgPrev').src=e.target.result;document.getElementById('cPreviewWrap').style.display='block';};
-  reader.readAsDataURL(file);
-}
-function clearColorImg(){colorImgData='';document.getElementById('cImgPrev').src='';document.getElementById('cPreviewWrap').style.display='none';document.getElementById('cImage').value='';}
-
 function addColor(){
-  const nom=document.getElementById('cNom').value.trim();
-  const hex=document.getElementById('cHex').value;
-  if(!nom){alert('Entrez un nom de couleur.');return;}
-  pendingColors.push({nom,hex,image:colorImgData});
-  document.getElementById('cNom').value='';
-  clearColorImg();
-  document.getElementById('cImage').value='';
+  const nom = document.getElementById('cNom').value.trim();
+  const hex = document.getElementById('cHex').value;
+  if(!nom){ alert('Entrez un nom de couleur.'); return; }
+  pendingColors.push({
+    nom, hex,
+    image:     document.getElementById('cImage').value.trim(),
+    img_gauche:document.getElementById('cImgGauche').value.trim(),
+    img_droit: document.getElementById('cImgDroit').value.trim(),
+    img_dos:   document.getElementById('cImgDos').value.trim(),
+  });
+  /* Reset champs couleur */
+  ['cNom','cImage','cImgGauche','cImgDroit','cImgDos'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('prevColor').style.display='none';
   renderColorList();
 }
-function removeColor(i){pendingColors.splice(i,1);renderColorList();}
+
+function removeColor(i){ pendingColors.splice(i,1); renderColorList(); }
+
 function renderColorList(){
-  const el=document.getElementById('colorList');
-  if(!pendingColors.length){el.innerHTML='<div style="font-size:.65rem;color:var(--gris);text-align:center;padding:.5rem;">Aucune couleur ajoutée.</div>';return;}
-  el.innerHTML=pendingColors.map((c,i)=>`
+  const el = document.getElementById('colorList');
+  if(!pendingColors.length){ el.innerHTML='<div style="font-size:.65rem;color:var(--gris);text-align:center;padding:.5rem;">Aucune couleur.</div>'; return; }
+  el.innerHTML = pendingColors.map((c,i)=>`
     <div class="color-row">
-      <div class="color-dot-preview" style="background:${h(c.hex)};"></div>
+      <div class="color-dot" style="background:${h(c.hex)}"></div>
       <div class="color-row-info">
         <div class="color-row-name">${h(c.nom)}</div>
-        <div class="color-row-hex">${h(c.hex)} ${c.image?'· Photo ✓':''}</div>
+        <div class="color-row-hex">${h(c.hex)}${c.image?' · Photo ✓':''}${c.img_gauche?' · 360°':''}</div>
       </div>
       <button class="btn-del-color" onclick="removeColor(${i})">✕</button>
     </div>
@@ -593,111 +714,189 @@ function renderColorList(){
 }
 renderColorList();
 
-// FOND ADMIN
-const DEFAULT_ADMIN_BG='https://images.unsplash.com/photo-1548169874-53e85f753f1e?w=1600&q=80';
-function applyAdminBg(url){document.getElementById('bgFixed').style.backgroundImage=`url('${url}')`;localStorage.setItem('kw-admin-bg',url);}
-function selectAdminBg(thumb){
-  document.querySelectorAll('#bgGrid .bg-thumb').forEach(t=>t.classList.remove('selected'));
-  thumb.classList.add('selected');applyAdminBg(thumb.dataset.url);
-}
-function handleAdminBgUpload(file){
-  if(!file)return;
-  const reader=new FileReader();
-  reader.onload=e=>{applyAdminBg(e.target.result);document.querySelectorAll('#bgGrid .bg-thumb').forEach(t=>t.classList.remove('selected'));};
-  reader.readAsDataURL(file);
+function clearForm(){
+  ['fNom','fPrix','fImage','fImgGauche','fImgDroit','fImgDos','fFlashReduction','fFlashFin'].forEach(id=>document.getElementById(id).value='');
+  ['fCat','fGenre','fHalo'].forEach(id=>document.getElementById(id).value = id==='fHalo'?'or':'');
+  document.getElementById('fPatron').checked = false;
+  document.querySelectorAll('.mood-check').forEach(el=>el.classList.remove('active'));
+  ['prevMain','prevG','prevD','prevDos','prevColor'].forEach(id=>{ const el=document.getElementById(id); if(el)el.style.display='none'; });
+  pendingColors = []; renderColorList();
 }
 
-// FOND CLIENT
-const DEFAULT_CLIENT_BG='https://images.unsplash.com/photo-1548169874-53e85f753f1e?w=1600&q=85';
-function selectClientBg(thumb){
-  document.querySelectorAll('#bgClientGrid .bg-thumb').forEach(t=>t.classList.remove('selected'));
-  thumb.classList.add('selected');
-  localStorage.setItem('kw-client-bg',thumb.dataset.url);
-  document.getElementById('clientBgPreview').style.display='none';
-  showSt('add','ok','✓ Fond clients sauvegardé !');// réutilise un status visible
-  alert('✓ Fond clients sauvegardé ! Les clients verront ce fond à leur prochain chargement de la page.');
+/* ============================================================
+   FOND ADMIN
+   ============================================================ */
+const DEFAULT_ADMIN_BG = 'https://images.unsplash.com/photo-1548169874-53e85f753f1e?w=1600&q=80';
+function applyAdminBg(url){ document.getElementById('bgFixed').style.backgroundImage=`url('${url}')`; localStorage.setItem('kw-admin-bg',url); }
+function selectAdminBg(t){ document.querySelectorAll('#bgGrid .bg-thumb').forEach(x=>x.classList.remove('selected')); t.classList.add('selected'); applyAdminBg(t.dataset.url); }
+function handleAdminBgUpload(f){ if(!f)return; const r=new FileReader(); r.onload=e=>{applyAdminBg(e.target.result);document.querySelectorAll('#bgGrid .bg-thumb').forEach(x=>x.classList.remove('selected'));}; r.readAsDataURL(f); }
+
+/* ============================================================
+   FOND CLIENT
+   ============================================================ */
+function selectClientBg(t){
+  document.querySelectorAll('#bgClientGrid .bg-thumb').forEach(x=>x.classList.remove('selected'));
+  t.classList.add('selected');
+  localStorage.setItem('kw-client-bg', t.dataset.url);
+  alert('✓ Fond clients sauvegardé ! Les clients le verront au prochain chargement.');
 }
-function handleClientBgUpload(file){
-  if(!file)return;
-  const reader=new FileReader();
-  reader.onload=e=>{
-    localStorage.setItem('kw-client-bg',e.target.result);
-    document.querySelectorAll('#bgClientGrid .bg-thumb').forEach(t=>t.classList.remove('selected'));
-    document.getElementById('clientBgImg').src=e.target.result;
-    document.getElementById('clientBgPreview').style.display='block';
-    alert('✓ Fond clients personnalisé sauvegardé !');
-  };
-  reader.readAsDataURL(file);
+function handleClientBgUpload(f){
+  if(!f)return;
+  const r=new FileReader();
+  r.onload=e=>{ localStorage.setItem('kw-client-bg',e.target.result); document.querySelectorAll('#bgClientGrid .bg-thumb').forEach(x=>x.classList.remove('selected')); alert('✓ Fond personnalisé sauvegardé !'); };
+  r.readAsDataURL(f);
 }
 
-// HALO COULEUR
-function setHaloColor(preset){
-  document.querySelectorAll('.halo-preset').forEach(p=>p.classList.remove('active'));
-  preset.classList.add('active');
-  const color=preset.dataset.color;
-  localStorage.setItem('kw-card-glow',color);
-  document.documentElement.style.setProperty('--card-glow-color',color);
-  document.getElementById('haloPreview').style.setProperty('--card-glow-color',color);
+/* ============================================================
+   TEINTE VERRE DÉPOLI
+   ============================================================ */
+function updateGlassTint(){
+  const color   = document.getElementById('glassTintColor').value;
+  const opacity = parseInt(document.getElementById('glassTintOpacity').value)/100;
+  const r       = parseInt(color.slice(1,3),16);
+  const g       = parseInt(color.slice(3,5),16);
+  const b       = parseInt(color.slice(5,7),16);
+  const rgba    = `rgba(${r},${g},${b},${opacity})`;
+  document.getElementById('glassTintValue').textContent = rgba;
+  return rgba;
+}
+function saveGlassTint(){
+  const rgba = updateGlassTint();
+  localStorage.setItem('kw-glass-tint', rgba);
+  alert('✓ Teinte verre sauvegardée ! Les clients verront ce style au prochain chargement.');
+}
+
+/* ============================================================
+   HALO BOXES
+   ============================================================ */
+let currentGlowColor = localStorage.getItem('kw-card-glow') || 'rgba(201,168,76,0.42)';
+let currentGlowInt   = parseFloat(localStorage.getItem('kw-glow-intensity') || '1');
+
+function applyHalo(){
+  document.documentElement.style.setProperty('--glow-color', currentGlowColor);
+  document.getElementById('haloPreview').style.setProperty('--glow-color', currentGlowColor);
+  localStorage.setItem('kw-card-glow',      currentGlowColor);
+  localStorage.setItem('kw-glow-intensity', currentGlowInt);
+}
+function setHalo(dot){
+  document.querySelectorAll('.halo-dot').forEach(d=>d.classList.remove('active'));
+  dot.classList.add('active');
+  currentGlowColor = dot.dataset.color;
+  applyHalo();
 }
 function setHaloCustom(hex){
-  // Convertir hex en rgba
-  const r=parseInt(hex.slice(1,3),16);
-  const g=parseInt(hex.slice(3,5),16);
-  const b=parseInt(hex.slice(5,7),16);
-  const color=`rgba(${r},${g},${b},0.4)`;
-  document.querySelectorAll('.halo-preset').forEach(p=>p.classList.remove('active'));
-  localStorage.setItem('kw-card-glow',color);
-  document.documentElement.style.setProperty('--card-glow-color',color);
-  document.getElementById('haloPreview').style.setProperty('--card-glow-color',color);
+  const r=parseInt(hex.slice(1,3),16), g=parseInt(hex.slice(3,5),16), b=parseInt(hex.slice(5,7),16);
+  currentGlowColor = `rgba(${r},${g},${b},0.42)`;
+  document.querySelectorAll('.halo-dot').forEach(d=>d.classList.remove('active'));
+  applyHalo();
+}
+function updateIntensity(v){
+  currentGlowInt = parseFloat(v);
+  document.getElementById('intensiteVal').textContent = parseFloat(v).toFixed(1);
+  applyHalo();
 }
 
-// INIT DESIGN
-function initDesign(){
-  // Admin BG
-  const adminBg=localStorage.getItem('kw-admin-bg')||DEFAULT_ADMIN_BG;
-  document.getElementById('bgFixed').style.backgroundImage=`url('${adminBg}')`;
-  document.querySelectorAll('#bgGrid .bg-thumb').forEach(t=>{t.classList.remove('selected');if(t.dataset.url===adminBg)t.classList.add('selected');});
-
-  // Client BG
-  const clientBg=localStorage.getItem('kw-client-bg')||DEFAULT_CLIENT_BG;
-  document.querySelectorAll('#bgClientGrid .bg-thumb').forEach(t=>{t.classList.remove('selected');if(t.dataset.url===clientBg)t.classList.add('selected');});
-
-  // Halo
-  const glow=localStorage.getItem('kw-card-glow')||'rgba(201,168,76,0.4)';
-  document.documentElement.style.setProperty('--card-glow-color',glow);
-  document.getElementById('haloPreview').style.setProperty('--card-glow-color',glow);
-}
-
-// QR
+/* ============================================================
+   QR CODES — Catalogue (vert citron) + Admin (violet)
+   ============================================================ */
 function generateQR(){
-  const u=cfg.user||document.getElementById('ghUser').value.trim();
-  const r=cfg.repo||document.getElementById('ghRepo').value.trim();
-  if(!u||!r)return;
-  const url=`https://${u}.github.io/${r}/`;
-  const box=document.getElementById('qrBox');
-  box.innerHTML=`<div id="qrCanvas"></div><div class="qr-url">${url}</div>`;
-  new QRCode(document.getElementById('qrCanvas'),{text:url,width:180,height:180,colorDark:'#C9A84C',colorLight:'#0a0a0a',correctLevel:QRCode.CorrectLevel.H});
+  const u = cfg.user || document.getElementById('ghUser').value.trim();
+  const r = cfg.repo || document.getElementById('ghRepo').value.trim();
+  if(!u || !r) return;
+
+  /* --- QR Catalogue — vert citron --- */
+  const urlCatalogue = `https://${u}.github.io/${r}/`;
+  const boxCat = document.getElementById('qrBox');
+  boxCat.innerHTML = `<div id="qrCanvas"></div><div class="qr-url">${urlCatalogue}</div>`;
+  new QRCode(document.getElementById('qrCanvas'), {
+    text: urlCatalogue,
+    width: 200, height: 200,
+    colorDark: '#C9A84C',   /* doré */
+    colorLight: '#1a1000',
+    correctLevel: QRCode.CorrectLevel.H
+  });
+
+  /* --- QR Admin — violet --- */
+  const urlAdmin = `https://${u}.github.io/${r}/admin.html`;
+  const boxAdmin = document.getElementById('qrAdminBox');
+  boxAdmin.innerHTML = `<div id="qrAdminCanvas"></div><div class="qr-url" style="color:rgba(206,147,216,.8);">${urlAdmin}</div>`;
+  new QRCode(document.getElementById('qrAdminCanvas'), {
+    text: urlAdmin,
+    width: 200, height: 200,
+    colorDark: '#9B30FF',   /* violet profond */
+    colorLight: '#0a0008',
+    correctLevel: QRCode.CorrectLevel.H
+  });
 }
 
-// TABS
+/* Téléchargement QR — convertit le canvas en image PNG */
+function telechargerQR(canvasId, filename){
+  const wrap = document.getElementById(canvasId);
+  if(!wrap){ alert('Générez d\'abord le QR code en configurant GitHub.'); return; }
+  /* qrcode.js génère soit un canvas soit une image */
+  const canvas = wrap.querySelector('canvas');
+  const img    = wrap.querySelector('img');
+  let dataURL;
+  if(canvas){
+    dataURL = canvas.toDataURL('image/png');
+  }else if(img){
+    /* Créer un canvas temporaire pour exporter l'img */
+    const tmp = document.createElement('canvas');
+    tmp.width = img.naturalWidth || 200;
+    tmp.height= img.naturalHeight|| 200;
+    const ctx = tmp.getContext('2d');
+    ctx.drawImage(img, 0, 0);
+    dataURL = tmp.toDataURL('image/png');
+  }else{
+    alert('QR code introuvable.'); return;
+  }
+  const a = document.createElement('a');
+  a.href = dataURL;
+  a.download = filename;
+  a.click();
+}
+
+/* ============================================================
+   TABS
+   ============================================================ */
 function showTab(t){
   const TABS=['config','add','list','design','qr'];
   document.querySelectorAll('.tab').forEach((el,i)=>el.classList.toggle('active',TABS[i]===t));
   document.querySelectorAll('.section').forEach(el=>el.classList.remove('show'));
   document.getElementById('sec-'+t).classList.add('show');
-  if(t==='list'&&prods.length===0&&cfg.token)loadProducts();
-  if(t==='qr')generateQR();
+  if(t==='list'&&prods.length===0&&cfg.token) loadProducts();
+  if(t==='qr') generateQR();
 }
 
-// UTILS
-function showSt(id,type,msg){const el=document.getElementById('st-'+id);el.className='status '+type;el.textContent=msg;if(type==='ok')setTimeout(()=>el.style.display='none',4000);}
-function h(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-function fmt(n){return Number(n||0).toLocaleString('fr-FR');}
+/* ============================================================
+   UTILS
+   ============================================================ */
+function showSt(id,type,msg){
+  const el=document.getElementById('st-'+id);
+  el.className='status '+type; el.textContent=msg;
+  if(type==='ok') setTimeout(()=>el.style.display='none',4000);
+}
+function h(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function fmt(n){ return Number(n||0).toLocaleString('fr-FR'); }
 
-// INIT
-initDesign();
+/* ============================================================
+   INIT
+   ============================================================ */
+function initAdminDesign(){
+  const bg = localStorage.getItem('kw-admin-bg') || DEFAULT_ADMIN_BG;
+  document.getElementById('bgFixed').style.backgroundImage = `url('${bg}')`;
+  document.querySelectorAll('#bgGrid .bg-thumb').forEach(t=>{ t.classList.remove('selected'); if(t.dataset.url===bg) t.classList.add('selected'); });
+
+  /* Halo */
+  document.documentElement.style.setProperty('--glow-color', currentGlowColor);
+  document.getElementById('haloPreview').style.setProperty('--glow-color', currentGlowColor);
+  document.getElementById('glowIntensity').value = currentGlowInt;
+  document.getElementById('intensiteVal').textContent = parseFloat(currentGlowInt).toFixed(1);
+  document.querySelectorAll('.halo-dot').forEach(d=>{ if(d.dataset.color===currentGlowColor) d.classList.add('active'); });
+}
+
+initAdminDesign();
 loadConfig();
-  
 </script>
 </body>
 </html>
