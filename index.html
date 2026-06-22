@@ -774,17 +774,6 @@ function renderProducts(){
         <div class="prod-price">${fmt(p.prix)} <small>FCFA</small></div>
         <button class="btn-wa" onclick="event.stopPropagation();commander('${js(p.nom)}','${js(p.prix)}')">
           ${WA_SVG} Commander
-          // Exemple de modification dans ton renderProducts :
-container.innerHTML += `
-    <div class="product-box">
-        <!-- Image et infos de ton produit... -->
-        
-        <!-- AJOUTE LA CLASSE "box-btn-pulse" ICI -->
-        <a href="${product.whatsapp}" class="box-btn-pulse" style="padding: 10px 20px; border-radius: 8px; text-decoration: none; text-align: center;">
-            Commander
-        </a>
-    </div>
-`;
         </button>
       </div>
     </div>`;
@@ -921,7 +910,7 @@ function buildAllSlides(){
         <div class="modal-price">${fmt(p.prix)} <small>FCFA</small></div>
         <div class="modal-divider"></div>
         ${currentList.length > 1 ? '<div class="modal-swipe-hint">← Balayez pour voir les autres produits →</div>' : ''}
-        <button class="modal-wa-btn" onclick="commander('${js(p.nom)}','${js(p.prix)}')">
+        <button class="modal-wa-btn box-btn-pulse" onclick="commander('${js(p.nom)}','${js(p.price)}')">
           ${WA_SVG_BIG} Commander sur WhatsApp
         </button>
       </div>
