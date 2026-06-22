@@ -346,14 +346,73 @@ input[type=range]{width:100%;accent-color:var(--or);cursor:pointer;}
           <input type="color" id="cHex" value="#C9A84C">
           <span id="cHexVal" style="font-size:.7rem;color:var(--gris);">#C9A84C</span>
         </div>
-        <div class="field" style="margin-bottom:.5rem;"><label>Photo (URL ou Appareil)</label><input type="url" id="cImage" placeholder="https://..." oninput="previewField(this,'prevColor')"></div>
-        <div class="img-preview-wrap"><img id="prevColor" class="img-preview"></div>
-        <!-- Angles 360° pour cette couleur -->
-        <div style="font-size:.58rem;color:var(--gris);margin:.5rem 0 .35rem;letter-spacing:.1em;text-transform:uppercase;">Angles 360° (optionnel)</div>
-        <div class="angles-grid" style="margin-top:0;">
-          <div class="angle-block"><label>⬅ Gauche</label><input type="url" id="cImgGauche" placeholder="URL gauche"></div>
-          <div class="angle-block"><label>➡ Droit</label><input type="url" id="cImgDroit" placeholder="URL droit"></div>
-          <div class="angle-block"><label>🔙 Dos</label><input type="url" id="cImgDos" placeholder="URL dos"></div>
+        <div class="field" style="margin-bottom:.5rem;">
+          <label>📷 Photo principale de cette couleur</label>
+          <div class="img-tabs">
+            <button class="img-tab active" onclick="switchImgSrc('url',this,'cpPane')">🔗 URL</button>
+            <button class="img-tab" onclick="switchImgSrc('device',this,'cpPane')">📱 Galerie</button>
+          </div>
+          <div id="cpPane-url"><input type="url" id="cImage" placeholder="https://..." oninput="previewField(this,'prevColor')"></div>
+          <div id="cpPane-device" style="display:none;">
+            <div class="drop-zone" onclick="document.getElementById('fileCPhoto').click()" style="padding:.8rem;">
+              <input type="file" id="fileCPhoto" accept="image/*" onchange="handleFileField(this,'cImage','prevColor')">
+              <div class="drop-txt"><strong>Choisir depuis la galerie</strong></div>
+            </div>
+          </div>
+          <div class="img-preview-wrap"><img id="prevColor" class="img-preview"></div>
+        </div>
+        <!-- Angles 360° pour cette couleur — URL ou Galerie -->
+        <div style="font-size:.58rem;color:#C8BDA0;margin:.6rem 0 .4rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;">📐 Angles 360° (optionnel)</div>
+
+        <!-- Gauche -->
+        <div class="angle-block" style="margin-bottom:.5rem;">
+          <label>⬅ Profil Gauche</label>
+          <div class="img-tabs">
+            <button class="img-tab active" onclick="switchImgSrc('url',this,'cgPane')">🔗 URL</button>
+            <button class="img-tab" onclick="switchImgSrc('device',this,'cgPane')">📱 Galerie</button>
+          </div>
+          <div id="cgPane-url"><input type="url" id="cImgGauche" placeholder="https://..." oninput="previewField(this,'prevCG')"></div>
+          <div id="cgPane-device" style="display:none;">
+            <div class="drop-zone" onclick="document.getElementById('fileCG').click()" style="padding:.8rem;">
+              <input type="file" id="fileCG" accept="image/*" onchange="handleFileField(this,'cImgGauche','prevCG')">
+              <div class="drop-txt"><strong>Choisir depuis la galerie</strong></div>
+            </div>
+          </div>
+          <div class="img-preview-wrap"><img id="prevCG" class="img-preview"></div>
+        </div>
+
+        <!-- Droit -->
+        <div class="angle-block" style="margin-bottom:.5rem;">
+          <label>➡ Profil Droit</label>
+          <div class="img-tabs">
+            <button class="img-tab active" onclick="switchImgSrc('url',this,'cdPane')">🔗 URL</button>
+            <button class="img-tab" onclick="switchImgSrc('device',this,'cdPane')">📱 Galerie</button>
+          </div>
+          <div id="cdPane-url"><input type="url" id="cImgDroit" placeholder="https://..." oninput="previewField(this,'prevCD')"></div>
+          <div id="cdPane-device" style="display:none;">
+            <div class="drop-zone" onclick="document.getElementById('fileCD').click()" style="padding:.8rem;">
+              <input type="file" id="fileCD" accept="image/*" onchange="handleFileField(this,'cImgDroit','prevCD')">
+              <div class="drop-txt"><strong>Choisir depuis la galerie</strong></div>
+            </div>
+          </div>
+          <div class="img-preview-wrap"><img id="prevCD" class="img-preview"></div>
+        </div>
+
+        <!-- Dos -->
+        <div class="angle-block" style="margin-bottom:.5rem;">
+          <label>🔙 Vue Dos</label>
+          <div class="img-tabs">
+            <button class="img-tab active" onclick="switchImgSrc('url',this,'cdosPane')">🔗 URL</button>
+            <button class="img-tab" onclick="switchImgSrc('device',this,'cdosPane')">📱 Galerie</button>
+          </div>
+          <div id="cdosPane-url"><input type="url" id="cImgDos" placeholder="https://..." oninput="previewField(this,'prevCDos')"></div>
+          <div id="cdosPane-device" style="display:none;">
+            <div class="drop-zone" onclick="document.getElementById('fileCDos').click()" style="padding:.8rem;">
+              <input type="file" id="fileCDos" accept="image/*" onchange="handleFileField(this,'cImgDos','prevCDos')">
+              <div class="drop-txt"><strong>Choisir depuis la galerie</strong></div>
+            </div>
+          </div>
+          <div class="img-preview-wrap"><img id="prevCDos" class="img-preview"></div>
         </div>
         <button class="btn-gold btn-sm" onclick="addColor()" style="width:auto;padding:.5rem 1.2rem;margin-top:.6rem;">＋ Ajouter</button>
       </div>
@@ -715,11 +774,11 @@ function renderColorList(){
 renderColorList();
 
 function clearForm(){
-  ['fNom','fPrix','fImage','fImgGauche','fImgDroit','fImgDos','fFlashReduction','fFlashFin'].forEach(id=>document.getElementById(id).value='');
+  ['fNom','fPrix','fImage','fImgGauche','fImgDroit','fImgDos','fFlashReduction','fFlashFin','cImage','cImgGauche','cImgDroit','cImgDos'].forEach(id=>{ const el=document.getElementById(id); if(el)el.value=''; });
   ['fCat','fGenre','fHalo'].forEach(id=>document.getElementById(id).value = id==='fHalo'?'or':'');
   document.getElementById('fPatron').checked = false;
   document.querySelectorAll('.mood-check').forEach(el=>el.classList.remove('active'));
-  ['prevMain','prevG','prevD','prevDos','prevColor'].forEach(id=>{ const el=document.getElementById(id); if(el)el.style.display='none'; });
+  ['prevMain','prevG','prevD','prevDos','prevColor','prevCG','prevCD','prevCDos'].forEach(id=>{ const el=document.getElementById(id); if(el)el.style.display='none'; });
   pendingColors = []; renderColorList();
 }
 
