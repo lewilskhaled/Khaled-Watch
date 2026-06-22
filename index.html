@@ -444,43 +444,42 @@ body.light .nav-item.active{color:var(--or-d);}
 .dot360.active{background:var(--or-l);transform:scale(1.4);}
 
 /* Curseur sur la zone 360 desktop */
-.modal-img-wrap[ontouchstart]{cursor:ew-resize;}
-   /* Le bouton de commande de base */
-.btn-commander-pulse {
-    background: #25d366; /* Vert WhatsApp */
+/* Le style du bouton Commander dans la box */
+.box-btn-pulse {
+    background-color: #25d366 !important; /* Vert WhatsApp intense */
     color: white !important;
     font-weight: bold;
     border: none;
-    outline: none;
     position: relative;
-    overflow: hidden;
-    /* On lance l'animation de pulsation */
-    animation: pulseGreen 2s infinite ease-in-out;
+    overflow: hidden; /* Obligatoire pour bloquer le reflet dans le bouton */
+    display: inline-block;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    
+    /* Active la pulsation de l'ombre verte */
+    animation: greenBoxPulse 2s infinite ease-in-out;
 }
 
-/* 1. L'effet de pulsation (le bouton grandit et crée une ombre qui rayonne) */
-@keyframes pulseGreen {
+/* 1. L'effet de pulsation (l'ombre verte qui s'élargit) */
+@keyframes greenBoxPulse {
     0% {
-        transform: scale(1);
         box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
     }
     70% {
-        transform: scale(1.03); /* Légère augmentation de taille */
-        box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); /* L'onde verte s'efface */
+        box-shadow: 0 0 0 10px rgba(37, 211, 102, 0); /* L'onde se propage et s'efface */
     }
     100% {
-        transform: scale(1);
         box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
     }
 }
 
-/* 2. L'effet de scintillement (le reflet blanc de lumière qui passe) */
-.btn-commander-pulse::after {
+/* 2. L'effet de scintillement (la ligne blanche lumineuse) */
+.box-btn-pulse::after {
     content: '';
     position: absolute;
     top: -50%;
     left: -60%;
-    width: 30%;
+    width: 25%;
     height: 200%;
     background: linear-gradient(
         to right, 
@@ -489,13 +488,18 @@ body.light .nav-item.active{color:var(--or-d);}
         rgba(255, 255, 255, 0) 100%
     );
     transform: rotate(25deg);
-    animation: shimmerEffect 3s infinite ease-in-out;
+    animation: boxShimmer 2.5s infinite ease-in-out;
 }
 
-@keyframes shimmerEffect {
+@keyframes boxShimmer {
     0% { left: -60%; }
-    30% { left: 140%; } /* Le reflet traverse le bouton rapidement */
-    100% { left: 140%; } /* Temps de pause avant le prochain scintillement */
+    25% { left: 140%; } /* Le reflet traverse rapidement */
+    100% { left: 140%; } /* Pause avant le prochain scintillement */
+}
+
+/* Petit effet au survol sur PC */
+.box-btn-pulse:hover {
+    transform: scale(1.05);
 }
 </style>
 </head>
@@ -770,6 +774,17 @@ function renderProducts(){
         <div class="prod-price">${fmt(p.prix)} <small>FCFA</small></div>
         <button class="btn-wa" onclick="event.stopPropagation();commander('${js(p.nom)}','${js(p.prix)}')">
           ${WA_SVG} Commander
+          // Exemple de modification dans ton renderProducts :
+container.innerHTML += `
+    <div class="product-box">
+        <!-- Image et infos de ton produit... -->
+        
+        <!-- AJOUTE LA CLASSE "box-btn-pulse" ICI -->
+        <a href="${product.whatsapp}" class="box-btn-pulse" style="padding: 10px 20px; border-radius: 8px; text-decoration: none; text-align: center;">
+            Commander
+        </a>
+    </div>
+`;
         </button>
       </div>
     </div>`;
