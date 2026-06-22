@@ -855,7 +855,7 @@ function buildAllSlides(){
         <div class="modal-price">${fmt(p.prix)} <small>FCFA</small></div>
         <div class="modal-divider"></div>
         ${currentList.length > 1 ? '<div class="modal-swipe-hint">← Balayez pour voir les autres produits →</div>' : ''}
-        <button class="modal-wa-btn box-btn-pulse" onclick="commander('${js(p.nom)}','${js(p.price)}')">
+        <button class="modal-wa-btn" onclick="commander('${js(p.nom)}','${js(p.prix)}')">
           ${WA_SVG_BIG} Commander sur WhatsApp
         </button>
       </div>
