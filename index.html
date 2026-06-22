@@ -153,14 +153,14 @@ body.light .g-tab.active{color:var(--or-d);border-color:var(--or-d);background:r
    ============================================================ */
 .prod-card{
   background:rgba(8,6,3,0.72);
-  border:1px solid var(--bord);
+  border:1px solid var(--card-glow-color);
   border-radius:16px;overflow:hidden;
   backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
   box-shadow:0 4px 20px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.05);
   transition:transform .3s,box-shadow .3s;
   animation:cardPop .45s ease-out both;
   position:relative;
-  cursor:pointer; /* indique que la carte est cliquable */
+  cursor:pointer;
 }
 @keyframes cardPop{from{opacity:0;transform:scale(.92) translateY(12px)}to{opacity:1;transform:scale(1) translateY(0)}}
 body.light .prod-card{background:rgba(255,255,255,.35);border-color:rgba(139,105,20,.3);}
@@ -170,11 +170,22 @@ body.light .prod-card{background:rgba(255,255,255,.35);border-color:rgba(139,105
 /* HALO animé */
 .prod-card::after{
   content:'';position:absolute;inset:0;border-radius:16px;pointer-events:none;
-  animation:cardHalo calc(2.5s / max(var(--glow-intensity),.1)) ease-in-out infinite;
+  /* Vitesse proportionnelle à l intensité + jamais trop rapide */
+  animation:cardHalo calc(3s / max(var(--glow-intensity),.3)) ease-in-out infinite;
 }
 @keyframes cardHalo{
-  0%,100%{box-shadow:0 0 calc(8px * var(--glow-intensity)) calc(1px * var(--glow-intensity)) var(--card-glow-color),inset 0 0 0 1px var(--card-glow-color);}
-  50%{box-shadow:0 0 calc(28px * var(--glow-intensity)) calc(5px * var(--glow-intensity)) var(--card-glow-color),inset 0 0 0 1px var(--card-glow-color);}
+  0%,100%{
+    box-shadow:
+      0 0 calc(20px * var(--glow-intensity)) calc(4px * var(--glow-intensity)) var(--card-glow-color),
+      0 0 calc(40px * var(--glow-intensity)) calc(2px * var(--glow-intensity)) var(--card-glow-color),
+      inset 0 0 calc(12px * var(--glow-intensity)) var(--card-glow-color);
+  }
+  50%{
+    box-shadow:
+      0 0 calc(50px * var(--glow-intensity)) calc(10px * var(--glow-intensity)) var(--card-glow-color),
+      0 0 calc(90px * var(--glow-intensity)) calc(5px * var(--glow-intensity)) var(--card-glow-color),
+      inset 0 0 calc(25px * var(--glow-intensity)) var(--card-glow-color);
+  }
 }
 
 /* Hint "Voir en 3D" */
@@ -205,8 +216,8 @@ body.light .prod-card{background:rgba(255,255,255,.35);border-color:rgba(139,105
 body.light .prod-badge{color:var(--or-d);background:rgba(255,255,255,.4);}
 .prod-name{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:700;line-height:1.25;color:#FFFFFF;margin-bottom:.2rem;text-shadow:var(--ts);}
 .prod-genre{font-size:.52rem;letter-spacing:.14em;color:#D4C9B0;text-transform:uppercase;margin-bottom:.45rem;font-weight:600;text-shadow:var(--ts);}
-.prod-price{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;background:linear-gradient(90deg,var(--or-d),var(--or-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.prod-price small{font-family:'Montserrat',sans-serif;font-size:.60rem;}
+.prod-price{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;background:linear-gradient(90deg,var(--or-d),var(--or-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.prod-price small{font-family:'Montserrat',sans-serif;font-size:.58rem;}
 
 /* Couleurs */
 .color-section{margin:.45rem 0 .5rem;}
@@ -276,21 +287,21 @@ body.light .prod-badge{color:var(--or-d);background:rgba(255,255,255,.4);}
 .modal-img-wrap{
   flex:0 0 auto;
   width:100%;
-  /* Grande — bien visible sans être trop grande */
-  height:clamp(350px,80vw,600px);
+  /* Très grande — produit bien visible */
+  height:clamp(400px,82vw,680px);
   /* Fond doré transparent luxueux */
   background:linear-gradient(145deg,rgba(201,168,76,.1) 0%,rgba(139,105,20,.15) 50%,rgba(201,168,76,.08) 100%);
   border-bottom:1px solid rgba(201,168,76,.25);
   display:flex;align-items:center;justify-content:center;
   position:relative;
-  padding:8px;
+  padding:4px;
 }
 .modal-img-wrap img{
-  max-width:100%;max-height:100%;
+  max-width:98%;max-height:98%;
   object-fit:contain;
   border-radius:8px;
-  /* Légère ombre pour détacher le produit du fond */
-  filter:drop-shadow(0 4px 20px rgba(201,168,76,.15));
+  /* Ombre dorée pour détacher le produit */
+  filter:drop-shadow(0 6px 28px rgba(201,168,76,.22)) drop-shadow(0 2px 8px rgba(0,0,0,.8));
 }
 
 /* Miniatures couleurs (swipe image) */
@@ -444,8 +455,7 @@ body.light .nav-item.active{color:var(--or-d);}
 .dot360.active{background:var(--or-l);transform:scale(1.4);}
 
 /* Curseur sur la zone 360 desktop */
-/* Le style du bouton Commander dans la box */
-
+.modal-img-wrap[ontouchstart]{cursor:ew-resize;}
 </style>
 </head>
 <body>
