@@ -445,6 +445,58 @@ body.light .nav-item.active{color:var(--or-d);}
 
 /* Curseur sur la zone 360 desktop */
 .modal-img-wrap[ontouchstart]{cursor:ew-resize;}
+   /* Le bouton de commande de base */
+.btn-commander-pulse {
+    background: #25d366; /* Vert WhatsApp */
+    color: white !important;
+    font-weight: bold;
+    border: none;
+    outline: none;
+    position: relative;
+    overflow: hidden;
+    /* On lance l'animation de pulsation */
+    animation: pulseGreen 2s infinite ease-in-out;
+}
+
+/* 1. L'effet de pulsation (le bouton grandit et crée une ombre qui rayonne) */
+@keyframes pulseGreen {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
+    }
+    70% {
+        transform: scale(1.03); /* Légère augmentation de taille */
+        box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); /* L'onde verte s'efface */
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+    }
+}
+
+/* 2. L'effet de scintillement (le reflet blanc de lumière qui passe) */
+.btn-commander-pulse::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -60%;
+    width: 30%;
+    height: 200%;
+    background: linear-gradient(
+        to right, 
+        rgba(255, 255, 255, 0) 0%, 
+        rgba(255, 255, 255, 0.6) 50%, 
+        rgba(255, 255, 255, 0) 100%
+    );
+    transform: rotate(25deg);
+    animation: shimmerEffect 3s infinite ease-in-out;
+}
+
+@keyframes shimmerEffect {
+    0% { left: -60%; }
+    30% { left: 140%; } /* Le reflet traverse le bouton rapidement */
+    100% { left: 140%; } /* Temps de pause avant le prochain scintillement */
+}
 </style>
 </head>
 <body>
