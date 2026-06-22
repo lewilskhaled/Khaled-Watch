@@ -456,6 +456,87 @@ body.light .nav-item.active{color:var(--or-d);}
 
 /* Curseur sur la zone 360 desktop */
 .modal-img-wrap[ontouchstart]{cursor:ew-resize;}
+   /* ============================================================
+   BOUTON ET EFFETS VISION NOCTURNE (LUME)
+   ============================================================ */
+.lume-toggle-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0.5rem 0.9rem;
+  padding: 0.6rem 1rem;
+  background: rgba(201, 168, 76, 0.08);
+  border: 1px solid var(--bord);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+}
+
+.lume-label {
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--or-l);
+  font-weight: 700;
+  text-shadow: var(--ts);
+}
+
+/* Le Switch */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 46px;
+  height: 24px;
+}
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(255, 255, 255, 0.2);
+  transition: .4s;
+  border-radius: 34px;
+  border: 1px solid var(--bord);
+}
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 3px;
+  bottom: 3px;
+  background-color: #fff;
+  transition: .4s;
+  border-radius: 50%;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+input:checked + .slider { background-color: #25D366; border-color: #25D366; }
+input:checked + .slider:before { transform: translateX(22px); }
+
+/* L'EFFET FLUO VERT (Quand actif) */
+#prodGrid.night-mode {
+  background: #030303 !important;
+  border-radius: 16px;
+  transition: background 0.5s ease;
+}
+
+/* Transformation magique de l'image de la montre */
+#prodGrid.night-mode .prod-card {
+  background: rgba(5, 12, 5, 0.85) !important;
+  border-color: rgba(0, 255, 106, 0.4) !important;
+  box-shadow: 0 0 20px rgba(0, 255, 106, 0.15) !important;
+}
+
+#prodGrid.night-mode .prod-img {
+  /* Ce filtre assombrit le cadran et fait briller les index/aiguilles blanches en vert fluo */
+  filter: brightness(0.35) contrast(1.7) sepia(1) hue-rotate(75deg) saturate(7) drop-shadow(0 0 12px #00ff6a) !important;
+}
+
+/* Masquer le badge classique en mode nuit pour plus de classe */
+#prodGrid.night-mode .prod-badge, 
+#prodGrid.night-mode .card-hint-3d {
+  opacity: 0.2;
+  transition: opacity 0.4s;
+}
 </style>
 </head>
 <body>
@@ -496,17 +577,29 @@ body.light .nav-item.active{color:var(--or-d);}
 </div>
 
 <!-- ======== PAGE CATÉGORIE ======== -->
+<!-- ======== PAGE CATÉGORIE ======== -->
 <div id="page-cat">
   <div class="page-cat-header">
     <div class="btn-back" onclick="goHome()">←</div>
     <span class="cat-page-icon" id="catPageIcon"></span>
     <div class="cat-page-title" id="catPageTitle"></div>
   </div>
+  
   <div class="gender-tabs">
     <button class="g-tab active" data-g="tous"  onclick="setGender(this)">Tous</button>
     <button class="g-tab"        data-g="Homme" onclick="setGender(this)">Homme</button>
     <button class="g-tab"        data-g="Femme" onclick="setGender(this)">Femme</button>
   </div>
+
+  <!-- BLOC VISION NOCTURNE (Masqué par défaut) -->
+  <div class="lume-toggle-container" id="lumeToggleContainer" style="display: none;">
+    <span class="lume-label">Vision Nocturne 🌙</span>
+    <label class="switch">
+      <input type="checkbox" id="lumeToggle" onchange="toggleLumeMode(this)">
+      <span class="slider round"></span>
+    </label>
+  </div>
+
   <div class="prod-grid" id="prodGrid">
     <div class="loader-wrap"><div class="loader"></div></div>
   </div>
@@ -645,20 +738,47 @@ function goHome(){
   window.scrollTo(0,0);
 }
 function openCat(cat){
-  currentCat = cat; currentGender = 'tous';
-  document.querySelectorAll('.g-tab').forEach(t => t.classList.remove('active'));
-  document.querySelector('.g-tab[data-g="tous"]').classList.add('active');
-  document.getElementById('catPageTitle').textContent = cat;
-  document.getElementById('catPageIcon').textContent  = CAT_ICONS[cat] || '✦';
-  hideAll();
-  document.getElementById('page-cat').style.display = 'block';
-  window.scrollTo(0,0);
-  renderProducts();
+    currentCat = cat; currentGender = 'tous';
+    document.querySelectorAll('.g-tab').forEach(t => t.classList.remove('active'));
+    document.querySelector('.g-tab[data-g="tous"]').classList.add('active');
+    document.getElementById('catPageTitle').textContent = cat;
+    document.getElementById('catPageIcon').textContent = CAT_ICONS[cat] || '✨';
+    hideAll();
+    document.getElementById('page-cat').style.display = 'block';
+    window.scrollTo(0,0);
+
+    // --- DEBUT DU CODE VISION NOCTURNE ---
+    const lumeContainer = document.getElementById('lumeToggleContainer');
+    const lumeToggle = document.getElementById('lumeToggle');
+    const prodGrid = document.getElementById('prodGrid');
+
+    if (lumeContainer && lumeToggle && prodGrid) {
+        if (cat === 'Montres Luxueuses') {
+            lumeContainer.style.display = 'flex'; // Affiche le switch si c'est les montres de luxe
+        } else {
+            lumeContainer.style.display = 'none'; // Cache le switch pour les autres catégories
+            lumeToggle.checked = false;          // Décoche le bouton
+            prodGrid.classList.remove('night-mode'); // Éteint le mode nuit
+        }
+    }
+    // --- FIN DU CODE VISION NOCTURNE ---
+
+    renderProducts();
 }
 function openOffres(){
   hideAll();
   document.getElementById('page-offre').style.display = 'block';
   window.scrollTo(0,0);
+}
+   function toggleLumeMode(checkbox) {
+    const prodGrid = document.getElementById('prodGrid');
+    if (!prodGrid) return;
+
+    if (checkbox.checked) {
+        prodGrid.classList.add('night-mode');
+    } else {
+        prodGrid.classList.remove('night-mode');
+    }
 }
 function setGender(btn){
   document.querySelectorAll('.g-tab').forEach(t => t.classList.remove('active'));
