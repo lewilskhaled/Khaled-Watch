@@ -445,62 +445,7 @@ body.light .nav-item.active{color:var(--or-d);}
 
 /* Curseur sur la zone 360 desktop */
 /* Le style du bouton Commander dans la box */
-.box-btn-pulse {
-    background-color: #25d366 !important; /* Vert WhatsApp intense */
-    color: white !important;
-    font-weight: bold;
-    border: none;
-    position: relative;
-    overflow: hidden; /* Obligatoire pour bloquer le reflet dans le bouton */
-    display: inline-block;
-    cursor: pointer;
-    transition: transform 0.2s ease;
-    
-    /* Active la pulsation de l'ombre verte */
-    animation: greenBoxPulse 2s infinite ease-in-out;
-}
 
-/* 1. L'effet de pulsation (l'ombre verte qui s'élargit) */
-@keyframes greenBoxPulse {
-    0% {
-        box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
-    }
-    70% {
-        box-shadow: 0 0 0 10px rgba(37, 211, 102, 0); /* L'onde se propage et s'efface */
-    }
-    100% {
-        box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
-    }
-}
-
-/* 2. L'effet de scintillement (la ligne blanche lumineuse) */
-.box-btn-pulse::after {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -60%;
-    width: 25%;
-    height: 200%;
-    background: linear-gradient(
-        to right, 
-        rgba(255, 255, 255, 0) 0%, 
-        rgba(255, 255, 255, 0.6) 50%, 
-        rgba(255, 255, 255, 0) 100%
-    );
-    transform: rotate(25deg);
-    animation: boxShimmer 2.5s infinite ease-in-out;
-}
-
-@keyframes boxShimmer {
-    0% { left: -60%; }
-    25% { left: 140%; } /* Le reflet traverse rapidement */
-    100% { left: 140%; } /* Pause avant le prochain scintillement */
-}
-
-/* Petit effet au survol sur PC */
-.box-btn-pulse:hover {
-    transform: scale(1.05);
-}
 </style>
 </head>
 <body>
