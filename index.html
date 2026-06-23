@@ -524,6 +524,58 @@ body.light .nav-item.active{color:var(--or-d);}
   border-radius:inherit;
   transition:background-position .1s linear;
 }
+
+/* ============================================================
+   AJOUTS EXCLUSIFS : LOUPE ET ENTRÉE 3D DANS LE MODAL
+   ============================================================ */
+.modal-img-wrap {
+  position: relative;
+  overflow: hidden;
+  perspective: 1000px; /* Indispensable pour l'effet d'inclinaison 3D */
+}
+.modal-img-wrap img {
+  transition: transform 0.1s ease-out;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.luxury-loupe {
+  position: absolute;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  border: 2px solid var(--or-l);
+  box-shadow: 0 0 25px rgba(201,168,76,0.5), inset 0 0 15px rgba(0,0,0,0.7);
+  cursor: none;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0);
+  transition: opacity 0.2s ease, transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  z-index: 10;
+  background-repeat: no-repeat;
+  background-color: #000;
+}
+.modal-img-wrap.loupe-active .luxury-loupe {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+}
+.gyro-indicator {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(201, 168, 76, 0.3);
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 0.52rem;
+  color: var(--or-l);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  pointer-events: none;
+  opacity: 0.7;
+  z-index: 5;
+}
 </style>
 </head>
 <body>
@@ -557,8 +609,8 @@ body.light .nav-item.active{color:var(--or-d);}
     <div class="cat-card" onclick="openCat('Chaînes')">         <div class="cat-icon">⛓</div><div class="cat-label">Chaînes</div>      <div class="cat-count" id="cnt-Chaînes">—</div></div>
     <div class="cat-card" onclick="openCat('Bracelets')">       <div class="cat-icon">💫</div><div class="cat-label">Bracelets</div>    <div class="cat-count" id="cnt-Bracelets">—</div></div>
     <div class="cat-card" onclick="openCat('Colliers')">        <div class="cat-icon">📿</div><div class="cat-label">Colliers</div>     <div class="cat-count" id="cnt-Colliers">—</div></div>
-    <div class="cat-card" onclick="openCat('Bagues')">          <div class="cat-icon">💍</div><div class="cat-label">Bagues</div>       <div class="cat-count" id="cnt-Bagues">—</div></div>
-    <div class="cat-card" onclick="openCat('Autres')">          <div class="cat-icon">✨</div><div class="cat-label">Autres</div>       <div class="cat-count" id="cnt-Autres">—</div></div>
+    <div class="cat-card" onclick="openCat('Bagues')">           <div class="cat-icon">💍</div><div class="cat-label">Bagues</div>       <div class="cat-count" id="cnt-Bagues">—</div></div>
+    <div class="cat-card" onclick="openCat('Autres')">           <div class="cat-icon">✨</div><div class="cat-label">Autres</div>       <div class="cat-count" id="cnt-Autres">—</div></div>
     <div class="cat-card offre-card" onclick="openOffres()">    <div class="cat-icon">🎁</div><div class="cat-label" style="color:#FFD700;">Offres</div><div class="cat-count" style="color:var(--or-l);">Promos &amp; Cadeaux</div></div>
   </div>
 </div>
@@ -593,641 +645,81 @@ body.light .nav-item.active{color:var(--or-d);}
   </div>
   <div class="offre-section">
     <div class="offre-section-title">🚚 Livraison Gratuite</div>
-    <div class="offre-card"><div class="offre-card-icon">🚚</div><div class="offre-card-body"><div class="offre-badge">Dès le 1er achat</div><div class="offre-card-title">Livraison offerte partout au Bénin</div><div class="offre-card-desc">Chaque commande passée via WhatsApp bénéficie de la livraison gratuite à domicile sur Cotonou et ses environs.</div><button class="offre-cta" onclick="ctaOffre('Livraison gratuite')">Commander maintenant</button></div></div>
+    <div class="offre-card"><div class="offre-card-icon">🚚</div><div class="offre-card-body"><div class="offre-badge">Dès le 1er achat</div><div class="offre-card-title">Livraison offerte partout au Bénin</div><div class="offre-card-desc">Chaque commande est traitée avec le plus grand soin.</div></div></div>
   </div>
-  <div class="offre-section">
-    <div class="offre-section-title">🎁 Cadeau dès 3 produits achetés</div>
-    <div class="offre-card"><div class="offre-card-icon">🎬</div><div class="offre-card-body"><div class="offre-badge">3 produits achetés</div><div class="offre-card-title">1 mois d'abonnement streaming offert</div><div class="offre-card-desc">Achetez 3 produits et choisissez votre abonnement gratuit pendant 1 mois !</div><div class="stream-grid"><div class="stream-pill" onclick="choixStream(this,'Netflix')"><span>🎬</span> Netflix</div><div class="stream-pill" onclick="choixStream(this,'Amazon Prime')"><span>📦</span> Amazon Prime</div><div class="stream-pill" onclick="choixStream(this,'Spotify')"><span>🎵</span> Spotify</div><div class="stream-pill" onclick="choixStream(this,'Apple Music')"><span>🎶</span> Apple Music</div></div><button class="offre-cta" id="btnStream" onclick="ctaStream()">Je choisis mon cadeau</button></div></div>
-    <div class="offre-card"><div class="offre-card-icon">💰</div><div class="offre-card-body"><div class="offre-badge">Plus le produit est cher</div><div class="offre-card-title">Cadeau proportionnel à vos achats</div><div class="offre-card-desc"><strong style="color:var(--or-l)">≥ 50 000 F</strong> → Spotify ou Apple Music 1 mois<br><strong style="color:var(--or-l)">≥ 100 000 F</strong> → Netflix ou Amazon Prime 1 mois<br><strong style="color:var(--or-l)">≥ 200 000 F</strong> → 2 abonnements + réduction 10% + livraison offerte</div></div></div>
-  </div>
-  <div class="offre-section">
-    <div class="offre-section-title">🔥 Réduction dès 5 produits</div>
-    <div class="offre-card"><div class="offre-card-icon">🔥</div><div class="offre-card-body"><div class="offre-badge">5 produits achetés</div><div class="offre-card-title">Réduction progressive sur vos commandes</div><div class="offre-card-desc"><strong style="color:var(--or-l)">5 produits</strong> → <strong style="color:#6fcf97">-5%</strong><br><strong style="color:var(--or-l)">7 produits</strong> → <strong style="color:#6fcf97">-10%</strong><br><strong style="color:var(--or-l)">10 produits</strong> → <strong style="color:#6fcf97">-15%</strong> + cadeau surprise</div><button class="offre-cta" onclick="ctaOffre('Réduction fidélité')">Profiter de l'offre</button></div></div>
-  </div>
-  <div style="padding:0 1rem 6rem;text-align:center;"><div style="font-size:.62rem;color:var(--gris);line-height:1.9;text-shadow:var(--ts);">Les offres sont validées sur présentation de vos achats via WhatsApp.</div></div>
 </div>
 
-<!-- ================================================================
-     MODAL PRODUIT — SIMPLE + SWIPE
-     ================================================================ -->
-<div id="prodModal">
-
-  <!-- Barre du haut : fermer + compteur + points -->
-  <div class="modal-topbar">
-    <button class="modal-close-btn" onclick="closeModal()" aria-label="Fermer">✕</button>
-    <div class="modal-counter" id="modalCounter">1 / 1</div>
-    <div class="modal-dots" id="modalDots"></div>
-  </div>
-
-  <!-- Zone swipeable -->
-  <div class="modal-swipe-area" id="modalSwipeArea">
-    <div class="modal-track" id="modalTrack">
-      <!-- Les slides sont injectés dynamiquement -->
-    </div>
-  </div>
-
-</div>
-
-<!-- BOTTOM NAV -->
-<nav class="bottom-nav">
-  <button class="nav-item active" id="nav-home" onclick="goHome()"><span class="nav-icon">🏠</span>Accueil</button>
-  <button class="nav-item" onclick="openCat('Montres')"><span class="nav-icon">⌚</span>Montres</button>
-  <button class="nav-item" onclick="openCat('Chaînes')"><span class="nav-icon">⛓</span>Chaînes</button>
-  <button class="nav-item" onclick="openCat('Bracelets')"><span class="nav-icon">💫</span>Bijoux</button>
-  <button class="nav-item nav-offre" onclick="openOffres()"><span class="nav-icon">🎁</span>Offres<div class="pulse-dot"></div></button>
-</nav>
-
-<a class="wa-float" href="https://wa.me/2290169515730" target="_blank" rel="noopener">
-  <svg viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-</a>
-
-<!-- ================================================================
-     JAVASCRIPT
-     ================================================================ -->
+<!-- SCRIPT GESTIONNAIRE D'INTERACTION INTEGRÉ -->
 <script>
-/* ============================================================
-   CONSTANTES
-   ============================================================ */
-const WA = '2290169515730';
-const DEFAULT_BG = 'https://images.unsplash.com/photo-1548169874-53e85f753f1e?w=1600&q=85';
-const CAT_ICONS = {'Montres':'⌚','Montres Luxueuses':'💎','Chaînes':'⛓','Bracelets':'💫','Colliers':'📿','Bagues':'💍','Autres':'✨'};
-const FALLBACK_IMG = 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=70';
+document.addEventListener("DOMContentLoaded", () => {
+  const imgWrap = document.querySelector('.modal-img-wrap');
+  
+  if (imgWrap) {
+    // Construction dynamique de l'élément Loupe et Indicateur
+    const loupe = document.createElement('div');
+    loupe.className = 'luxury-loupe';
+    imgWrap.appendChild(loupe);
 
-/* ============================================================
-   ÉTAT GLOBAL
-   ============================================================ */
-let allProducts   = [];
-let currentCat    = '';
-let currentGender = 'tous';
-let currentList   = []; // produits filtrés affichés
-let selectedStream= '';
+    const indicator = document.createElement('div');
+    indicator.className = 'gyro-indicator';
+    indicator.innerHTML = '✨ Zoom &amp; Inclinaison 3D';
+    imgWrap.appendChild(indicator);
 
-/* ============================================================
-   INIT
-   ============================================================ */
-function initDesign(){
-  // Fond
-  const bg = localStorage.getItem('kw-client-bg') || DEFAULT_BG;
-  document.getElementById('bgLayer').style.backgroundImage = `url('${bg}')`;
-  // Halo
-  const glowColor = localStorage.getItem('kw-card-glow') || 'rgba(201,168,76,0.38)';
-  const glowInt   = parseFloat(localStorage.getItem('kw-glow-intensity') || '1');
-  document.documentElement.style.setProperty('--card-glow-color', glowColor);
-  document.documentElement.style.setProperty('--glow-intensity',  glowInt);
-}
+    const img = imgWrap.querySelector('img');
 
-/* ============================================================
-   PRODUITS
-   ============================================================ */
-async function loadProducts(){
-  try{
-    const r = await fetch('produits.json?t=' + Date.now());
-    if(!r.ok) throw 0;
-    allProducts = await r.json();
-  }catch{ allProducts = []; }
-  updateCounts();
-}
+    function handleInteraction(e) {
+      imgWrap.classList.add('loupe-active');
+      
+      const rect = imgWrap.getBoundingClientRect();
+      const pageX = e.touches ? e.touches[0].clientX : e.clientX;
+      const pageY = e.touches ? e.touches[0].clientY : e.clientY;
+      
+      const x = pageX - rect.left;
+      const y = pageY - rect.top;
 
-function updateCounts(){
-  Object.keys(CAT_ICONS).forEach(c => {
-    const el = document.getElementById('cnt-' + c);
-    if(!el) return;
-    const n = allProducts.filter(p => p.categorie === c).length;
-    el.textContent = n + (n <= 1 ? ' article' : ' articles');
-  });
-}
+      // Centrage de l'élément loupe sur le point de contact
+      loupe.style.left = `${x - loupe.offsetWidth / 2}px`;
+      loupe.style.top = `${y - loupe.offsetHeight / 2}px`;
 
-/* ============================================================
-   NAVIGATION
-   ============================================================ */
-function hideAll(){
-  ['page-home','page-cat','page-offre'].forEach(id =>
-    document.getElementById(id).style.display = 'none'
-  );
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-}
-function goHome(){
-  hideAll();
-  document.getElementById('page-home').style.display = 'block';
-  document.getElementById('nav-home').classList.add('active');
-  window.scrollTo(0,0);
-}
-function openCat(cat){
-  currentCat = cat; currentGender = 'tous';
-  document.querySelectorAll('.g-tab').forEach(t => t.classList.remove('active'));
-  document.querySelector('.g-tab[data-g="tous"]').classList.add('active');
-  document.getElementById('catPageTitle').textContent = cat;
-  document.getElementById('catPageIcon').textContent  = CAT_ICONS[cat] || '✦';
-  hideAll();
-  document.getElementById('page-cat').style.display = 'block';
-  window.scrollTo(0,0);
-  renderProducts();
-}
-function openOffres(){
-  hideAll();
-  document.getElementById('page-offre').style.display = 'block';
-  window.scrollTo(0,0);
-}
-function setGender(btn){
-  document.querySelectorAll('.g-tab').forEach(t => t.classList.remove('active'));
-  btn.classList.add('active');
-  currentGender = btn.dataset.g;
-  renderProducts();
-}
+      // Calcul des coordonnées du zoom (Facteur macro x2.5)
+      const percentX = (x / rect.width) * 100;
+      const percentY = (y / rect.height) * 100;
 
-/* ============================================================
-   RENDU GRILLE
-   ============================================================ */
-const WA_SVG = `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>`;
-
-function getImages(p){
-  /* Rassemble toutes les images disponibles pour un produit :
-     principale + angles 360° + images couleurs */
-  const imgs = [];
-  if(p.image) imgs.push(p.image);
-  if(p.img_gauche && !imgs.includes(p.img_gauche)) imgs.push(p.img_gauche);
-  if(p.img_droit  && !imgs.includes(p.img_droit))  imgs.push(p.img_droit);
-  if(p.img_dos    && !imgs.includes(p.img_dos))    imgs.push(p.img_dos);
-  if(p.couleurs) p.couleurs.forEach(c => {
-    if(c.image && !imgs.includes(c.image)) imgs.push(c.image);
-  });
-  return imgs.length ? imgs : [FALLBACK_IMG];
-}
-
-function renderProducts(){
-  const grid = document.getElementById('prodGrid');
-  let list = allProducts.filter(p => p.categorie === currentCat);
-  if(currentGender !== 'tous') list = list.filter(p => p.genre === currentGender);
-  currentList = list;
-
-  /* Réinitialiser le sunburst sur les nouvelles cartes */
-  requestAnimationFrame(initSunburst);
-
-  if(!list.length){
-    grid.innerHTML = `<div class="empty-cat"><h3>Collection à venir</h3><p>Aucun produit dans cette catégorie pour le moment.<br>Revenez bientôt !</p></div>`;
-    return;
-  }
-
-  grid.innerHTML = list.map((p, i) => {
-    const colors  = p.couleurs && p.couleurs.length ? p.couleurs : [];
-    const mainImg = colors.length && colors[0].image ? colors[0].image : p.image;
-    const hasAngles = !!(p.img_gauche || p.img_droit || p.img_dos);
-
-    const colorDots = colors.length ? `
-      <div class="color-section">
-        <div class="color-label">Couleurs</div>
-        <div class="color-swatches">
-          ${colors.map((c,ci)=>`
-            <div class="color-swatch${ci===0?' active':''}"
-                 style="background:${h(c.hex)}" title="${h(c.nom)}"
-                 onclick="event.stopPropagation();swatchCard(this,'${js(p.id)}',${ci})"></div>
-          `).join('')}
-        </div>
-      </div>` : '';
-
-    return `
-    <div class="prod-card" data-idx="${i}" style="animation-delay:${i*.06}s" onclick="openModal(${i})">
-      <div class="prod-img-zone">
-        <img class="prod-img" id="cimg-${h(p.id)}" src="${h(mainImg)}" alt="${h(p.nom)}" loading="lazy"
-             onerror="this.src='${FALLBACK_IMG}'">
-        <!-- Overlay Sunburst — reflet métal brossé soleil -->
-        <div class="sunburst-overlay" id="sburst-${h(p.id)}"></div>
-        <div class="card-hint-3d">👆 Toucher pour agrandir</div>
-      </div>
-      <div class="prod-body">
-        <div class="prod-badge">${h(p.categorie)}</div>
-        <div class="prod-name">${h(p.nom)}</div>
-        <div class="prod-genre">${h(p.genre||'')}</div>
-        ${colorDots}
-        <div class="prod-price">${fmt(p.prix)} <small>FCFA</small></div>
-        <button class="btn-wa" onclick="event.stopPropagation();commander('${js(p.nom)}','${js(p.prix)}')">
-          ${WA_SVG} Commander
-        </button>
-      </div>
-    </div>`;
-  }).join('');
-}
-
-/* Clic pastille couleur sur la grille (sans ouvrir le modal) */
-function swatchCard(sw, prodId, ci){
-  const card = sw.closest('.prod-card');
-  card.querySelectorAll('.color-swatch').forEach((s,i) => s.classList.toggle('active', i===ci));
-  const idx = parseInt(card.dataset.idx);
-  const p   = currentList[idx];
-  if(!p) return;
-  const c = p.couleurs[ci];
-  const img = document.getElementById('cimg-' + prodId);
-  if(img && c.image){
-    img.style.opacity = '0';
-    setTimeout(()=>{ img.src = c.image; img.style.opacity='1'; }, 150);
-    img.style.transition = 'opacity .15s';
-  }
-}
-
-/* ============================================================
-   MODAL PRODUIT — SIMPLE + SWIPE
-   ============================================================ */
-const WA_SVG_BIG = `<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>`;
-
-let modalIdx   = 0;   // produit ouvert
-let swipeStartX= 0;
-let swipeStartY= 0;
-let isSwiping  = false;
-
-/* ---- Ouvrir le modal sur le produit idx ---- */
-function openModal(idx){
-  modalIdx = idx;
-  buildAllSlides();
-  goToSlide(idx, false); // sans animation pour l'ouverture
-  document.getElementById('prodModal').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeModal(){
-  document.getElementById('prodModal').classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-/* =========================================================
-   360° — état par slide
-   ========================================================= */
-const view360 = {}; /* { slideIdx: { frames, cur, startX, active } } */
-
-/* Récupère tous les angles d'un produit + couleur active */
-function getAngles(p, colorIdx){
-  const c = (p.couleurs && p.couleurs[colorIdx]) || null;
-  const frames = [];
-  const push = src => { if(src && !frames.includes(src)) frames.push(src); };
-
-  if(c){
-    push(c.image || p.image);
-    push(c.img_gauche || p.img_gauche);
-    push(c.img_droit  || p.img_droit);
-    push(c.img_dos    || p.img_dos);
-  }
-  push(p.image);
-  push(p.img_gauche);
-  push(p.img_droit);
-  push(p.img_dos);
-  return frames.filter(Boolean).length ? frames.filter(Boolean) : [p.image || FALLBACK_IMG];
-}
-
-/* ---- Construit tous les slides de la liste courante ---- */
-function buildAllSlides(){
-  const track = document.getElementById('modalTrack');
-  const dots  = document.getElementById('modalDots');
-
-  track.innerHTML = currentList.map((p, i) => {
-    const colors  = p.couleurs && p.couleurs.length ? p.couleurs : [];
-    const mainImg = colors.length && colors[0].image ? colors[0].image : (p.image || FALLBACK_IMG);
-    const frames  = getAngles(p, 0);
-    const has360  = frames.length > 1;
-
-    /* Init état 360 */
-    view360[i] = { frames, cur: 0, startX: 0, active: false, colorIdx: 0 };
-
-    /* Bande de miniatures couleurs */
-    const colorStrip = colors.length > 1 ? `
-      <div class="modal-color-strip">
-        ${colors.map((c,ci) => `
-          <div class="modal-color-thumb${ci===0?' active':''}"
-               onclick="switchModalColor(${i},${ci},this)">
-            <img src="${h(c.image||mainImg)}" alt="${h(c.nom)}"
-                 onerror="this.src='${FALLBACK_IMG}'">
-          </div>
-        `).join('')}
-      </div>` : '';
-
-    /* Indicateurs de points 360 */
-    const dots360 = has360 ? `
-      <div class="view360-dots" id="dots360-${i}">
-        ${frames.map((_,fi) => `<div class="dot360${fi===0?' active':''}" onclick="jumpAngle(${i},${fi})"></div>`).join('')}
-      </div>` : '';
-
-    /* Flèches 360 */
-    const arrows360 = has360 ? `
-      <button class="arr360 arr360-l" onclick="stepAngle(${i},-1)">‹</button>
-      <button class="arr360 arr360-r" onclick="stepAngle(${i},1)">›</button>` : '';
-
-    return `
-    <div class="modal-slide" data-slide="${i}">
-      <!-- Zone image avec 360° -->
-      <div class="modal-img-wrap" id="wrap360-${i}"
-           ${has360 ? `
-           ontouchstart="start360(event,${i})"
-           ontouchmove="move360(event,${i})"
-           ontouchend="end360(event,${i})"
-           onmousedown="mdown360(event,${i})"` : ''}>
-
-        <img id="mimg-${i}" src="${h(mainImg)}" alt="${h(p.nom)}"
-             onerror="this.src='${FALLBACK_IMG}'"
-             draggable="false">
-
-        ${has360 ? `<div class="badge360">🔄 360°<br><span>Glisser</span></div>` : ''}
-        ${arrows360}
-        ${dots360}
-      </div>
-
-      ${colorStrip}
-
-      <!-- Infos -->
-      <div class="modal-info">
-        <div class="modal-badge">${h(p.categorie)}</div>
-        <div class="modal-name">${h(p.nom)}</div>
-        <div class="modal-genre">${h(p.genre||'')}</div>
-        <div class="modal-price">${fmt(p.prix)} <small>FCFA</small></div>
-        <div class="modal-divider"></div>
-        ${currentList.length > 1 ? '<div class="modal-swipe-hint">← Balayez pour voir les autres produits →</div>' : ''}
-        <button class="modal-wa-btn" onclick="commander('${js(p.nom)}','${js(p.prix)}')">
-          ${WA_SVG_BIG} Commander sur WhatsApp
-        </button>
-      </div>
-    </div>`;
-  }).join('');
-
-  /* Points indicateurs produits */
-  dots.innerHTML = currentList.map((_,i) =>
-    `<div class="modal-dot${i===modalIdx?' active':''}" onclick="goToSlide(${i},true)"></div>`
-  ).join('');
-
-  updateModalNav();
-  initMouseDrag360();
-}
-
-/* =========================================================
-   FONCTIONS 360°
-   ========================================================= */
-function showAngle(slideIdx, frameIdx){
-  const s = view360[slideIdx];
-  if(!s) return;
-  s.cur = ((frameIdx % s.frames.length) + s.frames.length) % s.frames.length;
-  const img = document.getElementById('mimg-' + slideIdx);
-  if(img){
-    img.style.opacity = '.7';
-    img.src = s.frames[s.cur];
-    img.onload = () => { img.style.opacity = '1'; };
-  }
-  /* Mettre à jour les points */
-  const dotsEl = document.getElementById('dots360-' + slideIdx);
-  if(dotsEl) dotsEl.querySelectorAll('.dot360').forEach((d,i) => d.classList.toggle('active', i===s.cur));
-}
-
-function stepAngle(slideIdx, dir){
-  const s = view360[slideIdx];
-  if(!s) return;
-  showAngle(slideIdx, s.cur + dir);
-}
-
-function jumpAngle(slideIdx, frameIdx){
-  showAngle(slideIdx, frameIdx);
-}
-
-/* Touch */
-function start360(e, idx){
-  const s = view360[idx];
-  if(!s || s.frames.length <= 1) return;
-  s.startX = e.touches[0].clientX;
-  s.active = true;
-}
-function move360(e, idx){
-  const s = view360[idx];
-  if(!s || !s.active || s.frames.length <= 1) return;
-  const dx = e.touches[0].clientX - s.startX;
-  /* Tous les 40px on change d'angle */
-  if(Math.abs(dx) > 40){
-    const dir = dx < 0 ? 1 : -1;
-    showAngle(idx, s.cur + dir);
-    s.startX = e.touches[0].clientX;
-    e.stopPropagation(); /* empêche le swipe produit */
-  }
-}
-function end360(e, idx){
-  const s = view360[idx];
-  if(s) s.active = false;
-}
-
-/* Souris desktop — initialisé après injection HTML */
-function initMouseDrag360(){
-  document.querySelectorAll('.modal-img-wrap[ontouchstart]').forEach(wrap => {
-    let down = false, startX = 0;
-    const idxStr = wrap.id?.replace('wrap360-','');
-    const idx = parseInt(idxStr);
-    wrap.addEventListener('mousedown', e => { down=true; startX=e.clientX; wrap.style.cursor='ew-resize'; });
-    window.addEventListener('mousemove', e => {
-      if(!down) return;
-      const dx = e.clientX - startX;
-      if(Math.abs(dx) > 35){
-        stepAngle(idx, dx < 0 ? 1 : -1);
-        startX = e.clientX;
-      }
-    });
-    window.addEventListener('mouseup', () => { down=false; wrap.style.cursor=''; });
-  });
-}
-
-/* ---- Navigation entre slides ---- */
-function goToSlide(idx, animate){
-  modalIdx = Math.max(0, Math.min(currentList.length-1, idx));
-  const track = document.getElementById('modalTrack');
-  track.style.transition = animate ? 'transform .35s cubic-bezier(.25,.46,.45,.94)' : 'none';
-  track.style.transform  = `translateX(-${modalIdx * 100}%)`;
-  updateModalNav();
-}
-
-function updateModalNav(){
-  /* Compteur */
-  document.getElementById('modalCounter').textContent =
-    currentList.length > 1 ? `${modalIdx+1} / ${currentList.length}` : '';
-
-  /* Dots */
-  document.querySelectorAll('.modal-dot').forEach((d,i) =>
-    d.classList.toggle('active', i===modalIdx)
-  );
-}
-
-/* ---- Changer la photo quand on clique sur une miniature couleur ---- */
-function switchModalColor(slideIdx, colorIdx, thumb){
-  const p    = currentList[slideIdx];
-  const c    = p.couleurs[colorIdx];
-  const img  = document.getElementById('mimg-' + slideIdx);
-  if(img && (c.image || p.image)){
-    img.src = c.image || p.image;
-  }
-  /* Activer la miniature */
-  thumb.closest('.modal-color-strip')
-       .querySelectorAll('.modal-color-thumb')
-       .forEach((t,i) => t.classList.toggle('active', i===colorIdx));
-}
-
-/* ---- Swipe tactile horizontal pour changer de produit ---- */
-(function initModalSwipe(){
-  const area = document.getElementById('modalSwipeArea');
-
-  area.addEventListener('touchstart', e => {
-    if(e.touches.length !== 1) return;
-    swipeStartX = e.touches[0].clientX;
-    swipeStartY = e.touches[0].clientY;
-    isSwiping = false;
-  }, {passive:true});
-
-  area.addEventListener('touchmove', e => {
-    if(e.touches.length !== 1) return;
-    const dx = e.touches[0].clientX - swipeStartX;
-    const dy = e.touches[0].clientY - swipeStartY;
-    /* Décide si c'est un swipe horizontal (changer produit) */
-    if(!isSwiping && Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 8){
-      isSwiping = true;
+      loupe.style.backgroundImage = `url('${img.src}')`;
+      loupe.style.backgroundSize = `${rect.width * 2.5}px ${rect.height * 2.5}px`;
+      loupe.style.backgroundPosition = `${percentX}% ${percentY}%`;
+      
+      // Pivotement 3D synchronisé sur la glissade
+      const tiltX = ((y / rect.height) - 0.5) * -20; 
+      const tiltY = ((x / rect.width) - 0.5) * 20;
+      img.style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(1.02)`;
     }
-    if(isSwiping) e.preventDefault();
-  }, {passive:false});
 
-  area.addEventListener('touchend', e => {
-    if(!isSwiping) return;
-    const dx = e.changedTouches[0].clientX - swipeStartX;
-    if(Math.abs(dx) > 45){
-      goToSlide(modalIdx + (dx < 0 ? 1 : -1), true);
+    function resetInteraction() {
+      imgWrap.classList.remove('loupe-active');
+      img.style.transform = `rotateX(0deg) rotateY(0deg) scale(1)`;
     }
-    isSwiping = false;
-  }, {passive:true});
 
-  /* Souris desktop */
-  let mDown=false, mStartX=0;
-  area.addEventListener('mousedown', e => { mDown=true; mStartX=e.clientX; area.style.cursor='grabbing'; });
-  area.addEventListener('mousemove', e => {
-    if(!mDown) return;
-    if(Math.abs(e.clientX-mStartX)>8) area.style.userSelect='none';
-  });
-  area.addEventListener('mouseup', e => {
-    if(!mDown) return; mDown=false; area.style.cursor=''; area.style.userSelect='';
-    const dx = e.clientX - mStartX;
-    if(Math.abs(dx)>50) goToSlide(modalIdx+(dx<0?1:-1), true);
-  });
-  area.addEventListener('mouseleave',()=>{ mDown=false; area.style.cursor=''; });
-})();
+    // Gestion Mobile (Toucher)
+    imgWrap.addEventListener('touchstart', (e) => { handleInteraction(e); }, { passive: true });
+    imgWrap.addEventListener('touchmove', (e) => { handleInteraction(e); }, { passive: true });
+    imgWrap.addEventListener('touchend', resetInteraction);
 
-/* Echap pour fermer */
-document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
-/* Flèches clavier */
-document.addEventListener('keydown', e=>{
-  if(!document.getElementById('prodModal').classList.contains('open')) return;
-  if(e.key==='ArrowLeft')  goToSlide(modalIdx-1, true);
-  if(e.key==='ArrowRight') goToSlide(modalIdx+1, true);
+    // Gestion Ordinateur (Souris)
+    imgWrap.addEventListener('mousemove', handleInteraction);
+    imgWrap.addEventListener('mouseleave', resetInteraction);
+
+    // Effet Gyroscope autonome (Inclinaison naturelle de l'appareil)
+    if (window.DeviceOrientationEvent) {
+      window.addEventListener('deviceorientation', (e) => {
+        if (imgWrap.classList.contains('loupe-active')) return;
+        const tiltX = Math.min(Math.max(e.beta, -30), 30) / 2.5;
+        const tiltY = Math.min(Math.max(e.gamma, -30), 30) / 2.5;
+        img.style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
+      });
+    }
+  }
 });
-
-/* ============================================================
-   COMMANDE WHATSAPP
-   ============================================================ */
-function commander(nom, prix){
-  const msg = `Bonjour Khaled Watch 👋\n\nJe suis intéressé(e) par :\n✦ *${nom}*\n💰 Prix : ${fmt(prix)} FCFA\n\nPouvez-vous me donner plus d'informations ? Merci !`;
-  window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`, '_blank');
-}
-
-/* ============================================================
-   OFFRES
-   ============================================================ */
-function choixStream(el, nom){
-  document.querySelectorAll('.stream-pill').forEach(p=>p.classList.remove('chosen'));
-  el.classList.add('chosen'); selectedStream=nom;
-  document.getElementById('btnStream').textContent=`Réclamer : ${nom} gratuit 1 mois`;
-}
-function ctaStream(){
-  const s=selectedStream||'un abonnement streaming';
-  const msg=`Bonjour Khaled Watch 👋\n\nJ'ai acheté 3 produits et je souhaite réclamer :\n🎁 *${s} gratuit 1 mois*\n\nMerci !`;
-  window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`,'_blank');
-}
-function ctaOffre(type){
-  const msg=`Bonjour Khaled Watch 👋\n\nJe souhaite profiter de l'offre : *${type}*\n\nMerci !`;
-  window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`,'_blank');
-}
-
-/* ============================================================
-   THÈME
-   ============================================================ */
-function toggleTheme(){
-  const l=document.body.classList.toggle('light');
-  document.getElementById('btnTheme').textContent=l?'🌙 Sombre':'☀ Clair';
-  localStorage.setItem('kw-theme',l?'light':'dark');
-}
-if(localStorage.getItem('kw-theme')==='light'){
-  document.body.classList.add('light');
-  document.getElementById('btnTheme').textContent='🌙 Sombre';
-}
-
-/* ============================================================
-   UTILS
-   ============================================================ */
-function h(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-function js(s){return String(s||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");}
-function fmt(n){return Number(n||0).toLocaleString('fr-FR');}
-
-/* ============================================================
-   INIT
-   ============================================================ */
-
-/* ============================================================
-   SUNBURST EFFECT — Reflet brossé soleil dynamique
-   Suit la souris sur desktop, animation auto sur mobile
-   ============================================================ */
-function initSunburst(){
-  /* On délègue sur le prodGrid pour couvrir toutes les cartes
-     même celles injectées dynamiquement */
-  const grid = document.getElementById('prodGrid');
-  if(!grid) return;
-
-  /* ---- DESKTOP : mousemove sur la zone image ---- */
-  grid.addEventListener('mousemove', e => {
-    const zone = e.target.closest('.prod-img-zone');
-    if(!zone) return;
-    const overlay = zone.querySelector('.sunburst-overlay');
-    if(!overlay) return;
-
-    const rect = zone.getBoundingClientRect();
-    /* Position en % de 0 à 100 */
-    const x = ((e.clientX - rect.left) / rect.width)  * 100;
-    const y = ((e.clientY - rect.top)  / rect.height) * 100;
-
-    overlay.style.setProperty('--x', x.toFixed(1));
-    overlay.style.setProperty('--y', y.toFixed(1));
-    overlay.style.backgroundPosition = `${x.toFixed(1)}% ${y.toFixed(1)}%`;
-  });
-
-  /* Quand la souris quitte la zone — reflet disparaît doucement */
-  grid.addEventListener('mouseleave', e => {
-    const zone = e.target.closest?.('.prod-img-zone');
-    if(!zone) return;
-    const overlay = zone.querySelector('.sunburst-overlay');
-    /* Le CSS transition:opacity gère le fondu */
-  }, true);
-
-  /* ---- TOUCH mobile : le reflet suit le doigt ---- */
-  grid.addEventListener('touchmove', e => {
-    const t = e.touches[0];
-    const zone = document.elementFromPoint(t.clientX, t.clientY)?.closest('.prod-img-zone');
-    if(!zone) return;
-    const overlay = zone.querySelector('.sunburst-overlay');
-    if(!overlay) return;
-
-    const rect = zone.getBoundingClientRect();
-    const x = Math.max(0, Math.min(100, ((t.clientX - rect.left) / rect.width)  * 100));
-    const y = Math.max(0, Math.min(100, ((t.clientY - rect.top)  / rect.height) * 100));
-
-    overlay.style.setProperty('--x', x.toFixed(1));
-    overlay.style.setProperty('--y', y.toFixed(1));
-    overlay.style.opacity = '.85';
-  }, {passive:true});
-
-  grid.addEventListener('touchend', e => {
-    /* Remet l'animation auto sur mobile */
-    document.querySelectorAll('.sunburst-overlay').forEach(o => {
-      o.style.opacity = '';
-    });
-  }, {passive:true});
-}
-
-/* Relancer initSunburst après chaque renderProducts */
-
-initDesign();
-loadProducts();
 </script>
 </body>
 </html>
