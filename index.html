@@ -215,8 +215,8 @@ body.light .prod-card{background:rgba(255,255,255,.35);border-color:rgba(139,105
 .prod-badge{font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;color:var(--or-l);border:1px solid rgba(201,168,76,.5);border-radius:50px;padding:.17rem .52rem;display:inline-block;margin-bottom:.38rem;background:rgba(0,0,0,.45);font-weight:700;text-shadow:0 1px 4px rgba(0,0,0,.9);}
 body.light .prod-badge{color:var(--or-d);background:rgba(255,255,255,.4);}
 .prod-name{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:700;line-height:1.25;color:#FFFFFF;margin-bottom:.2rem;text-shadow:var(--ts);}
-.prod-genre{font-size:.52rem;letter-spacing:.14em;color:#FFFFFF;text-transform:uppercase;margin-bottom:.45rem;font-weight:600;text-shadow:var(--ts);}
-.prod-price{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;background:linear-gradient(90deg,var(--or-d),var(--or-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.prod-genre{font-size:.52rem;letter-spacing:.14em;color:#D4C9B0;text-transform:uppercase;margin-bottom:.45rem;font-weight:600;text-shadow:var(--ts);}
+.prod-price{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;background:linear-gradient(90deg,var(--or-d),var(--or-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .prod-price small{font-family:'Montserrat',sans-serif;font-size:.58rem;}
 
 /* Couleurs */
@@ -345,7 +345,7 @@ body.light .prod-badge{color:var(--or-d);background:rgba(255,255,255,.4);}
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
   margin-bottom:.8rem;
 }
-.modal-price small{font-family:'Montserrat',sans-serif;font-size:.9rem;}
+.modal-price small{font-family:'Montserrat',sans-serif;font-size:.7rem;}
 .modal-divider{height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.35),transparent);margin:.6rem 0;}
 .modal-swipe-hint{
   font-size:.6rem;color:rgba(201,168,76,.6);letter-spacing:.12em;
@@ -456,6 +456,74 @@ body.light .nav-item.active{color:var(--or-d);}
 
 /* Curseur sur la zone 360 desktop */
 .modal-img-wrap[ontouchstart]{cursor:ew-resize;}
+
+/* ============================================================
+   SUNBURST EFFECT — Reflet brossé soleil sur les cartes
+   ============================================================ */
+
+/* L'overlay du reflet est posé au-dessus de l'image */
+.sunburst-overlay{
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  pointer-events:none;
+  z-index:4;
+  opacity:0;
+  transition:opacity .35s ease;
+
+  /* Reflet radial doré qui suit --x et --y */
+  background:
+    radial-gradient(
+      circle 140px at calc(var(--x, 50%) * 1%) calc(var(--y, 50%) * 1%),
+      rgba(255,240,180,.52) 0%,
+      rgba(255,215,100,.28) 25%,
+      rgba(201,168,76,.12) 55%,
+      transparent 75%
+    );
+
+  /* mix-blend-mode screen pour que le reflet s'ajoute à l'image comme de la lumière */
+  mix-blend-mode: screen;
+}
+
+/* Apparaît au survol */
+.prod-card:hover .sunburst-overlay{
+  opacity:1;
+}
+
+/* Sur mobile (touch) — légère animation automatique de reflet */
+@media(hover:none){
+  .sunburst-overlay{
+    opacity:.5;
+    animation:sunburstAuto 4s ease-in-out infinite;
+  }
+  @keyframes sunburstAuto{
+    0%  { --x:20; --y:30; opacity:.3; }
+    25% { --x:70; --y:25; opacity:.6; }
+    50% { --x:80; --y:70; opacity:.4; }
+    75% { --x:30; --y:75; opacity:.6; }
+    100%{ --x:20; --y:30; opacity:.3; }
+  }
+}
+
+/* Reflet secondaire — trait de lumière diagonal (metal brossé) */
+.sunburst-overlay::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(
+    115deg,
+    transparent 20%,
+    rgba(255,248,200,.08) 40%,
+    rgba(255,235,150,.18) 48%,
+    rgba(255,248,200,.08) 56%,
+    transparent 75%
+  );
+  background-size:300% 300%;
+  background-position:calc(var(--x, 50%) * 1%) calc(var(--y, 50%) * 1%);
+  mix-blend-mode:screen;
+  border-radius:inherit;
+  transition:background-position .1s linear;
+}
 </style>
 </head>
 <body>
@@ -692,6 +760,9 @@ function renderProducts(){
   if(currentGender !== 'tous') list = list.filter(p => p.genre === currentGender);
   currentList = list;
 
+  /* Réinitialiser le sunburst sur les nouvelles cartes */
+  requestAnimationFrame(initSunburst);
+
   if(!list.length){
     grid.innerHTML = `<div class="empty-cat"><h3>Collection à venir</h3><p>Aucun produit dans cette catégorie pour le moment.<br>Revenez bientôt !</p></div>`;
     return;
@@ -719,7 +790,9 @@ function renderProducts(){
       <div class="prod-img-zone">
         <img class="prod-img" id="cimg-${h(p.id)}" src="${h(mainImg)}" alt="${h(p.nom)}" loading="lazy"
              onerror="this.src='${FALLBACK_IMG}'">
-       
+        <!-- Overlay Sunburst — reflet métal brossé soleil -->
+        <div class="sunburst-overlay" id="sburst-${h(p.id)}"></div>
+        <div class="card-hint-3d">👆 Toucher pour agrandir</div>
       </div>
       <div class="prod-body">
         <div class="prod-badge">${h(p.categorie)}</div>
@@ -1090,6 +1163,69 @@ function fmt(n){return Number(n||0).toLocaleString('fr-FR');}
 /* ============================================================
    INIT
    ============================================================ */
+
+/* ============================================================
+   SUNBURST EFFECT — Reflet brossé soleil dynamique
+   Suit la souris sur desktop, animation auto sur mobile
+   ============================================================ */
+function initSunburst(){
+  /* On délègue sur le prodGrid pour couvrir toutes les cartes
+     même celles injectées dynamiquement */
+  const grid = document.getElementById('prodGrid');
+  if(!grid) return;
+
+  /* ---- DESKTOP : mousemove sur la zone image ---- */
+  grid.addEventListener('mousemove', e => {
+    const zone = e.target.closest('.prod-img-zone');
+    if(!zone) return;
+    const overlay = zone.querySelector('.sunburst-overlay');
+    if(!overlay) return;
+
+    const rect = zone.getBoundingClientRect();
+    /* Position en % de 0 à 100 */
+    const x = ((e.clientX - rect.left) / rect.width)  * 100;
+    const y = ((e.clientY - rect.top)  / rect.height) * 100;
+
+    overlay.style.setProperty('--x', x.toFixed(1));
+    overlay.style.setProperty('--y', y.toFixed(1));
+    overlay.style.backgroundPosition = `${x.toFixed(1)}% ${y.toFixed(1)}%`;
+  });
+
+  /* Quand la souris quitte la zone — reflet disparaît doucement */
+  grid.addEventListener('mouseleave', e => {
+    const zone = e.target.closest?.('.prod-img-zone');
+    if(!zone) return;
+    const overlay = zone.querySelector('.sunburst-overlay');
+    /* Le CSS transition:opacity gère le fondu */
+  }, true);
+
+  /* ---- TOUCH mobile : le reflet suit le doigt ---- */
+  grid.addEventListener('touchmove', e => {
+    const t = e.touches[0];
+    const zone = document.elementFromPoint(t.clientX, t.clientY)?.closest('.prod-img-zone');
+    if(!zone) return;
+    const overlay = zone.querySelector('.sunburst-overlay');
+    if(!overlay) return;
+
+    const rect = zone.getBoundingClientRect();
+    const x = Math.max(0, Math.min(100, ((t.clientX - rect.left) / rect.width)  * 100));
+    const y = Math.max(0, Math.min(100, ((t.clientY - rect.top)  / rect.height) * 100));
+
+    overlay.style.setProperty('--x', x.toFixed(1));
+    overlay.style.setProperty('--y', y.toFixed(1));
+    overlay.style.opacity = '.85';
+  }, {passive:true});
+
+  grid.addEventListener('touchend', e => {
+    /* Remet l'animation auto sur mobile */
+    document.querySelectorAll('.sunburst-overlay').forEach(o => {
+      o.style.opacity = '';
+    });
+  }, {passive:true});
+}
+
+/* Relancer initSunburst après chaque renderProducts */
+
 initDesign();
 loadProducts();
 </script>
