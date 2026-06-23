@@ -125,6 +125,7 @@ body.light .cat-label{color:var(--or-d);}
 body.light .page-cat-header{background:rgba(240,235,216,.6);}
 .btn-back{background:rgba(201,168,76,.15);border:1px solid var(--bord);border-radius:50%;width:38px;height:38px;flex-shrink:0;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--or-l);font-size:1.1rem;font-weight:700;-webkit-tap-highlight-color:transparent;}
 .cat-page-title{font-family:'Cormorant Garamond',serif;font-size:1.55rem;font-weight:700;background:linear-gradient(90deg,var(--or-d),var(--or-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 1px 6px rgba(0,0,0,.95));}
+.cat-page-title{font-family:'Cormorant Garamond',serif;font-size:1.55rem;font-weight:700;background:linear-gradient(90deg,var(--or-d),var(--or-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 1px 6px rgba(0,0,0,.95));}
 .cat-page-icon{font-size:1.4rem;}
 
 /* Filtres genre */
@@ -170,7 +171,6 @@ body.light .prod-card{background:rgba(255,255,255,.35);border-color:rgba(139,105
 /* HALO animé */
 .prod-card::after{
   content:'';position:absolute;inset:0;border-radius:16px;pointer-events:none;
-  /* Vitesse proportionnelle à l intensité + jamais trop rapide */
   animation:cardHalo calc(3s / max(var(--glow-intensity),.3)) ease-in-out infinite;
 }
 @keyframes cardHalo{
@@ -237,7 +237,6 @@ body.light .prod-badge{color:var(--or-d);background:rgba(255,255,255,.4);}
 #prodModal{
   position:fixed;inset:0;z-index:9000;
   display:none;flex-direction:column;
-  /* Fond doré sombre — luxueux, pas noir pur */
   background:linear-gradient(160deg,rgba(20,14,3,.97) 0%,rgba(35,22,2,.95) 40%,rgba(20,14,3,.98) 100%);
   backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
   overflow:hidden;
@@ -267,7 +266,7 @@ body.light .prod-badge{color:var(--or-d);background:rgba(255,255,255,.4);}
 .modal-swipe-area{
   flex:1;overflow:hidden;
   position:relative;
-  touch-action:pan-y; /* autorise scroll vertical, bloque horizontal pour swipe */
+  touch-action:pan-y;
 }
 .modal-track{
   display:flex;
@@ -287,9 +286,7 @@ body.light .prod-badge{color:var(--or-d);background:rgba(255,255,255,.4);}
 .modal-img-wrap{
   flex:0 0 auto;
   width:100%;
-  /* Très grande — produit bien visible */
   height:clamp(400px,82vw,680px);
-  /* Fond doré transparent luxueux */
   background:linear-gradient(145deg,rgba(201,168,76,.1) 0%,rgba(139,105,20,.15) 50%,rgba(201,168,76,.08) 100%);
   border-bottom:1px solid rgba(201,168,76,.25);
   display:flex;align-items:center;justify-content:center;
@@ -300,7 +297,6 @@ body.light .prod-badge{color:var(--or-d);background:rgba(255,255,255,.4);}
   max-width:98%;max-height:98%;
   object-fit:contain;
   border-radius:8px;
-  /* Ombre dorée pour détacher le produit */
   filter:drop-shadow(0 6px 28px rgba(201,168,76,.22)) drop-shadow(0 2px 8px rgba(0,0,0,.8));
 }
 
@@ -415,166 +411,55 @@ body.light .nav-item.active{color:var(--or-d);}
 @keyframes spin{to{transform:rotate(360deg)}}
 
 /* ============================================================
-   360° VIEWER dans le modal
-   ============================================================ */
-/* Badge 360 */
-.badge360{
-  position:absolute;top:10px;left:10px;z-index:5;
-  background:rgba(0,0,0,.72);border:1px solid rgba(201,168,76,.6);
-  color:var(--or-l);font-size:.52rem;font-weight:700;letter-spacing:.1em;
-  text-transform:uppercase;border-radius:8px;padding:.3rem .6rem;
-  text-align:center;line-height:1.4;
-  animation:badge360pulse 2s ease-in-out infinite;
-}
-.badge360 span{font-size:.44rem;opacity:.8;display:block;}
-@keyframes badge360pulse{0%,100%{box-shadow:0 0 6px rgba(201,168,76,.3);}50%{box-shadow:0 0 16px rgba(201,168,76,.6);}}
-
-/* Flèches 360 */
-.arr360{
-  position:absolute;top:50%;transform:translateY(-50%);z-index:5;
-  background:rgba(0,0,0,.6);border:1px solid rgba(201,168,76,.5);
-  color:var(--or-l);border-radius:50%;width:36px;height:36px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:1.2rem;font-weight:700;cursor:pointer;
-  -webkit-tap-highlight-color:transparent;transition:background .2s;
-}
-.arr360:active{background:rgba(201,168,76,.25);}
-.arr360-l{left:8px;}
-.arr360-r{right:8px;}
-
-/* Points d'angle 360 */
-.view360-dots{
-  position:absolute;bottom:8px;left:50%;transform:translateX(-50%);
-  display:flex;gap:5px;z-index:5;
-}
-.dot360{
-  width:6px;height:6px;border-radius:50%;
-  background:rgba(255,255,255,.3);cursor:pointer;
-  transition:background .2s,transform .2s;
-}
-.dot360.active{background:var(--or-l);transform:scale(1.4);}
-
-/* Curseur sur la zone 360 desktop */
-.modal-img-wrap[ontouchstart]{cursor:ew-resize;}
-
-/* ============================================================
-   SUNBURST EFFECT — Reflet brossé soleil sur les cartes
-   ============================================================ */
-
-/* L'overlay du reflet est posé au-dessus de l'image */
-.sunburst-overlay{
-  position:absolute;
-  inset:0;
-  border-radius:inherit;
-  pointer-events:none;
-  z-index:4;
-  opacity:0;
-  transition:opacity .35s ease;
-
-  /* Reflet radial doré qui suit --x et --y */
-  background:
-    radial-gradient(
-      circle 140px at calc(var(--x, 50%) * 1%) calc(var(--y, 50%) * 1%),
-      rgba(255,240,180,.52) 0%,
-      rgba(255,215,100,.28) 25%,
-      rgba(201,168,76,.12) 55%,
-      transparent 75%
-    );
-
-  /* mix-blend-mode screen pour que le reflet s'ajoute à l'image comme de la lumière */
-  mix-blend-mode: screen;
-}
-
-/* Apparaît au survol */
-.prod-card:hover .sunburst-overlay{
-  opacity:1;
-}
-
-/* Sur mobile (touch) — légère animation automatique de reflet */
-@media(hover:none){
-  .sunburst-overlay{
-    opacity:.5;
-    animation:sunburstAuto 4s ease-in-out infinite;
-  }
-  @keyframes sunburstAuto{
-    0%  { --x:20; --y:30; opacity:.3; }
-    25% { --x:70; --y:25; opacity:.6; }
-    50% { --x:80; --y:70; opacity:.4; }
-    75% { --x:30; --y:75; opacity:.6; }
-    100%{ --x:20; --y:30; opacity:.3; }
-  }
-}
-
-/* Reflet secondaire — trait de lumière diagonal (metal brossé) */
-.sunburst-overlay::after{
-  content:'';
-  position:absolute;
-  inset:0;
-  background:linear-gradient(
-    115deg,
-    transparent 20%,
-    rgba(255,248,200,.08) 40%,
-    rgba(255,235,150,.18) 48%,
-    rgba(255,248,200,.08) 56%,
-    transparent 75%
-  );
-  background-size:300% 300%;
-  background-position:calc(var(--x, 50%) * 1%) calc(var(--y, 50%) * 1%);
-  mix-blend-mode:screen;
-  border-radius:inherit;
-  transition:background-position .1s linear;
-}
-
-/* ============================================================
-   AJOUTS EXCLUSIFS : LOUPE ET ENTRÉE 3D DANS LE MODAL
+   AJOUTS DESIGN EXCLUSIFS : LOUPE ET ENTRÉE 3D DANS LE MODAL
    ============================================================ */
 .modal-img-wrap {
-  position: relative;
-  overflow: hidden;
-  perspective: 1000px; /* Indispensable pour l'effet d'inclinaison 3D */
+  position: relative !important;
+  overflow: hidden !important;
+  perspective: 1000px !important;
 }
 .modal-img-wrap img {
-  transition: transform 0.1s ease-out;
-  transform-style: preserve-3d;
-  will-change: transform;
+  transition: transform 0.1s ease-out !important;
+  transform-style: preserve-3d !important;
+  will-change: transform !important;
 }
 .luxury-loupe {
-  position: absolute;
-  width: 160px;
-  height: 160px;
-  border-radius: 50%;
-  border: 2px solid var(--or-l);
-  box-shadow: 0 0 25px rgba(201,168,76,0.5), inset 0 0 15px rgba(0,0,0,0.7);
-  cursor: none;
-  pointer-events: none;
-  opacity: 0;
-  visibility: hidden;
-  transform: scale(0);
-  transition: opacity 0.2s ease, transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  z-index: 10;
-  background-repeat: no-repeat;
-  background-color: #000;
+  position: absolute !important;
+  width: 160px !important;
+  height: 160px !important;
+  border-radius: 50% !important;
+  border: 2px solid var(--or-l) !important;
+  box-shadow: 0 0 25px rgba(201,168,76,0.5), inset 0 0 15px rgba(0,0,0,0.7) !important;
+  cursor: none !important;
+  pointer-events: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  transform: scale(0) !important;
+  transition: opacity 0.2s ease, transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+  z-index: 99 !important;
+  background-repeat: no-repeat !important;
+  background-color: #000 !important;
 }
 .modal-img-wrap.loupe-active .luxury-loupe {
-  opacity: 1;
-  visibility: visible;
-  transform: scale(1);
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: scale(1) !important;
 }
 .gyro-indicator {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  background: rgba(0, 0, 0, 0.6);
-  border: 1px solid rgba(201, 168, 76, 0.3);
-  padding: 3px 8px;
-  border-radius: 4px;
-  font-size: 0.52rem;
-  color: var(--or-l);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  pointer-events: none;
-  opacity: 0.7;
-  z-index: 5;
+  position: absolute !important;
+  bottom: 10px !important;
+  right: 10px !important;
+  background: rgba(0, 0, 0, 0.6) !important;
+  border: 1px solid rgba(201, 168, 76, 0.3) !important;
+  padding: 3px 8px !important;
+  border-radius: 4px !important;
+  font-size: 0.52rem !important;
+  color: var(--or-l) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.1em !important;
+  pointer-events: none !important;
+  opacity: 0.7 !important;
+  z-index: 5 !important;
 }
 </style>
 </head>
@@ -649,77 +534,194 @@ body.light .nav-item.active{color:var(--or-d);}
   </div>
 </div>
 
-<!-- SCRIPT GESTIONNAIRE D'INTERACTION INTEGRÉ -->
+<!-- ======== MODAL DYNAMIQUE RECRÉÉ (POUR L'INITIALISATION DES EFFETS) ======== -->
+<div id="prodModal">
+  <div class="modal-topbar">
+    <button class="modal-close-btn" onclick="closeModal()">×</button>
+    <div class="modal-counter" id="modalCounter">1 / 1</div>
+    <div class="modal-dots" id="modalDots"></div>
+  </div>
+  <div class="modal-swipe-area">
+    <div class="modal-track" id="modalTrack">
+      <div class="modal-slide">
+        <div class="modal-img-wrap">
+          <!-- L'image principale sur laquelle s'appliqueront les effets -->
+          <img id="modalMainImg" src="" alt="Produit">
+        </div>
+        <div class="modal-info">
+          <div class="modal-badge" id="modalBadge">PRESTIGE</div>
+          <h2 class="modal-name" id="modalName">Nom du Produit</h2>
+          <div class="modal-genre" id="modalGenre">Genre</div>
+          <div class="modal-price" id="modalPrice">0 FCFA</div>
+          <div class="modal-divider"></div>
+          <button class="modal-wa-btn" id="modalWaBtn">Commander via WhatsApp</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <button class="nav-item active" onclick="goHome()"><div class="nav-icon">🏠</div>Accueil</button>
+  <button class="nav-item nav-offre" onclick="openOffres()"><div class="pulse-dot"></div><div class="nav-icon">🎁</div>Offres</button>
+</nav>
+
+<!-- SCRIPTS DE SIMULATION DU SITE & MOTEUR DES EFFETS MODAL -->
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-  const imgWrap = document.querySelector('.modal-img-wrap');
+// Simulation des fonctions de navigation de ton site d'origine pour éviter les erreurs de clic
+function goHome() {
+  document.getElementById('page-home').style.display = 'block';
+  document.getElementById('page-cat').style.display = 'none';
+  document.getElementById('page-offre').style.display = 'none';
+  document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+  document.querySelectorAll('.nav-item')[0].classList.add('active');
+}
+function openOffres() {
+  document.getElementById('page-home').style.display = 'none';
+  document.getElementById('page-cat').style.display = 'none';
+  document.getElementById('page-offre').style.display = 'block';
+  document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+  document.querySelectorAll('.nav-item')[1].classList.add('active');
+}
+function openCat(catName) {
+  document.getElementById('page-home').style.display = 'none';
+  document.getElementById('page-offre').style.display = 'none';
+  const pageCat = document.getElementById('page-cat');
+  pageCat.style.display = 'block';
+  document.getElementById('catPageTitle').innerText = catName;
   
-  if (imgWrap) {
-    // Construction dynamique de l'élément Loupe et Indicateur
-    const loupe = document.createElement('div');
-    loupe.className = 'luxury-loupe';
-    imgWrap.appendChild(loupe);
+  // Génération automatique d'une fausse carte produit pour test
+  const grid = document.getElementById('prodGrid');
+  grid.innerHTML = `
+    <div class="prod-card" onclick="openProductDetail('Exemple Montre Or', '125 000', 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&auto=format&fit=crop&q=60')">
+      <div class="prod-img-zone">
+        <img class="prod-img" src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&auto=format&fit=crop&q=60">
+        <div class="card-hint-3d">Voir Détails</div>
+      </div>
+      <div class="prod-body">
+        <div class="prod-badge">Exclusif</div>
+        <div class="prod-name">Exemple Montre Or</div>
+        <div class="prod-price">125.000 <small>FCFA</small></div>
+      </div>
+    </div>
+  `;
+}
+function toggleTheme() {
+  document.body.classList.toggle('light');
+  const btn = document.getElementById('btnTheme');
+  btn.innerText = document.body.classList.contains('light') ? '🌙 Sombre' : '☀ Clair';
+}
 
-    const indicator = document.createElement('div');
-    indicator.className = 'gyro-indicator';
-    indicator.innerHTML = '✨ Zoom &amp; Inclinaison 3D';
-    imgWrap.appendChild(indicator);
+// Fonction appelée lors du clic sur un produit pour charger le modal et initialiser les effets
+function openProductDetail(name, price, imgSrc) {
+  document.getElementById('modalName').innerText = name;
+  document.getElementById('modalPrice').innerHTML = `${price} <small>FCFA</small>`;
+  const img = document.getElementById('modalMainImg');
+  img.src = imgSrc;
+  
+  const modal = document.getElementById('prodModal');
+  modal.classList.add('open');
+  
+  // Lancer l'initialisation des effets sur la nouvelle image chargée
+  initLuxuryEffects();
+}
 
-    const img = imgWrap.querySelector('img');
+function closeModal() {
+  document.getElementById('prodModal').classList.remove('open');
+}
 
-    function handleInteraction(e) {
-      imgWrap.classList.add('loupe-active');
-      
-      const rect = imgWrap.getBoundingClientRect();
-      const pageX = e.touches ? e.touches[0].clientX : e.clientX;
-      const pageY = e.touches ? e.touches[0].clientY : e.clientY;
-      
-      const x = pageX - rect.left;
-      const y = pageY - rect.top;
+// MOTEUR DES EFFETS AVANCÉS (LOUPE INTERACTIVE + INCLINAISON 3D)
+function initLuxuryEffects() {
+  const imgWrap = document.querySelector('.modal-img-wrap');
+  if (!imgWrap) return;
 
-      // Centrage de l'élément loupe sur le point de contact
-      loupe.style.left = `${x - loupe.offsetWidth / 2}px`;
-      loupe.style.top = `${y - loupe.offsetHeight / 2}px`;
+  // Supprime proprement les anciens éléments s'ils existent déjà
+  const oldLoupe = imgWrap.querySelector('.luxury-loupe');
+  const oldIndicator = imgWrap.querySelector('.gyro-indicator');
+  if (oldLoupe) oldLoupe.remove();
+  if (oldIndicator) oldIndicator.remove();
 
-      // Calcul des coordonnées du zoom (Facteur macro x2.5)
-      const percentX = (x / rect.width) * 100;
-      const percentY = (y / rect.height) * 100;
+  // Création et injection dynamique des couches d'effet
+  const loupe = document.createElement('div');
+  loupe.className = 'luxury-loupe';
+  imgWrap.appendChild(loupe);
 
-      loupe.style.backgroundImage = `url('${img.src}')`;
-      loupe.style.backgroundSize = `${rect.width * 2.5}px ${rect.height * 2.5}px`;
-      loupe.style.backgroundPosition = `${percentX}% ${percentY}%`;
-      
-      // Pivotement 3D synchronisé sur la glissade
-      const tiltX = ((y / rect.height) - 0.5) * -20; 
-      const tiltY = ((x / rect.width) - 0.5) * 20;
-      img.style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(1.02)`;
-    }
+  const indicator = document.createElement('div');
+  indicator.className = 'gyro-indicator';
+  indicator.innerHTML = '✨ Zoom &amp; Inclinaison 3D';
+  imgWrap.appendChild(indicator);
 
-    function resetInteraction() {
-      imgWrap.classList.remove('loupe-active');
-      img.style.transform = `rotateX(0deg) rotateY(0deg) scale(1)`;
-    }
+  const img = imgWrap.querySelector('img');
 
-    // Gestion Mobile (Toucher)
-    imgWrap.addEventListener('touchstart', (e) => { handleInteraction(e); }, { passive: true });
-    imgWrap.addEventListener('touchmove', (e) => { handleInteraction(e); }, { passive: true });
-    imgWrap.addEventListener('touchend', resetInteraction);
+  function handleInteraction(e) {
+    imgWrap.classList.add('loupe-active');
+    
+    const rect = imgWrap.getBoundingClientRect();
+    const pageX = e.touches ? e.touches[0].clientX : e.clientX;
+    const pageY = e.touches ? e.touches[0].clientY : e.clientY;
+    
+    const x = pageX - rect.left;
+    const y = pageY - rect.top;
 
-    // Gestion Ordinateur (Souris)
-    imgWrap.addEventListener('mousemove', handleInteraction);
-    imgWrap.addEventListener('mouseleave', resetInteraction);
+    // Centrer parfaitement le cercle de la loupe sur le pointeur/doigt
+    loupe.style.left = `${x - loupe.offsetWidth / 2}px`;
+    loupe.style.top = `${y - loupe.offsetHeight / 2}px`;
 
-    // Effet Gyroscope autonome (Inclinaison naturelle de l'appareil)
-    if (window.DeviceOrientationEvent) {
-      window.addEventListener('deviceorientation', (e) => {
-        if (imgWrap.classList.contains('loupe-active')) return;
-        const tiltX = Math.min(Math.max(e.beta, -30), 30) / 2.5;
-        const tiltY = Math.min(Math.max(e.gamma, -30), 30) / 2.5;
-        img.style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
-      });
-    }
+    // Gestion du calcul de l'image de fond zoomée (Facteur macro x2.5)
+    const percentX = (x / rect.width) * 100;
+    const percentY = (y / rect.height) * 100;
+
+    loupe.style.backgroundImage = `url('${img.src}')`;
+    loupe.style.backgroundSize = `${rect.width * 2.5}px ${rect.height * 2.5}px`;
+    loupe.style.backgroundPosition = `${percentX}% ${percentY}%`;
+    
+    // Inclinaison 3D dynamique couplée au déplacement du doigt
+    const tiltX = ((y / rect.height) - 0.5) * -22; 
+    const tiltY = ((x / rect.width) - 0.5) * 22;
+    img.style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(1.02)`;
   }
-});
+
+  function resetInteraction() {
+    imgWrap.classList.remove('loupe-active');
+    img.style.transform = `rotateX(0deg) rotateY(0deg) scale(1)`;
+  }
+
+  // Événements tactiles (Smartphones)
+  imgWrap.addEventListener('touchstart', (e) => { handleInteraction(e); }, { passive: true });
+  imgWrap.addEventListener('touchmove', (e) => { handleInteraction(e); }, { passive: true });
+  imgWrap.addEventListener('touchend', resetInteraction);
+
+  // Événements souris (Ordinateurs)
+  imgWrap.addEventListener('mousemove', handleInteraction);
+  imgWrap.addEventListener('mouseleave', resetInteraction);
+}
+
+// Effet Gyroscope global autonome (Quand le smartphone s'incline sans contact écran)
+if (window.DeviceOrientationEvent) {
+  window.addEventListener('deviceorientation', (e) => {
+    const imgWrap = document.querySelector('.modal-img-wrap');
+    if (!imgWrap || imgWrap.classList.contains('loupe-active')) return;
+    const img = imgWrap.querySelector('img');
+    if (!img) return;
+
+    const tiltX = Math.min(Math.max(e.beta, -25), 25) / 2.2;
+    const tiltY = Math.min(Math.max(e.gamma, -25), 25) / 2.2;
+    img.style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
+  });
+}
+
+// Simulation du chargement des compteurs pour enlever les tirets au démarrage
+setTimeout(() => {
+  document.getElementById('cnt-Montres').innerText = '12';
+  document.getElementById('cnt-Montres Luxueuses').innerText = '5';
+  document.getElementById('cnt-Chaînes').innerText = '8';
+  document.getElementById('cnt-Bracelets').innerText = '14';
+  document.getElementById('cnt-Colliers').innerText = '9';
+  document.getElementById('cnt-Bagues').innerText = '11';
+  document.getElementById('cnt-Autres').innerText = '4';
+}, 1000);
 </script>
+
 </body>
 </html>
