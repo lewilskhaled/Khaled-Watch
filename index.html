@@ -383,9 +383,17 @@ body.light .nav-item.active{color:var(--or-d);}
    BARRE DE RECHERCHE DORÉE
    ============================================================ */
 .search-bar-wrap {
-  padding: .85rem 1rem .5rem;
-  position: relative;
-  z-index: 10;
+  padding: .65rem 1rem .4rem;
+  position: sticky;
+  top: 58px;          /* juste sous le header sticky */
+  z-index: 190;       /* sous le header (200) mais au-dessus du contenu */
+  background: rgba(6,4,1,.82);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(201,168,76,.15);
+}
+body.light .search-bar-wrap {
+  background: rgba(240,235,216,.85);
 }
 .search-input-row {
   display: flex;
@@ -535,22 +543,24 @@ body.light .search-input::placeholder { color: rgba(90,70,30,.5); }
   <button class="btn-theme" id="btnTheme" onclick="toggleTheme()">☀ Clair</button>
 </header>
 
+<!-- BARRE DE RECHERCHE GLOBALE — visible sur tous les onglets -->
+<div class="search-bar-wrap" id="globalSearchWrap">
+  <div class="search-input-row">
+    <span class="search-icon">🔍</span>
+    <input class="search-input" id="searchInput" type="search" inputmode="search"
+           autocomplete="off" autocorrect="off" spellcheck="false"
+           placeholder="Rechercher une montre, bijou…"
+           aria-label="Rechercher un produit"
+           oninput="onSearchInput(this.value)"
+           onkeydown="onSearchKeydown(event)">
+    <button class="search-clear" id="searchClear" onclick="clearSearch()" aria-label="Effacer">✕</button>
+  </div>
+  <div class="search-underline"></div>
+</div>
+
 <!-- PAGE ACCUEIL -->
 <div id="page-home">
 
-  <!-- BARRE DE RECHERCHE -->
-  <div class="search-bar-wrap">
-    <div class="search-input-row">
-      <span class="search-icon">🔍</span>
-      <input class="search-input" id="searchInput" type="search" inputmode="search"
-             autocomplete="off" autocorrect="off" spellcheck="false"
-             placeholder="Rechercher une montre, bijou…"
-             aria-label="Rechercher un produit"
-             oninput="onSearchInput(this.value)">
-      <button class="search-clear" id="searchClear" onclick="clearSearch()" aria-label="Effacer">✕</button>
-    </div>
-    <div class="search-underline"></div>
-  </div>
 
   <div class="home-hero">
     <div class="home-subtitle">Collection Prestige 2025</div>
@@ -811,9 +821,10 @@ function hideAll() {
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
 }
 function goHome() {
-  /* Vider la barre de recherche */
-  const si = document.getElementById('searchInput');
-  const sc = document.getElementById('searchClear');
+  clearTimeout(searchTimer);
+  lastPageBeforeSearch = null;
+  var si = document.getElementById('searchInput');
+  var sc = document.getElementById('searchClear');
   if (si) si.value = '';
   if (sc) sc.classList.remove('visible');
   searchQuery = '';
@@ -1165,24 +1176,76 @@ let searchQuery  = '';
 let searchTimer  = null;
 
 function onSearchInput(val) {
-  const q = val.trim();
-  const clearBtn = document.getElementById('searchClear');
+  var q = val.trim();
+  /* Afficher/masquer le bouton effacer */
+  var clearBtn = document.getElementById('searchClear');
   if (clearBtn) clearBtn.classList.toggle('visible', q.length > 0);
+
+  /* Si le champ est vidé, revenir à la page précédente sans délai */
+  if (!q) {
+    clearTimeout(searchTimer);
+    /* Revenir à la dernière page visitée (accueil par défaut) */
+    if (lastPageBeforeSearch) {
+      restoreLastPage();
+    } else {
+      hideAll();
+      document.getElementById('page-home').style.display = 'block';
+      var nh = document.getElementById('nav-home');
+      if (nh) nh.classList.add('active');
+    }
+    return;
+  }
+
+  /* Attendre 1 seconde d'inactivité avant de chercher */
   clearTimeout(searchTimer);
-  searchTimer = setTimeout(function(){ runSearch(q); }, 220);
+  searchTimer = setTimeout(function(){ runSearch(q); }, 1000);
+}
+
+/* Touche Entrée = lancer la recherche immédiatement */
+function onSearchKeydown(e) {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    clearTimeout(searchTimer);
+    var q = document.getElementById('searchInput').value.trim();
+    if (q) runSearch(q);
+    e.target.blur(); /* ferme le clavier mobile */
+  }
+}
+
+/* Mémorise la dernière page visitée avant la recherche */
+var lastPageBeforeSearch = null;
+
+function saveCurrentPage() {
+  if (document.getElementById('page-cat').style.display !== 'none') {
+    lastPageBeforeSearch = 'cat';
+  } else if (document.getElementById('page-offre').style.display !== 'none') {
+    lastPageBeforeSearch = 'offre';
+  } else {
+    lastPageBeforeSearch = 'home';
+  }
+}
+
+function restoreLastPage() {
+  hideAll();
+  if (lastPageBeforeSearch === 'cat') {
+    document.getElementById('page-cat').style.display = 'block';
+    renderProducts();
+  } else if (lastPageBeforeSearch === 'offre') {
+    document.getElementById('page-offre').style.display = 'block';
+  } else {
+    document.getElementById('page-home').style.display = 'block';
+    var nh = document.getElementById('nav-home');
+    if (nh) nh.classList.add('active');
+  }
+  lastPageBeforeSearch = null;
+  window.scrollTo(0,0);
 }
 
 function runSearch(q) {
   searchQuery = q;
-  if (!q) {
-    /* Champ vide → accueil */
-    hideAll();
-    document.getElementById('page-home').style.display = 'block';
-    const nh = document.getElementById('nav-home');
-    if (nh) nh.classList.add('active');
-    window.scrollTo(0,0);
-    return;
-  }
+  if (!q) { return; }
+  /* Sauvegarder la page courante avant d'afficher les résultats */
+  saveCurrentPage();
 
   function normalize(s) {
     return String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
@@ -1270,16 +1333,21 @@ function askProductWA(prodName) {
 }
 
 function clearSearch() {
+  clearTimeout(searchTimer);
   var input = document.getElementById('searchInput');
   var clearBtn = document.getElementById('searchClear');
   if (input) input.value = '';
   if (clearBtn) clearBtn.classList.remove('visible');
   searchQuery = '';
-  hideAll();
-  document.getElementById('page-home').style.display = 'block';
-  var nh = document.getElementById('nav-home');
-  if (nh) nh.classList.add('active');
-  window.scrollTo(0,0);
+  if (lastPageBeforeSearch) {
+    restoreLastPage();
+  } else {
+    hideAll();
+    document.getElementById('page-home').style.display = 'block';
+    var nh = document.getElementById('nav-home');
+    if (nh) nh.classList.add('active');
+    window.scrollTo(0,0);
+  }
   if (input) input.focus();
 }
 
