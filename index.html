@@ -378,6 +378,141 @@ body.light .nav-item.active{color:var(--or-d);}
   background-position:calc(var(--x, 50%) * 1%) calc(var(--y, 50%) * 1%);
   mix-blend-mode:screen;border-radius:inherit;transition:background-position .1s linear;
 }
+
+/* ============================================================
+   BARRE DE RECHERCHE DORÉE
+   ============================================================ */
+.search-bar-wrap {
+  padding: .85rem 1rem .5rem;
+  position: relative;
+  z-index: 10;
+}
+.search-input-row {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  background: rgba(8,6,2,.55);
+  border: 1px solid rgba(201,168,76,.45);
+  border-radius: 50px;
+  padding: .55rem .85rem .55rem 1rem;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 0 0 1px rgba(201,168,76,.12), 0 4px 28px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.06);
+  transition: border-color .25s, box-shadow .25s;
+  animation: searchBorderPulse 3s ease-in-out infinite;
+}
+@keyframes searchBorderPulse {
+  0%,100% { box-shadow: 0 0 0 1px rgba(201,168,76,.12), 0 4px 28px rgba(0,0,0,.55), 0 0 18px rgba(201,168,76,.08), inset 0 1px 0 rgba(255,255,255,.06); }
+  50%      { box-shadow: 0 0 0 1px rgba(201,168,76,.35), 0 4px 32px rgba(0,0,0,.6),  0 0 32px rgba(201,168,76,.22), inset 0 1px 0 rgba(255,255,255,.08); }
+}
+.search-input-row:focus-within {
+  border-color: rgba(201,168,76,.85);
+  box-shadow: 0 0 0 2px rgba(201,168,76,.22), 0 6px 36px rgba(0,0,0,.6), 0 0 40px rgba(201,168,76,.30), inset 0 1px 0 rgba(255,255,255,.08);
+  animation: none;
+}
+body.light .search-input-row { background: rgba(255,255,255,.45); border-color: rgba(139,105,20,.5); }
+
+.search-icon {
+  flex-shrink: 0;
+  font-size: 1rem;
+  background: linear-gradient(90deg,#8B6914,#C9A84C,#F5E27A,#C9A84C,#8B6914);
+  background-size: 250% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: goldShimmer 3s linear infinite;
+}
+.search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  font-size: .75rem;
+  font-weight: 500;
+  letter-spacing: .06em;
+  caret-color: var(--or-l);
+  min-width: 0;
+}
+body.light .search-input { color: var(--txt); }
+.search-input::placeholder {
+  color: rgba(212,201,176,.55);
+  font-style: italic;
+  font-size: .7rem;
+  letter-spacing: .08em;
+}
+body.light .search-input::placeholder { color: rgba(90,70,30,.5); }
+.search-clear {
+  flex-shrink: 0;
+  background: rgba(201,168,76,.18);
+  border: 1px solid rgba(201,168,76,.4);
+  border-radius: 50%;
+  width: 26px; height: 26px;
+  display: none;
+  align-items: center; justify-content: center;
+  cursor: pointer;
+  color: var(--or-l);
+  font-size: .75rem;
+  font-weight: 700;
+  -webkit-tap-highlight-color: transparent;
+  transition: background .2s;
+}
+.search-clear.visible { display: flex; }
+.search-clear:active { background: rgba(201,168,76,.35); }
+.search-underline {
+  height: 1px;
+  margin: .28rem 1.2rem 0;
+  background: linear-gradient(90deg, transparent, rgba(201,168,76,.4), transparent);
+  animation: searchUnderPulse 3s ease-in-out infinite;
+}
+@keyframes searchUnderPulse { 0%,100%{opacity:.5;} 50%{opacity:1;} }
+
+/* Page résultats */
+#page-search { display: none; }
+.search-results-header {
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  padding: .7rem 1rem .3rem;
+  flex-wrap: wrap;
+}
+.search-results-label { font-size: .55rem; letter-spacing: .22em; color: var(--gris); text-transform: uppercase; font-weight: 700; text-shadow: var(--ts); }
+.search-results-query {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: .95rem; font-weight: 700;
+  background: linear-gradient(90deg, var(--or-d), var(--or-l));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.search-results-count { margin-left: auto; font-size: .52rem; color: var(--gris); letter-spacing: .1em; font-weight: 600; text-shadow: var(--ts); }
+
+/* Message bientôt disponible */
+.search-soon {
+  grid-column: 1 / -1;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 3rem 1.5rem; text-align: center; gap: 1rem;
+}
+.search-soon-icon { font-size: 3rem; filter: drop-shadow(0 0 18px rgba(201,168,76,.5)); animation: soonFloat 2.5s ease-in-out infinite; }
+@keyframes soonFloat { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-8px);} }
+.search-soon-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.4rem; font-weight: 700;
+  background: linear-gradient(90deg, var(--or-d), var(--or-l));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  letter-spacing: .08em;
+}
+.search-soon-sub { font-size: .68rem; color: var(--gris); line-height: 1.7; font-weight: 500; text-shadow: var(--ts); max-width: 280px; }
+.search-soon-badge {
+  display: inline-flex; align-items: center; gap: .4rem;
+  background: rgba(201,168,76,.14); border: 1px solid rgba(201,168,76,.4);
+  border-radius: 50px; padding: .35rem 1rem;
+  font-size: .58rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--or-l); text-shadow: var(--ts);
+}
+.search-soon-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--or-l); animation: soonDot 1.2s ease-in-out infinite; }
+@keyframes soonDot { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:.4;transform:scale(.7);} }
+.search-soon .btn-wa { max-width: 300px; }
+
 </style>
 </head>
 <body>
@@ -402,6 +537,21 @@ body.light .nav-item.active{color:var(--or-d);}
 
 <!-- PAGE ACCUEIL -->
 <div id="page-home">
+
+  <!-- BARRE DE RECHERCHE -->
+  <div class="search-bar-wrap">
+    <div class="search-input-row">
+      <span class="search-icon">🔍</span>
+      <input class="search-input" id="searchInput" type="search" inputmode="search"
+             autocomplete="off" autocorrect="off" spellcheck="false"
+             placeholder="Rechercher une montre, bijou…"
+             aria-label="Rechercher un produit"
+             oninput="onSearchInput(this.value)">
+      <button class="search-clear" id="searchClear" onclick="clearSearch()" aria-label="Effacer">✕</button>
+    </div>
+    <div class="search-underline"></div>
+  </div>
+
   <div class="home-hero">
     <div class="home-subtitle">Collection Prestige 2025</div>
     <div class="home-title">Khaled Watch</div>
@@ -417,6 +567,18 @@ body.light .nav-item.active{color:var(--or-d);}
     <div class="cat-card" onclick="openCat('Autres')">          <div class="cat-icon">✨</div><div class="cat-label">Autres</div>       <div class="cat-count" id="cnt-Autres">—</div></div>
     <div class="cat-card offre-card" onclick="openOffres()">    <div class="cat-icon">🎁</div><div class="cat-label" style="color:#FFD700;">Offres</div><div class="cat-count" style="color:var(--or-l);">Promos &amp; Cadeaux</div></div>
   </div>
+</div>
+
+<!-- PAGE RECHERCHE -->
+<div id="page-search">
+  <div class="search-results-header">
+    <div>
+      <div class="search-results-label">Résultats pour</div>
+      <div class="search-results-query" id="searchResultsQuery">—</div>
+    </div>
+    <div class="search-results-count" id="searchResultsCount"></div>
+  </div>
+  <div class="prod-grid" id="searchGrid"></div>
 </div>
 
 <!-- PAGE CATÉGORIE -->
@@ -642,12 +804,19 @@ function updateCounts() {
    NAVIGATION
    ============================================================ */
 function hideAll() {
-  ['page-home','page-cat','page-offre'].forEach(id =>
-    document.getElementById(id).style.display = 'none'
-  );
+  ['page-home','page-cat','page-offre','page-search'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
 }
 function goHome() {
+  /* Vider la barre de recherche */
+  const si = document.getElementById('searchInput');
+  const sc = document.getElementById('searchClear');
+  if (si) si.value = '';
+  if (sc) sc.classList.remove('visible');
+  searchQuery = '';
   hideAll();
   document.getElementById('page-home').style.display = 'block';
   document.getElementById('nav-home').classList.add('active');
@@ -986,6 +1155,132 @@ function initSunburst() {
   grid.addEventListener('touchend', () => {
     document.querySelectorAll('.sunburst-overlay').forEach(o => { o.style.opacity = ''; });
   }, {passive:true});
+}
+
+
+/* ============================================================
+   RECHERCHE
+   ============================================================ */
+let searchQuery  = '';
+let searchTimer  = null;
+
+function onSearchInput(val) {
+  const q = val.trim();
+  const clearBtn = document.getElementById('searchClear');
+  if (clearBtn) clearBtn.classList.toggle('visible', q.length > 0);
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(function(){ runSearch(q); }, 220);
+}
+
+function runSearch(q) {
+  searchQuery = q;
+  if (!q) {
+    /* Champ vide → accueil */
+    hideAll();
+    document.getElementById('page-home').style.display = 'block';
+    const nh = document.getElementById('nav-home');
+    if (nh) nh.classList.add('active');
+    window.scrollTo(0,0);
+    return;
+  }
+
+  function normalize(s) {
+    return String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  }
+  var qn = normalize(q);
+
+  var found = allProducts.filter(function(p) {
+    return (
+      normalize(p.nom).includes(qn)        ||
+      normalize(p.categorie).includes(qn)  ||
+      normalize(p.genre).includes(qn)      ||
+      normalize(p.marque||'').includes(qn) ||
+      (p.couleurs||[]).some(function(c){ return normalize(c.nom||'').includes(qn); })
+    );
+  });
+
+  var labelEl = document.getElementById('searchResultsQuery');
+  var countEl = document.getElementById('searchResultsCount');
+  if (labelEl) labelEl.textContent = '"' + q + '"';
+  if (countEl) countEl.textContent = found.length
+    ? found.length + (found.length === 1 ? ' résultat' : ' résultats')
+    : '';
+
+  renderSearchResults(found, q);
+
+  hideAll();
+  document.getElementById('page-search').style.display = 'block';
+  window.scrollTo(0,0);
+}
+
+function renderSearchResults(list, q) {
+  var grid = document.getElementById('searchGrid');
+  if (!grid) return;
+
+  if (!list.length) {
+    grid.innerHTML = '<div class="search-soon">'
+      + '<div class="search-soon-icon">⌛</div>'
+      + '<div class="search-soon-title">Produit Bientôt Disponible</div>'
+      + '<div class="search-soon-sub">Nous n\'avons pas encore ce produit dans notre catalogue, mais il pourrait arriver très prochainement.</div>'
+      + '<div class="search-soon-badge"><span class="search-soon-dot"></span> Arrivage prévu</div>'
+      + '<button class="btn-wa" style="max-width:300px;margin-top:.5rem" onclick="askProductWA(\'' + js(q) + '\')">'
+      + WA_SVG + ' Me prévenir sur WhatsApp</button>'
+      + '</div>';
+    return;
+  }
+
+  currentList = list;
+
+  grid.innerHTML = list.map(function(p, i) {
+    var colors  = p.couleurs && p.couleurs.length ? p.couleurs : [];
+    var mainImg = colors.length && colors[0].image ? colors[0].image : (p.image || FALLBACK_IMG);
+
+    var colorDots = '';
+    if (colors.length) {
+      colorDots = '<div class="color-section"><div class="color-label">Couleurs</div><div class="color-swatches">'
+        + colors.map(function(c,ci){
+            return '<div class="color-swatch' + (ci===0?' active':'') + '" style="background:' + h(c.hex) + '" title="' + h(c.nom) + '" onclick="event.stopPropagation();swatchCard(this,\'' + js(p.id) + '\',' + ci + ')"></div>';
+          }).join('')
+        + '</div></div>';
+    }
+
+    return '<div class="prod-card" data-idx="' + i + '" style="animation-delay:' + (i*.06) + 's" onclick="openModal(' + i + ')">'
+      + '<div class="prod-img-zone">'
+      + '<img class="prod-img" id="cimg-' + h(p.id) + '" src="' + h(mainImg) + '" alt="' + h(p.nom) + '" loading="lazy" onerror="this.src=\'' + FALLBACK_IMG + '\'">'
+      + '<div class="sunburst-overlay"></div>'
+      + '<div class="card-hint-3d">👆 Toucher pour agrandir</div>'
+      + '</div>'
+      + '<div class="prod-body">'
+      + '<div class="prod-badge">' + h(p.categorie) + '</div>'
+      + '<div class="prod-name">' + h(p.nom) + '</div>'
+      + '<div class="prod-genre">' + h(p.genre||'') + '</div>'
+      + colorDots
+      + '<div class="prod-price">' + fmt(p.prix) + ' <small>FCFA</small></div>'
+      + '<button class="btn-wa" onclick="event.stopPropagation();commander(\'' + js(p.nom) + '\',\'' + js(p.prix) + '\')">' + WA_SVG + ' Commander</button>'
+      + '</div>'
+      + '</div>';
+  }).join('');
+
+  if (gyroActive) applyGyroToImages(gyroX, gyroY);
+}
+
+function askProductWA(prodName) {
+  var msg = 'Bonjour Khaled Watch \uD83D\uDC4B\n\nJe recherche ce produit non disponible :\n\u2746 *' + prodName + '*\n\nPouv\u00E9z-vous me pr\u00E9venir d\u00E8s qu\u2019il sera disponible ? Merci !';
+  window.open('https://wa.me/' + WA + '?text=' + encodeURIComponent(msg), '_blank');
+}
+
+function clearSearch() {
+  var input = document.getElementById('searchInput');
+  var clearBtn = document.getElementById('searchClear');
+  if (input) input.value = '';
+  if (clearBtn) clearBtn.classList.remove('visible');
+  searchQuery = '';
+  hideAll();
+  document.getElementById('page-home').style.display = 'block';
+  var nh = document.getElementById('nav-home');
+  if (nh) nh.classList.add('active');
+  window.scrollTo(0,0);
+  if (input) input.focus();
 }
 
 /* ============================================================
