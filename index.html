@@ -521,6 +521,37 @@ body.light .search-input::placeholder { color: rgba(90,70,30,.5); }
 @keyframes soonDot { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:.4;transform:scale(.7);} }
 .search-soon .btn-wa { max-width: 300px; }
 
+
+/* ============================================================
+   FOND VIDÉO — Mobile uniquement (max 1024px)
+   ============================================================ */
+#bgVideo {
+  display: none; /* caché par défaut */
+  position: fixed;
+  inset: 0;
+  z-index: -3;          /* derrière bgLayer et bgOverlay */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+/* Actif uniquement sur mobile */
+@media (max-width: 1024px) {
+  body.video-bg-active #bgVideo {
+    display: block;
+  }
+  /* Quand la vidéo est active, cacher l'image de fond */
+  body.video-bg-active #bgLayer {
+    display: none;
+  }
+}
+/* Sur desktop : jamais de vidéo, toujours l'image */
+@media (min-width: 1025px) {
+  #bgVideo { display: none !important; }
+  body.video-bg-active #bgLayer { display: block !important; }
+}
+
 </style>
 </head>
 <body>
@@ -530,13 +561,19 @@ body.light .search-input::placeholder { color: rgba(90,70,30,.5); }
 
 <!-- SPLASH -->
 <div id="splash">
-  <div class="splash-txt">Bienvenue sur ma page Khaled Watch 😎</div>
+  <div class="splash-txt">Bienvenue sur ma page Khaled Watch 😉</div>
   <div class="splash-bar"></div>
   <div class="splash-sub">Collection Prestige · Montres &amp; Bijoux</div>
 </div>
 
 <div id="bgLayer"></div>
 <div id="bgOverlay"></div>
+<!-- FOND VIDÉO — Mobile uniquement, géré depuis admin -->
+<video id="bgVideo"
+       autoplay muted loop playsinline
+       preload="auto"
+       aria-hidden="true">
+</video>
 
 <header class="app-header">
   <div class="logo-txt">KHALED WATCH</div>
@@ -787,6 +824,45 @@ function initDesign() {
   const glowInt   = parseFloat(localStorage.getItem('kw-glow-intensity') || '1');
   document.documentElement.style.setProperty('--card-glow-color', glowColor);
   document.documentElement.style.setProperty('--glow-intensity',  glowInt);
+
+  /* ── Fond vidéo (mobile uniquement) ── */
+  initVideoBg();
+}
+
+function initVideoBg() {
+  /* Ne s'applique que sur mobile (détection par largeur) */
+  if (window.innerWidth > 1024) return;
+
+  const videoSrc = localStorage.getItem('kw-client-video-bg') || '';
+  const videoEl  = document.getElementById('bgVideo');
+  if (!videoEl) return;
+
+  if (videoSrc) {
+    /* Charger la source si différente de l'actuelle */
+    if (videoEl.src !== videoSrc && videoEl.getAttribute('data-src') !== videoSrc) {
+      videoEl.setAttribute('data-src', videoSrc);
+      videoEl.src = videoSrc;
+      videoEl.load();
+    }
+    document.body.classList.add('video-bg-active');
+
+    /* S'assurer que la vidéo joue (autoplay peut être bloqué) */
+    const playPromise = videoEl.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(() => {
+        /* Autoplay bloqué → attendre interaction utilisateur */
+        document.addEventListener('touchstart', function tryPlay() {
+          videoEl.play().catch(() => {});
+          document.removeEventListener('touchstart', tryPlay);
+        }, { once: true, passive: true });
+      });
+    }
+  } else {
+    /* Aucune vidéo → utiliser le fond image */
+    document.body.classList.remove('video-bg-active');
+    videoEl.pause();
+    videoEl.src = '';
+  }
 }
 
 /* ============================================================
