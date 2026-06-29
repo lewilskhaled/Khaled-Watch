@@ -1249,7 +1249,28 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--txt);m
    CONSTANTES
    ============================================================ */
 const WA = '2290169515730';
+/* ── Fonds d'écran rotatifs — mobile uniquement, toutes les 10h ── */
 const DEFAULT_BG = 'https://images.unsplash.com/photo-1548169874-53e85f753f1e?w=1600&q=85';
+
+/* 6 fonds ultra réalistes adaptés au mode sombre :
+   1. Montre de luxe sur fond sombre (fond actuel du site)
+   2. Montres de luxe en vitrine la nuit
+   3. Bijoux dorés sur fond noir velouté
+   4. Atelier horloger sombre — précision suisse
+   5. Collection montres prestige fond anthracite
+   6. Reflets dorés sur cuir noir — coffret luxe */
+const SLIDESHOW_BGS = [
+  'https://images.unsplash.com/photo-1548169874-53e85f753f1e?w=1600&q=90',
+  'https://images.unsplash.com/photo-1587836374828-4dbafa94cf0e?w=1600&q=90',
+  'https://images.unsplash.com/photo-1617704548623-340376564e68?w=1600&q=90',
+  'https://images.unsplash.com/photo-1611652022419-a9419f74343d?w=1600&q=90',
+  'https://images.unsplash.com/photo-1542496658-e33a6d0d50f6?w=1600&q=90',
+  'https://images.unsplash.com/photo-1606744837616-56c9a5c6a6eb?w=1600&q=90'
+];
+
+const SLIDESHOW_INTERVAL_MS = 10 * 60 * 60 * 1000; /* 10 heures */
+const SLIDESHOW_KEY          = 'kw-slide-idx';
+const SLIDESHOW_TIME_KEY     = 'kw-slide-time';
 const CAT_ICONS = {'Montres':'⌚','Montres Luxueuses':'💎','Chaînes':'⛓','Bracelets':'💫','Colliers':'📿','Bagues':'💍','Autres':'✨'};
 const FALLBACK_IMG = 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=70';
 
@@ -1365,8 +1386,6 @@ function initGyroscope() {
    INIT DESIGN
    ============================================================ */
 function initDesign() {
-  const bg = localStorage.getItem('kw-client-bg') || DEFAULT_BG;
-  document.getElementById('bgLayer').style.backgroundImage = `url('${bg}')`;
   const glowColor = localStorage.getItem('kw-card-glow') || 'rgba(201,168,76,0.38)';
   const glowInt   = parseFloat(localStorage.getItem('kw-glow-intensity') || '1');
   document.documentElement.style.setProperty('--card-glow-color', glowColor);
@@ -1374,6 +1393,94 @@ function initDesign() {
 
   /* ── Fond vidéo (mobile uniquement) ── */
   initVideoBg();
+
+  /* ── Diaporama fond (mobile) ou image fixe (PC) ── */
+  initBgSlideshow();
+}
+
+/* ── Diaporama de fonds — mobile uniquement ── */
+function initBgSlideshow() {
+  var isMobile = window.innerWidth <= 1024;
+
+  if (!isMobile) {
+    /* PC : fond fixe admin ou DEFAULT_BG */
+    var fixedBg = localStorage.getItem('kw-client-bg') || DEFAULT_BG;
+    setBgImage(fixedBg);
+    return;
+  }
+
+  /* Mobile : diaporama toutes les 10h */
+  var now        = Date.now();
+  var lastTime   = parseInt(localStorage.getItem(SLIDESHOW_TIME_KEY) || '0', 10);
+  var savedIdx   = parseInt(localStorage.getItem(SLIDESHOW_KEY) || '0', 10);
+
+  /* Vérifier si l'admin a défini un fond personnalisé via admin */
+  var adminBg = localStorage.getItem('kw-client-bg') || '';
+
+  var elapsed = now - lastTime;
+
+  /* Calculer l'index actuel basé sur le temps écoulé depuis le dernier changement */
+  if (elapsed >= SLIDESHOW_INTERVAL_MS || lastTime === 0) {
+    /* Temps écoulé — passer à l'image suivante */
+    var newIdx = (savedIdx + Math.floor(elapsed / SLIDESHOW_INTERVAL_MS)) % SLIDESHOW_BGS.length;
+    localStorage.setItem(SLIDESHOW_KEY, newIdx);
+    localStorage.setItem(SLIDESHOW_TIME_KEY, now - (elapsed % SLIDESHOW_INTERVAL_MS));
+    savedIdx = newIdx;
+  }
+
+  /* Appliquer le fond actuel */
+  var currentBg = adminBg || SLIDESHOW_BGS[savedIdx];
+  setBgImage(currentBg);
+
+  /* Précharger la prochaine image */
+  var nextIdx = (savedIdx + 1) % SLIDESHOW_BGS.length;
+  var preload = new Image();
+  preload.src = SLIDESHOW_BGS[nextIdx];
+
+  /* Timer pour le prochain changement */
+  var timeUntilNext = SLIDESHOW_INTERVAL_MS - ((now - parseInt(localStorage.getItem(SLIDESHOW_TIME_KEY), 10)) % SLIDESHOW_INTERVAL_MS);
+  if (timeUntilNext < 1000) timeUntilNext = SLIDESHOW_INTERVAL_MS;
+
+  setTimeout(function slideTick() {
+    /* Ne changer que si pas de vidéo active et sur mobile */
+    if (document.body.classList.contains('video-bg-active')) {
+      setTimeout(slideTick, SLIDESHOW_INTERVAL_MS);
+      return;
+    }
+    var curIdx = parseInt(localStorage.getItem(SLIDESHOW_KEY) || '0', 10);
+    var nxtIdx = (curIdx + 1) % SLIDESHOW_BGS.length;
+    var adminOverride = localStorage.getItem('kw-client-bg') || '';
+    var nextBg = adminOverride || SLIDESHOW_BGS[nxtIdx];
+
+    localStorage.setItem(SLIDESHOW_KEY, nxtIdx);
+    localStorage.setItem(SLIDESHOW_TIME_KEY, Date.now());
+
+    /* Transition douce */
+    fadeToBg(nextBg);
+
+    /* Précharger la suivante */
+    var pr = new Image();
+    pr.src = SLIDESHOW_BGS[(nxtIdx + 1) % SLIDESHOW_BGS.length];
+
+    setTimeout(slideTick, SLIDESHOW_INTERVAL_MS);
+  }, timeUntilNext);
+}
+
+function setBgImage(url) {
+  var layer = document.getElementById('bgLayer');
+  if (layer) layer.style.backgroundImage = "url('" + url + "')";
+}
+
+function fadeToBg(url) {
+  var layer = document.getElementById('bgLayer');
+  if (!layer) return;
+  /* Créer un layer temporaire pour la transition */
+  layer.style.transition = 'opacity .8s ease';
+  layer.style.opacity    = '0';
+  setTimeout(function() {
+    layer.style.backgroundImage = "url('" + url + "')";
+    layer.style.opacity         = '1';
+  }, 850);
 }
 
 function initVideoBg() {
