@@ -1220,13 +1220,51 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--txt);m
         <div class="vip-prods-title">✦ Collection VIP</div>
         <span class="vip-prod-count-badge" id="vipProdCountBadge">0</span>
       </div>
-      <div class="vip-grid" id="vipProdGrid">
-        <div style="grid-column:1/-1;display:flex;justify-content:center;padding:2rem;">
-          <div class="loader"></div>
-        </div>
-      </div>
+      <!-- LE PREMIER CODE (ACCUEIL DE L'ESPACE VIP) À METTRE ICI -->
+<div id="vip-categories" class="cat-grid" style="margin-top: 20px;">
+    <div class="cat-card" onclick="openCatVIP('Montres VIP')">
+        <div class="cat-icon">⌚👑</div>
+        <div class="cat-label" style="color:#F5E27A;">Montres VIP</div>
+        <div class="cat-count" id="cnt-Montres-VIP">—</div>
     </div>
-  </div>
+    <div class="cat-card" onclick="openCatVIP('Chaînes VIP')">
+        <div class="cat-icon">⛓👑</div>
+        <div class="cat-label" style="color:#F5E27A;">Chaînes VIP</div>
+        <div class="cat-count" id="cnt-Chaînes-VIP">—</div>
+    </div>
+    <div class="cat-card" onclick="openCatVIP('Bracelets VIP')">
+        <div class="cat-icon">💫👑</div>
+        <div class="cat-label" style="color:#F5E27A;">Bracelets VIP</div>
+        <div class="cat-count" id="cnt-Bracelets-VIP">—</div>
+    </div>
+    <div class="cat-card" onclick="openCatVIP('Colliers VIP')">
+        <div class="cat-icon">📿👑</div>
+        <div class="cat-label" style="color:#F5E27A;">Colliers VIP</div>
+        <div class="cat-count" id="cnt-Colliers-VIP">—</div>
+    </div>
+    <div class="cat-card" onclick="openCatVIP('Autres VIP')" style="grid-column: 1 / -1;">
+        <div class="cat-icon">✨👑</div>
+        <div class="cat-label" style="color:#F5E27A;">Autres VIP</div>
+        <div class="cat-count" id="cnt-Autres-VIP">—</div>
+    </div>
+</div>
+
+<!-- LA ZONE VIDE QUI ACCUEILLERA LES PRODUITS APRÈS LE CLIC (DEUXIÈME CODE) -->
+<div id="vip-products-view" style="display: none; margin-top: 20px;">
+    <button onclick="backToVipHome()" style="background: none; border: 1px solid var(--or); color: #fff; padding: 8px 16px; border-radius: 20px; cursor: pointer; margin-bottom: 15px;">
+        ← Retour
+    </button>
+    
+    <div class="gender-tabs" style="display: flex; gap: 10px; margin-bottom: 15px;">
+        <button class="g-tab active" id="vip-tab-tous" onclick="filterVipGender('tous')">Tous</button>
+        <button class="g-tab" id="vip-tab-homme" onclick="filterVipGender('Homme')">Homme</button>
+        <button class="g-tab" id="vip-tab-femme" onclick="filterVipGender('Femme')">Femme</button>
+    </div>
+
+    <!-- Cette grille prendra automatiquement la même taille que tes box clients simples -->
+    <div id="vipProdsGrid" class="products-grid"></div>
+</div>
+     
 
 </div><!-- /vipModal -->
 
@@ -1245,6 +1283,7 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--txt);m
 </a>
 
 <script>
+  
 /* ============================================================
    CONSTANTES
    ============================================================ */
@@ -1277,6 +1316,73 @@ const FALLBACK_IMG = 'https://images.unsplash.com/photo-1523275335684-37898b6baf
 let allProducts   = [];
 let currentCat    = '';
 let currentGender = 'tous';
+/* ============================================================
+                      LOGIQUE ESPACE VIP
+============================================================ */
+let currentVipCategory = '';
+
+function openCatVIP(categoryName) {
+    currentVipCategory = categoryName;
+    
+    // 1. Masquer l'accueil des catégories VIP et afficher la vue produits
+    document.getElementById('vip-categories').style.display = 'none';
+    document.getElementById('vip-products-view').style.display = 'block';
+    
+    // 2. Charger les produits sur l'onglet "tous" par défaut
+    filterVipGender('tous');
+}
+
+function filterVipGender(gender) {
+    // Gérer le style actif sur les onglets de genre VIP
+    document.querySelectorAll('#vip-products-view .g-tab').forEach(btn => btn.classList.remove('active'));
+    if(gender === 'tous') document.getElementById('vip-tab-tous').classList.add('active');
+    if(gender === 'Homme') document.getElementById('vip-tab-homme').classList.add('active');
+    if(gender === 'Femme') document.getElementById('vip-tab-femme').classList.add('active');
+
+    const grid = document.getElementById('vipProdsGrid');
+    if(!grid) return;
+    grid.innerHTML = '';
+
+    // Filtrer le tableau de tes produits (allProducts) selon la catégorie, le flag VIP et le genre choisi
+    let filtered = allProducts.filter(p => {
+        let matchCat = p.categorie === currentVipCategory;
+        // On vérifie si la propriété vip est vraie dans ton JSON
+        let matchVip = p.vip === true || p.isVip === true; 
+        let matchGender = (gender === 'tous' || p.genre === gender);
+        return matchCat && matchVip && matchGender;
+    });
+
+    if(filtered.length === 0) {
+        grid.innerHTML = '<div style="color: #aaa; text-align:center; padding:20px; grid-column: 1 / -1;">Aucun produit disponible.</div>';
+        return;
+    }
+
+    // Affichage des box avec la même structure/classe que tes produits classiques
+    filtered.forEach(p => {
+        const box = document.createElement('div');
+        box.className = 'product-card'; // Utilise la classe exacte de tes box de la page cliente simple
+        
+        // Au clic, ouvre ton modal de détails existant
+        box.onclick = () => openProductModal(p); 
+        
+        box.innerHTML = `
+            <div class="product-img-container">
+                <img src="${p.image || p.img}" alt="${p.nom}" style="width:100%; height:auto;">
+            </div>
+            <div class="product-details">
+                <div class="product-title">${p.nom}</div>
+                <div class="product-price">${p.prix}</div>
+            </div>
+        `;
+        grid.appendChild(box);
+    });
+}
+
+function backToVipHome() {
+    // Permet de revenir à la grille de choix des catégories VIP
+    document.getElementById('vip-products-view').style.display = 'none';
+    document.getElementById('vip-categories').style.display = 'grid';
+}  
 let currentList   = [];
 let selectedStream= '';
 
