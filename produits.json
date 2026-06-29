@@ -17,7 +17,8 @@
     "flash_fin": "",
     "flash_reduction": 0,
     "couleurs": [],
-    "createdAt": "2026-06-21T22:34:26.852Z"
+    "createdAt": "2026-06-21T22:34:26.852Z",
+    "is_vip": false
   },
   {
     "id": "1782137395017",
@@ -35,7 +36,8 @@
     "flash_fin": "",
     "flash_reduction": 0,
     "couleurs": [],
-    "createdAt": "2026-06-22T14:09:55.017Z"
+    "createdAt": "2026-06-22T14:09:55.017Z",
+    "is_vip": false
   },
   {
     "id": "1782741878631",
@@ -49,7 +51,7 @@
     "img_dos": "",
     "halo_cadran": "argent",
     "is_patron": false,
-    "is_vip": true,
+    "is_vip": false,
     "moods": [],
     "flash_fin": "",
     "flash_reduction": 0,
