@@ -217,6 +217,7 @@ input[type=range]{width:100%;accent-color:var(--or);cursor:pointer;}
   <button class="tab" onclick="showTab('list')">📦 Stock</button>
   <button class="tab" onclick="showTab('design')">🎨 Design</button>
   <button class="tab" onclick="showTab('qr')">📲 QR</button>
+  <button class="tab" onclick="showTab('vip')">👑 VIP</button>
 </div>
 
 <!-- CONFIG -->
@@ -246,6 +247,14 @@ input[type=range]{width:100%;accent-color:var(--or);cursor:pointer;}
       <div><label>Genre *</label><select id="fGenre"><option value="">— Choisir —</option><option>Homme</option><option>Femme</option><option>Unisexe</option></select></div>
     </div>
     <div class="toggle-row"><input type="checkbox" id="fPatron"><label for="fPatron">⭐ Marquer comme "Choix du Patron"</label></div>
+    <div class="toggle-row" style="background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.25);border-radius:8px;padding:.5rem .7rem;margin-top:.3rem;">
+      <input type="checkbox" id="fVIP">
+      <label for="fVIP" style="color:var(--or-l);font-weight:700;">👑 Produit Espace VIP Uniquement — invisible sur le catalogue standard</label>
+    </div>
+    <div class="toggle-row" style="background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.25);border-radius:8px;padding:.5rem .7rem;">
+      <input type="checkbox" id="fVIP">
+      <label for="fVIP" style="color:var(--or-l);font-weight:700;">👑 Produit Espace VIP Uniquement — invisible sur le catalogue standard</label>
+    </div>
     <div class="field"><label>Humeur &amp; Occasion</label><div class="mood-checks"><div class="mood-check" onclick="toggleMood(this,'Business')"><span>💼 Business</span></div><div class="mood-check" onclick="toggleMood(this,'Gala')"><span>🥂 Gala</span></div><div class="mood-check" onclick="toggleMood(this,'Discret')"><span>🤫 Discret</span></div><div class="mood-check" onclick="toggleMood(this,'Cadeau')"><span>🎁 Cadeau</span></div></div></div>
     <div class="divider"></div>
     <div class="field"><label>📷 Photo Principale *</label><div class="img-tabs"><button class="img-tab active" onclick="switchImgSrc('url',this,'mainPane')">🔗 URL</button><button class="img-tab" onclick="switchImgSrc('device',this,'mainPane')">📱 Appareil</button></div><div id="mainPane-url"><input type="url" id="fImage" placeholder="https://..." oninput="previewField(this,'prevMain')"></div><div id="mainPane-device" style="display:none;"><div class="drop-zone" onclick="document.getElementById('fileMain').click()"><input type="file" id="fileMain" accept="image/*" onchange="handleFileField(this,'fImage','prevMain')"><div class="drop-txt"><strong>Appuyer pour choisir</strong><br>JPG · PNG · WEBP · max 2 Mo</div></div></div><div class="img-preview-wrap"><img id="prevMain" class="img-preview"></div></div>
@@ -468,7 +477,7 @@ function renderList(){
   const el = document.getElementById('prodList');
   document.getElementById('prodCountBadge').textContent = prods.length;
   if(!prods.length){ el.innerHTML='<div class="empty-list">Aucun produit.</div>'; return; }
-  el.innerHTML = prods.map((p,i)=>`<div class="prod-row"><img src="${h(p.image)}" alt="" onerror="this.src='https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=80&q=60'"><div class="prod-row-info"><div class="prod-row-name">${h(p.nom)}${p.is_patron?' ⭐':''}</div><div class="prod-row-meta">${h(p.categorie)} · ${h(p.genre)}${p.couleurs&&p.couleurs.length?' · '+p.couleurs.length+' coul.':''}</div></div><div class="prod-row-price">${fmt(p.prix)}F</div><button class="btn-del" onclick="deleteProduct(${i})">🗑</button></div>`).join('');
+  el.innerHTML = prods.map((p,i)=>`<div class="prod-row"><img src="${h(p.image)}" alt="" onerror="this.src='https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=80&q=60'"><div class="prod-row-info"><div class="prod-row-name">${h(p.nom)}${p.is_patron?' ⭐':''}</div><div class="prod-row-meta">${h(p.categorie)} · ${h(p.genre)}${p.couleurs&&p.couleurs.length?' · '+p.couleurs.length+' coul.':''}${p.is_vip?' · 👑 VIP':''}${p.is_vip?' · 👑 VIP':''}</div></div><div class="prod-row-price">${fmt(p.prix)}F</div><button class="btn-del" onclick="deleteProduct(${i})">🗑</button></div>`).join('');
 }
 async function addProduct(){
   const nom=document.getElementById('fNom').value.trim(),prix=parseFloat(document.getElementById('fPrix').value),cat=document.getElementById('fCat').value,genre=document.getElementById('fGenre').value,img=document.getElementById('fImage').value.trim();
@@ -478,7 +487,7 @@ async function addProduct(){
   showSt('add','load','⌛ Commit…');
   const moods=[]; document.querySelectorAll('.mood-check.active').forEach(el=>moods.push(el.dataset.mood));
   const flashFin=document.getElementById('fFlashFin').value, flashRed=parseFloat(document.getElementById('fFlashReduction').value)||0;
-  const np={id:Date.now().toString(),nom,prix,categorie:cat,genre,image:img,img_gauche:document.getElementById('fImgGauche').value.trim()||'',img_droit:document.getElementById('fImgDroit').value.trim()||'',img_dos:document.getElementById('fImgDos').value.trim()||'',halo_cadran:document.getElementById('fHalo').value,is_patron:document.getElementById('fPatron').checked,moods,flash_fin:flashFin?new Date(flashFin).toISOString():'',flash_reduction:flashFin?flashRed:0,couleurs:pendingColors,createdAt:new Date().toISOString()};
+  const fVip=document.getElementById('fVIP');const np={id:Date.now().toString(),nom,prix,categorie:cat,genre,image:img,img_gauche:document.getElementById('fImgGauche').value.trim()||'',img_droit:document.getElementById('fImgDroit').value.trim()||'',img_dos:document.getElementById('fImgDos').value.trim()||'',halo_cadran:document.getElementById('fHalo').value,is_patron:document.getElementById('fPatron').checked,is_vip:fVip?fVip.checked:false,moods,flash_fin:flashFin?new Date(flashFin).toISOString():'',flash_reduction:flashFin?flashRed:0,couleurs:pendingColors,createdAt:new Date().toISOString()};
   try{ const {sha,products}=await getFile(); await commitFile([...products,np],sha,`✨ Ajout : ${nom}`); prods=[...products,np]; renderList(); showSt('add','ok',`✓ "${nom}" publié !`); clearForm(); }
   catch(e){ showSt('add','err','Erreur : '+e.message); }
   finally{ btn.disabled=false; btn.textContent='Publier sur GitHub'; }
@@ -499,7 +508,7 @@ function addColor(){ const nom=document.getElementById('cNom').value.trim(),hex=
 function removeColor(i){ pendingColors.splice(i,1); renderColorList(); }
 function renderColorList(){ const el=document.getElementById('colorList'); if(!pendingColors.length){el.innerHTML='<div style="font-size:.65rem;color:var(--gris);text-align:center;padding:.5rem;">Aucune couleur.</div>';return;} el.innerHTML=pendingColors.map((c,i)=>`<div class="color-row"><div class="color-dot" style="background:${h(c.hex)}"></div><div class="color-row-info"><div class="color-row-name">${h(c.nom)}</div><div class="color-row-hex">${h(c.hex)}${c.image?' · Photo ✓':''}</div></div><button class="btn-del-color" onclick="removeColor(${i})">✕</button></div>`).join(''); }
 renderColorList();
-function clearForm(){ ['fNom','fPrix','fImage','fImgGauche','fImgDroit','fImgDos','fFlashReduction','fFlashFin','cImage','cImgGauche','cImgDroit','cImgDos'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';}); ['fCat','fGenre'].forEach(id=>document.getElementById(id).value=''); document.getElementById('fHalo').value='or'; document.getElementById('fPatron').checked=false; document.querySelectorAll('.mood-check').forEach(el=>el.classList.remove('active')); ['prevMain','prevG','prevD','prevDos','prevColor','prevCG','prevCD','prevCDos'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';}); pendingColors=[]; renderColorList(); }
+function clearForm(){ ['fNom','fPrix','fImage','fImgGauche','fImgDroit','fImgDos','fFlashReduction','fFlashFin','cImage','cImgGauche','cImgDroit','cImgDos'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';}); ['fCat','fGenre'].forEach(id=>document.getElementById(id).value=''); document.getElementById('fHalo').value='or'; document.getElementById('fPatron').checked=false;var fv2=document.getElementById('fVIP');if(fv2)fv2.checked=false;const fv=document.getElementById('fVIP');if(fv)fv.checked=false; document.querySelectorAll('.mood-check').forEach(el=>el.classList.remove('active')); ['prevMain','prevG','prevD','prevDos','prevColor','prevCG','prevCD','prevCDos'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';}); pendingColors=[]; renderColorList(); }
 const DEFAULT_ADMIN_BG='https://images.unsplash.com/photo-1548169874-53e85f753f1e?w=1600&q=80';
 function applyAdminBg(url){document.getElementById('bgFixed').style.backgroundImage=`url('${url}')`;localStorage.setItem('kw-admin-bg',url);}
 function selectAdminBg(t){document.querySelectorAll('#bgGrid .bg-thumb').forEach(x=>x.classList.remove('selected'));t.classList.add('selected');applyAdminBg(t.dataset.url);}
@@ -524,7 +533,7 @@ function generateQR(){
   new QRCode(document.getElementById('qrAdminCanvas'),{text:urlA,width:200,height:200,colorDark:'#9B30FF',colorLight:'#0a0008',correctLevel:QRCode.CorrectLevel.H});
 }
 function telechargerQR(canvasId,filename){const wrap=document.getElementById(canvasId);if(!wrap){alert('Générez d\'abord le QR.');return;} const canvas=wrap.querySelector('canvas'),img=wrap.querySelector('img');let dataURL;if(canvas){dataURL=canvas.toDataURL('image/png');}else if(img){const tmp=document.createElement('canvas');tmp.width=img.naturalWidth||200;tmp.height=img.naturalHeight||200;const ctx=tmp.getContext('2d');ctx.drawImage(img,0,0);dataURL=tmp.toDataURL('image/png');}else{alert('QR introuvable.');return;} const a=document.createElement('a');a.href=dataURL;a.download=filename;a.click();}
-function showTab(t){const TABS=['config','add','list','design','qr'];document.querySelectorAll('.tab').forEach((el,i)=>el.classList.toggle('active',TABS[i]===t));document.querySelectorAll('.section').forEach(el=>el.classList.remove('show'));document.getElementById('sec-'+t).classList.add('show');if(t==='list'&&prods.length===0&&cfg.token)loadProducts();if(t==='qr')generateQR();}
+function showTab(t){const TABS=['config','add','list','design','qr','vip'];document.querySelectorAll('.tab').forEach((el,i)=>el.classList.toggle('active',TABS[i]===t));document.querySelectorAll('.section').forEach(el=>el.classList.remove('show'));document.getElementById('sec-'+t).classList.add('show');if(t==='list'&&prods.length===0&&cfg.token)loadProducts();if(t==='qr')generateQR();if(t==='vip')initVIPAdmin();}
 function showSt(id,type,msg){const el=document.getElementById('st-'+id);el.className='status '+type;el.textContent=msg;if(type==='ok')setTimeout(()=>el.style.display='none',4000);}
 function h(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function fmt(n){return Number(n||0).toLocaleString('fr-FR');}
@@ -664,6 +673,497 @@ function initAdminDesign(){
 }
 initAdminDesign();
 loadConfig();
+
+
+/* ============================================================
+   VIP ADMIN — Gestion complète
+   ============================================================ */
+const VIP_CODES_KEY   = 'kw-vip-codes';
+const VIP_MEMBERS_KEY = 'kw-vip-members';
+const VIP_DURATION_MS = 7 * 24 * 60 * 60 * 1000;
+
+function vipGetJSON(key, def) {
+  try { return JSON.parse(localStorage.getItem(key)) || def; } catch { return def; }
+}
+function vipSetJSON(key, val) {
+  try { localStorage.setItem(key, JSON.stringify(val)); } catch {}
+}
+
+function initVIPAdmin() {
+  renderVIPStats();
+  renderVIPCodes();
+  renderVIPMembers();
+}
+
+function renderVIPStats() {
+  var members  = vipGetJSON(VIP_MEMBERS_KEY, []).filter(function(m){ return !m.banned; });
+  var codes    = vipGetJSON(VIP_CODES_KEY, []).filter(function(c){ return !c.used; });
+  var now      = Date.now();
+  var inactive = members.filter(function(m) {
+    var ws = new Date(m.weekStart || m.joinedAt).getTime();
+    return (now - ws) > VIP_DURATION_MS;
+  }).length;
+  var e1 = document.getElementById('vipStatMembers');
+  var e2 = document.getElementById('vipStatCodes');
+  var e3 = document.getElementById('vipStatInactive');
+  if (e1) e1.textContent = members.length;
+  if (e2) e2.textContent = codes.length;
+  if (e3) e3.textContent = inactive;
+}
+
+/* ── Generateur de codes VIP ── */
+function generateVIPCode() {
+  var chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  var p1 = '', p2 = '';
+  for (var i = 0; i < 4; i++) p1 += chars[Math.floor(Math.random() * chars.length)];
+  for (var i = 0; i < 4; i++) p2 += chars[Math.floor(Math.random() * chars.length)];
+  var code = 'KW-' + p1 + '-' + p2;
+
+  var codes = vipGetJSON(VIP_CODES_KEY, []);
+  codes.push({ code: code, used: false, createdAt: new Date().toISOString() });
+  vipSetJSON(VIP_CODES_KEY, codes);
+
+  var box   = document.getElementById('generatedCodeBox');
+  var val   = document.getElementById('generatedCodeVal');
+  var btnWA = document.getElementById('btnSendWA');
+  if (box) box.style.display = 'flex';
+  if (val) val.textContent = code;
+
+  var waMsg = 'Bonjour 👋\n\nVous êtes sélectionné(e) pour rejoindre l\'Espace VIP exclusif KHALED WATCH.\n\n🔑 Votre code d\'accès VIP unique :\n• Code : *' + code + '*\n\n⚠️ Ce code est à usage unique et strictement personnel. Ne le partagez pas.\n\nRendez-vous sur votre espace VIP.';
+  if (btnWA) btnWA.href = 'https://wa.me/2290169515730?text=' + encodeURIComponent(waMsg);
+
+  var btnCopy = document.getElementById('btnCopyCode');
+  if (btnCopy) { btnCopy.textContent = '📋 Copier'; btnCopy.classList.remove('copied'); }
+
+  renderVIPCodes();
+  renderVIPStats();
+}
+
+function copyGeneratedCode() {
+  var val = document.getElementById('generatedCodeVal');
+  var btn = document.getElementById('btnCopyCode');
+  if (!val) return;
+  var text = val.textContent;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(function() {
+      if (btn) { btn.textContent = '✓ Copié !'; btn.classList.add('copied'); }
+      setTimeout(function(){ if (btn){ btn.textContent='📋 Copier'; btn.classList.remove('copied'); }}, 2500);
+    }).catch(function(){ fallbackCopy(text, btn); });
+  } else { fallbackCopy(text, btn); }
+}
+function fallbackCopy(text, btn) {
+  var ta = document.createElement('textarea');
+  ta.value = text; ta.style.position='fixed'; ta.style.opacity='0';
+  document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+  document.body.removeChild(ta);
+  if (btn) { btn.textContent = '✓ Copié !'; btn.classList.add('copied'); }
+  setTimeout(function(){ if (btn){ btn.textContent='📋 Copier'; btn.classList.remove('copied'); }}, 2500);
+}
+
+function renderVIPCodes() {
+  var el = document.getElementById('vipCodesList');
+  if (!el) return;
+  var codes = vipGetJSON(VIP_CODES_KEY, []);
+  if (!codes.length) {
+    el.innerHTML = '<div class="empty-list" style="padding:1rem;">Aucun code généré.</div>';
+    return;
+  }
+  el.innerHTML = codes.slice().reverse().map(function(c, ri) {
+    var i = codes.length - 1 - ri;
+    var statusCls = c.used ? 'code-status-used' : 'code-status-free';
+    var statusTxt = c.used ? '✗ Utilisé' : '✓ Libre';
+    var del = !c.used ? '<button class="btn-del-code" onclick="deleteVIPCode(' + i + ')">🗑</button>' : '';
+    return '<div class="code-row"><div class="code-row-val">' + h(c.code) + '</div>'
+      + '<div class="code-row-status ' + statusCls + '">' + statusTxt + '</div>' + del + '</div>';
+  }).join('');
+}
+
+function deleteVIPCode(idx) {
+  var codes = vipGetJSON(VIP_CODES_KEY, []);
+  if (!confirm('Supprimer ce code VIP ?')) return;
+  codes.splice(idx, 1);
+  vipSetJSON(VIP_CODES_KEY, codes);
+  renderVIPCodes(); renderVIPStats();
+}
+
+/* ── Membres VIP ── */
+function renderVIPMembers() {
+  var el = document.getElementById('vipMembersList');
+  if (!el) return;
+  var members = vipGetJSON(VIP_MEMBERS_KEY, []).filter(function(m){ return !m.banned; });
+
+  if (!members.length) {
+    el.innerHTML = '<div class="empty-list">Aucun membre VIP inscrit.</div>';
+    return;
+  }
+
+  var now = Date.now();
+  el.innerHTML = members.map(function(m) {
+    var ws        = new Date(m.weekStart || m.joinedAt).getTime();
+    var remaining = VIP_DURATION_MS - (now - ws);
+    var pct       = Math.max(0, Math.min(100, (remaining / VIP_DURATION_MS) * 100));
+    var expired   = remaining <= 0;
+    var warning   = !expired && remaining < 86400000;
+    var cls       = expired ? 'danger' : (warning ? 'warn' : 'ok');
+    var txt       = expired ? '⏰ Semaine expirée !'
+                  : (warning ? '⚠️ Expire dans ' + fmtRemaining(remaining)
+                  : '✓ ' + fmtRemaining(remaining) + ' restants');
+    var joinDate  = new Date(m.joinedAt).toLocaleDateString('fr-FR');
+    var lastOrder = m.lastOrderAt ? new Date(m.lastOrderAt).toLocaleDateString('fr-FR') : 'Aucune commande';
+
+    /* Avatar SVG initial si pas de photo */
+    var initiale = (m.nom || '?').charAt(0).toUpperCase();
+    var svgAvatar = 'data:image/svg+xml,' + encodeURIComponent(
+      '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><circle cx="20" cy="20" r="20" fill="#1a1000"/>'
+      + '<text x="20" y="26" text-anchor="middle" font-family="Montserrat" font-size="16" font-weight="700" fill="#C9A84C">' + initiale + '</text></svg>'
+    );
+    var avatarSrc = m.photo || svgAvatar;
+
+    return '<div class="vip-member-row">'
+      + '<div class="vip-member-top">'
+      + '<img class="vip-member-avatar" src="' + h(avatarSrc) + '" alt="" onerror="this.src=\'' + svgAvatar + '\'">'
+      + '<div class="vip-member-info">'
+      + '<div class="vip-member-name">' + h(m.nom) + '</div>'
+      + '<div class="vip-member-email">' + h(m.email) + '</div>'
+      + '<div class="vip-member-date">Inscrit le ' + joinDate + ' · Dernière commande : ' + lastOrder + '</div>'
+      + '</div>'
+      + (expired ? '<div class="badge-inactive">⚠️ Inactif</div>' : '')
+      + '</div>'
+      + '<div class="vip-member-countdown">'
+      + '<div class="vip-cd-text ' + cls + '">' + txt + '</div>'
+      + '<div class="vip-cd-bar"><div class="vip-cd-fill ' + cls + '" style="width:' + pct.toFixed(1) + '%"></div></div>'
+      + '</div>'
+      + '<button class="btn-eject" onclick="ejectVIPMember(\'' + m.id + '\')">🚫 Éjecter le membre</button>'
+      + '</div>';
+  }).join('');
+}
+
+function fmtRemaining(ms) {
+  if (ms <= 0) return '0j';
+  var days  = Math.floor(ms / 86400000);
+  var hours = Math.floor((ms % 86400000) / 3600000);
+  var mins  = Math.floor((ms % 3600000) / 60000);
+  if (days > 0) return days + 'j ' + hours + 'h';
+  return hours + 'h ' + mins + 'min';
+}
+
+function ejectVIPMember(memberId) {
+  var members = vipGetJSON(VIP_MEMBERS_KEY, []);
+  var member  = members.find(function(m){ return m.id === memberId; });
+  if (!member) return;
+  if (!confirm('Éjecter "' + member.nom + '" de l\'espace VIP ?')) return;
+
+  members = members.map(function(m) {
+    return m.id === memberId ? Object.assign({}, m, { banned: true, bannedAt: new Date().toISOString() }) : m;
+  });
+  vipSetJSON(VIP_MEMBERS_KEY, members);
+
+  /* Invalider la session du membre si active */
+  var session = vipGetJSON('kw-vip-session', null);
+  if (session && session.memberId === memberId) localStorage.removeItem('kw-vip-session');
+
+  var st = document.getElementById('st-vip');
+  if (st) { st.className = 'status ok'; st.textContent = '✓ ' + member.nom + ' a été éjecté(e) de l\'espace VIP.'; }
+  renderVIPMembers(); renderVIPStats();
+}
+
+/* ── Toggle VIP sur les produits ── */
+var vipProdsList = [];
+var vipProdsModified = [];
+
+async function loadVIPToggleList() {
+  var el = document.getElementById('vipProdToggleList');
+  var st = document.getElementById('st-vip-prods');
+  if (!el) return;
+  if (!cfg.token) {
+    if (st) { st.className = 'status err'; st.textContent = '⚠ Configurez GitHub d\'abord.'; }
+    return;
+  }
+  el.innerHTML = '<div class="empty-list"><div class="loader" style="margin:0 auto;width:24px;height:24px;border-width:2px;"></div></div>';
+  try {
+    var data = await getFile();
+    vipProdsList     = data.products || [];
+    vipProdsModified = vipProdsList.map(function(p){ return Object.assign({}, p); });
+    renderVIPToggleList();
+    var btn = document.getElementById('btnSaveVIPProds');
+    if (btn) btn.style.display = 'block';
+  } catch(e) {
+    if (st) { st.className = 'status err'; st.textContent = 'Erreur : ' + e.message; }
+  }
+}
+
+function renderVIPToggleList() {
+  var el = document.getElementById('vipProdToggleList');
+  if (!el) return;
+  if (!vipProdsModified.length) {
+    el.innerHTML = '<div class="empty-list">Aucun produit.</div>';
+    return;
+  }
+  el.innerHTML = vipProdsModified.map(function(p, i) {
+    var on = p.is_vip ? ' on' : '';
+    return '<div class="vip-toggle-row" onclick="toggleVIPProd(' + i + ')">'
+      + '<div class="vip-toggle-name">' + h(p.nom)
+      + ' <span style="font-size:.54rem;color:var(--gris);">(' + h(p.categorie) + ')</span></div>'
+      + '<div class="vip-toggle-switch' + on + '" id="vipSwitch_' + i + '"></div>'
+      + '</div>';
+  }).join('');
+}
+
+function toggleVIPProd(idx) {
+  if (!vipProdsModified[idx]) return;
+  vipProdsModified[idx].is_vip = !vipProdsModified[idx].is_vip;
+  var sw = document.getElementById('vipSwitch_' + idx);
+  if (sw) sw.classList.toggle('on', vipProdsModified[idx].is_vip);
+}
+
+async function saveVIPProducts() {
+  var btn = document.getElementById('btnSaveVIPProds');
+  var st  = document.getElementById('st-vip-prods');
+  if (btn) { btn.disabled = true; btn.innerHTML = '<span class="mini-loader"></span>Sauvegarde...'; }
+  if (st)  { st.className = 'status load'; st.textContent = '⌛ Commit GitHub...'; }
+  try {
+    var data    = await getFile();
+    var updated = data.products.map(function(p) {
+      var mod = vipProdsModified.find(function(m){ return m.id === p.id; });
+      return mod ? Object.assign({}, p, { is_vip: mod.is_vip || false }) : p;
+    });
+    await commitFile(updated, data.sha, '👑 Mise à jour statuts VIP produits');
+    if (st) { st.className = 'status ok'; st.textContent = '✓ Statuts VIP sauvegardés sur GitHub !'; }
+  } catch(e) {
+    if (st) { st.className = 'status err'; st.textContent = 'Erreur : ' + e.message; }
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = '💾 Sauvegarder sur GitHub'; }
+  }
+}
+
 </script>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION VIP ADMIN
+     ═══════════════════════════════════════════════════ -->
+<div class="section" id="sec-vip">
+
+  <!-- CSS spécifique VIP admin -->
+  <style>
+  .vip-admin-header {
+    display:flex;align-items:center;gap:.6rem;
+    padding:.5rem 0 1rem;
+  }
+  .vip-crown-icon { font-size:1.6rem; filter:drop-shadow(0 0 8px rgba(201,168,76,.6)); }
+  .vip-admin-title {
+    font-family:'Cormorant Garamond',serif;
+    font-size:1.3rem;font-weight:700;
+    background:linear-gradient(90deg,var(--or-d),var(--or-l));
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  }
+
+  /* Stats cards */
+  .vip-stats-row { display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;margin-bottom:1rem; }
+  .vip-stat-card {
+    background:rgba(0,0,0,.45);border:1px solid var(--bord);border-radius:12px;
+    padding:.9rem .7rem;text-align:center;
+  }
+  .vip-stat-num {
+    font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:700;
+    background:linear-gradient(90deg,var(--or-d),var(--or-l));
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+    line-height:1;margin-bottom:.2rem;
+  }
+  .vip-stat-lbl { font-size:.52rem;color:var(--gris);letter-spacing:.14em;text-transform:uppercase;font-weight:600; }
+
+  /* Générateur de codes */
+  .code-box {
+    background:rgba(0,0,0,.55);border:1px solid rgba(201,168,76,.45);border-radius:12px;
+    padding:1rem;margin-bottom:.8rem;display:flex;align-items:center;gap:.8rem;
+  }
+  .code-val {
+    flex:1;font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;
+    color:var(--or-l);letter-spacing:.22em;word-break:break-all;
+  }
+  .btn-copy {
+    background:rgba(201,168,76,.15);border:1px solid var(--bord);
+    color:var(--or-l);border-radius:8px;padding:.42rem .8rem;
+    font-size:.62rem;font-weight:700;cursor:pointer;
+    font-family:'Montserrat',sans-serif;-webkit-tap-highlight-color:transparent;
+    white-space:nowrap;transition:background .2s;letter-spacing:.08em;
+  }
+  .btn-copy:active { background:rgba(201,168,76,.28); }
+  .btn-copy.copied { background:rgba(39,174,96,.2);border-color:rgba(39,174,96,.4);color:#6fcf97; }
+
+  /* Liste codes */
+  .codes-list { margin-top:.6rem; }
+  .code-row {
+    display:flex;align-items:center;gap:.6rem;
+    background:rgba(0,0,0,.3);border:1px solid rgba(201,168,76,.1);
+    border-radius:8px;padding:.5rem .7rem;margin-bottom:.4rem;
+  }
+  .code-row-val { flex:1;font-size:.72rem;font-weight:700;color:var(--or-l);letter-spacing:.16em; }
+  .code-row-status {
+    font-size:.52rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;
+    padding:.15rem .5rem;border-radius:50px;
+  }
+  .code-status-free  { background:rgba(39,174,96,.15);border:1px solid rgba(39,174,96,.3);color:#6fcf97; }
+  .code-status-used  { background:rgba(192,57,43,.12);border:1px solid rgba(192,57,43,.25);color:#eb5757; }
+  .btn-del-code {
+    background:rgba(192,57,43,.15);border:1px solid rgba(192,57,43,.3);
+    color:#eb5757;border-radius:6px;padding:.26rem .5rem;
+    font-size:.58rem;cursor:pointer;font-family:'Montserrat',sans-serif;
+    -webkit-tap-highlight-color:transparent;font-weight:700;
+  }
+
+  /* Membres VIP */
+  .vip-member-row {
+    background:rgba(0,0,0,.35);border:1px solid rgba(201,168,76,.12);
+    border-radius:12px;padding:.8rem;margin-bottom:.6rem;
+    transition:border-color .2s;
+  }
+  .vip-member-row:hover { border-color:rgba(201,168,76,.3); }
+  .vip-member-top { display:flex;align-items:center;gap:.7rem;margin-bottom:.5rem; }
+  .vip-member-avatar {
+    width:40px;height:40px;border-radius:50%;object-fit:cover;
+    border:2px solid var(--or);flex-shrink:0;background:var(--noir3);
+  }
+  .vip-member-info { flex:1;min-width:0; }
+  .vip-member-name { font-size:.8rem;font-weight:700;color:#F0EBD8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+  .vip-member-email { font-size:.56rem;color:var(--gris);margin-top:.08rem; }
+  .vip-member-date { font-size:.54rem;color:var(--gris);margin-top:.04rem; }
+
+  /* Countdown admin */
+  .vip-member-countdown {
+    display:flex;align-items:center;gap:.5rem;
+    background:rgba(0,0,0,.3);border-radius:8px;padding:.5rem .7rem;
+    margin-bottom:.4rem;
+  }
+  .vip-cd-bar {
+    flex:1;height:5px;background:rgba(255,255,255,.08);border-radius:5px;overflow:hidden;
+  }
+  .vip-cd-fill {
+    height:100%;border-radius:5px;transition:width .5s;
+  }
+  .vip-cd-fill.ok     { background:linear-gradient(90deg,var(--or-d),var(--or-l)); }
+  .vip-cd-fill.warn   { background:linear-gradient(90deg,#e67e22,#f39c12); }
+  .vip-cd-fill.danger { background:linear-gradient(90deg,#c0392b,#eb5757); }
+  .vip-cd-text { font-size:.56rem;font-weight:700;white-space:nowrap; }
+  .vip-cd-text.ok     { color:var(--or-l); }
+  .vip-cd-text.warn   { color:#f39c12; }
+  .vip-cd-text.danger { color:#eb5757; }
+
+  /* Badge inactif */
+  .badge-inactive {
+    display:inline-flex;align-items:center;gap:.3rem;
+    background:rgba(192,57,43,.18);border:1px solid rgba(192,57,43,.4);
+    color:#eb5757;border-radius:50px;padding:.22rem .65rem;
+    font-size:.52rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+    animation:inactivePulse 1.5s ease-in-out infinite;
+  }
+  @keyframes inactivePulse {
+    0%,100%{opacity:1;} 50%{opacity:.55;}
+  }
+
+  /* Bouton éjecter */
+  .btn-eject {
+    width:100%;padding:.6rem;
+    background:rgba(192,57,43,.15);border:1px solid rgba(192,57,43,.35);
+    color:#eb5757;border-radius:8px;
+    font-size:.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+    cursor:pointer;font-family:'Montserrat',sans-serif;
+    -webkit-tap-highlight-color:transparent;transition:background .2s;
+    margin-top:.3rem;
+  }
+  .btn-eject:active { background:rgba(192,57,43,.35); }
+
+  /* Toggle VIP sur produit */
+  .vip-toggle-row {
+    display:flex;align-items:center;justify-content:space-between;
+    background:rgba(201,168,76,.07);border:1px solid rgba(201,168,76,.18);
+    border-radius:8px;padding:.55rem .75rem;margin-bottom:.4rem;
+    cursor:pointer;-webkit-tap-highlight-color:transparent;
+  }
+  .vip-toggle-row:hover { background:rgba(201,168,76,.12); }
+  .vip-toggle-name { font-size:.72rem;font-weight:700;color:#F0EBD8;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap; }
+  .vip-toggle-switch {
+    width:38px;height:20px;border-radius:20px;border:1px solid rgba(201,168,76,.3);
+    background:rgba(0,0,0,.5);position:relative;flex-shrink:0;transition:background .25s,border-color .25s;
+    margin-left:.6rem;
+  }
+  .vip-toggle-switch::after {
+    content:'';position:absolute;top:2px;left:2px;
+    width:14px;height:14px;border-radius:50%;background:#888;
+    transition:transform .25s,background .25s;
+  }
+  .vip-toggle-switch.on { background:rgba(201,168,76,.22);border-color:var(--or); }
+  .vip-toggle-switch.on::after { transform:translateX(18px);background:var(--or); }
+
+  .empty-vip { text-align:center;padding:2rem 1rem;color:var(--gris);font-size:.75rem;line-height:1.7; }
+  </style>
+
+  <!-- Header VIP Admin -->
+  <div class="vip-admin-header">
+    <div class="vip-crown-icon">👑</div>
+    <div class="vip-admin-title">Gestion Espace VIP</div>
+  </div>
+
+  <!-- Stats -->
+  <div class="vip-stats-row">
+    <div class="vip-stat-card">
+      <div class="vip-stat-num" id="vipStatMembers">0</div>
+      <div class="vip-stat-lbl">Membres</div>
+    </div>
+    <div class="vip-stat-card">
+      <div class="vip-stat-num" id="vipStatCodes">0</div>
+      <div class="vip-stat-lbl">Codes libres</div>
+    </div>
+    <div class="vip-stat-card">
+      <div class="vip-stat-num" id="vipStatInactive">0</div>
+      <div class="vip-stat-lbl" style="color:#eb5757;">Inactifs</div>
+    </div>
+  </div>
+
+  <!-- Générateur de codes VIP -->
+  <div class="card">
+    <div class="card-title">🔑 Générateur de Codes VIP</div>
+    <div class="card-sub">Chaque code est à usage unique. Une fois utilisé par un client, il est automatiquement détruit et ne peut plus être partagé.</div>
+
+    <div id="generatedCodeBox" style="display:none;" class="code-box">
+      <div>
+        <div style="font-size:.5rem;letter-spacing:.2em;color:var(--gris);text-transform:uppercase;margin-bottom:.3rem;">Nouveau code généré :</div>
+        <div class="code-val" id="generatedCodeVal">—</div>
+      </div>
+      <button class="btn-copy" id="btnCopyCode" onclick="copyGeneratedCode()">📋 Copier</button>
+      <a id="btnSendWA" href="#" target="_blank" rel="noopener" style="text-decoration:none;">
+        <button class="btn-copy" style="background:rgba(37,211,102,.15);border-color:rgba(37,211,102,.4);color:#6fcf97;">
+          📲 WhatsApp
+        </button>
+      </a>
+    </div>
+
+    <button class="btn-gold" onclick="generateVIPCode()">✦ Générer un Code VIP Unique</button>
+
+    <!-- Liste des codes existants -->
+    <div style="margin-top:1rem;">
+      <div style="font-size:.56rem;letter-spacing:.2em;color:var(--gris);text-transform:uppercase;margin-bottom:.5rem;font-weight:700;">Codes existants</div>
+      <div class="codes-list" id="vipCodesList"></div>
+    </div>
+  </div>
+
+  <!-- Membres VIP -->
+  <div class="card">
+    <div class="card-title">👥 Membres VIP Actifs</div>
+    <div id="st-vip" class="status"></div>
+    <div id="vipMembersList"></div>
+  </div>
+
+  <!-- Toggle VIP sur les produits -->
+  <div class="card">
+    <div class="card-title">🏷 Produits réservés à l'Espace VIP</div>
+    <div class="card-sub">Activez le toggle pour qu'un produit n'apparaisse QUE dans l'espace VIP et soit invisible sur le catalogue standard.</div>
+    <div id="st-vip-prods" class="status"></div>
+    <button class="btn-gold" onclick="loadVIPToggleList()" style="margin-bottom:.8rem;">↻ Charger les produits</button>
+    <div id="vipProdToggleList"><div class="empty-vip">Cliquez sur "Charger les produits" pour gérer les accès VIP.</div></div>
+    <button class="btn-gold" id="btnSaveVIPProds" onclick="saveVIPProducts()" style="display:none;margin-top:.6rem;background:linear-gradient(135deg,var(--or-d),var(--or));">💾 Sauvegarder sur GitHub</button>
+  </div>
+
+</div><!-- /sec-vip -->
+
 </body>
 </html>
