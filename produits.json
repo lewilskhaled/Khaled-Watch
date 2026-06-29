@@ -51,7 +51,7 @@
     "img_dos": "",
     "halo_cadran": "argent",
     "is_patron": false,
-    "is_vip": false,
+    "is_vip": true,
     "moods": [],
     "flash_fin": "",
     "flash_reduction": 0,
