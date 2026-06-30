@@ -230,7 +230,7 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--txt);m
    MODAL
    ============================================================ */
 #prodModal{
-  position:fixed;inset:0;z-index:9000;
+  position:fixed;inset:0;z-index:9800;
   display:none;flex-direction:column;
   background:linear-gradient(160deg,rgba(20,14,3,.97) 0%,rgba(35,22,2,.95) 40%,rgba(20,14,3,.98) 100%);
   backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
@@ -2559,28 +2559,39 @@ function vipRenderCatProducts() {
     return;
   }
 
+  /* Cette liste alimente la modal produit standard (openModal réutilisé) */
+  currentList = list;
+
   grid.innerHTML = list.map(function(p, i) {
     var img     = p.image || FALLBACK_VIP;
     var nomSafe = h(p.nom);
     var nomJS   = js(p.nom);
     var genre   = p.genre ? '<div style="font-size:.5rem;letter-spacing:.14em;color:var(--gris);text-transform:uppercase;margin-bottom:.28rem;font-weight:600;">' + h(p.genre) + '</div>' : '';
     return (
-      '<div class="vip-prod-card" style="animation-delay:' + (i * .06) + 's">' +
+      '<div class="vip-prod-card" style="animation-delay:' + (i * .06) + 's" onclick="vipOpenProductModal(' + i + ')">' +
         '<div class="vip-prod-img-zone">' +
           '<div class="vip-unique-badge">✦ Pièce Unique</div>' +
           '<img class="vip-prod-img-el" src="' + h(img) + '" alt="' + nomSafe + '" loading="lazy" onerror="this.src=\'' + FALLBACK_VIP + '\'">' +
+          '<div class="card-hint-3d">👆 Toucher pour agrandir</div>' +
         '</div>' +
         '<div class="vip-prod-body">' +
           '<div class="vip-prod-name">' + nomSafe + '</div>' +
           genre +
           '<div class="vip-prod-price">' + fmt(p.prix) + ' <small style="font-family:Montserrat;font-size:.52rem">FCFA</small></div>' +
-          '<button class="btn-vip-order" onclick="vipCommander(\'' + nomJS + '\',' + p.prix + ')">' +
+          '<button class="btn-vip-order" onclick="event.stopPropagation();vipCommander(\'' + nomJS + '\',' + p.prix + ')">' +
             WA_SVG + ' Commander' +
           '</button>' +
         '</div>' +
       '</div>'
     );
   }).join('');
+}
+
+/* ── Ouvrir la fiche produit en grand depuis l'espace VIP ──
+   Réutilise le système openModal() existant (gyroscope, 360°, scratch reveal)
+   currentList pointe déjà vers les produits VIP filtrés via vipRenderCatProducts() */
+function vipOpenProductModal(idx) {
+  openModal(idx);
 }
 
 /* ── COMMANDE VIP → WhatsApp ── */
