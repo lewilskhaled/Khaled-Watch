@@ -933,6 +933,92 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--txt);m
 }
 .vip-empty-state p { font-size: .68rem; color: var(--gris); line-height: 1.65; }
 
+
+/* ── Catégories VIP ── */
+.vip-cats-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem; font-weight: 700; color: var(--or-l);
+  padding: .5rem .9rem .3rem; letter-spacing: .08em;
+}
+.vip-cats-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: .7rem; padding: .3rem .9rem 1.2rem;
+}
+.vip-cat-card {
+  background: rgba(14,9,2,.8);
+  border: 1px solid rgba(201,168,76,.3);
+  border-radius: 14px; padding: 1.1rem .7rem .9rem;
+  display: flex; flex-direction: column; align-items: center; gap: .45rem;
+  cursor: pointer; -webkit-tap-highlight-color: transparent;
+  transition: transform .22s, box-shadow .22s, border-color .22s;
+  position: relative; overflow: hidden;
+}
+.vip-cat-card::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(201,168,76,.1), transparent 60%);
+  opacity: 0; transition: opacity .22s;
+}
+.vip-cat-card:hover { transform: translateY(-4px); box-shadow: 0 12px 36px rgba(201,168,76,.2); border-color: var(--or); }
+.vip-cat-card:hover::before { opacity: 1; }
+.vip-cat-card:active { transform: scale(.95); }
+.vip-cat-icon { font-size: 1.8rem; filter: drop-shadow(0 0 8px rgba(201,168,76,.5)); }
+.vip-cat-label {
+  font-size: .58rem; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--or-l); font-weight: 700; text-align: center; line-height: 1.3;
+  text-shadow: 0 1px 4px rgba(0,0,0,.8);
+}
+.vip-cat-count {
+  font-size: .5rem; color: var(--gris); letter-spacing: .08em; font-weight: 600;
+}
+
+/* ── Espace catégorie VIP (vue produits) ── */
+#vipCatView {
+  display: none; flex-direction: column; position: absolute; inset: 0; z-index: 3;
+  background: linear-gradient(160deg, #060402 0%, #0E0802 40%, #060402 100%);
+  overflow: hidden;
+}
+#vipCatView.open { display: flex; }
+
+.vip-cat-hdr {
+  display: flex; align-items: center; gap: .75rem;
+  padding: .85rem 1rem .5rem;
+  background: rgba(6,4,1,.88);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(201,168,76,.2);
+  flex-shrink: 0;
+}
+.btn-vip-back {
+  background: rgba(201,168,76,.14); border: 1px solid var(--bord);
+  border-radius: 50%; width: 36px; height: 36px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; color: var(--or-l); font-size: 1rem; font-weight: 700;
+  -webkit-tap-highlight-color: transparent;
+}
+.vip-cat-hdr-title {
+  font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 700;
+  background: linear-gradient(90deg, var(--or-d), var(--or-l));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  flex: 1;
+}
+.vip-cat-hdr-icon { font-size: 1.3rem; }
+
+/* Tabs Homme / Femme dans catégorie VIP */
+.vip-gender-tabs {
+  display: flex; gap: .45rem; padding: .6rem .9rem .4rem; flex-shrink: 0;
+}
+.vip-g-tab {
+  flex: 1; text-align: center; padding: .4rem 0; border-radius: 50px;
+  font-size: .6rem; letter-spacing: .14em; text-transform: uppercase;
+  border: 1px solid rgba(201,168,76,.35); color: rgba(212,201,176,.7);
+  cursor: pointer; background: rgba(0,0,0,.5); font-family: 'Montserrat', sans-serif;
+  font-weight: 600; transition: all .2s; -webkit-tap-highlight-color: transparent;
+}
+.vip-g-tab.active {
+  background: rgba(201,168,76,.2); border-color: var(--or-l);
+  color: var(--or-l); font-weight: 700;
+}
+.vip-cat-body { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+
 </style>
 </head>
 <body>
@@ -1215,56 +1301,54 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--txt);m
         <div class="vip-cd-alert" id="vipCdAlert">⚠️ Votre statut VIP expire bientôt ! Passez commande maintenant.</div>
       </div>
 
-      <!-- Produits VIP -->
-      <div class="vip-prods-hdr">
-        <div class="vip-prods-title">✦ Collection VIP</div>
-        <span class="vip-prod-count-badge" id="vipProdCountBadge">0</span>
+      <!-- Catégories VIP -->
+      <div class="vip-cats-title">✦ Collections Exclusives</div>
+      <div class="vip-cats-grid">
+        <div class="vip-cat-card" onclick="openVIPCat('Montres Luxueuses','💎')">
+          <div class="vip-cat-icon">💎</div>
+          <div class="vip-cat-label">Montres Luxueuses</div>
+          <div class="vip-cat-count" id="vipCnt-Montres Luxueuses">— articles</div>
+        </div>
+        <div class="vip-cat-card" onclick="openVIPCat('Chaînes Luxueuses','⛓')">
+          <div class="vip-cat-icon">⛓</div>
+          <div class="vip-cat-label">Chaînes Luxueuses</div>
+          <div class="vip-cat-count" id="vipCnt-Chaînes Luxueuses">— articles</div>
+        </div>
+        <div class="vip-cat-card" onclick="openVIPCat('Bracelets Luxueux','💫')">
+          <div class="vip-cat-icon">💫</div>
+          <div class="vip-cat-label">Bracelets Luxueux</div>
+          <div class="vip-cat-count" id="vipCnt-Bracelets Luxueux">— articles</div>
+        </div>
+        <div class="vip-cat-card" onclick="openVIPCat('Colliers Luxueux','📿')">
+          <div class="vip-cat-icon">📿</div>
+          <div class="vip-cat-label">Colliers Luxueux</div>
+          <div class="vip-cat-count" id="vipCnt-Colliers Luxueux">— articles</div>
+        </div>
+        <div class="vip-cat-card" onclick="openVIPCat('Autres','✨')" style="grid-column:1/-1;">
+          <div class="vip-cat-icon">✨</div>
+          <div class="vip-cat-label">Autres Pièces Uniques</div>
+          <div class="vip-cat-count" id="vipCnt-Autres">— articles</div>
+        </div>
       </div>
-      <!-- LE PREMIER CODE (ACCUEIL DE L'ESPACE VIP) À METTRE ICI -->
-<div id="vip-categories" class="cat-grid" style="margin-top: 20px;">
-    <div class="cat-card" onclick="openCatVIP('Montres VIP')">
-        <div class="cat-icon">⌚👑</div>
-        <div class="cat-label" style="color:#F5E27A;">Montres VIP</div>
-        <div class="cat-count" id="cnt-Montres-VIP">—</div>
     </div>
-    <div class="cat-card" onclick="openCatVIP('Chaînes VIP')">
-        <div class="cat-icon">⛓👑</div>
-        <div class="cat-label" style="color:#F5E27A;">Chaînes VIP</div>
-        <div class="cat-count" id="cnt-Chaînes-VIP">—</div>
-    </div>
-    <div class="cat-card" onclick="openCatVIP('Bracelets VIP')">
-        <div class="cat-icon">💫👑</div>
-        <div class="cat-label" style="color:#F5E27A;">Bracelets VIP</div>
-        <div class="cat-count" id="cnt-Bracelets-VIP">—</div>
-    </div>
-    <div class="cat-card" onclick="openCatVIP('Colliers VIP')">
-        <div class="cat-icon">📿👑</div>
-        <div class="cat-label" style="color:#F5E27A;">Colliers VIP</div>
-        <div class="cat-count" id="cnt-Colliers-VIP">—</div>
-    </div>
-    <div class="cat-card" onclick="openCatVIP('Autres VIP')" style="grid-column: 1 / -1;">
-        <div class="cat-icon">✨👑</div>
-        <div class="cat-label" style="color:#F5E27A;">Autres VIP</div>
-        <div class="cat-count" id="cnt-Autres-VIP">—</div>
-    </div>
-</div>
+  </div>
 
-<!-- LA ZONE VIDE QUI ACCUEILLERA LES PRODUITS APRÈS LE CLIC (DEUXIÈME CODE) -->
-<div id="vip-products-view" style="display: none; margin-top: 20px;">
-    <button onclick="backToVipHome()" style="background: none; border: 1px solid var(--or); color: #fff; padding: 8px 16px; border-radius: 20px; cursor: pointer; margin-bottom: 15px;">
-        ← Retour
-    </button>
-    
-    <div class="gender-tabs" style="display: flex; gap: 10px; margin-bottom: 15px;">
-        <button class="g-tab active" id="vip-tab-tous" onclick="filterVipGender('tous')">Tous</button>
-        <button class="g-tab" id="vip-tab-homme" onclick="filterVipGender('Homme')">Homme</button>
-        <button class="g-tab" id="vip-tab-femme" onclick="filterVipGender('Femme')">Femme</button>
+  <!-- ── VUE CATÉGORIE VIP ── -->
+  <div id="vipCatView">
+    <div class="vip-cat-hdr">
+      <div class="btn-vip-back" onclick="closeVIPCat()">←</div>
+      <span class="vip-cat-hdr-icon" id="vipCatIcon">💎</span>
+      <div class="vip-cat-hdr-title" id="vipCatTitle">—</div>
     </div>
-
-    <!-- Cette grille prendra automatiquement la même taille que tes box clients simples -->
-    <div id="vipProdsGrid" class="products-grid"></div>
-</div>
-     
+    <div class="vip-gender-tabs">
+      <button class="vip-g-tab active" data-g="tous"  onclick="vipSetGender(this)">Tous</button>
+      <button class="vip-g-tab"        data-g="Homme" onclick="vipSetGender(this)">Homme</button>
+      <button class="vip-g-tab"        data-g="Femme" onclick="vipSetGender(this)">Femme</button>
+    </div>
+    <div class="vip-cat-body">
+      <div class="vip-grid" id="vipCatGrid"></div>
+    </div>
+  </div>
 
 </div><!-- /vipModal -->
 
@@ -1283,7 +1367,6 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--txt);m
 </a>
 
 <script>
-  
 /* ============================================================
    CONSTANTES
    ============================================================ */
@@ -1316,73 +1399,6 @@ const FALLBACK_IMG = 'https://images.unsplash.com/photo-1523275335684-37898b6baf
 let allProducts   = [];
 let currentCat    = '';
 let currentGender = 'tous';
-/* ============================================================
-                      LOGIQUE ESPACE VIP
-============================================================ */
-let currentVipCategory = '';
-
-function openCatVIP(categoryName) {
-    currentVipCategory = categoryName;
-    
-    // 1. Masquer l'accueil des catégories VIP et afficher la vue produits
-    document.getElementById('vip-categories').style.display = 'none';
-    document.getElementById('vip-products-view').style.display = 'block';
-    
-    // 2. Charger les produits sur l'onglet "tous" par défaut
-    filterVipGender('tous');
-}
-
-function filterVipGender(gender) {
-    // Gérer le style actif sur les onglets de genre VIP
-    document.querySelectorAll('#vip-products-view .g-tab').forEach(btn => btn.classList.remove('active'));
-    if(gender === 'tous') document.getElementById('vip-tab-tous').classList.add('active');
-    if(gender === 'Homme') document.getElementById('vip-tab-homme').classList.add('active');
-    if(gender === 'Femme') document.getElementById('vip-tab-femme').classList.add('active');
-
-    const grid = document.getElementById('vipProdsGrid');
-    if(!grid) return;
-    grid.innerHTML = '';
-
-    // Filtrer le tableau de tes produits (allProducts) selon la catégorie, le flag VIP et le genre choisi
-    let filtered = allProducts.filter(p => {
-        let matchCat = p.categorie === currentVipCategory;
-        // On vérifie si la propriété vip est vraie dans ton JSON
-        let matchVip = p.vip === true || p.isVip === true; 
-        let matchGender = (gender === 'tous' || p.genre === gender);
-        return matchCat && matchVip && matchGender;
-    });
-
-    if(filtered.length === 0) {
-        grid.innerHTML = '<div style="color: #aaa; text-align:center; padding:20px; grid-column: 1 / -1;">Aucun produit disponible.</div>';
-        return;
-    }
-
-    // Affichage des box avec la même structure/classe que tes produits classiques
-    filtered.forEach(p => {
-        const box = document.createElement('div');
-        box.className = 'product-card'; // Utilise la classe exacte de tes box de la page cliente simple
-        
-        // Au clic, ouvre ton modal de détails existant
-        box.onclick = () => openProductModal(p); 
-        
-        box.innerHTML = `
-            <div class="product-img-container">
-                <img src="${p.image || p.img}" alt="${p.nom}" style="width:100%; height:auto;">
-            </div>
-            <div class="product-details">
-                <div class="product-title">${p.nom}</div>
-                <div class="product-price">${p.prix}</div>
-            </div>
-        `;
-        grid.appendChild(box);
-    });
-}
-
-function backToVipHome() {
-    // Permet de revenir à la grille de choix des catégories VIP
-    document.getElementById('vip-products-view').style.display = 'none';
-    document.getElementById('vip-categories').style.display = 'grid';
-}  
 let currentList   = [];
 let selectedStream= '';
 
@@ -2459,45 +2475,104 @@ function vipStartCountdown(member) {
   vipCdInterval = setInterval(tick, 1000);
 }
 
-/* ── CHARGER LES PRODUITS VIP ── */
-async function vipLoadProducts() {
-  var grid = document.getElementById('vipProdGrid');
-  if (!grid) return;
-  grid.innerHTML = '<div style="grid-column:1/-1;display:flex;justify-content:center;padding:2rem;"><div class="loader"></div></div>';
+/* ── VIP : données et état catégorie ── */
+var vipAllProducts   = [];
+var vipCurrentCat    = '';
+var vipCurrentGender = 'tous';
 
-  var products = [];
+const VIP_CATS = {
+  'Montres Luxueuses': '💎',
+  'Chaînes Luxueuses': '⛓',
+  'Bracelets Luxueux': '💫',
+  'Colliers Luxueux':  '📿',
+  'Autres':            '✨'
+};
+
+/* ── Charger TOUS les produits VIP au démarrage ── */
+async function vipLoadProducts() {
   try {
     var r = await fetch('produits.json?t=' + Date.now());
     if (r.ok) {
       var all = await r.json();
-      products = all.filter(function(p){ return p.is_vip === true; });
+      vipAllProducts = all.filter(function(p){ return p.is_vip === true; });
     }
-  } catch(e) {}
+  } catch(e) { vipAllProducts = []; }
 
-  var badge = document.getElementById('vipProdCountBadge');
-  if (badge) badge.textContent = products.length;
+  Object.keys(VIP_CATS).forEach(function(cat) {
+    var el = document.getElementById('vipCnt-' + cat);
+    if (!el) return;
+    var n = vipAllProducts.filter(function(p){ return p.categorie === cat; }).length;
+    el.textContent = n + (n <= 1 ? ' article' : ' articles');
+  });
+}
 
-  if (!products.length) {
+/* ── Ouvrir une catégorie VIP ── */
+function openVIPCat(cat, icon) {
+  vipCurrentCat    = cat;
+  vipCurrentGender = 'tous';
+
+  document.getElementById('vipCatTitle').textContent = cat;
+  document.getElementById('vipCatIcon').textContent  = icon || VIP_CATS[cat] || '✦';
+
+  document.querySelectorAll('.vip-g-tab').forEach(function(t){ t.classList.remove('active'); });
+  var tousTab = document.querySelector('.vip-g-tab[data-g="tous"]');
+  if (tousTab) tousTab.classList.add('active');
+
+  document.getElementById('vipCatView').classList.add('open');
+
+  vipRenderCatProducts();
+}
+
+/* ── Fermer la vue catégorie ── */
+function closeVIPCat() {
+  document.getElementById('vipCatView').classList.remove('open');
+  vipCurrentCat    = '';
+  vipCurrentGender = 'tous';
+}
+
+/* ── Changer le filtre genre ── */
+function vipSetGender(btn) {
+  document.querySelectorAll('.vip-g-tab').forEach(function(t){ t.classList.remove('active'); });
+  btn.classList.add('active');
+  vipCurrentGender = btn.dataset.g;
+  vipRenderCatProducts();
+}
+
+/* ── Rendre les produits de la catégorie courante ── */
+function vipRenderCatProducts() {
+  var grid = document.getElementById('vipCatGrid');
+  if (!grid) return;
+
+  var list = vipAllProducts.filter(function(p){ return p.categorie === vipCurrentCat; });
+  if (vipCurrentGender !== 'tous') {
+    list = list.filter(function(p){ return p.genre === vipCurrentGender; });
+  }
+
+  if (!list.length) {
     grid.innerHTML =
       '<div class="vip-empty-state">' +
-      '<h3>✦ Collection Bientôt Disponible</h3>' +
-      '<p>Les pièces exclusives VIP arrivent très prochainement.<br>Vous serez les premiers à y avoir accès.</p>' +
+        '<h3>✦ Collection Bientôt Disponible</h3>' +
+        '<p>Aucune pièce dans cette catégorie' +
+        (vipCurrentGender !== 'tous' ? ' pour ' + vipCurrentGender : '') +
+        ' pour le moment.<br>Revenez bientôt !</p>' +
       '</div>';
     return;
   }
 
-  grid.innerHTML = products.map(function(p, i) {
-    var img = p.image || FALLBACK_VIP;
+  grid.innerHTML = list.map(function(p, i) {
+    var img     = p.image || FALLBACK_VIP;
     var nomSafe = h(p.nom);
     var nomJS   = js(p.nom);
+    var genre   = p.genre ? '<div style="font-size:.5rem;letter-spacing:.14em;color:var(--gris);text-transform:uppercase;margin-bottom:.28rem;font-weight:600;">' + h(p.genre) + '</div>' : '';
     return (
-      '<div class="vip-prod-card" style="animation-delay:' + (i * .07) + 's">' +
+      '<div class="vip-prod-card" style="animation-delay:' + (i * .06) + 's">' +
         '<div class="vip-prod-img-zone">' +
           '<div class="vip-unique-badge">✦ Pièce Unique</div>' +
           '<img class="vip-prod-img-el" src="' + h(img) + '" alt="' + nomSafe + '" loading="lazy" onerror="this.src=\'' + FALLBACK_VIP + '\'">' +
         '</div>' +
         '<div class="vip-prod-body">' +
           '<div class="vip-prod-name">' + nomSafe + '</div>' +
+          genre +
           '<div class="vip-prod-price">' + fmt(p.prix) + ' <small style="font-family:Montserrat;font-size:.52rem">FCFA</small></div>' +
           '<button class="btn-vip-order" onclick="vipCommander(\'' + nomJS + '\',' + p.prix + ')">' +
             WA_SVG + ' Commander' +
