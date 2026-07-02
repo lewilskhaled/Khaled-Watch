@@ -182,9 +182,7 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--txt);m
 .prod-img{
   width:100%;height:100%;object-fit:contain;display:block;
   padding:6px;
-  /* Transition fluide pour que le mouvement ne soit pas saccadé */
   transition:transform .08s linear, opacity .22s;
-  /* La valeur par défaut (0,0) = centré */
   transform: translate(
     calc(var(--gx, 0) * 1px),
     calc(var(--gy, 0) * 1px)
@@ -192,7 +190,6 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--txt);m
   will-change: transform;
 }
 .prod-card:hover .prod-img{
-  /* Le hover scale est conservé mais combiné avec le gyro via JS */
 }
 
 .prod-body{padding:.75rem .75rem .9rem;}
@@ -379,8 +376,8 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--txt);m
 .search-bar-wrap {
   padding: .65rem 1rem .4rem;
   position: sticky;
-  top: 58px;          /* juste sous le header sticky */
-  z-index: 190;       /* sous le header (200) mais au-dessus du contenu */
+  top: 58px;
+  z-index: 190;
   background: rgba(6,4,1,.82);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -518,506 +515,28 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--txt);m
    FOND VIDÉO — Mobile uniquement (max 1024px)
    ============================================================ */
 #bgVideo {
-  display: none; /* caché par défaut */
+  display: none;
   position: fixed;
   inset: 0;
-  z-index: -3;          /* derrière bgLayer et bgOverlay */
+  z-index: -3;
   width: 100%;
   height: 100%;
   object-fit: cover;
   pointer-events: none;
 }
 
-/* Actif uniquement sur mobile */
 @media (max-width: 1024px) {
   body.video-bg-active #bgVideo {
     display: block;
   }
-  /* Quand la vidéo est active, cacher l'image de fond */
   body.video-bg-active #bgLayer {
     display: none;
   }
 }
-/* Sur desktop : jamais de vidéo, toujours l'image */
 @media (min-width: 1025px) {
   #bgVideo { display: none !important; }
   body.video-bg-active #bgLayer { display: block !important; }
 }
-
-
-/* ============================================================
-   ESPACE VIP — intégré dans le site client
-   ============================================================ */
-
-/* Tuile VIP dans la grille d'accueil */
-.cat-card.vip-card {
-  background: linear-gradient(135deg, rgba(139,105,20,.28), rgba(8,4,1,.75));
-  border-color: rgba(201,168,76,.7);
-  position: relative;
-  overflow: hidden;
-}
-.cat-card.vip-card::before {
-  content: '';
-  position: absolute; inset: 0;
-  background: linear-gradient(135deg, rgba(201,168,76,.12), transparent 60%);
-  animation: vipTileShimmer 3s ease-in-out infinite;
-}
-@keyframes vipTileShimmer {
-  0%,100% { opacity: .5; }
-  50%      { opacity: 1; }
-}
-.cat-card.vip-card .cat-label { color: #F5E27A; }
-.cat-card.vip-card .cat-count { color: var(--or-l); }
-
-/* Modal VIP plein écran */
-#vipModal {
-  position: fixed; inset: 0; z-index: 9500;
-  display: none; flex-direction: column;
-  background: linear-gradient(160deg, #060402 0%, #0E0802 40%, #060402 100%);
-  backdrop-filter: blur(24px);
-  overflow: hidden;
-}
-#vipModal.open { display: flex; }
-
-/* Fond animé particules */
-#vipModal::before {
-  content: '';
-  position: absolute; inset: 0; z-index: 0; pointer-events: none;
-  background-image:
-    radial-gradient(1px 1px at 15% 25%, rgba(201,168,76,.7) 0%, transparent 100%),
-    radial-gradient(1px 1px at 40% 10%, rgba(245,226,122,.6) 0%, transparent 100%),
-    radial-gradient(1px 1px at 70% 35%, rgba(201,168,76,.5) 0%, transparent 100%),
-    radial-gradient(1px 1px at 85% 15%, rgba(232,201,122,.7) 0%, transparent 100%),
-    radial-gradient(1px 1px at 25% 70%, rgba(201,168,76,.4) 0%, transparent 100%),
-    radial-gradient(1px 1px at 60% 80%, rgba(245,226,122,.5) 0%, transparent 100%);
-  animation: vipParticles 6s ease-in-out infinite alternate;
-}
-@keyframes vipParticles {
-  0%   { transform: translateY(0); opacity: .5; }
-  100% { transform: translateY(-14px); opacity: .9; }
-}
-
-/* ── GATE (écran connexion) ── */
-#vipGate {
-  position: absolute; inset: 0; z-index: 2;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  padding: 1.2rem; overflow-y: auto;
-}
-.vip-gate-logo {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(1.3rem, 5.5vw, 2rem);
-  font-weight: 700; letter-spacing: .22em;
-  background: linear-gradient(90deg,#8B6914 0%,#C9A84C 20%,#F5E27A 45%,#FFFBE6 50%,#F5E27A 55%,#C9A84C 80%,#8B6914 100%);
-  background-size: 250% auto;
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-  animation: goldShimmer 3.5s linear infinite;
-  text-align: center; margin-bottom: .25rem;
-}
-.vip-gate-sub {
-  font-size: .55rem; letter-spacing: .38em; color: rgba(201,168,76,.65);
-  text-transform: uppercase; font-weight: 700;
-  text-align: center; margin-bottom: 1.6rem;
-}
-.vip-gold-line {
-  width: 70px; height: 1px;
-  background: linear-gradient(90deg, transparent, var(--or), transparent);
-  margin: .6rem auto 1.4rem;
-}
-.vip-gate-card {
-  width: 100%; max-width: 400px;
-  background: rgba(10,6,1,.78);
-  border: 1px solid rgba(201,168,76,.3);
-  border-radius: 20px; padding: 1.6rem 1.4rem;
-  backdrop-filter: blur(24px);
-  box-shadow: 0 0 0 1px rgba(201,168,76,.07), 0 20px 60px rgba(0,0,0,.75),
-              inset 0 1px 0 rgba(255,255,255,.04);
-}
-.vip-gate-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.35rem; font-weight: 700; color: var(--or-l);
-  text-align: center; margin-bottom: .35rem; letter-spacing: .08em;
-}
-.vip-gate-desc {
-  font-size: .6rem; color: var(--gris); text-align: center;
-  line-height: 1.65; margin-bottom: 1.3rem; letter-spacing: .04em;
-}
-.vip-field { margin-bottom: .9rem; }
-.vip-field label {
-  display: block; font-size: .54rem; letter-spacing: .2em;
-  color: rgba(201,168,76,.65); text-transform: uppercase;
-  font-weight: 700; margin-bottom: .35rem;
-}
-.vip-input {
-  width: 100%; background: rgba(0,0,0,.52);
-  border: 1px solid rgba(201,168,76,.2); border-radius: 10px;
-  color: var(--txt); padding: .68rem .95rem;
-  font-size: .8rem; font-family: 'Montserrat', sans-serif;
-  outline: none; transition: border-color .25s, box-shadow .25s;
-  -webkit-appearance: none;
-}
-.vip-input:focus {
-  border-color: rgba(201,168,76,.68);
-  box-shadow: 0 0 0 3px rgba(201,168,76,.1);
-}
-.vip-input::placeholder { color: rgba(154,142,114,.45); }
-.vip-photo-zone {
-  border: 2px dashed rgba(201,168,76,.28); border-radius: 12px;
-  padding: 1rem; text-align: center; cursor: pointer;
-  transition: all .22s; -webkit-tap-highlight-color: transparent;
-}
-.vip-photo-zone:hover { border-color: var(--or); background: rgba(201,168,76,.05); }
-.vip-photo-zone input { display: none; }
-.vip-photo-preview {
-  width: 58px; height: 58px; border-radius: 50%;
-  object-fit: cover; border: 2px solid var(--or);
-  display: none; margin: 0 auto .4rem;
-}
-.vip-photo-txt { font-size: .62rem; color: var(--gris); line-height: 1.4; }
-.vip-photo-txt strong { color: var(--or-l); }
-.vip-remember-row {
-  display: flex; align-items: flex-start; gap: .65rem;
-  background: rgba(201,168,76,.06); border: 1px solid rgba(201,168,76,.2);
-  border-radius: 10px; padding: .75rem; margin: .9rem 0;
-  cursor: pointer; -webkit-tap-highlight-color: transparent;
-}
-.vip-remember-row input[type=checkbox] {
-  width: 17px; height: 17px; accent-color: var(--or);
-  flex-shrink: 0; margin-top: 1px; cursor: pointer;
-}
-.vip-remember-txt { font-size: .62rem; color: var(--txt); line-height: 1.5; }
-.vip-remember-txt strong { color: var(--or-l); }
-.btn-vip-main {
-  width: 100%; padding: .9rem;
-  background: linear-gradient(135deg, var(--or-d), var(--or), var(--or-l));
-  background-size: 200% auto; color: #000;
-  border: none; border-radius: 12px;
-  font-family: 'Montserrat', sans-serif; font-size: .7rem;
-  font-weight: 700; letter-spacing: .2em; text-transform: uppercase;
-  cursor: pointer; -webkit-tap-highlight-color: transparent;
-  transition: background-position .4s, opacity .2s, transform .15s;
-  box-shadow: 0 4px 24px rgba(201,168,76,.28);
-}
-.btn-vip-main:hover { background-position: right center; }
-.btn-vip-main:active { opacity: .85; transform: scale(.98); }
-.btn-vip-main:disabled { opacity: .4; cursor: not-allowed; }
-.vip-status {
-  font-size: .66rem; padding: .65rem .9rem;
-  border-radius: 8px; margin-bottom: .85rem; display: none; line-height: 1.5;
-}
-.vip-status.ok   { background: rgba(39,174,96,.15); border: 1px solid rgba(39,174,96,.3); color: #6fcf97; display: block; }
-.vip-status.err  { background: rgba(192,57,43,.15); border: 1px solid rgba(192,57,43,.3); color: #eb5757; display: block; }
-.vip-status.load { background: rgba(201,168,76,.1); border: 1px solid var(--bord); color: var(--or); display: block; }
-.vip-gate-switch { text-align: center; margin-top: 1rem; font-size: .6rem; color: var(--gris); }
-.vip-gate-switch a { color: var(--or-l); cursor: pointer; font-weight: 700; border-bottom: 1px solid rgba(201,168,76,.3); }
-
-/* ── ESPACE VIP connecté ── */
-#vipSpace {
-  position: absolute; inset: 0; z-index: 2;
-  display: none; flex-direction: column; overflow: hidden;
-}
-
-/* Header VIP */
-.vip-hdr {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: .8rem 1rem;
-  background: rgba(6,4,1,.9);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(201,168,76,.22);
-  flex-shrink: 0;
-}
-.vip-hdr-left { display: flex; align-items: center; gap: .65rem; }
-.vip-avatar-img {
-  width: 34px; height: 34px; border-radius: 50%;
-  object-fit: cover; border: 2px solid var(--or); flex-shrink: 0;
-}
-.vip-hdr-name {
-  font-family: 'Cormorant Garamond', serif; font-size: .95rem; font-weight: 700;
-  background: linear-gradient(90deg, var(--or-d), var(--or-l));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-}
-.vip-tag {
-  font-size: .46rem; letter-spacing: .2em;
-  background: linear-gradient(135deg, var(--or-d), var(--or));
-  color: #000; border-radius: 50px; padding: .16rem .5rem; font-weight: 700;
-}
-.vip-hdr-right { display: flex; align-items: center; gap: .4rem; }
-.btn-vip-close {
-  background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.14);
-  border-radius: 50%; width: 36px; height: 36px; color: #fff;
-  font-size: 1rem; cursor: pointer; display: flex; align-items: center;
-  justify-content: center; -webkit-tap-highlight-color: transparent;
-  transition: background .2s, transform .2s;
-}
-.btn-vip-close:hover { transform: rotate(90deg); background: rgba(255,255,255,.15); }
-.btn-vip-logout {
-  background: rgba(192,57,43,.14); border: 1px solid rgba(192,57,43,.28);
-  color: #eb5757; border-radius: 8px; padding: .28rem .62rem;
-  font-size: .55rem; font-weight: 700; cursor: pointer;
-  font-family: 'Montserrat', sans-serif; letter-spacing: .08em;
-  -webkit-tap-highlight-color: transparent;
-}
-
-/* Corps scrollable */
-.vip-body {
-  flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch;
-}
-
-/* Hero */
-.vip-hero-inner { text-align: center; padding: 1.8rem 1.2rem 1rem; }
-.vip-crown { font-size: 2.4rem; margin-bottom: .4rem;
-  filter: drop-shadow(0 0 18px rgba(201,168,76,.55));
-  animation: crownPop 2s ease-in-out infinite; }
-@keyframes crownPop { 0%,100%{transform:scale(1);} 50%{transform:scale(1.07);} }
-.vip-hero-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(1.6rem, 7vw, 2.8rem); font-weight: 700;
-  background: linear-gradient(90deg,#8B6914 0%,#C9A84C 20%,#F5E27A 40%,#FFFBE6 50%,#F5E27A 60%,#C9A84C 80%,#8B6914 100%);
-  background-size: 250% auto;
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-  animation: goldShimmer 3.5s linear infinite;
-  letter-spacing: .16em; line-height: 1.12;
-}
-.vip-hero-sub {
-  font-size: .88rem; color: rgba(240,235,216,.55);
-  letter-spacing: .1em; margin-top: .5rem;
-  font-style: italic; font-family: 'Cormorant Garamond', serif;
-}
-
-/* Privilèges */
-.vip-privs {
-  margin: 0 .9rem 1.2rem;
-  background: rgba(10,6,1,.72); border: 1px solid rgba(201,168,76,.25);
-  border-radius: 16px; padding: 1.2rem;
-  backdrop-filter: blur(14px);
-}
-.vip-privs-title {
-  font-family: 'Cormorant Garamond', serif; font-size: 1rem;
-  color: var(--or-l); font-weight: 700; letter-spacing: .08em; margin-bottom: .85rem;
-}
-.vip-priv-item {
-  display: flex; align-items: flex-start; gap: .65rem;
-  padding: .6rem 0; border-bottom: 1px solid rgba(201,168,76,.08);
-}
-.vip-priv-item:last-child { border-bottom: none; }
-.vip-priv-icon { font-size: 1.25rem; flex-shrink: 0; line-height: 1; }
-.vip-priv-text strong { display: block; font-size: .68rem; color: var(--or-pale, #F5E6B8); font-weight: 700; margin-bottom: .12rem; }
-.vip-priv-text span { font-size: .58rem; color: var(--gris); line-height: 1.5; }
-
-/* Compte à rebours */
-.vip-cd-wrap {
-  margin: 0 .9rem 1.2rem;
-  background: linear-gradient(135deg, rgba(139,105,20,.2), rgba(10,6,1,.78));
-  border: 1px solid rgba(201,168,76,.42); border-radius: 16px;
-  padding: 1.2rem; text-align: center;
-  backdrop-filter: blur(14px); position: relative; overflow: hidden;
-}
-.vip-cd-wrap::before {
-  content: ''; position: absolute; inset: 0; pointer-events: none;
-  background: linear-gradient(45deg, transparent 40%, rgba(201,168,76,.04) 50%, transparent 60%);
-  background-size: 300% 300%; animation: cdSheen 4s linear infinite;
-}
-@keyframes cdSheen { 0%{background-position:200% 200%} 100%{background-position:-100% -100%} }
-.vip-cd-label {
-  font-size: .52rem; letter-spacing: .26em; color: rgba(201,168,76,.65);
-  text-transform: uppercase; font-weight: 700; margin-bottom: .55rem;
-}
-.vip-cd-row { display: flex; justify-content: center; gap: .7rem; margin-bottom: .55rem; }
-.vip-cd-unit { text-align: center; }
-.vip-cd-num {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(2rem, 7vw, 2.8rem); font-weight: 700;
-  background: linear-gradient(180deg, #F5E27A, #C9A84C);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-  line-height: 1; min-width: 46px; display: block;
-  filter: drop-shadow(0 0 8px rgba(201,168,76,.35));
-}
-.vip-cd-sep { font-family: 'Cormorant Garamond', serif; font-size: 2rem; color: rgba(201,168,76,.35); line-height: 1.1; }
-.vip-cd-lbl { font-size: .44rem; letter-spacing: .18em; color: var(--gris); text-transform: uppercase; font-weight: 700; margin-top: .18rem; }
-.vip-cd-warn {
-  font-size: .58rem; color: rgba(240,235,216,.55); line-height: 1.55;
-}
-.vip-cd-warn strong { color: #eb5757; }
-.vip-cd-alert {
-  background: rgba(192,57,43,.15); border: 1px solid rgba(192,57,43,.32);
-  border-radius: 8px; padding: .55rem .85rem; font-size: .6rem; color: #eb5757;
-  margin-top: .65rem; display: none; font-weight: 600;
-}
-.vip-cd-alert.show { display: block; }
-
-/* Grille produits VIP */
-.vip-prods-hdr {
-  padding: .4rem .9rem .25rem;
-  display: flex; align-items: center; gap: .45rem;
-}
-.vip-prods-title {
-  font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 700;
-  background: linear-gradient(90deg, var(--or-d), var(--or-l));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-  flex: 1;
-}
-.vip-prod-count-badge {
-  font-size: .5rem; background: rgba(201,168,76,.12); border: 1px solid var(--bord);
-  border-radius: 50px; color: var(--or); padding: .13rem .5rem; font-weight: 700;
-}
-.vip-grid {
-  display: grid; grid-template-columns: repeat(2,1fr);
-  gap: .85rem; padding: .4rem .9rem calc(var(--safe-bottom) + 1.5rem);
-}
-@media(min-width:600px){ .vip-grid{ grid-template-columns:repeat(3,1fr); } }
-
-/* Carte produit VIP */
-.vip-prod-card {
-  background: rgba(12,7,2,.8);
-  border: 1px solid rgba(201,168,76,.32);
-  border-radius: 16px; overflow: hidden; cursor: pointer;
-  transition: transform .28s, box-shadow .28s;
-  animation: cardPop .45s ease-out both; position: relative;
-  -webkit-tap-highlight-color: transparent;
-}
-.vip-prod-card:hover { transform: translateY(-5px); box-shadow: 0 16px 48px rgba(201,168,76,.2); }
-.vip-prod-card:active { transform: scale(.97); }
-.vip-prod-card::after {
-  content: ''; position: absolute; inset: 0; border-radius: 16px; pointer-events: none;
-  animation: vipCardHalo 2.5s ease-in-out infinite;
-}
-@keyframes vipCardHalo {
-  0%,100% { box-shadow: 0 0 12px 2px rgba(201,168,76,.18), inset 0 0 8px rgba(201,168,76,.07); }
-  50%      { box-shadow: 0 0 28px 5px rgba(201,168,76,.35), inset 0 0 16px rgba(201,168,76,.14); }
-}
-.vip-prod-img-zone {
-  width: 100%; height: 200px; overflow: hidden;
-  background: linear-gradient(145deg, rgba(201,168,76,.1), rgba(8,4,1,.85));
-  display: flex; align-items: center; justify-content: center; position: relative;
-}
-.vip-unique-badge {
-  position: absolute; top: 8px; left: 8px; z-index: 4;
-  background: linear-gradient(135deg, var(--or-d), var(--or));
-  color: #000; font-size: .44rem; font-weight: 700;
-  letter-spacing: .14em; text-transform: uppercase;
-  border-radius: 50px; padding: .18rem .62rem;
-}
-.vip-prod-img-el {
-  width: 100%; height: 100%; object-fit: contain; padding: 6px;
-  transition: transform .4s;
-}
-.vip-prod-card:hover .vip-prod-img-el { transform: scale(1.06); }
-.vip-prod-body { padding: .65rem .65rem .8rem; }
-.vip-prod-name {
-  font-family: 'Cormorant Garamond', serif; font-size: .92rem;
-  font-weight: 700; color: #fff; line-height: 1.2; margin-bottom: .16rem;
-}
-.vip-prod-price {
-  font-family: 'Cormorant Garamond', serif; font-size: .95rem; font-weight: 700;
-  background: linear-gradient(90deg, var(--or-d), var(--or-l));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-  margin-bottom: .5rem;
-}
-.btn-vip-order {
-  display: flex; align-items: center; justify-content: center; gap: .3rem;
-  width: 100%; background: linear-gradient(135deg, #0f7a5e, #25D366);
-  border: none; border-radius: 8px; color: #fff; font-size: .56rem;
-  font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
-  font-family: 'Montserrat', sans-serif; padding: .5rem .4rem;
-  cursor: pointer; -webkit-tap-highlight-color: transparent; transition: opacity .2s;
-}
-.btn-vip-order:active { opacity: .8; }
-
-/* Empty / loader VIP */
-.vip-empty-state {
-  grid-column: 1/-1; text-align: center; padding: 2.5rem 1rem;
-}
-.vip-empty-state h3 {
-  font-family: 'Cormorant Garamond', serif; font-size: 1.2rem;
-  color: var(--or-l); margin-bottom: .4rem;
-}
-.vip-empty-state p { font-size: .68rem; color: var(--gris); line-height: 1.65; }
-
-
-/* ── Catégories VIP ── */
-.vip-cats-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.05rem; font-weight: 700; color: var(--or-l);
-  padding: .5rem .9rem .3rem; letter-spacing: .08em;
-}
-.vip-cats-grid {
-  display: grid; grid-template-columns: repeat(2, 1fr);
-  gap: .7rem; padding: .3rem .9rem 1.2rem;
-}
-.vip-cat-card {
-  background: rgba(14,9,2,.8);
-  border: 1px solid rgba(201,168,76,.3);
-  border-radius: 14px; padding: 1.1rem .7rem .9rem;
-  display: flex; flex-direction: column; align-items: center; gap: .45rem;
-  cursor: pointer; -webkit-tap-highlight-color: transparent;
-  transition: transform .22s, box-shadow .22s, border-color .22s;
-  position: relative; overflow: hidden;
-}
-.vip-cat-card::before {
-  content: ''; position: absolute; inset: 0;
-  background: linear-gradient(135deg, rgba(201,168,76,.1), transparent 60%);
-  opacity: 0; transition: opacity .22s;
-}
-.vip-cat-card:hover { transform: translateY(-4px); box-shadow: 0 12px 36px rgba(201,168,76,.2); border-color: var(--or); }
-.vip-cat-card:hover::before { opacity: 1; }
-.vip-cat-card:active { transform: scale(.95); }
-.vip-cat-icon { font-size: 1.8rem; filter: drop-shadow(0 0 8px rgba(201,168,76,.5)); }
-.vip-cat-label {
-  font-size: .58rem; letter-spacing: .14em; text-transform: uppercase;
-  color: var(--or-l); font-weight: 700; text-align: center; line-height: 1.3;
-  text-shadow: 0 1px 4px rgba(0,0,0,.8);
-}
-.vip-cat-count {
-  font-size: .5rem; color: var(--gris); letter-spacing: .08em; font-weight: 600;
-}
-
-/* ── Espace catégorie VIP (vue produits) ── */
-#vipCatView {
-  display: none; flex-direction: column; position: absolute; inset: 0; z-index: 3;
-  background: linear-gradient(160deg, #060402 0%, #0E0802 40%, #060402 100%);
-  overflow: hidden;
-}
-#vipCatView.open { display: flex; }
-
-.vip-cat-hdr {
-  display: flex; align-items: center; gap: .75rem;
-  padding: .85rem 1rem .5rem;
-  background: rgba(6,4,1,.88);
-  backdrop-filter: blur(18px);
-  border-bottom: 1px solid rgba(201,168,76,.2);
-  flex-shrink: 0;
-}
-.btn-vip-back {
-  background: rgba(201,168,76,.14); border: 1px solid var(--bord);
-  border-radius: 50%; width: 36px; height: 36px; flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer; color: var(--or-l); font-size: 1rem; font-weight: 700;
-  -webkit-tap-highlight-color: transparent;
-}
-.vip-cat-hdr-title {
-  font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 700;
-  background: linear-gradient(90deg, var(--or-d), var(--or-l));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-  flex: 1;
-}
-.vip-cat-hdr-icon { font-size: 1.3rem; }
-
-/* Tabs Homme / Femme dans catégorie VIP */
-.vip-gender-tabs {
-  display: flex; gap: .45rem; padding: .6rem .9rem .4rem; flex-shrink: 0;
-}
-.vip-g-tab {
-  flex: 1; text-align: center; padding: .4rem 0; border-radius: 50px;
-  font-size: .6rem; letter-spacing: .14em; text-transform: uppercase;
-  border: 1px solid rgba(201,168,76,.35); color: rgba(212,201,176,.7);
-  cursor: pointer; background: rgba(0,0,0,.5); font-family: 'Montserrat', sans-serif;
-  font-weight: 600; transition: all .2s; -webkit-tap-highlight-color: transparent;
-}
-.vip-g-tab.active {
-  background: rgba(201,168,76,.2); border-color: var(--or-l);
-  color: var(--or-l); font-weight: 700;
-}
-.vip-cat-body { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
 
 </style>
 </head>
@@ -1080,11 +599,6 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--txt);m
     <div class="cat-card" onclick="openCat('Bagues')">          <div class="cat-icon">💍</div><div class="cat-label">Bagues</div>       <div class="cat-count" id="cnt-Bagues">—</div></div>
     <div class="cat-card" onclick="openCat('Autres')">          <div class="cat-icon">✨</div><div class="cat-label">Autres</div>       <div class="cat-count" id="cnt-Autres">—</div></div>
     <div class="cat-card offre-card" onclick="openOffres()">    <div class="cat-icon">🎁</div><div class="cat-label" style="color:#FFD700;">Offres</div><div class="cat-count" style="color:var(--or-l);">Promos &amp; Cadeaux</div></div>
-    <div class="cat-card vip-card" onclick="openVIPModal()" style="grid-column:1/-1;">
-      <div class="cat-icon">👑</div>
-      <div class="cat-label" style="color:#F5E27A;font-size:.65rem;">Espace VIP Exclusif</div>
-      <div class="cat-count" style="color:var(--or-l);">Accès sur invitation</div>
-    </div>
   </div>
 </div>
 
@@ -1156,202 +670,6 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--txt);m
   </div>
 </div>
 
-
-<!-- ═══════════════════════════════════════════════════════
-     MODAL ESPACE VIP — intégré dans le site
-     ═══════════════════════════════════════════════════════ -->
-<div id="vipModal">
-
-  <!-- ── ÉCRAN D'ACCÈS ── -->
-  <div id="vipGate">
-    <div class="vip-gate-logo">KHALED WATCH</div>
-    <div class="vip-gate-sub">Espace VIP Exclusif</div>
-    <div class="vip-gold-line"></div>
-
-    <!-- Carte Inscription -->
-    <div class="vip-gate-card" id="vipRegCard">
-      <div class="vip-gate-title">👑 Rejoindre l'Élite</div>
-      <div class="vip-gate-desc">Accès sur invitation personnelle.<br>Entrez le code reçu par WhatsApp.</div>
-      <div class="vip-status" id="vipRegStatus"></div>
-
-      <div class="vip-field">
-        <label>Photo de Profil</label>
-        <div class="vip-photo-zone" onclick="document.getElementById('vipPhotoInput').click()">
-          <input type="file" id="vipPhotoInput" accept="image/*" onchange="vipHandlePhoto(this)">
-          <img id="vipPhotoPreview" class="vip-photo-preview" src="" alt="">
-          <div class="vip-photo-txt" id="vipPhotoTxt"><strong>📷 Appuyer pour choisir</strong><br>JPG · PNG · max 2 Mo</div>
-        </div>
-      </div>
-      <div class="vip-field">
-        <label>Nom Complet *</label>
-        <input type="text" class="vip-input" id="vipRegNom" placeholder="Prénom Nom" autocomplete="name">
-      </div>
-      <div class="vip-field">
-        <label>Adresse Gmail *</label>
-        <input type="email" class="vip-input" id="vipRegEmail" placeholder="votre@gmail.com" inputmode="email">
-      </div>
-      <div class="vip-field">
-        <label>Mot de Passe *</label>
-        <input type="password" class="vip-input" id="vipRegPwd" placeholder="Min. 6 caractères">
-      </div>
-      <div class="vip-field">
-        <label>Code VIP Unique *</label>
-        <input type="text" class="vip-input" id="vipRegCode"
-               placeholder="Code reçu par WhatsApp"
-               style="letter-spacing:.12em;font-weight:700;text-transform:uppercase;"
-               oninput="this.value=this.value.toUpperCase()">
-      </div>
-      <div class="vip-remember-row" onclick="vipToggleRemember()">
-        <input type="checkbox" id="vipRemember">
-        <div class="vip-remember-txt">
-          <strong>✓ Se souvenir de moi — Obligatoire</strong><br>
-          Le code VIP sera détruit après usage pour protéger votre accès exclusif.
-        </div>
-      </div>
-      <button class="btn-vip-main" id="btnVipRegister" onclick="vipRegister()">✦ Activer mon accès VIP</button>
-      <div class="vip-gate-switch">Déjà membre ? <a onclick="vipSwitchToLogin()">Se connecter</a></div>
-    </div>
-
-    <!-- Carte Connexion -->
-    <div class="vip-gate-card" id="vipLoginCard" style="display:none;">
-      <div class="vip-gate-title">🔐 Connexion VIP</div>
-      <div class="vip-gate-desc">Bienvenue dans votre espace d'exception.</div>
-      <div class="vip-status" id="vipLoginStatus"></div>
-      <div class="vip-field">
-        <label>Adresse Gmail</label>
-        <input type="email" class="vip-input" id="vipLoginEmail" placeholder="votre@gmail.com" inputmode="email">
-      </div>
-      <div class="vip-field">
-        <label>Mot de Passe</label>
-        <input type="password" class="vip-input" id="vipLoginPwd" placeholder="Votre mot de passe">
-      </div>
-      <button class="btn-vip-main" id="btnVipLogin" onclick="vipLogin()">→ Entrer dans l'Espace VIP</button>
-      <div class="vip-gate-switch">Pas encore membre ? <a onclick="vipSwitchToRegister()">S'inscrire</a></div>
-    </div>
-
-    <!-- Bouton fermer gate -->
-    <div style="margin-top:1rem;text-align:center;">
-      <button onclick="closeVIPModal()" style="background:none;border:none;color:var(--gris);font-size:.6rem;cursor:pointer;letter-spacing:.1em;text-transform:uppercase;font-family:'Montserrat',sans-serif;padding:.4rem .8rem;">✕ Fermer</button>
-    </div>
-  </div>
-
-  <!-- ── ESPACE VIP CONNECTÉ ── -->
-  <div id="vipSpace">
-    <div class="vip-hdr">
-      <div class="vip-hdr-left">
-        <img id="vipAvatarImg" class="vip-avatar-img" src="" alt="VIP">
-        <div>
-          <div class="vip-hdr-name" id="vipHdrName">—</div>
-          <div class="vip-tag">✦ VIP</div>
-        </div>
-      </div>
-      <div class="vip-hdr-right">
-        <button class="btn-vip-logout" onclick="vipLogout()">Déco.</button>
-        <button class="btn-vip-close" onclick="closeVIPModal()">✕</button>
-      </div>
-    </div>
-
-    <div class="vip-body">
-      <!-- Hero -->
-      <div class="vip-hero-inner">
-        <div class="vip-crown">👑</div>
-        <div class="vip-hero-title">KHALED-WATCH<br>ESPACE VIP</div>
-        <div class="vip-hero-sub">Collection exclusive &amp; ultra-limitée</div>
-      </div>
-
-      <!-- Privilèges -->
-      <div class="vip-privs">
-        <div class="vip-privs-title">💎 Vos Privilèges Exclusifs</div>
-        <div class="vip-priv-item">
-          <div class="vip-priv-icon">🚀</div>
-          <div class="vip-priv-text">
-            <strong>Livraison Gratuite &amp; Prioritaire</strong>
-            <span>Toutes vos commandes livrées en priorité sans frais, partout au Bénin.</span>
-          </div>
-        </div>
-        <div class="vip-priv-item">
-          <div class="vip-priv-icon">🎬</div>
-          <div class="vip-priv-text">
-            <strong>Abonnement Premium Offert</strong>
-            <span>À chaque montre achetée, choisissez Netflix, Spotify ou Apple Music offert 1 mois.</span>
-          </div>
-        </div>
-        <div class="vip-priv-item">
-          <div class="vip-priv-icon">🔒</div>
-          <div class="vip-priv-text">
-            <strong>Collections Ultra-Limitées</strong>
-            <span>Pièces uniques invisibles sur le catalogue standard, réservées à l'élite VIP.</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Compte à rebours -->
-      <div class="vip-cd-wrap">
-        <div class="vip-cd-label">⏳ Renouveler votre statut VIP avant</div>
-        <div class="vip-cd-row">
-          <div class="vip-cd-unit"><span class="vip-cd-num" id="vipCdDays">07</span><div class="vip-cd-lbl">Jours</div></div>
-          <span class="vip-cd-sep">:</span>
-          <div class="vip-cd-unit"><span class="vip-cd-num" id="vipCdHours">00</span><div class="vip-cd-lbl">Heures</div></div>
-          <span class="vip-cd-sep">:</span>
-          <div class="vip-cd-unit"><span class="vip-cd-num" id="vipCdMins">00</span><div class="vip-cd-lbl">Min</div></div>
-          <span class="vip-cd-sep">:</span>
-          <div class="vip-cd-unit"><span class="vip-cd-num" id="vipCdSecs">00</span><div class="vip-cd-lbl">Sec</div></div>
-        </div>
-        <div class="vip-cd-warn">Achetez au moins <strong>1 produit VIP par semaine</strong> pour conserver vos privilèges.</div>
-        <div class="vip-cd-alert" id="vipCdAlert">⚠️ Votre statut VIP expire bientôt ! Passez commande maintenant.</div>
-      </div>
-
-      <!-- Catégories VIP -->
-      <div class="vip-cats-title">✦ Collections Exclusives</div>
-      <div class="vip-cats-grid">
-        <div class="vip-cat-card" onclick="openVIPCat('Montres Luxueuses','💎')">
-          <div class="vip-cat-icon">💎</div>
-          <div class="vip-cat-label">Montres Luxueuses</div>
-          <div class="vip-cat-count" id="vipCnt-Montres Luxueuses">— articles</div>
-        </div>
-        <div class="vip-cat-card" onclick="openVIPCat('Chaînes Luxueuses','⛓')">
-          <div class="vip-cat-icon">⛓</div>
-          <div class="vip-cat-label">Chaînes Luxueuses</div>
-          <div class="vip-cat-count" id="vipCnt-Chaînes Luxueuses">— articles</div>
-        </div>
-        <div class="vip-cat-card" onclick="openVIPCat('Bracelets Luxueux','💫')">
-          <div class="vip-cat-icon">💫</div>
-          <div class="vip-cat-label">Bracelets Luxueux</div>
-          <div class="vip-cat-count" id="vipCnt-Bracelets Luxueux">— articles</div>
-        </div>
-        <div class="vip-cat-card" onclick="openVIPCat('Colliers Luxueux','📿')">
-          <div class="vip-cat-icon">📿</div>
-          <div class="vip-cat-label">Colliers Luxueux</div>
-          <div class="vip-cat-count" id="vipCnt-Colliers Luxueux">— articles</div>
-        </div>
-        <div class="vip-cat-card" onclick="openVIPCat('Autres','✨')" style="grid-column:1/-1;">
-          <div class="vip-cat-icon">✨</div>
-          <div class="vip-cat-label">Autres Pièces Uniques</div>
-          <div class="vip-cat-count" id="vipCnt-Autres">— articles</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ── VUE CATÉGORIE VIP ── -->
-  <div id="vipCatView">
-    <div class="vip-cat-hdr">
-      <div class="btn-vip-back" onclick="closeVIPCat()">←</div>
-      <span class="vip-cat-hdr-icon" id="vipCatIcon">💎</span>
-      <div class="vip-cat-hdr-title" id="vipCatTitle">—</div>
-    </div>
-    <div class="vip-gender-tabs">
-      <button class="vip-g-tab active" data-g="tous"  onclick="vipSetGender(this)">Tous</button>
-      <button class="vip-g-tab"        data-g="Homme" onclick="vipSetGender(this)">Homme</button>
-      <button class="vip-g-tab"        data-g="Femme" onclick="vipSetGender(this)">Femme</button>
-    </div>
-    <div class="vip-cat-body">
-      <div class="vip-grid" id="vipCatGrid"></div>
-    </div>
-  </div>
-
-</div><!-- /vipModal -->
-
 <!-- BOTTOM NAV -->
 <nav class="bottom-nav">
   <button class="nav-item active" id="nav-home" onclick="goHome()"><span class="nav-icon">🏠</span>Accueil</button>
@@ -1359,7 +677,6 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--txt);m
   <button class="nav-item" onclick="openCat('Chaînes')"><span class="nav-icon">⛓</span>Chaînes</button>
   <button class="nav-item" onclick="openCat('Bracelets')"><span class="nav-icon">💫</span>Bijoux</button>
   <button class="nav-item nav-offre" onclick="openOffres()"><span class="nav-icon">🎁</span>Offres<div class="pulse-dot"></div></button>
-  <button class="nav-item" onclick="openVIPModal()" style="color:var(--or-l);"><span class="nav-icon">👑</span>VIP</button>
 </nav>
 
 <a class="wa-float" href="https://wa.me/2290169515730" target="_blank" rel="noopener">
@@ -1374,13 +691,6 @@ const WA = '2290169515730';
 /* ── Fonds d'écran rotatifs — mobile uniquement, toutes les 10h ── */
 const DEFAULT_BG = 'https://images.unsplash.com/photo-1548169874-53e85f753f1e?w=1600&q=85';
 
-/* 6 fonds ultra réalistes adaptés au mode sombre :
-   1. Montre de luxe sur fond sombre (fond actuel du site)
-   2. Montres de luxe en vitrine la nuit
-   3. Bijoux dorés sur fond noir velouté
-   4. Atelier horloger sombre — précision suisse
-   5. Collection montres prestige fond anthracite
-   6. Reflets dorés sur cuir noir — coffret luxe */
 const SLIDESHOW_BGS = [
   'https://images.unsplash.com/photo-1548169874-53e85f753f1e?w=1600&q=90',
   'https://images.unsplash.com/photo-1587836374828-4dbafa94cf0e?w=1600&q=90',
@@ -1390,7 +700,7 @@ const SLIDESHOW_BGS = [
   'https://images.unsplash.com/photo-1606744837616-56c9a5c6a6eb?w=1600&q=90'
 ];
 
-const SLIDESHOW_INTERVAL_MS = 10 * 60 * 60 * 1000; /* 10 heures */
+const SLIDESHOW_INTERVAL_MS = 10 * 60 * 60 * 1000;
 const SLIDESHOW_KEY          = 'kw-slide-idx';
 const SLIDESHOW_TIME_KEY     = 'kw-slide-time';
 const CAT_ICONS = {'Montres':'⌚','Montres Luxueuses':'💎','Chaînes':'⛓','Bracelets':'💫','Colliers':'📿','Bagues':'💍','Autres':'✨'};
@@ -1405,31 +715,25 @@ let selectedStream= '';
 /* ============================================================
    GYROSCOPE — Effet parallaxe sur les images des cartes
    ============================================================ */
-const GYRO_MAX = 18;   /* pixels de déplacement max */
-let gyroX = 0;         /* valeur lissée axe X (gamma = gauche/droite) */
-let gyroY = 0;         /* valeur lissée axe Y (beta  = avant/arrière) */
+const GYRO_MAX = 18;
+let gyroX = 0;
+let gyroY = 0;
 let gyroActive = false;
 let gyroRafId  = null;
 let gyroPermAsked = false;
 
-/* Lissage exponentiel (inertie naturelle) */
 const GYRO_SMOOTH = 0.12;
 
-/* Valeurs brutes reçues par l'événement */
 let rawGX = 0;
 let rawGY = 0;
 
 function onDeviceOrientation(e) {
-  /* gamma : inclinaison gauche/droite  (-90 à +90)
-     beta  : inclinaison avant/arrière  (-180 à +180) */
   const gamma = e.gamma || 0;
   const beta  = e.beta  || 0;
 
-  /* On clamp à ±30° pour éviter les valeurs extrêmes */
   const gClamped = Math.max(-30, Math.min(30, gamma));
-  const bClamped = Math.max(-30, Math.min(30, beta - 45)); /* -45 car le téléphone est souvent penché vers l'avant */
+  const bClamped = Math.max(-30, Math.min(30, beta - 45));
 
-  /* Normalise en pixels */
   rawGX = (gClamped / 30) * GYRO_MAX;
   rawGY = (bClamped / 30) * GYRO_MAX;
 
@@ -1443,14 +747,10 @@ function onDeviceOrientation(e) {
 function startGyroLoop() {
   if (gyroRafId) return;
   function loop() {
-    /* Lissage exponentiel */
     gyroX += (rawGX - gyroX) * GYRO_SMOOTH;
     gyroY += (rawGY - gyroY) * GYRO_SMOOTH;
 
-    /* Applique à TOUTES les images de la grille courante */
     applyGyroToImages(gyroX, gyroY);
-
-    /* Applique aussi à l'image ouverte dans le modal */
     applyGyroToModal(gyroX, gyroY);
 
     gyroRafId = requestAnimationFrame(loop);
@@ -1459,15 +759,12 @@ function startGyroLoop() {
 }
 
 function applyGyroToImages(gx, gy) {
-  /* On utilise CSS custom properties sur chaque image.
-     La transform est définie dans le CSS : translate(--gx px, --gy px) */
   document.querySelectorAll('.prod-img').forEach(img => {
     img.style.transform = `translate(${gx.toFixed(2)}px, ${gy.toFixed(2)}px)`;
   });
 }
 
 function applyGyroToModal(gx, gy) {
-  /* Dans le modal, l'image active bouge aussi — avec plus d'amplitude */
   const factor = 1.6;
   document.querySelectorAll('.modal-img-wrap img').forEach(img => {
     img.style.transform = `translate(${(gx * factor).toFixed(2)}px, ${(gy * factor).toFixed(2)}px)`;
@@ -1480,13 +777,10 @@ function showGyroBadge() {
   setTimeout(() => badge.classList.remove('show'), 2800);
 }
 
-/* Demande de permission (iOS 13+) ou écoute directe (Android) */
 function initGyroscope() {
-  if (!window.DeviceOrientationEvent) return; /* Pas supporté */
+  if (!window.DeviceOrientationEvent) return;
 
   if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-    /* iOS 13+ — besoin d'un geste utilisateur */
-    /* On écoute le premier toucher */
     document.addEventListener('touchstart', function askPermission() {
       if (gyroPermAsked) return;
       gyroPermAsked = true;
@@ -1499,7 +793,6 @@ function initGyroscope() {
         .catch(() => {});
     }, { once: false, passive: true });
   } else {
-    /* Android et desktop — écoute directe */
     window.addEventListener('deviceorientation', onDeviceOrientation, true);
   }
 }
@@ -1513,58 +806,45 @@ function initDesign() {
   document.documentElement.style.setProperty('--card-glow-color', glowColor);
   document.documentElement.style.setProperty('--glow-intensity',  glowInt);
 
-  /* ── Fond vidéo (mobile uniquement) ── */
   initVideoBg();
-
-  /* ── Diaporama fond (mobile) ou image fixe (PC) ── */
   initBgSlideshow();
 }
 
-/* ── Diaporama de fonds — mobile uniquement ── */
 function initBgSlideshow() {
   var isMobile = window.innerWidth <= 1024;
 
   if (!isMobile) {
-    /* PC : fond fixe admin ou DEFAULT_BG */
     var fixedBg = localStorage.getItem('kw-client-bg') || DEFAULT_BG;
     setBgImage(fixedBg);
     return;
   }
 
-  /* Mobile : diaporama toutes les 10h */
   var now        = Date.now();
   var lastTime   = parseInt(localStorage.getItem(SLIDESHOW_TIME_KEY) || '0', 10);
   var savedIdx   = parseInt(localStorage.getItem(SLIDESHOW_KEY) || '0', 10);
 
-  /* Vérifier si l'admin a défini un fond personnalisé via admin */
   var adminBg = localStorage.getItem('kw-client-bg') || '';
 
   var elapsed = now - lastTime;
 
-  /* Calculer l'index actuel basé sur le temps écoulé depuis le dernier changement */
   if (elapsed >= SLIDESHOW_INTERVAL_MS || lastTime === 0) {
-    /* Temps écoulé — passer à l'image suivante */
     var newIdx = (savedIdx + Math.floor(elapsed / SLIDESHOW_INTERVAL_MS)) % SLIDESHOW_BGS.length;
     localStorage.setItem(SLIDESHOW_KEY, newIdx);
     localStorage.setItem(SLIDESHOW_TIME_KEY, now - (elapsed % SLIDESHOW_INTERVAL_MS));
     savedIdx = newIdx;
   }
 
-  /* Appliquer le fond actuel */
   var currentBg = adminBg || SLIDESHOW_BGS[savedIdx];
   setBgImage(currentBg);
 
-  /* Précharger la prochaine image */
   var nextIdx = (savedIdx + 1) % SLIDESHOW_BGS.length;
   var preload = new Image();
   preload.src = SLIDESHOW_BGS[nextIdx];
 
-  /* Timer pour le prochain changement */
   var timeUntilNext = SLIDESHOW_INTERVAL_MS - ((now - parseInt(localStorage.getItem(SLIDESHOW_TIME_KEY), 10)) % SLIDESHOW_INTERVAL_MS);
   if (timeUntilNext < 1000) timeUntilNext = SLIDESHOW_INTERVAL_MS;
 
   setTimeout(function slideTick() {
-    /* Ne changer que si pas de vidéo active et sur mobile */
     if (document.body.classList.contains('video-bg-active')) {
       setTimeout(slideTick, SLIDESHOW_INTERVAL_MS);
       return;
@@ -1577,10 +857,8 @@ function initBgSlideshow() {
     localStorage.setItem(SLIDESHOW_KEY, nxtIdx);
     localStorage.setItem(SLIDESHOW_TIME_KEY, Date.now());
 
-    /* Transition douce */
     fadeToBg(nextBg);
 
-    /* Précharger la suivante */
     var pr = new Image();
     pr.src = SLIDESHOW_BGS[(nxtIdx + 1) % SLIDESHOW_BGS.length];
 
@@ -1596,7 +874,6 @@ function setBgImage(url) {
 function fadeToBg(url) {
   var layer = document.getElementById('bgLayer');
   if (!layer) return;
-  /* Créer un layer temporaire pour la transition */
   layer.style.transition = 'opacity .8s ease';
   layer.style.opacity    = '0';
   setTimeout(function() {
@@ -1606,7 +883,6 @@ function fadeToBg(url) {
 }
 
 function initVideoBg() {
-  /* Ne s'applique que sur mobile (détection par largeur) */
   if (window.innerWidth > 1024) return;
 
   const videoSrc = localStorage.getItem('kw-client-video-bg') || '';
@@ -1614,7 +890,6 @@ function initVideoBg() {
   if (!videoEl) return;
 
   if (videoSrc) {
-    /* Charger la source si différente de l'actuelle */
     if (videoEl.src !== videoSrc && videoEl.getAttribute('data-src') !== videoSrc) {
       videoEl.setAttribute('data-src', videoSrc);
       videoEl.src = videoSrc;
@@ -1622,11 +897,9 @@ function initVideoBg() {
     }
     document.body.classList.add('video-bg-active');
 
-    /* S'assurer que la vidéo joue (autoplay peut être bloqué) */
     const playPromise = videoEl.play();
     if (playPromise !== undefined) {
       playPromise.catch(() => {
-        /* Autoplay bloqué → attendre interaction utilisateur */
         document.addEventListener('touchstart', function tryPlay() {
           videoEl.play().catch(() => {});
           document.removeEventListener('touchstart', tryPlay);
@@ -1634,7 +907,6 @@ function initVideoBg() {
       });
     }
   } else {
-    /* Aucune vidéo → utiliser le fond image */
     document.body.classList.remove('video-bg-active');
     videoEl.pause();
     videoEl.src = '';
@@ -1775,7 +1047,6 @@ function renderProducts() {
     </div>`;
   }).join('');
 
-  /* Ré-applique le gyro immédiatement aux nouvelles images */
   if (gyroActive) {
     applyGyroToImages(gyroX, gyroY);
   }
@@ -1890,7 +1161,6 @@ function buildAllSlides() {
   updateModalNav();
   initMouseDrag360();
 
-  /* Applique gyro aux images du modal si actif */
   if (gyroActive) applyGyroToModal(gyroX, gyroY);
 }
 
@@ -1973,12 +1243,6 @@ function ctaStream() { const s=selectedStream||'un abonnement streaming'; const 
 function ctaOffre(type) { const msg=`Bonjour Khaled Watch 👋\n\nJe souhaite profiter de l'offre : *${type}*\n\nMerci !`; window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`,'_blank'); }
 
 /* ============================================================
-   THÈME
-   ============================================================ */
-
-
-
-/* ============================================================
    UTILS
    ============================================================ */
 function h(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
@@ -2029,14 +1293,11 @@ let searchTimer  = null;
 
 function onSearchInput(val) {
   var q = val.trim();
-  /* Afficher/masquer le bouton effacer */
   var clearBtn = document.getElementById('searchClear');
   if (clearBtn) clearBtn.classList.toggle('visible', q.length > 0);
 
-  /* Si le champ est vidé, revenir à la page précédente sans délai */
   if (!q) {
     clearTimeout(searchTimer);
-    /* Revenir à la dernière page visitée (accueil par défaut) */
     if (lastPageBeforeSearch) {
       restoreLastPage();
     } else {
@@ -2048,23 +1309,20 @@ function onSearchInput(val) {
     return;
   }
 
-  /* Attendre 1 seconde d'inactivité avant de chercher */
   clearTimeout(searchTimer);
   searchTimer = setTimeout(function(){ runSearch(q); }, 1000);
 }
 
-/* Touche Entrée = lancer la recherche immédiatement */
 function onSearchKeydown(e) {
   if (e.key === 'Enter') {
     e.preventDefault();
     clearTimeout(searchTimer);
     var q = document.getElementById('searchInput').value.trim();
     if (q) runSearch(q);
-    e.target.blur(); /* ferme le clavier mobile */
+    e.target.blur();
   }
 }
 
-/* Mémorise la dernière page visitée avant la recherche */
 var lastPageBeforeSearch = null;
 
 function saveCurrentPage() {
@@ -2096,7 +1354,6 @@ function restoreLastPage() {
 function runSearch(q) {
   searchQuery = q;
   if (!q) { return; }
-  /* Sauvegarder la page courante avant d'afficher les résultats */
   saveCurrentPage();
 
   function normalize(s) {
@@ -2201,446 +1458,6 @@ function clearSearch() {
     window.scrollTo(0,0);
   }
   if (input) input.focus();
-}
-
-
-/* ============================================================
-   ESPACE VIP — Logique complète intégrée
-   ============================================================ */
-const VIP_SESSION_KEY = 'kw-vip-session';
-const VIP_CODES_KEY   = 'kw-vip-codes';
-const VIP_MEMBERS_KEY = 'kw-vip-members';
-const VIP_DURATION_MS = 7 * 24 * 60 * 60 * 1000;
-const FALLBACK_VIP    = 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=70';
-
-var vipPhotoData    = '';
-var vipCdInterval   = null;
-var vipCurrentMember = null;
-
-/* ── Helpers ── */
-function vipGet(key, def) {
-  try { return JSON.parse(localStorage.getItem(key)) || def; } catch { return def; }
-}
-function vipSet(key, val) {
-  try { localStorage.setItem(key, JSON.stringify(val)); } catch {}
-}
-
-/* ── Ouvrir / Fermer la modal VIP ── */
-function openVIPModal() {
-  document.getElementById('vipModal').classList.add('open');
-  document.body.style.overflow = 'hidden';
-  /* Auto-connexion si session sauvée */
-  var session = vipGet(VIP_SESSION_KEY, null);
-  if (session) {
-    var members = vipGet(VIP_MEMBERS_KEY, []);
-    var member  = members.find(function(m){ return m.id === session.memberId && !m.banned; });
-    if (member) { vipOpenSpace(session, member); return; }
-    localStorage.removeItem(VIP_SESSION_KEY);
-  }
-  /* Afficher le gate */
-  document.getElementById('vipGate').style.display  = 'flex';
-  document.getElementById('vipSpace').style.display = 'none';
-}
-
-function closeVIPModal() {
-  document.getElementById('vipModal').classList.remove('open');
-  document.body.style.overflow = '';
-  if (vipCdInterval) { clearInterval(vipCdInterval); vipCdInterval = null; }
-}
-
-/* Fermer avec Échap */
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape' && document.getElementById('vipModal').classList.contains('open')) {
-    closeVIPModal();
-  }
-});
-
-/* ── Switch Inscription / Connexion ── */
-function vipSwitchToLogin() {
-  document.getElementById('vipRegCard').style.display   = 'none';
-  document.getElementById('vipLoginCard').style.display = 'block';
-}
-function vipSwitchToRegister() {
-  document.getElementById('vipLoginCard').style.display = 'none';
-  document.getElementById('vipRegCard').style.display   = 'block';
-}
-
-/* ── Photo de profil ── */
-function vipHandlePhoto(input) {
-  var file = input.files[0];
-  if (!file) return;
-  if (file.size > 2 * 1024 * 1024) { alert('Image max 2 Mo.'); return; }
-  var reader = new FileReader();
-  reader.onload = function(e) {
-    vipPhotoData = e.target.result;
-    var prev = document.getElementById('vipPhotoPreview');
-    var txt  = document.getElementById('vipPhotoTxt');
-    prev.src = vipPhotoData; prev.style.display = 'block';
-    if (txt) txt.style.display = 'none';
-  };
-  reader.readAsDataURL(file);
-}
-
-function vipToggleRemember() {
-  var cb = document.getElementById('vipRemember');
-  cb.checked = !cb.checked;
-}
-
-/* ── Statuts ── */
-function vipShowStatus(id, type, msg) {
-  var el = document.getElementById(id);
-  if (!el) return;
-  el.className = 'vip-status ' + type;
-  el.textContent = msg;
-  if (type === 'ok') setTimeout(function(){ el.style.display = 'none'; }, 4000);
-}
-
-/* ── INSCRIPTION ── */
-function vipRegister() {
-  var nom      = (document.getElementById('vipRegNom').value   || '').trim();
-  var email    = (document.getElementById('vipRegEmail').value || '').trim().toLowerCase();
-  var pwd      = document.getElementById('vipRegPwd').value    || '';
-  var code     = (document.getElementById('vipRegCode').value  || '').trim().toUpperCase();
-  var remember = document.getElementById('vipRemember').checked;
-
-  if (!nom || !email || !pwd || !code) {
-    vipShowStatus('vipRegStatus', 'err', '⚠ Tous les champs sont obligatoires.');
-    return;
-  }
-  if (!email.includes('@') || !email.includes('.')) {
-    vipShowStatus('vipRegStatus', 'err', '⚠ Adresse Gmail invalide.');
-    return;
-  }
-  if (pwd.length < 6) {
-    vipShowStatus('vipRegStatus', 'err', '⚠ Mot de passe : minimum 6 caractères.');
-    return;
-  }
-  if (!remember) {
-    vipShowStatus('vipRegStatus', 'err', '⚠ Vous devez cocher "Se souvenir de moi" pour valider.');
-    return;
-  }
-
-  /* Vérifier le code VIP */
-  var codes   = vipGet(VIP_CODES_KEY, []);
-  var codeObj = codes.find(function(c){ return c.code === code && !c.used; });
-  if (!codeObj) {
-    vipShowStatus('vipRegStatus', 'err', '⛔ Code VIP invalide ou déjà utilisé. Contactez Khaled Watch.');
-    return;
-  }
-
-  /* Vérifier email non dupliqué */
-  var members = vipGet(VIP_MEMBERS_KEY, []);
-  if (members.find(function(m){ return m.email === email; })) {
-    vipShowStatus('vipRegStatus', 'err', '⚠ Cette adresse est déjà inscrite. Connectez-vous.');
-    return;
-  }
-
-  vipShowStatus('vipRegStatus', 'load', '⌛ Activation de votre accès VIP...');
-
-  /* Détruire le code (single-use) */
-  codes = codes.map(function(c) {
-    return c.code === code
-      ? Object.assign({}, c, { used: true, usedBy: email, usedAt: new Date().toISOString() })
-      : c;
-  });
-  vipSet(VIP_CODES_KEY, codes);
-
-  /* Créer le membre */
-  var member = {
-    id:          Date.now().toString(),
-    nom:         nom,
-    email:       email,
-    password:    btoa(unescape(encodeURIComponent(pwd))),
-    photo:       vipPhotoData || '',
-    joinedAt:    new Date().toISOString(),
-    lastOrderAt: null,
-    weekStart:   new Date().toISOString(),
-    banned:      false
-  };
-  members.push(member);
-  vipSet(VIP_MEMBERS_KEY, members);
-
-  /* Créer la session */
-  var session = { memberId: member.id, email: email, nom: nom, photo: member.photo };
-  vipSet(VIP_SESSION_KEY, session);
-
-  setTimeout(function() {
-    vipShowStatus('vipRegStatus', 'ok', '✓ Bienvenue dans l\'espace VIP, ' + nom + ' !');
-    setTimeout(function() { vipOpenSpace(session, member); }, 800);
-  }, 700);
-}
-
-/* ── CONNEXION ── */
-function vipLogin() {
-  var email = (document.getElementById('vipLoginEmail').value || '').trim().toLowerCase();
-  var pwd   = document.getElementById('vipLoginPwd').value || '';
-
-  if (!email || !pwd) {
-    vipShowStatus('vipLoginStatus', 'err', '⚠ Remplissez les deux champs.');
-    return;
-  }
-
-  var members = vipGet(VIP_MEMBERS_KEY, []);
-  var member  = members.find(function(m){ return m.email === email; });
-
-  if (!member) {
-    vipShowStatus('vipLoginStatus', 'err', '⛔ Aucun compte trouvé avec cette adresse.');
-    return;
-  }
-  if (member.banned) {
-    vipShowStatus('vipLoginStatus', 'err', '🚫 Votre accès VIP a été révoqué. Contactez Khaled Watch.');
-    return;
-  }
-
-  var storedPwd = '';
-  try { storedPwd = decodeURIComponent(escape(atob(member.password))); } catch { storedPwd = atob(member.password); }
-
-  if (storedPwd !== pwd) {
-    vipShowStatus('vipLoginStatus', 'err', '⚠ Mot de passe incorrect.');
-    return;
-  }
-
-  vipShowStatus('vipLoginStatus', 'load', '⌛ Connexion...');
-
-  var session = { memberId: member.id, email: email, nom: member.nom, photo: member.photo };
-  vipSet(VIP_SESSION_KEY, session);
-
-  setTimeout(function() { vipOpenSpace(session, member); }, 500);
-}
-
-/* ── OUVRIR L'ESPACE VIP ── */
-function vipOpenSpace(session, member) {
-  vipCurrentMember = member;
-
-  /* Masquer gate, afficher espace */
-  document.getElementById('vipGate').style.display  = 'none';
-  document.getElementById('vipSpace').style.display = 'flex';
-  document.getElementById('vipSpace').style.flexDirection = 'column';
-
-  /* Avatar */
-  var avatarEl = document.getElementById('vipAvatarImg');
-  if (session.photo) {
-    avatarEl.src = session.photo;
-  } else {
-    var init = (session.nom || '?').charAt(0).toUpperCase();
-    avatarEl.src = 'data:image/svg+xml,' + encodeURIComponent(
-      '<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34">' +
-      '<circle cx="17" cy="17" r="17" fill="#1a1000"/>' +
-      '<text x="17" y="22" text-anchor="middle" font-family="Montserrat" font-size="13" font-weight="700" fill="#C9A84C">' + init + '</text>' +
-      '</svg>'
-    );
-  }
-  document.getElementById('vipHdrName').textContent = session.nom;
-
-  /* Lancer compte à rebours */
-  vipStartCountdown(member);
-
-  /* Charger produits VIP */
-  vipLoadProducts();
-}
-
-/* ── COMPTE À REBOURS 7 JOURS ── */
-function vipStartCountdown(member) {
-  if (vipCdInterval) clearInterval(vipCdInterval);
-
-  var weekStart = new Date(member.weekStart || member.joinedAt).getTime();
-  var weekEnd   = weekStart + VIP_DURATION_MS;
-
-  function tick() {
-    var remaining = weekEnd - Date.now();
-    if (remaining <= 0) {
-      document.getElementById('vipCdDays').textContent  = '00';
-      document.getElementById('vipCdHours').textContent = '00';
-      document.getElementById('vipCdMins').textContent  = '00';
-      document.getElementById('vipCdSecs').textContent  = '00';
-      var alert = document.getElementById('vipCdAlert');
-      if (alert) { alert.classList.add('show'); alert.textContent = '⛔ Semaine expirée ! Passez commande pour renouveler.'; }
-      clearInterval(vipCdInterval);
-      return;
-    }
-    var d = Math.floor(remaining / 86400000);
-    var h = Math.floor((remaining % 86400000) / 3600000);
-    var m = Math.floor((remaining % 3600000) / 60000);
-    var s = Math.floor((remaining % 60000) / 1000);
-    document.getElementById('vipCdDays').textContent  = String(d).padStart(2,'0');
-    document.getElementById('vipCdHours').textContent = String(h).padStart(2,'0');
-    document.getElementById('vipCdMins').textContent  = String(m).padStart(2,'0');
-    document.getElementById('vipCdSecs').textContent  = String(s).padStart(2,'0');
-    if (remaining < 86400000) {
-      var alertEl = document.getElementById('vipCdAlert');
-      if (alertEl) alertEl.classList.add('show');
-    }
-  }
-  tick();
-  vipCdInterval = setInterval(tick, 1000);
-}
-
-/* ── VIP : données et état catégorie ── */
-var vipAllProducts   = [];
-var vipCurrentCat    = '';
-var vipCurrentGender = 'tous';
-
-const VIP_CATS = {
-  'Montres Luxueuses': '💎',
-  'Chaînes Luxueuses': '⛓',
-  'Bracelets Luxueux': '💫',
-  'Colliers Luxueux':  '📿',
-  'Autres':            '✨'
-};
-
-/* ── Charger TOUS les produits VIP au démarrage ── */
-async function vipLoadProducts() {
-  try {
-    var r = await fetch('produits.json?t=' + Date.now());
-    if (r.ok) {
-      var all = await r.json();
-      vipAllProducts = all.filter(function(p){ return p.is_vip === true; });
-    }
-  } catch(e) { vipAllProducts = []; }
-
-  Object.keys(VIP_CATS).forEach(function(cat) {
-    var el = document.getElementById('vipCnt-' + cat);
-    if (!el) return;
-    var n = vipAllProducts.filter(function(p){ return p.categorie === cat; }).length;
-    el.textContent = n + (n <= 1 ? ' article' : ' articles');
-  });
-}
-
-/* ── Ouvrir une catégorie VIP ── */
-function openVIPCat(cat, icon) {
-  vipCurrentCat    = cat;
-  vipCurrentGender = 'tous';
-
-  document.getElementById('vipCatTitle').textContent = cat;
-  document.getElementById('vipCatIcon').textContent  = icon || VIP_CATS[cat] || '✦';
-
-  document.querySelectorAll('.vip-g-tab').forEach(function(t){ t.classList.remove('active'); });
-  var tousTab = document.querySelector('.vip-g-tab[data-g="tous"]');
-  if (tousTab) tousTab.classList.add('active');
-
-  document.getElementById('vipCatView').classList.add('open');
-
-  vipRenderCatProducts();
-}
-
-/* ── Fermer la vue catégorie ── */
-function closeVIPCat() {
-  document.getElementById('vipCatView').classList.remove('open');
-  vipCurrentCat    = '';
-  vipCurrentGender = 'tous';
-}
-
-/* ── Changer le filtre genre ── */
-function vipSetGender(btn) {
-  document.querySelectorAll('.vip-g-tab').forEach(function(t){ t.classList.remove('active'); });
-  btn.classList.add('active');
-  vipCurrentGender = btn.dataset.g;
-  vipRenderCatProducts();
-}
-
-/* ── Rendre les produits de la catégorie courante ── */
-function vipRenderCatProducts() {
-  var grid = document.getElementById('vipCatGrid');
-  if (!grid) return;
-
-  var list = vipAllProducts.filter(function(p){ return p.categorie === vipCurrentCat; });
-  if (vipCurrentGender !== 'tous') {
-    list = list.filter(function(p){ return p.genre === vipCurrentGender; });
-  }
-
-  if (!list.length) {
-    grid.innerHTML =
-      '<div class="vip-empty-state">' +
-        '<h3>✦ Collection Bientôt Disponible</h3>' +
-        '<p>Aucune pièce dans cette catégorie' +
-        (vipCurrentGender !== 'tous' ? ' pour ' + vipCurrentGender : '') +
-        ' pour le moment.<br>Revenez bientôt !</p>' +
-      '</div>';
-    return;
-  }
-
-  /* Cette liste alimente la modal produit standard (openModal réutilisé) */
-  currentList = list;
-
-  grid.innerHTML = list.map(function(p, i) {
-    var img     = p.image || FALLBACK_VIP;
-    var nomSafe = h(p.nom);
-    var nomJS   = js(p.nom);
-    var genre   = p.genre ? '<div style="font-size:.5rem;letter-spacing:.14em;color:var(--gris);text-transform:uppercase;margin-bottom:.28rem;font-weight:600;">' + h(p.genre) + '</div>' : '';
-    return (
-      '<div class="vip-prod-card" style="animation-delay:' + (i * .06) + 's" onclick="vipOpenProductModal(' + i + ')">' +
-        '<div class="vip-prod-img-zone">' +
-          '<div class="vip-unique-badge">✦ Pièce Unique</div>' +
-          '<img class="vip-prod-img-el" src="' + h(img) + '" alt="' + nomSafe + '" loading="lazy" onerror="this.src=\'' + FALLBACK_VIP + '\'">' +
-          '<div class="card-hint-3d">👆 Toucher pour agrandir</div>' +
-        '</div>' +
-        '<div class="vip-prod-body">' +
-          '<div class="vip-prod-name">' + nomSafe + '</div>' +
-          genre +
-          '<div class="vip-prod-price">' + fmt(p.prix) + ' <small style="font-family:Montserrat;font-size:.52rem">FCFA</small></div>' +
-          '<button class="btn-vip-order" onclick="event.stopPropagation();vipCommander(\'' + nomJS + '\',' + p.prix + ')">' +
-            WA_SVG + ' Commander' +
-          '</button>' +
-        '</div>' +
-      '</div>'
-    );
-  }).join('');
-}
-
-/* ── Ouvrir la fiche produit en grand depuis l'espace VIP ──
-   Réutilise le système openModal() existant (gyroscope, 360°, scratch reveal)
-   currentList pointe déjà vers les produits VIP filtrés via vipRenderCatProducts() */
-function vipOpenProductModal(idx) {
-  openModal(idx);
-}
-
-/* ── COMMANDE VIP → WhatsApp ── */
-function vipCommander(nomProduit, prix) {
-  var session = vipGet(VIP_SESSION_KEY, null);
-  if (!session) return;
-
-  /* Renouveler la semaine VIP */
-  var members = vipGet(VIP_MEMBERS_KEY, []);
-  members = members.map(function(m) {
-    if (m.id === session.memberId) {
-      return Object.assign({}, m, {
-        lastOrderAt: new Date().toISOString(),
-        weekStart:   new Date().toISOString()
-      });
-    }
-    return m;
-  });
-  vipSet(VIP_MEMBERS_KEY, members);
-
-  var msg =
-    '\uD83D\uDEA8 [Alerte KHALED-WATCH] : Le client VIP ' + session.nom +
-    ' (' + session.email + ') vient de passer commande pour la montre unique ' + nomProduit + ' !\n\n' +
-    '\uD83D\uDC51 Prix : ' + fmt(prix) + ' FCFA\n' +
-    '\uD83D\uDCC5 Date : ' + new Date().toLocaleString('fr-FR') + '\n\n' +
-    '\u2714 Commande VIP \u00e0 traiter en priorit\u00e9.';
-
-  window.open('https://wa.me/' + WA + '?text=' + encodeURIComponent(msg), '_blank');
-}
-
-/* ── DÉCONNEXION ── */
-function vipLogout() {
-  if (!confirm('Se déconnecter de l\'espace VIP ?')) return;
-  localStorage.removeItem(VIP_SESSION_KEY);
-  if (vipCdInterval) { clearInterval(vipCdInterval); vipCdInterval = null; }
-  vipCurrentMember = null;
-  document.getElementById('vipSpace').style.display = 'none';
-  document.getElementById('vipGate').style.display  = 'flex';
-  vipSwitchToLogin();
-  /* Vider les champs */
-  ['vipRegNom','vipRegEmail','vipRegPwd','vipRegCode','vipLoginEmail','vipLoginPwd'].forEach(function(id){
-    var el = document.getElementById(id); if(el) el.value = '';
-  });
-  document.getElementById('vipRemember').checked = false;
-  vipPhotoData = '';
-  var prev = document.getElementById('vipPhotoPreview');
-  var txt  = document.getElementById('vipPhotoTxt');
-  if (prev) { prev.style.display = 'none'; prev.src = ''; }
-  if (txt)  txt.style.display = 'block';
 }
 
 /* ============================================================
