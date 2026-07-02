@@ -290,6 +290,43 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--txt);m
 .modal-wa-btn{display:flex;align-items:center;justify-content:center;gap:.6rem;width:100%;padding:.95rem;margin-top:.5rem;background:linear-gradient(135deg,#0f7a5e,#25D366);border:none;border-radius:14px;color:#fff;font-size:.78rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;font-family:'Montserrat',sans-serif;cursor:pointer;-webkit-tap-highlight-color:transparent;box-shadow:0 4px 20px rgba(37,211,102,.25);transition:opacity .22s;}
 .modal-wa-btn:active{opacity:.82;}
 
+/* ============================================================
+   DESCRIPTION PRODUIT — Fiche client
+   ============================================================ */
+.modal-desc-wrap{
+  margin:.9rem 0 .3rem;
+  background:linear-gradient(150deg,rgba(201,168,76,.09) 0%,rgba(0,0,0,.35) 60%);
+  border:1px solid rgba(201,168,76,.28);
+  border-radius:14px;
+  padding:1rem 1.1rem 1.15rem;
+  position:relative;
+  overflow:hidden;
+}
+.modal-desc-wrap::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(115deg,transparent 30%,rgba(255,235,150,.06) 48%,transparent 66%);
+  background-size:250% 250%;
+  animation:descSheen 6s linear infinite;
+}
+@keyframes descSheen{0%{background-position:200% 200%}100%{background-position:-50% -50%}}
+.modal-desc-label{
+  display:flex;align-items:center;gap:.4rem;
+  font-family:'Cormorant Garamond',serif;
+  font-size:.85rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  background:linear-gradient(90deg,var(--or-d),var(--or-l));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:.55rem;position:relative;z-index:1;
+}
+.modal-desc-label::before{content:'✦';-webkit-text-fill-color:var(--or-l);margin-right:.1rem;}
+.modal-desc-text{
+  position:relative;z-index:1;
+  font-size:.78rem;line-height:1.85;
+  color:#F0EBD8;font-weight:400;
+  letter-spacing:.015em;
+  white-space:pre-line;
+  text-shadow:0 1px 3px rgba(0,0,0,.7);
+}
+
 /* Flèches 360 */
 .badge360{position:absolute;top:10px;left:10px;z-index:5;background:rgba(0,0,0,.72);border:1px solid rgba(201,168,76,.6);color:var(--or-l);font-size:.52rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;border-radius:8px;padding:.3rem .6rem;text-align:center;line-height:1.4;animation:badge360pulse 2s ease-in-out infinite;}
 .badge360 span{font-size:.44rem;opacity:.8;display:block;}
@@ -1146,6 +1183,11 @@ function buildAllSlides() {
         <div class="modal-genre">${h(p.genre||'')}</div>
         <div class="modal-price">${fmt(p.prix)} <small>FCFA</small></div>
         <div class="modal-divider"></div>
+        ${p.description ? `
+        <div class="modal-desc-wrap">
+          <div class="modal-desc-label">Description</div>
+          <div class="modal-desc-text">${h(p.description)}</div>
+        </div>` : ''}
         ${currentList.length > 1 ? '<div class="modal-swipe-hint">← Balayez pour voir les autres produits →</div>' : ''}
         <button class="modal-wa-btn" onclick="commander('${js(p.nom)}','${js(p.prix)}')">
           ${WA_SVG_BIG} Commander sur WhatsApp
