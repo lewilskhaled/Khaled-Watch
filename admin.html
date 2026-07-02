@@ -199,20 +199,8 @@ input[type=range]{width:100%;accent-color:var(--or);cursor:pointer;}
 
 
 /* ============================================================
-   AÉRATION & SÉPARATION ADMIN — Produits / VIP / Clients
+   AÉRATION & SÉPARATION ADMIN — Produits / Clients
    ============================================================ */
-.tab-vip {
-  color: var(--or) !important;
-  position: relative;
-}
-.tab-vip::after {
-  content: '';
-  position: absolute; top: 6px; right: 2px;
-  width: 5px; height: 5px; border-radius: 50%;
-  background: var(--or);
-  box-shadow: 0 0 6px rgba(201,168,76,.8);
-}
-
 /* Bandeau section standard */
 .section-banner {
   display: flex; align-items: center; gap: .6rem;
@@ -230,40 +218,9 @@ input[type=range]{width:100%;accent-color:var(--or);cursor:pointer;}
 }
 .section-banner-sub { font-size: .6rem; color: var(--gris); margin-top: .1rem; line-height: 1.5; }
 
-/* Bandeau VIP (violet/or distinctif) */
-.section-banner.vip-banner {
-  background: linear-gradient(135deg, rgba(201,168,76,.1), rgba(139,105,20,.06));
-  border-color: rgba(201,168,76,.35);
-  border-left-color: var(--or);
-}
-.section-banner.vip-banner .section-banner-title {
-  background: linear-gradient(90deg, var(--or-d), var(--or-l));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-}
-
 /* Espacement supplémentaire entre cards */
 .section .card { margin-bottom: 1.4rem; }
 .section .card:last-child { margin-bottom: .5rem; }
-
-/* Sous-onglets internes (Stock standard / Stock VIP) */
-.subtabs {
-  display: flex; gap: .5rem; margin-bottom: 1.1rem;
-  background: rgba(0,0,0,.3); border-radius: 12px; padding: .3rem;
-}
-.subtab {
-  flex: 1; text-align: center; padding: .55rem .5rem;
-  border-radius: 9px; font-size: .62rem; letter-spacing: .1em;
-  text-transform: uppercase; font-weight: 700;
-  color: var(--gris); cursor: pointer; background: transparent;
-  border: none; font-family: 'Montserrat', sans-serif;
-  transition: all .2s; -webkit-tap-highlight-color: transparent;
-}
-.subtab.active {
-  background: rgba(201,168,76,.18); color: var(--or-l);
-  box-shadow: 0 2px 8px rgba(0,0,0,.3);
-}
-.subview { display: none; }
-.subview.show { display: block; }
 
 /* Divider plus marqué entre groupes de champs */
 .section-divider-strong {
@@ -298,7 +255,6 @@ input[type=range]{width:100%;accent-color:var(--or);cursor:pointer;}
   <button class="tab active" onclick="showTab('config')">⚙ Config</button>
   <button class="tab" onclick="showTab('add')">＋ Produit</button>
   <button class="tab" onclick="showTab('list')">📦 Stock</button>
-  <button class="tab tab-vip" onclick="showTab('vip')">👑 VIP</button>
   <button class="tab" onclick="showTab('design')">🎨 Design</button>
   <button class="tab" onclick="showTab('qr')">📲 QR</button>
 </div>
@@ -321,7 +277,7 @@ input[type=range]{width:100%;accent-color:var(--or);cursor:pointer;}
     <div class="section-banner-icon">📦</div>
     <div class="section-banner-text">
       <div class="section-banner-title">Catalogue Standard</div>
-      <div class="section-banner-sub">Visible par tous les clients sur le site principal. Pour les pièces VIP exclusives, utilisez l'onglet 👑 VIP.</div>
+      <div class="section-banner-sub">Visible par tous les clients sur le site principal.</div>
     </div>
   </div>
   <div class="card">
@@ -374,7 +330,7 @@ input[type=range]{width:100%;accent-color:var(--or);cursor:pointer;}
     <div class="section-banner-icon">📦</div>
     <div class="section-banner-text">
       <div class="section-banner-title">Stock du Catalogue Standard</div>
-      <div class="section-banner-sub">Tous vos produits visibles sur le site public. Le stock VIP se gère séparément dans l'onglet 👑 VIP.</div>
+      <div class="section-banner-sub">Tous vos produits visibles sur le site public.</div>
     </div>
   </div>
   <div class="card">
@@ -576,7 +532,7 @@ async function addProduct(){
   showSt('add','load','⌛ Commit…');
   const moods=[]; document.querySelectorAll('.mood-check.active').forEach(el=>moods.push(el.dataset.mood));
   const flashFin=document.getElementById('fFlashFin').value, flashRed=parseFloat(document.getElementById('fFlashReduction').value)||0;
-  const np={id:Date.now().toString(),nom,prix,categorie:cat,genre,image:img,img_gauche:document.getElementById('fImgGauche').value.trim()||'',img_droit:document.getElementById('fImgDroit').value.trim()||'',img_dos:document.getElementById('fImgDos').value.trim()||'',halo_cadran:document.getElementById('fHalo').value,is_patron:document.getElementById('fPatron').checked,is_vip:false,moods,flash_fin:flashFin?new Date(flashFin).toISOString():'',flash_reduction:flashFin?flashRed:0,couleurs:pendingColors,createdAt:new Date().toISOString()};
+  const np={id:Date.now().toString(),nom,prix,categorie:cat,genre,image:img,img_gauche:document.getElementById('fImgGauche').value.trim()||'',img_droit:document.getElementById('fImgDroit').value.trim()||'',img_dos:document.getElementById('fImgDos').value.trim()||'',halo_cadran:document.getElementById('fHalo').value,is_patron:document.getElementById('fPatron').checked,moods,flash_fin:flashFin?new Date(flashFin).toISOString():'',flash_reduction:flashFin?flashRed:0,couleurs:pendingColors,createdAt:new Date().toISOString()};
   try{ const {sha,products}=await getFile(); await commitFile([...products,np],sha,`✨ Ajout : ${nom}`); prods=[...products,np]; renderList(); showSt('add','ok',`✓ "${nom}" publié !`); clearForm(); }
   catch(e){ showSt('add','err','Erreur : '+e.message); }
   finally{ btn.disabled=false; btn.textContent='Publier sur GitHub'; }
@@ -622,7 +578,7 @@ function generateQR(){
   new QRCode(document.getElementById('qrAdminCanvas'),{text:urlA,width:200,height:200,colorDark:'#9B30FF',colorLight:'#0a0008',correctLevel:QRCode.CorrectLevel.H});
 }
 function telechargerQR(canvasId,filename){const wrap=document.getElementById(canvasId);if(!wrap){alert('Générez d\'abord le QR.');return;} const canvas=wrap.querySelector('canvas'),img=wrap.querySelector('img');let dataURL;if(canvas){dataURL=canvas.toDataURL('image/png');}else if(img){const tmp=document.createElement('canvas');tmp.width=img.naturalWidth||200;tmp.height=img.naturalHeight||200;const ctx=tmp.getContext('2d');ctx.drawImage(img,0,0);dataURL=tmp.toDataURL('image/png');}else{alert('QR introuvable.');return;} const a=document.createElement('a');a.href=dataURL;a.download=filename;a.click();}
-function showTab(t){const TABS=['config','add','list','design','qr','vip'];document.querySelectorAll('.tab').forEach((el,i)=>el.classList.toggle('active',TABS[i]===t));document.querySelectorAll('.section').forEach(el=>el.classList.remove('show'));document.getElementById('sec-'+t).classList.add('show');if(t==='list'&&prods.length===0&&cfg.token)loadProducts();if(t==='qr')generateQR();if(t==='vip')initVIPAdmin();}
+function showTab(t){const TABS=['config','add','list','design','qr'];document.querySelectorAll('.tab').forEach((el,i)=>el.classList.toggle('active',TABS[i]===t));document.querySelectorAll('.section').forEach(el=>el.classList.remove('show'));document.getElementById('sec-'+t).classList.add('show');if(t==='list'&&prods.length===0&&cfg.token)loadProducts();if(t==='qr')generateQR();}
 function showSt(id,type,msg){const el=document.getElementById('st-'+id);el.className='status '+type;el.textContent=msg;if(type==='ok')setTimeout(()=>el.style.display='none',4000);}
 function h(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function fmt(n){return Number(n||0).toLocaleString('fr-FR');}
@@ -631,7 +587,6 @@ function fmt(n){return Number(n||0).toLocaleString('fr-FR');}
    FOND VIDÉO — Admin
    ============================================================ */
 
-/* Source courante de la vidéo (URL ou base64) */
 var pendingVideoSrc = '';
 
 function switchVideoSrc(mode, btn) {
@@ -655,14 +610,12 @@ function previewVideoUrl(url) {
 function handleVideoFileUpload(file) {
   if (!file) return;
 
-  /* Vérifier le format */
   var allowed = ['video/mp4','video/webm','video/quicktime'];
   if (!allowed.includes(file.type)) {
     showStVideo('err', '⚠ Format non supporté. Utilisez MP4, WEBM ou MOV.');
     return;
   }
 
-  /* Limite 25 Mo */
   if (file.size > 25 * 1024 * 1024) {
     showStVideo("err", "⚠ Vidéo trop lourde (max 25 Mo). Compressez-la d'abord.");
     return;
@@ -702,14 +655,11 @@ function applyVideoBg() {
     return;
   }
 
-  /* Sauvegarder dans localStorage (partagé avec la page client via même domaine) */
   try {
     localStorage.setItem('kw-client-video-bg', src);
     showStVideo('ok', '✓ Fond vidéo activé ! Les clients le verront sur téléphone au prochain chargement.');
-    /* Mettre à jour l'aperçu admin également */
     showVideoPreview(src);
   } catch(e) {
-    /* Base64 trop grande pour localStorage → proposer URL */
     showStVideo('err', '⚠ Vidéo trop grande pour le stockage local. Utilisez un lien URL à la place.');
   }
 }
@@ -734,12 +684,10 @@ function showStVideo(type, msg) {
   if (type === 'ok') setTimeout(function(){ el.style.display = 'none'; }, 5000);
 }
 
-/* Initialiser l'aperçu si une vidéo est déjà définie */
 function initVideoSection() {
   var existing = localStorage.getItem('kw-client-video-bg') || '';
   if (existing) {
     pendingVideoSrc = existing;
-    /* Afficher l'URL si c'est une URL (pas base64) */
     if (!existing.startsWith('data:')) {
       var urlInput = document.getElementById('videoUrlInput');
       if (urlInput) urlInput.value = existing;
@@ -762,557 +710,7 @@ function initAdminDesign(){
 }
 initAdminDesign();
 loadConfig();
-
-
-/* ============================================================
-   VIP ADMIN — Gestion complète
-   ============================================================ */
-const VIP_CODES_KEY   = 'kw-vip-codes';
-const VIP_MEMBERS_KEY = 'kw-vip-members';
-const VIP_DURATION_MS = 7 * 24 * 60 * 60 * 1000;
-
-function vipGetJSON(key, def) {
-  try { return JSON.parse(localStorage.getItem(key)) || def; } catch { return def; }
-}
-function vipSetJSON(key, val) {
-  try { localStorage.setItem(key, JSON.stringify(val)); } catch {}
-}
-
-function initVIPAdmin() {
-  renderVIPStats();
-  /* Ouvrir le sous-onglet "Ajouter Produit" par défaut */
-  showVIPSub('addprod');
-}
-
-function renderVIPStats() {
-  var members  = vipGetJSON(VIP_MEMBERS_KEY, []).filter(function(m){ return !m.banned; });
-  var codes    = vipGetJSON(VIP_CODES_KEY, []).filter(function(c){ return !c.used; });
-  var now      = Date.now();
-  var inactive = members.filter(function(m) {
-    var ws = new Date(m.weekStart || m.joinedAt).getTime();
-    return (now - ws) > VIP_DURATION_MS;
-  }).length;
-  var e1 = document.getElementById('vipStatMembers');
-  var e2 = document.getElementById('vipStatCodes');
-  var e3 = document.getElementById('vipStatInactive');
-  if (e1) e1.textContent = members.length;
-  if (e2) e2.textContent = codes.length;
-  if (e3) e3.textContent = inactive;
-}
-
-/* ── Generateur de codes VIP ── */
-function generateVIPCode() {
-  var chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-  var p1 = '', p2 = '';
-  for (var i = 0; i < 4; i++) p1 += chars[Math.floor(Math.random() * chars.length)];
-  for (var i = 0; i < 4; i++) p2 += chars[Math.floor(Math.random() * chars.length)];
-  var code = 'KW-' + p1 + '-' + p2;
-
-  var codes = vipGetJSON(VIP_CODES_KEY, []);
-  codes.push({ code: code, used: false, createdAt: new Date().toISOString() });
-  vipSetJSON(VIP_CODES_KEY, codes);
-
-  var box   = document.getElementById('generatedCodeBox');
-  var val   = document.getElementById('generatedCodeVal');
-  var btnWA = document.getElementById('btnSendWA');
-  if (box) box.style.display = 'flex';
-  if (val) val.textContent = code;
-
-  var waMsg = 'Bonjour 👋\n\nVous êtes sélectionné(e) pour rejoindre l\'Espace VIP exclusif KHALED WATCH.\n\n🔑 Votre code d\'accès VIP unique :\n• Code : *' + code + '*\n\n⚠️ Ce code est à usage unique et strictement personnel. Ne le partagez pas.\n\nRendez-vous sur votre espace VIP.';
-  if (btnWA) btnWA.href = 'https://wa.me/2290169515730?text=' + encodeURIComponent(waMsg);
-
-  var btnCopy = document.getElementById('btnCopyCode');
-  if (btnCopy) { btnCopy.textContent = '📋 Copier'; btnCopy.classList.remove('copied'); }
-
-  renderVIPCodes();
-  renderVIPStats();
-}
-
-function copyGeneratedCode() {
-  var val = document.getElementById('generatedCodeVal');
-  var btn = document.getElementById('btnCopyCode');
-  if (!val) return;
-  var text = val.textContent;
-  if (navigator.clipboard) {
-    navigator.clipboard.writeText(text).then(function() {
-      if (btn) { btn.textContent = '✓ Copié !'; btn.classList.add('copied'); }
-      setTimeout(function(){ if (btn){ btn.textContent='📋 Copier'; btn.classList.remove('copied'); }}, 2500);
-    }).catch(function(){ fallbackCopy(text, btn); });
-  } else { fallbackCopy(text, btn); }
-}
-function fallbackCopy(text, btn) {
-  var ta = document.createElement('textarea');
-  ta.value = text; ta.style.position='fixed'; ta.style.opacity='0';
-  document.body.appendChild(ta); ta.select(); document.execCommand('copy');
-  document.body.removeChild(ta);
-  if (btn) { btn.textContent = '✓ Copié !'; btn.classList.add('copied'); }
-  setTimeout(function(){ if (btn){ btn.textContent='📋 Copier'; btn.classList.remove('copied'); }}, 2500);
-}
-
-function renderVIPCodes() {
-  var el = document.getElementById('vipCodesList');
-  if (!el) return;
-  var codes = vipGetJSON(VIP_CODES_KEY, []);
-  if (!codes.length) {
-    el.innerHTML = '<div class="empty-list" style="padding:1rem;">Aucun code généré.</div>';
-    return;
-  }
-  el.innerHTML = codes.slice().reverse().map(function(c, ri) {
-    var i = codes.length - 1 - ri;
-    var statusCls = c.used ? 'code-status-used' : 'code-status-free';
-    var statusTxt = c.used ? '✗ Utilisé' : '✓ Libre';
-    var del = !c.used ? '<button class="btn-del-code" onclick="deleteVIPCode(' + i + ')">🗑</button>' : '';
-    return '<div class="code-row"><div class="code-row-val">' + h(c.code) + '</div>'
-      + '<div class="code-row-status ' + statusCls + '">' + statusTxt + '</div>' + del + '</div>';
-  }).join('');
-}
-
-function deleteVIPCode(idx) {
-  var codes = vipGetJSON(VIP_CODES_KEY, []);
-  if (!confirm('Supprimer ce code VIP ?')) return;
-  codes.splice(idx, 1);
-  vipSetJSON(VIP_CODES_KEY, codes);
-  renderVIPCodes(); renderVIPStats();
-}
-
-/* ── Membres VIP ── */
-function renderVIPMembers() {
-  var el = document.getElementById('vipMembersList');
-  if (!el) return;
-  var members = vipGetJSON(VIP_MEMBERS_KEY, []).filter(function(m){ return !m.banned; });
-
-  if (!members.length) {
-    el.innerHTML = '<div class="empty-list">Aucun membre VIP inscrit.</div>';
-    return;
-  }
-
-  var now = Date.now();
-  el.innerHTML = members.map(function(m) {
-    var ws        = new Date(m.weekStart || m.joinedAt).getTime();
-    var remaining = VIP_DURATION_MS - (now - ws);
-    var pct       = Math.max(0, Math.min(100, (remaining / VIP_DURATION_MS) * 100));
-    var expired   = remaining <= 0;
-    var warning   = !expired && remaining < 86400000;
-    var cls       = expired ? 'danger' : (warning ? 'warn' : 'ok');
-    var txt       = expired ? '⏰ Semaine expirée !'
-                  : (warning ? '⚠️ Expire dans ' + fmtRemaining(remaining)
-                  : '✓ ' + fmtRemaining(remaining) + ' restants');
-    var joinDate  = new Date(m.joinedAt).toLocaleDateString('fr-FR');
-    var lastOrder = m.lastOrderAt ? new Date(m.lastOrderAt).toLocaleDateString('fr-FR') : 'Aucune commande';
-
-    /* Avatar SVG initial si pas de photo */
-    var initiale = (m.nom || '?').charAt(0).toUpperCase();
-    var svgAvatar = 'data:image/svg+xml,' + encodeURIComponent(
-      '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><circle cx="20" cy="20" r="20" fill="#1a1000"/>'
-      + '<text x="20" y="26" text-anchor="middle" font-family="Montserrat" font-size="16" font-weight="700" fill="#C9A84C">' + initiale + '</text></svg>'
-    );
-    var avatarSrc = m.photo || svgAvatar;
-
-    return '<div class="vip-member-row">'
-      + '<div class="vip-member-top">'
-      + '<img class="vip-member-avatar" src="' + h(avatarSrc) + '" alt="" onerror="this.src=\'' + svgAvatar + '\'">'
-      + '<div class="vip-member-info">'
-      + '<div class="vip-member-name">' + h(m.nom) + '</div>'
-      + '<div class="vip-member-email">' + h(m.email) + '</div>'
-      + '<div class="vip-member-date">Inscrit le ' + joinDate + ' · Dernière commande : ' + lastOrder + '</div>'
-      + '</div>'
-      + (expired ? '<div class="badge-inactive">⚠️ Inactif</div>' : '')
-      + '</div>'
-      + '<div class="vip-member-countdown">'
-      + '<div class="vip-cd-text ' + cls + '">' + txt + '</div>'
-      + '<div class="vip-cd-bar"><div class="vip-cd-fill ' + cls + '" style="width:' + pct.toFixed(1) + '%"></div></div>'
-      + '</div>'
-      + '<button class="btn-eject" onclick="ejectVIPMember(\'' + m.id + '\')">🚫 Éjecter le membre</button>'
-      + '</div>';
-  }).join('');
-}
-
-function fmtRemaining(ms) {
-  if (ms <= 0) return '0j';
-  var days  = Math.floor(ms / 86400000);
-  var hours = Math.floor((ms % 86400000) / 3600000);
-  var mins  = Math.floor((ms % 3600000) / 60000);
-  if (days > 0) return days + 'j ' + hours + 'h';
-  return hours + 'h ' + mins + 'min';
-}
-
-function ejectVIPMember(memberId) {
-  var members = vipGetJSON(VIP_MEMBERS_KEY, []);
-  var member  = members.find(function(m){ return m.id === memberId; });
-  if (!member) return;
-  if (!confirm('Éjecter "' + member.nom + '" de l\'espace VIP ?')) return;
-
-  members = members.map(function(m) {
-    return m.id === memberId ? Object.assign({}, m, { banned: true, bannedAt: new Date().toISOString() }) : m;
-  });
-  vipSetJSON(VIP_MEMBERS_KEY, members);
-
-  /* Invalider la session du membre si active */
-  var session = vipGetJSON('kw-vip-session', null);
-  if (session && session.memberId === memberId) localStorage.removeItem('kw-vip-session');
-
-  var st = document.getElementById('st-vip');
-  if (st) { st.className = 'status ok'; st.textContent = '✓ ' + member.nom + ' a été éjecté(e) de l\'espace VIP.'; }
-  renderVIPMembers(); renderVIPStats();
-}
-
-/* ── PRODUITS VIP — Formulaire dédié + Stock séparé ── */
-var vipStockData = [];
-
-/* Sous-onglets internes VIP */
-function showVIPSub(sub) {
-  var SUBS = ['addprod','stock','codes','members'];
-  document.querySelectorAll('#sec-vip .subtab').forEach(function(el, i) {
-    el.classList.toggle('active', SUBS[i] === sub);
-  });
-  document.querySelectorAll('#sec-vip .subview').forEach(function(el) {
-    el.classList.remove('show');
-  });
-  var target = document.getElementById('vipsub-' + sub);
-  if (target) target.classList.add('show');
-
-  if (sub === 'stock')   loadVIPStock();
-  if (sub === 'codes')   { renderVIPCodes(); renderVIPStats(); }
-  if (sub === 'members') { renderVIPMembers(); renderVIPStats(); }
-}
-
-/* ── Ajouter un produit VIP (totalement séparé du formulaire standard) ── */
-async function addVIPProduct() {
-  var nom   = document.getElementById('vfNom').value.trim();
-  var prix  = parseFloat(document.getElementById('vfPrix').value);
-  var cat   = document.getElementById('vfCat').value;
-  var genre = document.getElementById('vfGenre').value;
-  var img   = document.getElementById('vfImage').value.trim();
-
-  if (!nom || !prix || !cat || !genre || !img) {
-    showSt('vipadd', 'err', '⚠ Remplissez les champs obligatoires (*).');
-    return;
-  }
-  if (!cfg.token) {
-    showSt('vipadd', 'err', '⚠ Configurez GitHub dans ⚙ Config d\'abord.');
-    return;
-  }
-
-  var btn = document.getElementById('btnVipAdd');
-  btn.disabled = true; btn.innerHTML = '<span class="mini-loader"></span>Publication...';
-  showSt('vipadd', 'load', '⌛ Commit GitHub...');
-
-  var np = {
-    id: Date.now().toString(),
-    nom: nom, prix: prix, categorie: cat, genre: genre,
-    image: img,
-    img_gauche: document.getElementById('vfImgGauche').value.trim() || '',
-    img_droit:  document.getElementById('vfImgDroit').value.trim()  || '',
-    img_dos:    document.getElementById('vfImgDos').value.trim()    || '',
-    halo_cadran: document.getElementById('vfHalo').value,
-    is_patron: false,
-    is_vip: true,
-    moods: [],
-    flash_fin: '', flash_reduction: 0,
-    couleurs: [],
-    createdAt: new Date().toISOString()
-  };
-
-  try {
-    var data = await getFile();
-    await commitFile(data.products.concat([np]), data.sha, '👑 Ajout VIP : ' + nom);
-    showSt('vipadd', 'ok', '✓ "' + nom + '" publié dans l\'Espace VIP !');
-    clearVIPForm();
-  } catch(e) {
-    showSt('vipadd', 'err', 'Erreur : ' + e.message);
-  } finally {
-    btn.disabled = false; btn.textContent = '👑 Publier sur l\'Espace VIP';
-  }
-}
-
-function clearVIPForm() {
-  ['vfNom','vfPrix','vfImage','vfImgGauche','vfImgDroit','vfImgDos'].forEach(function(id) {
-    var el = document.getElementById(id); if (el) el.value = '';
-  });
-  ['vfCat','vfGenre'].forEach(function(id) { document.getElementById(id).value = ''; });
-  document.getElementById('vfHalo').value = 'or';
-  ['vprevMain','vprevG','vprevD','vprevDos'].forEach(function(id) {
-    var el = document.getElementById(id); if (el) el.style.display = 'none';
-  });
-}
-
-/* ── Charger le Stock VIP (séparé du stock standard) ── */
-async function loadVIPStock() {
-  if (!cfg.token) {
-    showSt('vipstock', 'err', '⚠ Configurez GitHub dans ⚙ Config d\'abord.');
-    return;
-  }
-  showSt('vipstock', 'load', '⌛ Chargement...');
-  try {
-    var data = await getFile();
-    vipStockData = (data.products || []).filter(function(p) { return p.is_vip === true; });
-    renderVIPStock();
-    showSt('vipstock', 'ok', '✓ ' + vipStockData.length + ' pièce(s) VIP.');
-  } catch(e) {
-    showSt('vipstock', 'err', 'Erreur : ' + e.message);
-  }
-}
-
-function renderVIPStock() {
-  var el = document.getElementById('vipStockList');
-  var badge = document.getElementById('vipProdCountBadge');
-  if (badge) badge.textContent = vipStockData.length;
-  if (!el) return;
-
-  if (!vipStockData.length) {
-    el.innerHTML = '<div class="empty-vip">Aucune pièce VIP publiée. Utilisez l\'onglet "＋ Produit VIP".</div>';
-    return;
-  }
-
-  el.innerHTML = vipStockData.map(function(p) {
-    return '<div class="vip-prod-row">'
-      + '<img src="' + h(p.image) + '" alt="" onerror="this.src=\'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=80&q=60\'">'
-      + '<div class="vip-prod-row-info">'
-      + '<div class="vip-prod-row-name">' + h(p.nom) + '</div>'
-      + '<div class="vip-prod-row-meta">👑 ' + h(p.categorie) + ' · ' + h(p.genre) + '</div>'
-      + '</div>'
-      + '<div class="vip-prod-row-price">' + fmt(p.prix) + 'F</div>'
-      + '<button class="btn-del" onclick="deleteVIPProduct(\'' + p.id + '\')">🗑</button>'
-      + '</div>';
-  }).join('');
-}
-
-async function deleteVIPProduct(id) {
-  var p = vipStockData.find(function(x) { return x.id === id; });
-  if (!p) return;
-  if (!confirm('Supprimer "' + p.nom + '" de l\'Espace VIP ?')) return;
-  showSt('vipstock', 'load', '⌛ Suppression...');
-  try {
-    var data = await getFile();
-    var upd  = data.products.filter(function(x) { return x.id !== id; });
-    await commitFile(upd, data.sha, '🗑 Suppression VIP : ' + p.nom);
-    vipStockData = upd.filter(function(x) { return x.is_vip === true; });
-    renderVIPStock();
-    showSt('vipstock', 'ok', '✓ "' + p.nom + '" supprimé.');
-  } catch(e) {
-    showSt('vipstock', 'err', 'Erreur : ' + e.message);
-  }
-}
-
 </script>
-
-<!-- ═══════════════════════════════════════════════════
-     SECTION VIP ADMIN — Espace totalement séparé
-     ═══════════════════════════════════════════════════ -->
-<div class="section" id="sec-vip">
-
-  <!-- CSS spécifique VIP admin -->
-  <style>
-  .vip-admin-header { display:flex;align-items:center;gap:.6rem;padding:.5rem 0 1rem; }
-  .vip-crown-icon { font-size:1.6rem; filter:drop-shadow(0 0 8px rgba(201,168,76,.6)); }
-  .vip-admin-title { font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:700;background:linear-gradient(90deg,var(--or-d),var(--or-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
-  .vip-stats-row { display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;margin-bottom:1.2rem; }
-  .vip-stat-card { background:rgba(0,0,0,.45);border:1px solid var(--bord);border-radius:12px;padding:.9rem .7rem;text-align:center; }
-  .vip-stat-num { font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:700;background:linear-gradient(90deg,var(--or-d),var(--or-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin-bottom:.2rem; }
-  .vip-stat-lbl { font-size:.52rem;color:var(--gris);letter-spacing:.14em;text-transform:uppercase;font-weight:600; }
-  .code-box { background:rgba(0,0,0,.55);border:1px solid rgba(201,168,76,.45);border-radius:12px;padding:1rem;margin-bottom:.8rem;display:flex;align-items:center;gap:.8rem;flex-wrap:wrap; }
-  .code-val { flex:1;font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;color:var(--or-l);letter-spacing:.22em;word-break:break-all; }
-  .btn-copy { background:rgba(201,168,76,.15);border:1px solid var(--bord);color:var(--or-l);border-radius:8px;padding:.42rem .8rem;font-size:.62rem;font-weight:700;cursor:pointer;font-family:'Montserrat',sans-serif;-webkit-tap-highlight-color:transparent;white-space:nowrap;transition:background .2s;letter-spacing:.08em; }
-  .btn-copy:active { background:rgba(201,168,76,.28); }
-  .btn-copy.copied { background:rgba(39,174,96,.2);border-color:rgba(39,174,96,.4);color:#6fcf97; }
-  .codes-list { margin-top:.6rem; }
-  .code-row { display:flex;align-items:center;gap:.6rem;background:rgba(0,0,0,.3);border:1px solid rgba(201,168,76,.1);border-radius:8px;padding:.5rem .7rem;margin-bottom:.4rem; }
-  .code-row-val { flex:1;font-size:.72rem;font-weight:700;color:var(--or-l);letter-spacing:.16em; }
-  .code-row-status { font-size:.52rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;padding:.15rem .5rem;border-radius:50px; }
-  .code-status-free { background:rgba(39,174,96,.15);border:1px solid rgba(39,174,96,.3);color:#6fcf97; }
-  .code-status-used { background:rgba(192,57,43,.12);border:1px solid rgba(192,57,43,.25);color:#eb5757; }
-  .btn-del-code { background:rgba(192,57,43,.15);border:1px solid rgba(192,57,43,.3);color:#eb5757;border-radius:6px;padding:.26rem .5rem;font-size:.58rem;cursor:pointer;font-family:'Montserrat',sans-serif;-webkit-tap-highlight-color:transparent;font-weight:700; }
-  .vip-member-row { background:rgba(0,0,0,.35);border:1px solid rgba(201,168,76,.12);border-radius:12px;padding:.8rem;margin-bottom:.6rem;transition:border-color .2s; }
-  .vip-member-row:hover { border-color:rgba(201,168,76,.3); }
-  .vip-member-top { display:flex;align-items:center;gap:.7rem;margin-bottom:.5rem; }
-  .vip-member-avatar { width:40px;height:40px;border-radius:50%;object-fit:cover;border:2px solid var(--or);flex-shrink:0;background:var(--noir3); }
-  .vip-member-info { flex:1;min-width:0; }
-  .vip-member-name { font-size:.8rem;font-weight:700;color:#F0EBD8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
-  .vip-member-email { font-size:.56rem;color:var(--gris);margin-top:.08rem; }
-  .vip-member-date { font-size:.54rem;color:var(--gris);margin-top:.04rem; }
-  .vip-member-countdown { display:flex;align-items:center;gap:.5rem;background:rgba(0,0,0,.3);border-radius:8px;padding:.5rem .7rem;margin-bottom:.4rem; }
-  .vip-cd-bar { flex:1;height:5px;background:rgba(255,255,255,.08);border-radius:5px;overflow:hidden; }
-  .vip-cd-fill { height:100%;border-radius:5px;transition:width .5s; }
-  .vip-cd-fill.ok { background:linear-gradient(90deg,var(--or-d),var(--or-l)); }
-  .vip-cd-fill.warn { background:linear-gradient(90deg,#e67e22,#f39c12); }
-  .vip-cd-fill.danger { background:linear-gradient(90deg,#c0392b,#eb5757); }
-  .vip-cd-text { font-size:.56rem;font-weight:700;white-space:nowrap; }
-  .vip-cd-text.ok { color:var(--or-l); }
-  .vip-cd-text.warn { color:#f39c12; }
-  .vip-cd-text.danger { color:#eb5757; }
-  .badge-inactive { display:inline-flex;align-items:center;gap:.3rem;background:rgba(192,57,43,.18);border:1px solid rgba(192,57,43,.4);color:#eb5757;border-radius:50px;padding:.22rem .65rem;font-size:.52rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;animation:inactivePulse 1.5s ease-in-out infinite; }
-  @keyframes inactivePulse { 0%,100%{opacity:1;} 50%{opacity:.55;} }
-  .btn-eject { width:100%;padding:.6rem;background:rgba(192,57,43,.15);border:1px solid rgba(192,57,43,.35);color:#eb5757;border-radius:8px;font-size:.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;font-family:'Montserrat',sans-serif;-webkit-tap-highlight-color:transparent;transition:background .2s;margin-top:.3rem; }
-  .btn-eject:active { background:rgba(192,57,43,.35); }
-  .empty-vip { text-align:center;padding:2rem 1rem;color:var(--gris);font-size:.75rem;line-height:1.7; }
-  /* Stock VIP — lignes produits */
-  .vip-prod-row { display:flex;align-items:center;gap:.75rem;background:rgba(0,0,0,.32);border:1px solid rgba(201,168,76,.18);border-radius:10px;padding:.65rem;margin-bottom:.5rem; }
-  .vip-prod-row img { width:44px;height:44px;object-fit:contain;border-radius:6px;flex-shrink:0;background:var(--noir3);padding:2px; }
-  .vip-prod-row-info { flex:1;min-width:0; }
-  .vip-prod-row-name { font-size:.78rem;font-weight:700;color:#F0EBD8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
-  .vip-prod-row-meta { font-size:.56rem;color:var(--or-l);margin-top:.1rem;font-weight:600; }
-  .vip-prod-row-price { font-family:'Cormorant Garamond',serif;font-size:.9rem;color:var(--or);white-space:nowrap; }
-  </style>
-
-  <!-- Bandeau distinctif VIP -->
-  <div class="section-banner vip-banner">
-    <div class="section-banner-icon">👑</div>
-    <div class="section-banner-text">
-      <div class="section-banner-title">Espace VIP — Totalement Séparé</div>
-      <div class="section-banner-sub">Tout ce qui concerne les produits et clients VIP se gère uniquement ici. Rien n'apparaît dans le catalogue standard.</div>
-    </div>
-  </div>
-
-  <!-- Header -->
-  <div class="vip-admin-header">
-    <div class="vip-crown-icon">👑</div>
-    <div class="vip-admin-title">Gestion Espace VIP</div>
-  </div>
-
-  <!-- Stats -->
-  <div class="vip-stats-row">
-    <div class="vip-stat-card">
-      <div class="vip-stat-num" id="vipStatMembers">0</div>
-      <div class="vip-stat-lbl">Membres</div>
-    </div>
-    <div class="vip-stat-card">
-      <div class="vip-stat-num" id="vipStatCodes">0</div>
-      <div class="vip-stat-lbl">Codes libres</div>
-    </div>
-    <div class="vip-stat-card">
-      <div class="vip-stat-num" id="vipStatInactive">0</div>
-      <div class="vip-stat-lbl" style="color:#eb5757;">Inactifs</div>
-    </div>
-  </div>
-
-  <!-- Sous-onglets internes VIP -->
-  <div class="subtabs">
-    <button class="subtab active" onclick="showVIPSub('addprod')">＋ Produit VIP</button>
-    <button class="subtab" onclick="showVIPSub('stock')">📦 Stock VIP</button>
-    <button class="subtab" onclick="showVIPSub('codes')">🔑 Codes</button>
-    <button class="subtab" onclick="showVIPSub('members')">👥 Membres</button>
-  </div>
-
-  <!-- ════════ SOUS-VUE : AJOUTER PRODUIT VIP ════════ -->
-  <div class="subview show" id="vipsub-addprod">
-    <div class="card">
-      <div class="card-title">＋ Nouvelle Pièce VIP Exclusive</div>
-      <div class="card-sub">Ce produit sera visible UNIQUEMENT dans l'Espace VIP de vos clients triés sur le volet — jamais sur le catalogue standard.</div>
-      <div id="st-vipadd" class="status"></div>
-
-      <div class="field"><label>Nom *</label><input type="text" id="vfNom" placeholder="Montre Royal Édition Limitée"></div>
-      <div class="field-row">
-        <div><label>Prix FCFA *</label><input type="number" id="vfPrix" placeholder="450000" inputmode="numeric"></div>
-        <div><label>Halo Cadran</label><select id="vfHalo"><option value="or">🟡 Or</option><option value="argent">⚪ Argent</option><option value="sombre">⚫ Sombre</option></select></div>
-      </div>
-      <div class="field-row">
-        <div>
-          <label>Catégorie VIP *</label>
-          <select id="vfCat">
-            <option value="">— Choisir —</option>
-            <option>Montres Luxueuses</option>
-            <option>Chaînes Luxueuses</option>
-            <option>Bracelets Luxueux</option>
-            <option>Colliers Luxueux</option>
-            <option>Autres</option>
-          </select>
-        </div>
-        <div><label>Genre *</label><select id="vfGenre"><option value="">— Choisir —</option><option>Homme</option><option>Femme</option><option>Unisexe</option></select></div>
-      </div>
-
-      <div class="section-divider-strong"></div>
-
-      <div class="field">
-        <label>📷 Photo Principale *</label>
-        <div class="img-tabs">
-          <button class="img-tab active" onclick="switchImgSrc('url',this,'vmainPane')">🔗 URL</button>
-          <button class="img-tab" onclick="switchImgSrc('device',this,'vmainPane')">📱 Appareil</button>
-        </div>
-        <div id="vmainPane-url"><input type="url" id="vfImage" placeholder="https://..." oninput="previewField(this,'vprevMain')"></div>
-        <div id="vmainPane-device" style="display:none;">
-          <div class="drop-zone" onclick="document.getElementById('vfileMain').click()">
-            <input type="file" id="vfileMain" accept="image/*" onchange="handleFileField(this,'vfImage','vprevMain')">
-            <div class="drop-txt"><strong>Appuyer pour choisir</strong><br>JPG · PNG · WEBP · max 2 Mo</div>
-          </div>
-        </div>
-        <div class="img-preview-wrap"><img id="vprevMain" class="img-preview"></div>
-      </div>
-
-      <div class="card-sub">🔄 <strong>Inspecteur 360°</strong> (optionnel)</div>
-      <div class="angles-grid">
-        <div class="angle-block">
-          <label>⬅ Gauche</label>
-          <div class="img-tabs"><button class="img-tab active" onclick="switchImgSrc('url',this,'vgPane')">🔗</button><button class="img-tab" onclick="switchImgSrc('device',this,'vgPane')">📱</button></div>
-          <div id="vgPane-url"><input type="url" id="vfImgGauche" placeholder="URL profil gauche" oninput="previewField(this,'vprevG')"></div>
-          <div id="vgPane-device" style="display:none;"><div class="drop-zone" onclick="document.getElementById('vfileG').click()"><input type="file" id="vfileG" accept="image/*" onchange="handleFileField(this,'vfImgGauche','vprevG')"><div class="drop-txt"><strong>Choisir</strong></div></div></div>
-          <div class="img-preview-wrap"><img id="vprevG" class="img-preview"></div>
-        </div>
-        <div class="angle-block">
-          <label>➡ Droit</label>
-          <div class="img-tabs"><button class="img-tab active" onclick="switchImgSrc('url',this,'vdPane')">🔗</button><button class="img-tab" onclick="switchImgSrc('device',this,'vdPane')">📱</button></div>
-          <div id="vdPane-url"><input type="url" id="vfImgDroit" placeholder="URL profil droit" oninput="previewField(this,'vprevD')"></div>
-          <div id="vdPane-device" style="display:none;"><div class="drop-zone" onclick="document.getElementById('vfileD').click()"><input type="file" id="vfileD" accept="image/*" onchange="handleFileField(this,'vfImgDroit','vprevD')"><div class="drop-txt"><strong>Choisir</strong></div></div></div>
-          <div class="img-preview-wrap"><img id="vprevD" class="img-preview"></div>
-        </div>
-        <div class="angle-block">
-          <label>🔙 Dos</label>
-          <div class="img-tabs"><button class="img-tab active" onclick="switchImgSrc('url',this,'vdosPane')">🔗</button><button class="img-tab" onclick="switchImgSrc('device',this,'vdosPane')">📱</button></div>
-          <div id="vdosPane-url"><input type="url" id="vfImgDos" placeholder="URL vue dos" oninput="previewField(this,'vprevDos')"></div>
-          <div id="vdosPane-device" style="display:none;"><div class="drop-zone" onclick="document.getElementById('vfileDos').click()"><input type="file" id="vfileDos" accept="image/*" onchange="handleFileField(this,'vfImgDos','vprevDos')"><div class="drop-txt"><strong>Choisir</strong></div></div></div>
-          <div class="img-preview-wrap"><img id="vprevDos" class="img-preview"></div>
-        </div>
-      </div>
-
-      <button class="btn-gold" id="btnVipAdd" onclick="addVIPProduct()" style="margin-top:1.1rem;background:linear-gradient(135deg,var(--or-d),var(--or));">👑 Publier sur l'Espace VIP</button>
-    </div>
-  </div>
-
-  <!-- ════════ SOUS-VUE : STOCK VIP ════════ -->
-  <div class="subview" id="vipsub-stock">
-    <div class="card">
-      <div class="card-title">📦 Pièces VIP en ligne <span class="prod-count" id="vipProdCountBadge">0</span></div>
-      <div id="st-vipstock" class="status"></div>
-      <button class="btn-gold" onclick="loadVIPStock()" style="margin-bottom:1rem;">↻ Actualiser</button>
-      <div id="vipStockList"><div class="empty-vip">Configurez GitHub dans ⚙ Config.</div></div>
-    </div>
-  </div>
-
-  <!-- ════════ SOUS-VUE : CODES ════════ -->
-  <div class="subview" id="vipsub-codes">
-    <div class="card">
-      <div class="card-title">🔑 Générateur de Codes VIP</div>
-      <div class="card-sub">Chaque code est à usage unique. Une fois utilisé par un client, il est automatiquement détruit et ne peut plus être partagé.</div>
-
-      <div id="generatedCodeBox" style="display:none;" class="code-box">
-        <div>
-          <div style="font-size:.5rem;letter-spacing:.2em;color:var(--gris);text-transform:uppercase;margin-bottom:.3rem;">Nouveau code généré :</div>
-          <div class="code-val" id="generatedCodeVal">—</div>
-        </div>
-        <button class="btn-copy" id="btnCopyCode" onclick="copyGeneratedCode()">📋 Copier</button>
-        <a id="btnSendWA" href="#" target="_blank" rel="noopener" style="text-decoration:none;">
-          <button class="btn-copy" style="background:rgba(37,211,102,.15);border-color:rgba(37,211,102,.4);color:#6fcf97;">📲 WhatsApp</button>
-        </a>
-      </div>
-
-      <button class="btn-gold" onclick="generateVIPCode()">✦ Générer un Code VIP Unique</button>
-
-      <div style="margin-top:1rem;">
-        <div style="font-size:.56rem;letter-spacing:.2em;color:var(--gris);text-transform:uppercase;margin-bottom:.5rem;font-weight:700;">Codes existants</div>
-        <div class="codes-list" id="vipCodesList"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ════════ SOUS-VUE : MEMBRES ════════ -->
-  <div class="subview" id="vipsub-members">
-    <div class="card">
-      <div class="card-title">👥 Membres VIP Actifs</div>
-      <div id="st-vip" class="status"></div>
-      <div id="vipMembersList"></div>
-    </div>
-  </div>
-
-</div><!-- /sec-vip -->
 
 </body>
 </html>
