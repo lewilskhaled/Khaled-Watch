@@ -192,6 +192,29 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--txt);m
 .prod-card:hover .prod-img{
 }
 
+/* ============================================================
+   CARROUSEL VERTICAL AUTO — Boxes produits multi-couleurs
+   ============================================================ */
+.cvar-viewport{
+  position:absolute;inset:0;overflow:hidden;border-radius:inherit;
+}
+.cvar-img{
+  position:absolute;inset:0;
+  width:100%;height:100%;object-fit:contain;
+  display:block;will-change:transform;
+}
+.cvar-dots{
+  position:absolute;top:8px;right:8px;z-index:6;
+  display:flex;flex-direction:column;gap:4px;
+  pointer-events:none;
+}
+.cvar-dot{
+  width:5px;height:5px;border-radius:50%;
+  background:rgba(255,255,255,.35);
+  transition:background .3s,transform .3s;
+}
+.cvar-dot.active{background:var(--or-l);transform:scale(1.4);box-shadow:0 0 6px rgba(201,168,76,.7);}
+
 .prod-body{padding:.75rem .75rem .9rem;}
 .prod-badge{font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;color:var(--or-l);border:1px solid rgba(201,168,76,.5);border-radius:50px;padding:.17rem .52rem;display:inline-block;margin-bottom:.38rem;background:rgba(0,0,0,.45);font-weight:700;text-shadow:0 1px 4px rgba(0,0,0,.9);}
 
@@ -1066,8 +1089,15 @@ function renderProducts() {
     return `
     <div class="prod-card" data-idx="${i}" style="animation-delay:${i*.06}s" onclick="openModal(${i})">
       <div class="prod-img-zone">
+        ${colors.length > 1 ? `
+        <div class="cvar-viewport prod-img" data-pid="${h(p.id)}">
+          ${colors.map((c,ci) => `<img class="cvar-img" data-ci="${ci}" src="${h(c.image||mainImg)}" alt="${h(p.nom)}" loading="lazy" onerror="this.src='${FALLBACK_IMG}'" style="transform:translateY(${ci===0?'0%':'100%'});">`).join('')}
+        </div>
+        <div class="cvar-dots">${colors.map((c,ci)=>`<div class="cvar-dot${ci===0?' active':''}"></div>`).join('')}</div>
+        ` : `
         <img class="prod-img" id="cimg-${h(p.id)}" src="${h(mainImg)}" alt="${h(p.nom)}" loading="lazy"
              onerror="this.src='${FALLBACK_IMG}'">
+        `}
         <div class="sunburst-overlay" id="sburst-${h(p.id)}"></div>
         <div class="card-hint-3d">👆 Toucher pour agrandir</div>
       </div>
@@ -1087,11 +1117,66 @@ function renderProducts() {
   if (gyroActive) {
     applyGyroToImages(gyroX, gyroY);
   }
+
+  initColorCycles('#prodGrid');
+}
+
+function initColorCycles(containerSelector) {
+  (window._cvarTimers || []).forEach(t => clearInterval(t));
+  window._cvarTimers = [];
+  document.querySelectorAll(containerSelector + ' .cvar-viewport').forEach(vp => {
+    const imgs = Array.from(vp.querySelectorAll('.cvar-img'));
+    if (imgs.length < 2) return;
+    vp._cvarImgs = imgs;
+    vp._cvarIdx = 0;
+    const delay = 2600 + Math.random() * 900;
+    const timer = setInterval(() => advanceColorCycle(vp), delay);
+    window._cvarTimers.push(timer);
+  });
+}
+
+function advanceColorCycle(vp) {
+  const imgs = vp._cvarImgs;
+  if (!imgs || imgs.length < 2) return;
+  const idx  = vp._cvarIdx;
+  const next = (idx + 1) % imgs.length;
+  imgs[idx].style.transition  = 'transform .7s cubic-bezier(.65,0,.35,1)';
+  imgs[idx].style.transform   = 'translateY(-100%)';
+  imgs[next].style.transition = 'transform .7s cubic-bezier(.65,0,.35,1)';
+  imgs[next].style.transform  = 'translateY(0%)';
+  setTimeout(() => {
+    imgs[idx].style.transition = 'none';
+    imgs[idx].style.transform  = 'translateY(100%)';
+  }, 700);
+  vp._cvarIdx = next;
+
+  const card = vp.closest('.prod-card');
+  if (card) {
+    const dots = card.querySelectorAll('.cvar-dot');
+    dots.forEach((d,i) => d.classList.toggle('active', i===next));
+    card.querySelectorAll('.color-swatch').forEach((s,i) => s.classList.toggle('active', i===next));
+  }
+}
+
+function jumpToColor(vp, targetIdx) {
+  const imgs = vp._cvarImgs;
+  if (!imgs) return;
+  imgs.forEach((img,i) => {
+    img.style.transition = 'none';
+    img.style.transform  = i===targetIdx ? 'translateY(0%)' : 'translateY(100%)';
+  });
+  vp._cvarIdx = targetIdx;
 }
 
 function swatchCard(sw, prodId, ci) {
   const card = sw.closest('.prod-card');
   card.querySelectorAll('.color-swatch').forEach((s,i) => s.classList.toggle('active', i===ci));
+  const vp = card.querySelector('.cvar-viewport');
+  if (vp) {
+    jumpToColor(vp, ci);
+    card.querySelectorAll('.cvar-dot').forEach((d,i) => d.classList.toggle('active', i===ci));
+    return;
+  }
   const idx = parseInt(card.dataset.idx);
   const p   = currentList[idx];
   if (!p) return;
@@ -1458,9 +1543,21 @@ function renderSearchResults(list, q) {
         + '</div></div>';
     }
 
+    var imgZoneHTML;
+    if (colors.length > 1) {
+      imgZoneHTML = '<div class="cvar-viewport prod-img" data-pid="' + h(p.id) + '">'
+        + colors.map(function(c,ci){
+            return '<img class="cvar-img" data-ci="' + ci + '" src="' + h(c.image||mainImg) + '" alt="' + h(p.nom) + '" loading="lazy" onerror="this.src=\'' + FALLBACK_IMG + '\'" style="transform:translateY(' + (ci===0?'0%':'100%') + ');">';
+          }).join('')
+        + '</div>'
+        + '<div class="cvar-dots">' + colors.map(function(c,ci){ return '<div class="cvar-dot' + (ci===0?' active':'') + '"></div>'; }).join('') + '</div>';
+    } else {
+      imgZoneHTML = '<img class="prod-img" id="cimg-' + h(p.id) + '" src="' + h(mainImg) + '" alt="' + h(p.nom) + '" loading="lazy" onerror="this.src=\'' + FALLBACK_IMG + '\'">';
+    }
+
     return '<div class="prod-card" data-idx="' + i + '" style="animation-delay:' + (i*.06) + 's" onclick="openModal(' + i + ')">'
       + '<div class="prod-img-zone">'
-      + '<img class="prod-img" id="cimg-' + h(p.id) + '" src="' + h(mainImg) + '" alt="' + h(p.nom) + '" loading="lazy" onerror="this.src=\'' + FALLBACK_IMG + '\'">'
+      + imgZoneHTML
       + '<div class="sunburst-overlay"></div>'
       + '<div class="card-hint-3d">👆 Toucher pour agrandir</div>'
       + '</div>'
@@ -1476,6 +1573,8 @@ function renderSearchResults(list, q) {
   }).join('');
 
   if (gyroActive) applyGyroToImages(gyroX, gyroY);
+
+  initColorCycles('#searchGrid');
 }
 
 function askProductWA(prodName) {
