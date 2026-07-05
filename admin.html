@@ -340,6 +340,7 @@ input[type=range]{width:100%;accent-color:var(--or);cursor:pointer;}
     <div class="card-title">📦 Produits en ligne <span class="prod-count" id="prodCountBadge">0</span></div>
     <div id="st-list" class="status"></div>
     <button class="btn-gold" onclick="loadProducts()" style="margin-bottom:1rem;">↻ Actualiser</button>
+    <button class="btn-gold" onclick="optimizeImageStorage()" style="margin-bottom:1rem;background:rgba(201,168,76,.15);color:var(--or-l);border:1px solid var(--bord);">🧹 Optimiser le stockage des images</button>
     <div id="prodList"><div class="empty-list">Configurez GitHub dans ⚙ Config.</div></div>
   </div>
 </div>
@@ -513,26 +514,98 @@ function saveConfig(){
 const BRANCH='main', FILE='produits.json';
 const apiURL  = ()=>`https://api.github.com/repos/${cfg.user}/${cfg.repo}/contents/${FILE}`;
 const ghH     = ()=>({'Authorization':'token '+cfg.token,'Content-Type':'application/json','Accept':'application/vnd.github+json'});
+
+/* ============================================================
+   HÉBERGEMENT DES IMAGES — évite de gonfler produits.json
+   Les photos envoyées depuis l'appareil (base64) sont uploadées
+   comme de vrais fichiers dans le dépôt (dossier images/), et
+   seul un lien léger est stocké dans produits.json.
+   ============================================================ */
+async function uploadImageToGitHub(dataUri, hint){
+  if(!dataUri || typeof dataUri !== 'string' || !dataUri.startsWith('data:')) return dataUri || '';
+  const match = dataUri.match(/^data:(image\/[a-zA-Z0-9.+-]+);base64,([\s\S]*)$/);
+  if(!match) return dataUri;
+  let ext = match[1].split('/')[1].toLowerCase();
+  if(ext === 'jpeg') ext = 'jpg';
+  if(ext === 'svg+xml') ext = 'svg';
+  const base64Data = match[2];
+  const safeHint = String(hint||'img').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-zA-Z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,40) || 'img';
+  const filename = `images/${Date.now()}-${Math.random().toString(36).slice(2,8)}-${safeHint}.${ext}`;
+  const body = { message: `🖼 Image : ${filename}`, content: base64Data, branch: BRANCH };
+  const r = await fetch(`https://api.github.com/repos/${cfg.user}/${cfg.repo}/contents/${filename}`, {
+    method: 'PUT', headers: ghH(), body: JSON.stringify(body), cache: 'no-store'
+  });
+  if(!r.ok){ const e = await r.json().catch(()=>({})); throw new Error(e.message || 'Erreur upload image'); }
+  const data = await r.json();
+  return (data.content && data.content.download_url) || `https://raw.githubusercontent.com/${cfg.user}/${cfg.repo}/${BRANCH}/${filename}`;
+}
+
+async function uploadAllProductImages(np, onProgress){
+  const total = 4 + (Array.isArray(np.couleurs) ? np.couleurs.length * 4 : 0);
+  let done = 0;
+  const tick = () => { done++; if(onProgress) onProgress(done, total); };
+
+  np.image      = await uploadImageToGitHub(np.image, np.nom+'-principal');       tick();
+  np.img_gauche = await uploadImageToGitHub(np.img_gauche, np.nom+'-gauche');      tick();
+  np.img_droit  = await uploadImageToGitHub(np.img_droit, np.nom+'-droit');        tick();
+  np.img_dos    = await uploadImageToGitHub(np.img_dos, np.nom+'-dos');            tick();
+
+  if(Array.isArray(np.couleurs)){
+    for(const c of np.couleurs){
+      const base = np.nom+'-'+(c.nom||'couleur');
+      c.image      = await uploadImageToGitHub(c.image, base);           tick();
+      c.img_gauche = await uploadImageToGitHub(c.img_gauche, base+'-g'); tick();
+      c.img_droit  = await uploadImageToGitHub(c.img_droit, base+'-d');  tick();
+      c.img_dos    = await uploadImageToGitHub(c.img_dos, base+'-dos'); tick();
+    }
+  }
+  return np;
+}
 async function getFile(){
   const r = await fetch(apiURL()+'?ref='+BRANCH+'&_ts='+Date.now(), {headers:ghH(), cache:'no-store'});
   if(r.status===404) return {sha:null, products:[], repaired:false};
   if(!r.ok) throw new Error('GitHub '+r.status);
   const d = await r.json();
+  const sha = d.sha;
+
+  function toArray(text){
+    if(!text || !text.trim()) return [];
+    const parsed = JSON.parse(text);
+    return Array.isArray(parsed) ? parsed : [];
+  }
+
   let products = [];
   let repaired = false;
+
+  // 1) Lecture directe du fichier brut (fiable même si le fichier dépasse 1 Mo,
+  //    limite de l'API GitHub pour le champ "content" encodé en base64).
+  //    C'est la même méthode que la page client, qui fonctionne toujours.
   try{
-    const raw = d.content ? atob(d.content.replace(/\n/g,'')) : '';
-    if(raw && raw.trim()){
-      const parsed = JSON.parse(raw);
-      products = Array.isArray(parsed) ? parsed : [];
-      if(!Array.isArray(parsed)) repaired = true;
+    const rawUrl = d.download_url || `https://raw.githubusercontent.com/${cfg.user}/${cfg.repo}/${BRANCH}/${FILE}`;
+    const sep = rawUrl.includes('?') ? '&' : '?';
+    const rawR = await fetch(rawUrl + sep + '_ts=' + Date.now(), {cache:'no-store'});
+    if(rawR.ok){
+      products = toArray(await rawR.text());
+    }else{
+      throw new Error('raw fetch failed: '+rawR.status);
     }
-  }catch(e){
-    console.warn('produits.json vide ou invalide — réinitialisation automatique.', e);
-    products = [];
-    repaired = true;
+  }catch(e1){
+    // 2) Repli sur le contenu encodé en base64 fourni par l'API (fonctionne pour les petits fichiers)
+    try{
+      if(d.content){
+        products = toArray(atob(d.content.replace(/\n/g,'')));
+      }else{
+        products = [];
+        repaired = true;
+      }
+    }catch(e2){
+      console.warn('produits.json illisible par les deux méthodes — réinitialisation automatique.', e1, e2);
+      products = [];
+      repaired = true;
+    }
   }
-  return {sha:d.sha, products, repaired};
+
+  return {sha, products, repaired};
 }
 async function commitFile(products, sha, msg){
   const content = btoa(unescape(encodeURIComponent(JSON.stringify(products,null,2))));
@@ -578,7 +651,17 @@ async function addProduct(){
   const flashFin=document.getElementById('fFlashFin').value, flashRed=parseFloat(document.getElementById('fFlashReduction').value)||0;
   const description=document.getElementById('fDescription').value.trim();
   const np={id:Date.now().toString(),nom,prix,categorie:cat,genre,image:img,description,img_gauche:document.getElementById('fImgGauche').value.trim()||'',img_droit:document.getElementById('fImgDroit').value.trim()||'',img_dos:document.getElementById('fImgDos').value.trim()||'',halo_cadran:document.getElementById('fHalo').value,is_patron:document.getElementById('fPatron').checked,moods,flash_fin:flashFin?new Date(flashFin).toISOString():'',flash_reduction:flashFin?flashRed:0,couleurs:pendingColors,createdAt:new Date().toISOString()};
-  try{ const {sha,products}=await getFile(); await commitFile([...products,np],sha,`✨ Ajout : ${nom}`); prods=[...products,np]; renderList(); showSt('add','ok',`✓ "${nom}" publié !`); clearForm(); }
+  try{
+    await uploadAllProductImages(np, (done,total)=>{
+      showSt('add','load', `⌛ Envoi des photos… (${done}/${total})`);
+      btn.innerHTML = `<span class="mini-loader"></span>Envoi photos ${done}/${total}…`;
+    });
+    showSt('add','load','⌛ Publication du produit…');
+    btn.innerHTML = '<span class="mini-loader"></span>Publication…';
+    const {sha,products}=await getFile();
+    await commitFile([...products,np],sha,`✨ Ajout : ${nom}`);
+    prods=[...products,np]; renderList(); showSt('add','ok',`✓ "${nom}" publié !`); clearForm();
+  }
   catch(e){ showSt('add','err','Erreur : '+e.message); }
   finally{ btn.disabled=false; btn.textContent='Publier sur GitHub'; }
 }
@@ -616,6 +699,43 @@ async function saveDescription(){
     btn.disabled=false; btn.innerHTML='✓ Enregistrer';
   }
 }
+function countBase64Fields(p){
+  let n = 0;
+  const isB64 = v => typeof v === 'string' && v.startsWith('data:');
+  ['image','img_gauche','img_droit','img_dos'].forEach(k=>{ if(isB64(p[k])) n++; });
+  if(Array.isArray(p.couleurs)) p.couleurs.forEach(c=>{
+    ['image','img_gauche','img_droit','img_dos'].forEach(k=>{ if(isB64(c[k])) n++; });
+  });
+  return n;
+}
+
+async function optimizeImageStorage(){
+  if(!cfg.token){ showSt('list','err','Configurez GitHub d\'abord.'); return; }
+  showSt('list','load','⌛ Analyse du fichier…');
+  try{
+    const {sha, products} = await getFile();
+    const toFix = products.filter(p => countBase64Fields(p) > 0);
+    if(!toFix.length){
+      showSt('list','ok','✓ Rien à optimiser — toutes les images sont déjà hébergées séparément.');
+      return;
+    }
+    let doneProducts = 0;
+    for(const p of toFix){
+      showSt('list','load', `⌛ Optimisation "${p.nom}"… (${doneProducts+1}/${toFix.length})`);
+      await uploadAllProductImages(p, (done,total)=>{
+        showSt('list','load', `⌛ "${p.nom}" — envoi photo ${done}/${total}…`);
+      });
+      doneProducts++;
+    }
+    await commitFile(products, sha, `🧹 Optimisation images (${toFix.length} produit(s))`);
+    prods = products;
+    renderList();
+    showSt('list','ok', `✓ ${toFix.length} produit(s) optimisé(s) — fichier allégé !`);
+  }catch(e){
+    showSt('list','err','Erreur : '+e.message);
+  }
+}
+
 async function deleteProduct(idx){
   const p=prods[idx]; if(!confirm(`Supprimer "${p.nom}" ?`)) return;
   showSt('list','load','⌛ Suppression…');
