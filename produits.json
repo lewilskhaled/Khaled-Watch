@@ -150,5 +150,41 @@
       }
     ],
     "createdAt": "2026-07-05T22:29:23.109Z"
+  },
+  {
+    "id": "1783292448491",
+    "nom": "Poedagar",
+    "prix": 12000,
+    "categorie": "Montres",
+    "genre": "Femme",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783292451586-nlmvee-Poedagar-principal.png",
+    "description": "Viens maitriser ton temps lady 👌🏽✨",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "or",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [
+      {
+        "nom": "Vert émeraude",
+        "hex": "#319694",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783292451656-afp56w-Poedagar-Vert-emeraude.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Rose",
+        "hex": "#e693ec",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783292451704-ht57px-Poedagar-Rose.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      }
+    ],
+    "createdAt": "2026-07-05T23:00:48.491Z"
   }
 ]
