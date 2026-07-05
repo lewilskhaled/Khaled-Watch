@@ -186,5 +186,65 @@
       }
     ],
     "createdAt": "2026-07-05T23:00:48.491Z"
+  },
+  {
+    "id": "1783295268672",
+    "nom": "Richard Mille",
+    "prix": 10000,
+    "categorie": "Montres",
+    "genre": "Homme",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783295272167-hj8mj5-Richard-Mille-principal.png",
+    "description": "Venez faire parler votre poignet avec cette masterclass",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "or",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [
+      {
+        "nom": "Noir",
+        "hex": "#1d1d1b",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783295272223-bd8hjn-Richard-Mille-Noir.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Rouge",
+        "hex": "#a10c23",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783295272275-shetgj-Richard-Mille-Rouge.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Bleu",
+        "hex": "#06288e",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783295272340-en1jem-Richard-Mille-Bleu.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Bleu ciel",
+        "hex": "#78a9dd",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783295272366-ggllii-Richard-Mille-Bleu-ciel.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Vert Blanc",
+        "hex": "#0a8f51",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783295272432-0apwpt-Richard-Mille-Vert-Blanc.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      }
+    ],
+    "createdAt": "2026-07-05T23:47:48.672Z"
   }
 ]
