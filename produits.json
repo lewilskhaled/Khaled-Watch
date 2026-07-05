@@ -90,5 +90,65 @@
       }
     ],
     "createdAt": "2026-07-05T19:42:03.969Z"
+  },
+  {
+    "id": "1783290563109",
+    "nom": "Poedagar",
+    "prix": 12000,
+    "categorie": "Montres",
+    "genre": "Homme",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783290564832-vomfb6-Poedagar-principal.png",
+    "description": "L'exclusivité se porte au poignet ✨🫳🏽",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "or",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [
+      {
+        "nom": "Blanc-Bleu",
+        "hex": "#0d1330",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783290564849-yhdal6-Poedagar-Blanc-Bleu.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Doré Bleu",
+        "hex": "#0d1330",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783290564892-3gbc49-Poedagar-Dore-Bleu.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Blanc",
+        "hex": "#d1d2d6",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783290564914-ozzqra-Poedagar-Blanc.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Blanc Noir",
+        "hex": "#252627",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783290564939-sql4ba-Poedagar-Blanc-Noir.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Vert émeraude",
+        "hex": "#319694",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783290564976-3qh7db-Poedagar-Vert-emeraude.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      }
+    ],
+    "createdAt": "2026-07-05T22:29:23.109Z"
   }
 ]
