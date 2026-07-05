@@ -517,49 +517,96 @@ const ghH     = ()=>({'Authorization':'token '+cfg.token,'Content-Type':'applica
 
 /* ============================================================
    HÉBERGEMENT DES IMAGES — évite de gonfler produits.json
-   Les photos envoyées depuis l'appareil (base64) sont uploadées
-   comme de vrais fichiers dans le dépôt (dossier images/), et
-   seul un lien léger est stocké dans produits.json.
+   ET publication en UN SEUL COMMIT (donc UN SEUL déploiement
+   GitHub Pages), pour ne plus jamais déclencher plusieurs
+   déploiements qui s'annulent entre eux ("Run failed").
    ============================================================ */
-async function uploadImageToGitHub(dataUri, hint){
-  if(!dataUri || typeof dataUri !== 'string' || !dataUri.startsWith('data:')) return dataUri || '';
-  const match = dataUri.match(/^data:(image\/[a-zA-Z0-9.+-]+);base64,([\s\S]*)$/);
-  if(!match) return dataUri;
-  let ext = match[1].split('/')[1].toLowerCase();
-  if(ext === 'jpeg') ext = 'jpg';
-  if(ext === 'svg+xml') ext = 'svg';
-  const base64Data = match[2];
-  const safeHint = String(hint||'img').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-zA-Z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,40) || 'img';
-  const filename = `images/${Date.now()}-${Math.random().toString(36).slice(2,8)}-${safeHint}.${ext}`;
-  const body = { message: `🖼 Image : ${filename}`, content: base64Data, branch: BRANCH };
-  const r = await fetch(`https://api.github.com/repos/${cfg.user}/${cfg.repo}/contents/${filename}`, {
-    method: 'PUT', headers: ghH(), body: JSON.stringify(body), cache: 'no-store'
+async function ghApi(path, opts={}){
+  const r = await fetch(`https://api.github.com/repos/${cfg.user}/${cfg.repo}${path}`, {
+    headers: ghH(), cache: 'no-store', ...opts
   });
-  if(!r.ok){ const e = await r.json().catch(()=>({})); throw new Error(e.message || 'Erreur upload image'); }
-  const data = await r.json();
-  return (data.content && data.content.download_url) || `https://raw.githubusercontent.com/${cfg.user}/${cfg.repo}/${BRANCH}/${filename}`;
+  if(!r.ok){ const e = await r.json().catch(()=>({})); throw new Error(e.message || ('GitHub '+r.status)); }
+  return r.json();
+}
+async function getBranchRefSha(){
+  const ref = await ghApi(`/git/ref/heads/${BRANCH}`);
+  return ref.object.sha;
+}
+async function createBlob(base64Content){
+  const data = await ghApi(`/git/blobs`, { method:'POST', body: JSON.stringify({content: base64Content, encoding:'base64'}) });
+  return data.sha;
+}
+async function createTree(baseTreeSha, items){
+  const data = await ghApi(`/git/trees`, { method:'POST', body: JSON.stringify({base_tree: baseTreeSha, tree: items}) });
+  return data.sha;
+}
+async function createCommit(message, treeSha, parentSha){
+  const data = await ghApi(`/git/commits`, { method:'POST', body: JSON.stringify({message, tree: treeSha, parents:[parentSha]}) });
+  return data.sha;
+}
+async function updateBranchRef(newCommitSha){
+  return ghApi(`/git/refs/heads/${BRANCH}`, { method:'PATCH', body: JSON.stringify({sha:newCommitSha, force:false}) });
 }
 
-async function uploadAllProductImages(np, onProgress){
-  const total = 4 + (Array.isArray(np.couleurs) ? np.couleurs.length * 4 : 0);
-  let done = 0;
-  const tick = () => { done++; if(onProgress) onProgress(done, total); };
+/**
+ * Publie plusieurs fichiers (images + JSON) en un seul commit atomique.
+ * fileChanges: [{ path, content, isBase64 }]
+ */
+async function publishSingleCommit(message, fileChanges){
+  const parentSha  = await getBranchRefSha();
+  const parentInfo = await ghApi(`/git/commits/${parentSha}`);
+  const baseTreeSha = parentInfo.tree.sha;
 
-  np.image      = await uploadImageToGitHub(np.image, np.nom+'-principal');       tick();
-  np.img_gauche = await uploadImageToGitHub(np.img_gauche, np.nom+'-gauche');      tick();
-  np.img_droit  = await uploadImageToGitHub(np.img_droit, np.nom+'-droit');        tick();
-  np.img_dos    = await uploadImageToGitHub(np.img_dos, np.nom+'-dos');            tick();
+  const treeItems = [];
+  for(const f of fileChanges){
+    const b64 = f.isBase64 ? f.content : btoa(unescape(encodeURIComponent(f.content)));
+    const blobSha = await createBlob(b64);
+    treeItems.push({ path: f.path, mode: '100644', type: 'blob', sha: blobSha });
+  }
 
-  if(Array.isArray(np.couleurs)){
-    for(const c of np.couleurs){
-      const base = np.nom+'-'+(c.nom||'couleur');
-      c.image      = await uploadImageToGitHub(c.image, base);           tick();
-      c.img_gauche = await uploadImageToGitHub(c.img_gauche, base+'-g'); tick();
-      c.img_droit  = await uploadImageToGitHub(c.img_droit, base+'-d');  tick();
-      c.img_dos    = await uploadImageToGitHub(c.img_dos, base+'-dos'); tick();
+  const newTreeSha   = await createTree(baseTreeSha, treeItems);
+  const newCommitSha = await createCommit(message, newTreeSha, parentSha);
+  await updateBranchRef(newCommitSha);
+  return newCommitSha;
+}
+
+/**
+ * Repère les champs image en base64 d'un produit, prépare leur upload
+ * en tant que fichiers séparés (chemin prévisible calculé à l'avance),
+ * et remplace directement les champs par l'URL finale.
+ * Retourne la liste des fichiers à inclure dans le commit atomique.
+ */
+function planImageUploads(np){
+  const fileChanges = [];
+  function planField(getVal, setVal, hint){
+    const val = getVal();
+    if(typeof val === 'string' && val.startsWith('data:')){
+      const match = val.match(/^data:(image\/[a-zA-Z0-9.+-]+);base64,([\s\S]*)$/);
+      if(match){
+        let ext = match[1].split('/')[1].toLowerCase();
+        if(ext === 'jpeg') ext = 'jpg';
+        if(ext === 'svg+xml') ext = 'svg';
+        const safeHint = String(hint||'img').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-zA-Z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,40) || 'img';
+        const path = `images/${Date.now()}-${Math.random().toString(36).slice(2,8)}-${safeHint}.${ext}`;
+        fileChanges.push({ path, content: match[2], isBase64:true });
+        setVal(`https://raw.githubusercontent.com/${cfg.user}/${cfg.repo}/${BRANCH}/${path}`);
+      }
     }
   }
-  return np;
+  planField(()=>np.image, v=>np.image=v, np.nom+'-principal');
+  planField(()=>np.img_gauche, v=>np.img_gauche=v, np.nom+'-gauche');
+  planField(()=>np.img_droit, v=>np.img_droit=v, np.nom+'-droit');
+  planField(()=>np.img_dos, v=>np.img_dos=v, np.nom+'-dos');
+  if(Array.isArray(np.couleurs)){
+    np.couleurs.forEach(c=>{
+      const base = np.nom+'-'+(c.nom||'couleur');
+      planField(()=>c.image, v=>c.image=v, base);
+      planField(()=>c.img_gauche, v=>c.img_gauche=v, base+'-g');
+      planField(()=>c.img_droit, v=>c.img_droit=v, base+'-d');
+      planField(()=>c.img_dos, v=>c.img_dos=v, base+'-dos');
+    });
+  }
+  return fileChanges;
 }
 async function getFile(){
   const r = await fetch(apiURL()+'?ref='+BRANCH+'&_ts='+Date.now(), {headers:ghH(), cache:'no-store'});
@@ -652,15 +699,15 @@ async function addProduct(){
   const description=document.getElementById('fDescription').value.trim();
   const np={id:Date.now().toString(),nom,prix,categorie:cat,genre,image:img,description,img_gauche:document.getElementById('fImgGauche').value.trim()||'',img_droit:document.getElementById('fImgDroit').value.trim()||'',img_dos:document.getElementById('fImgDos').value.trim()||'',halo_cadran:document.getElementById('fHalo').value,is_patron:document.getElementById('fPatron').checked,moods,flash_fin:flashFin?new Date(flashFin).toISOString():'',flash_reduction:flashFin?flashRed:0,couleurs:pendingColors,createdAt:new Date().toISOString()};
   try{
-    await uploadAllProductImages(np, (done,total)=>{
-      showSt('add','load', `⌛ Envoi des photos… (${done}/${total})`);
-      btn.innerHTML = `<span class="mini-loader"></span>Envoi photos ${done}/${total}…`;
-    });
-    showSt('add','load','⌛ Publication du produit…');
+    showSt('add','load','⌛ Préparation des images…');
+    const {products} = await getFile();
+    const imgChanges = planImageUploads(np);
+    const updatedProducts = [...products, np];
+    const jsonChange = { path: FILE, content: JSON.stringify(updatedProducts, null, 2), isBase64:false };
+    showSt('add','load', `⌛ Publication en 1 seul commit (${imgChanges.length} image(s))…`);
     btn.innerHTML = '<span class="mini-loader"></span>Publication…';
-    const {sha,products}=await getFile();
-    await commitFile([...products,np],sha,`✨ Ajout : ${nom}`);
-    prods=[...products,np]; renderList(); showSt('add','ok',`✓ "${nom}" publié !`); clearForm();
+    await publishSingleCommit(`✨ Ajout : ${nom}`, [...imgChanges, jsonChange]);
+    prods = updatedProducts; renderList(); showSt('add','ok',`✓ "${nom}" publié en un seul commit !`); clearForm();
   }
   catch(e){ showSt('add','err','Erreur : '+e.message); }
   finally{ btn.disabled=false; btn.textContent='Publier sur GitHub'; }
@@ -713,24 +760,21 @@ async function optimizeImageStorage(){
   if(!cfg.token){ showSt('list','err','Configurez GitHub d\'abord.'); return; }
   showSt('list','load','⌛ Analyse du fichier…');
   try{
-    const {sha, products} = await getFile();
+    const {products} = await getFile();
     const toFix = products.filter(p => countBase64Fields(p) > 0);
     if(!toFix.length){
       showSt('list','ok','✓ Rien à optimiser — toutes les images sont déjà hébergées séparément.');
       return;
     }
-    let doneProducts = 0;
-    for(const p of toFix){
-      showSt('list','load', `⌛ Optimisation "${p.nom}"… (${doneProducts+1}/${toFix.length})`);
-      await uploadAllProductImages(p, (done,total)=>{
-        showSt('list','load', `⌛ "${p.nom}" — envoi photo ${done}/${total}…`);
-      });
-      doneProducts++;
-    }
-    await commitFile(products, sha, `🧹 Optimisation images (${toFix.length} produit(s))`);
+    showSt('list','load', `⌛ Préparation de ${toFix.length} produit(s)…`);
+    let allImgChanges = [];
+    toFix.forEach(p=>{ allImgChanges = allImgChanges.concat(planImageUploads(p)); });
+    const jsonChange = { path: FILE, content: JSON.stringify(products, null, 2), isBase64:false };
+    showSt('list','load', `⌛ Publication en 1 seul commit (${allImgChanges.length} image(s))…`);
+    await publishSingleCommit(`🧹 Optimisation images (${toFix.length} produit(s))`, [...allImgChanges, jsonChange]);
     prods = products;
     renderList();
-    showSt('list','ok', `✓ ${toFix.length} produit(s) optimisé(s) — fichier allégé !`);
+    showSt('list','ok', `✓ ${toFix.length} produit(s) optimisé(s) en 1 seul commit !`);
   }catch(e){
     showSt('list','err','Erreur : '+e.message);
   }
