@@ -514,7 +514,7 @@ const BRANCH='main', FILE='produits.json';
 const apiURL  = ()=>`https://api.github.com/repos/${cfg.user}/${cfg.repo}/contents/${FILE}`;
 const ghH     = ()=>({'Authorization':'token '+cfg.token,'Content-Type':'application/json','Accept':'application/vnd.github+json'});
 async function getFile(){
-  const r = await fetch(apiURL()+'?ref='+BRANCH, {headers:ghH()});
+  const r = await fetch(apiURL()+'?ref='+BRANCH+'&_ts='+Date.now(), {headers:ghH(), cache:'no-store'});
   if(r.status===404) return {sha:null, products:[], repaired:false};
   if(!r.ok) throw new Error('GitHub '+r.status);
   const d = await r.json();
@@ -538,7 +538,7 @@ async function commitFile(products, sha, msg){
   const content = btoa(unescape(encodeURIComponent(JSON.stringify(products,null,2))));
   const body = {message:msg, content, branch:BRANCH};
   if(sha) body.sha = sha;
-  const r = await fetch(apiURL(), {method:'PUT', headers:ghH(), body:JSON.stringify(body)});
+  const r = await fetch(apiURL(), {method:'PUT', headers:ghH(), body:JSON.stringify(body), cache:'no-store'});
   if(!r.ok){ const e=await r.json(); throw new Error(e.message||'Erreur GitHub'); }
 }
 let prods = [];
@@ -657,7 +657,7 @@ function generateQR(){
   new QRCode(document.getElementById('qrAdminCanvas'),{text:urlA,width:200,height:200,colorDark:'#9B30FF',colorLight:'#0a0008',correctLevel:QRCode.CorrectLevel.H});
 }
 function telechargerQR(canvasId,filename){const wrap=document.getElementById(canvasId);if(!wrap){alert('Générez d\'abord le QR.');return;} const canvas=wrap.querySelector('canvas'),img=wrap.querySelector('img');let dataURL;if(canvas){dataURL=canvas.toDataURL('image/png');}else if(img){const tmp=document.createElement('canvas');tmp.width=img.naturalWidth||200;tmp.height=img.naturalHeight||200;const ctx=tmp.getContext('2d');ctx.drawImage(img,0,0);dataURL=tmp.toDataURL('image/png');}else{alert('QR introuvable.');return;} const a=document.createElement('a');a.href=dataURL;a.download=filename;a.click();}
-function showTab(t){const TABS=['config','add','list','design','qr'];document.querySelectorAll('.tab').forEach((el,i)=>el.classList.toggle('active',TABS[i]===t));document.querySelectorAll('.section').forEach(el=>el.classList.remove('show'));document.getElementById('sec-'+t).classList.add('show');if(t==='list'&&prods.length===0&&cfg.token)loadProducts();if(t==='qr')generateQR();}
+function showTab(t){const TABS=['config','add','list','design','qr'];document.querySelectorAll('.tab').forEach((el,i)=>el.classList.toggle('active',TABS[i]===t));document.querySelectorAll('.section').forEach(el=>el.classList.remove('show'));document.getElementById('sec-'+t).classList.add('show');if(t==='list'&&cfg.token)loadProducts();if(t==='qr')generateQR();}
 function showSt(id,type,msg){const el=document.getElementById('st-'+id);el.className='status '+type;el.textContent=msg;if(type==='ok')setTimeout(()=>el.style.display='none',4000);}
 function h(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function fmt(n){return Number(n||0).toLocaleString('fr-FR');}
