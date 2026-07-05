@@ -298,7 +298,7 @@ input[type=range]{width:100%;accent-color:var(--or);cursor:pointer;}
     <div class="field"><label>📝 Description du Produit</label><textarea id="fDescription" rows="5" placeholder="Décrivez ce produit : matériaux, finitions, particularités, ce qui le rend unique…" style="resize:vertical;min-height:100px;line-height:1.6;"></textarea><div style="font-size:.58rem;color:var(--gris);margin-top:.35rem;line-height:1.5;">Cette description s'affichera de façon élégante sur la fiche produit du client, sous le prix.</div></div>
     <div class="divider"></div>
     <div class="field"><label>📷 Photo Principale *</label>
-<div class="img-tabs"><button class="img-tab active" onclick="switchImgSrc('url',this,'mainPane')">🔗 URL</button><button class="img-tab" onclick="switchImgSrc('device',this,'mainPane')">📱 Appareil</button></div><div id="mainPane-url"><input type="url" id="fImage" placeholder="https://..." oninput="previewField(this,'prevMain')"></div><div id="mainPane-device" style="display:none;"><div class="drop-zone" onclick="document.getElementById('fileMain').click()"><input type="file" id="fileMain" accept="image/*" onchange="handleFileField(this,'fImage','prevMain')"><div class="drop-txt"><strong>Appuyer pour choisir</strong><br>JPG · PNG · WEBP · max 2 Mo</div></div></div><div class="img-preview-wrap"><img id="prevMain" class="img-preview"></div></div>
+<div class="img-tabs"><button class="img-tab active" onclick="switchImgSrc('url',this,'mainPane')">🔗 URL</button><button class="img-tab" onclick="switchImgSrc('device',this,'mainPane')">📱 Appareil</button></div><div id="mainPane-url"><input type="url" id="fImage" placeholder="https://..." oninput="previewField(this,'prevMain')"></div><div id="mainPane-device" style="display:none;"><div class="drop-zone" onclick="document.getElementById('fileMain').click()"><input type="file" id="fileMain" accept="image/*" onchange="handleFileField(this,'fImage','prevMain')"><div class="drop-txt"><strong>Appuyer pour choisir</strong><br>JPG · PNG · WEBP · compressée automatiquement</div></div></div><div class="img-preview-wrap"><img id="prevMain" class="img-preview"></div></div>
     <div class="card-sub">🔄 <strong>Inspecteur 360°</strong></div>
     <div class="angles-grid">
       <div class="angle-block"><label>⬅ Gauche</label><div class="img-tabs"><button class="img-tab active" onclick="switchImgSrc('url',this,'gPane')">🔗</button><button class="img-tab" onclick="switchImgSrc('device',this,'gPane')">📱</button></div><div id="gPane-url"><input type="url" id="fImgGauche" placeholder="URL profil gauche" oninput="previewField(this,'prevG')"></div><div id="gPane-device" style="display:none;"><div class="drop-zone" onclick="document.getElementById('fileG').click()"><input type="file" id="fileG" accept="image/*" onchange="handleFileField(this,'fImgGauche','prevG')"><div class="drop-txt"><strong>Choisir</strong></div></div></div><div class="img-preview-wrap"><img id="prevG" class="img-preview"></div></div>
@@ -521,6 +521,16 @@ const ghH     = ()=>({'Authorization':'token '+cfg.token,'Content-Type':'applica
    GitHub Pages), pour ne plus jamais déclencher plusieurs
    déploiements qui s'annulent entre eux ("Run failed").
    ============================================================ */
+function utf8ToBase64(str){
+  const bytes = new TextEncoder().encode(str);
+  let binary = '';
+  const chunkSize = 0x8000;
+  for(let i=0;i<bytes.length;i+=chunkSize){
+    binary += String.fromCharCode.apply(null, bytes.subarray(i, i+chunkSize));
+  }
+  return btoa(binary);
+}
+
 async function ghApi(path, opts={}){
   const r = await fetch(`https://api.github.com/repos/${cfg.user}/${cfg.repo}${path}`, {
     headers: ghH(), cache: 'no-store', ...opts
@@ -559,7 +569,7 @@ async function publishSingleCommit(message, fileChanges){
 
   const treeItems = [];
   for(const f of fileChanges){
-    const b64 = f.isBase64 ? f.content : btoa(unescape(encodeURIComponent(f.content)));
+    const b64 = f.isBase64 ? f.content : utf8ToBase64(f.content);
     const blobSha = await createBlob(b64);
     treeItems.push({ path: f.path, mode: '100644', type: 'blob', sha: blobSha });
   }
@@ -576,12 +586,39 @@ async function publishSingleCommit(message, fileChanges){
  * et remplace directement les champs par l'URL finale.
  * Retourne la liste des fichiers à inclure dans le commit atomique.
  */
-function planImageUploads(np){
+function compressDataUri(dataUri, maxDim=1400, jpegQuality=0.85){
+  return new Promise((resolve) => {
+    try{
+      const isPng = /^data:image\/png/i.test(dataUri);
+      const img = new Image();
+      img.onload = () => {
+        let { width, height } = img;
+        if (width > maxDim || height > maxDim) {
+          if (width >= height) { height = Math.round(height * (maxDim / width)); width = maxDim; }
+          else { width = Math.round(width * (maxDim / height)); height = maxDim; }
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = width; canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+        try{
+          const out = isPng ? canvas.toDataURL('image/png') : canvas.toDataURL('image/jpeg', jpegQuality);
+          resolve(out);
+        }catch(e){ resolve(dataUri); } // en cas d'échec, on garde l'original plutôt que de tout casser
+      };
+      img.onerror = () => resolve(dataUri);
+      img.src = dataUri;
+    }catch(e){ resolve(dataUri); }
+  });
+}
+
+async function planImageUploads(np){
   const fileChanges = [];
-  function planField(getVal, setVal, hint){
+  async function planField(getVal, setVal, hint){
     const val = getVal();
     if(typeof val === 'string' && val.startsWith('data:')){
-      const match = val.match(/^data:(image\/[a-zA-Z0-9.+-]+);base64,([\s\S]*)$/);
+      const compressed = await compressDataUri(val);
+      const match = compressed.match(/^data:(image\/[a-zA-Z0-9.+-]+);base64,([\s\S]*)$/);
       if(match){
         let ext = match[1].split('/')[1].toLowerCase();
         if(ext === 'jpeg') ext = 'jpg';
@@ -593,18 +630,18 @@ function planImageUploads(np){
       }
     }
   }
-  planField(()=>np.image, v=>np.image=v, np.nom+'-principal');
-  planField(()=>np.img_gauche, v=>np.img_gauche=v, np.nom+'-gauche');
-  planField(()=>np.img_droit, v=>np.img_droit=v, np.nom+'-droit');
-  planField(()=>np.img_dos, v=>np.img_dos=v, np.nom+'-dos');
+  await planField(()=>np.image, v=>np.image=v, np.nom+'-principal');
+  await planField(()=>np.img_gauche, v=>np.img_gauche=v, np.nom+'-gauche');
+  await planField(()=>np.img_droit, v=>np.img_droit=v, np.nom+'-droit');
+  await planField(()=>np.img_dos, v=>np.img_dos=v, np.nom+'-dos');
   if(Array.isArray(np.couleurs)){
-    np.couleurs.forEach(c=>{
+    for(const c of np.couleurs){
       const base = np.nom+'-'+(c.nom||'couleur');
-      planField(()=>c.image, v=>c.image=v, base);
-      planField(()=>c.img_gauche, v=>c.img_gauche=v, base+'-g');
-      planField(()=>c.img_droit, v=>c.img_droit=v, base+'-d');
-      planField(()=>c.img_dos, v=>c.img_dos=v, base+'-dos');
-    });
+      await planField(()=>c.image, v=>c.image=v, base);
+      await planField(()=>c.img_gauche, v=>c.img_gauche=v, base+'-g');
+      await planField(()=>c.img_droit, v=>c.img_droit=v, base+'-d');
+      await planField(()=>c.img_dos, v=>c.img_dos=v, base+'-dos');
+    }
   }
   return fileChanges;
 }
@@ -623,6 +660,7 @@ async function getFile(){
 
   let products = [];
   let repaired = false;
+  let sizeBytes = 0;
 
   // 1) Lecture directe du fichier brut (fiable même si le fichier dépasse 1 Mo,
   //    limite de l'API GitHub pour le champ "content" encodé en base64).
@@ -632,7 +670,9 @@ async function getFile(){
     const sep = rawUrl.includes('?') ? '&' : '?';
     const rawR = await fetch(rawUrl + sep + '_ts=' + Date.now(), {cache:'no-store'});
     if(rawR.ok){
-      products = toArray(await rawR.text());
+      const text = await rawR.text();
+      sizeBytes = new Blob([text]).size;
+      products = toArray(text);
     }else{
       throw new Error('raw fetch failed: '+rawR.status);
     }
@@ -640,7 +680,9 @@ async function getFile(){
     // 2) Repli sur le contenu encodé en base64 fourni par l'API (fonctionne pour les petits fichiers)
     try{
       if(d.content){
-        products = toArray(atob(d.content.replace(/\n/g,'')));
+        const raw = atob(d.content.replace(/\n/g,''));
+        sizeBytes = new Blob([raw]).size;
+        products = toArray(raw);
       }else{
         products = [];
         repaired = true;
@@ -652,10 +694,10 @@ async function getFile(){
     }
   }
 
-  return {sha, products, repaired};
+  return {sha, products, repaired, sizeBytes};
 }
 async function commitFile(products, sha, msg){
-  const content = btoa(unescape(encodeURIComponent(JSON.stringify(products,null,2))));
+  const content = utf8ToBase64(JSON.stringify(products,null,2));
   const body = {message:msg, content, branch:BRANCH};
   if(sha) body.sha = sha;
   const r = await fetch(apiURL(), {method:'PUT', headers:ghH(), body:JSON.stringify(body), cache:'no-store'});
@@ -666,9 +708,10 @@ async function loadProducts(){
   if(!cfg.token){ showSt('list','err','Configurez GitHub d\'abord.'); return; }
   showSt('list','load','⌛ Chargement…');
   try{
-    const {products, sha, repaired} = await getFile();
+    const {products, sha, repaired, sizeBytes} = await getFile();
     prods = products;
     renderList();
+    const sizeMo = (sizeBytes/1024/1024).toFixed(2);
     if(repaired){
       try{
         await commitFile(prods, sha, '🛠 Réparation automatique de produits.json');
@@ -676,8 +719,10 @@ async function loadProducts(){
       }catch(e2){
         showSt('list','ok', `✓ ${prods.length} produit(s). (Le fichier semblait corrompu, réparation locale appliquée.)`);
       }
+    } else if (sizeBytes > 1024*1024) {
+      showSt('list','err', `⚠ Fichier lourd (${sizeMo} Mo) — ${prods.length} produit(s). Clique sur "🧹 Optimiser le stockage des images" ci-dessous MAINTENANT pour éviter les erreurs.`);
     } else {
-      showSt('list','ok',`✓ ${prods.length} produit(s).`);
+      showSt('list','ok',`✓ ${prods.length} produit(s) · ${sizeMo} Mo`);
     }
   }
   catch(e){ showSt('list','err','Erreur : '+e.message); }
@@ -701,7 +746,7 @@ async function addProduct(){
   try{
     showSt('add','load','⌛ Préparation des images…');
     const {products} = await getFile();
-    const imgChanges = planImageUploads(np);
+    const imgChanges = await planImageUploads(np);
     const updatedProducts = [...products, np];
     const jsonChange = { path: FILE, content: JSON.stringify(updatedProducts, null, 2), isBase64:false };
     showSt('add','load', `⌛ Publication en 1 seul commit (${imgChanges.length} image(s))…`);
@@ -760,21 +805,24 @@ async function optimizeImageStorage(){
   if(!cfg.token){ showSt('list','err','Configurez GitHub d\'abord.'); return; }
   showSt('list','load','⌛ Analyse du fichier…');
   try{
-    const {products} = await getFile();
+    const {products, sizeBytes} = await getFile();
+    const beforeMo = (sizeBytes/1024/1024).toFixed(2);
     const toFix = products.filter(p => countBase64Fields(p) > 0);
     if(!toFix.length){
-      showSt('list','ok','✓ Rien à optimiser — toutes les images sont déjà hébergées séparément.');
+      showSt('list','ok',`✓ Rien à optimiser — toutes les images sont déjà hébergées séparément. (${beforeMo} Mo)`);
       return;
     }
-    showSt('list','load', `⌛ Préparation de ${toFix.length} produit(s)…`);
+    showSt('list','load', `⌛ Préparation de ${toFix.length} produit(s)… (fichier actuel : ${beforeMo} Mo)`);
     let allImgChanges = [];
-    toFix.forEach(p=>{ allImgChanges = allImgChanges.concat(planImageUploads(p)); });
-    const jsonChange = { path: FILE, content: JSON.stringify(products, null, 2), isBase64:false };
+    for(const p of toFix){ allImgChanges = allImgChanges.concat(await planImageUploads(p)); }
+    const jsonText = JSON.stringify(products, null, 2);
+    const afterMo = (new Blob([jsonText]).size/1024/1024).toFixed(2);
+    const jsonChange = { path: FILE, content: jsonText, isBase64:false };
     showSt('list','load', `⌛ Publication en 1 seul commit (${allImgChanges.length} image(s))…`);
     await publishSingleCommit(`🧹 Optimisation images (${toFix.length} produit(s))`, [...allImgChanges, jsonChange]);
     prods = products;
     renderList();
-    showSt('list','ok', `✓ ${toFix.length} produit(s) optimisé(s) en 1 seul commit !`);
+    showSt('list','ok', `✓ ${toFix.length} produit(s) optimisé(s) en 1 seul commit ! Fichier : ${beforeMo} Mo → ${afterMo} Mo`);
   }catch(e){
     showSt('list','err','Erreur : '+e.message);
   }
@@ -788,7 +836,65 @@ async function deleteProduct(idx){
 }
 function switchImgSrc(mode,btn,paneName){ btn.closest('.img-tabs').querySelectorAll('.img-tab').forEach(t=>t.classList.remove('active')); btn.classList.add('active'); document.getElementById(paneName+'-url').style.display=mode==='url'?'block':'none'; document.getElementById(paneName+'-device').style.display=mode==='device'?'block':'none'; }
 function previewField(input,previewId){ const img=document.getElementById(previewId); if(!input.value){img.style.display='none';return;} img.src=input.value; img.style.display='block'; img.onerror=()=>{img.style.display='none';}; }
-function handleFileField(input,fieldId,previewId){ const file=input.files[0]; if(!file)return; if(file.size>2*1024*1024){alert('⚠ Image max 2 Mo.');return;} const reader=new FileReader(); reader.onload=e=>{document.getElementById(fieldId).value=e.target.result; const img=document.getElementById(previewId); img.src=e.target.result; img.style.display='block';}; reader.readAsDataURL(file); }
+/* ============================================================
+   COMPRESSION AUTOMATIQUE DES IMAGES
+   Redimensionne et compresse chaque photo avant de la stocker,
+   pour que produits.json ne redevienne jamais énorme.
+   Préserve la transparence (fond détouré) en sortant du PNG
+   quand l'image en contient, sinon JPEG pour un poids minimal.
+   ============================================================ */
+function compressImageFile(file, maxDim=1400, jpegQuality=0.85){
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      let { width, height } = img;
+      if (width > maxDim || height > maxDim) {
+        if (width >= height) { height = Math.round(height * (maxDim / width)); width = maxDim; }
+        else { width = Math.round(width * (maxDim / height)); height = maxDim; }
+      }
+      const canvas = document.createElement('canvas');
+      canvas.width = width; canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, width, height);
+
+      const isPng = /image\/png/i.test(file.type);
+      if (isPng) {
+        // Garde le PNG pour préserver la transparence (fond détouré)
+        canvas.toBlob(blob => {
+          if (!blob) return reject(new Error('Compression échouée'));
+          const reader = new FileReader();
+          reader.onload = e => resolve(e.target.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(blob);
+        }, 'image/png');
+      } else {
+        canvas.toBlob(blob => {
+          if (!blob) return reject(new Error('Compression échouée'));
+          const reader = new FileReader();
+          reader.onload = e => resolve(e.target.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(blob);
+        }, 'image/jpeg', jpegQuality);
+      }
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('Image illisible')); };
+    img.src = url;
+  });
+}
+
+function handleFileField(input,fieldId,previewId){
+  const file=input.files[0]; if(!file)return;
+  if(file.size>15*1024*1024){alert('⚠ Image trop lourde (max 15 Mo avant compression).');return;}
+  const img=document.getElementById(previewId);
+  compressImageFile(file).then(dataUri=>{
+    document.getElementById(fieldId).value = dataUri;
+    img.src = dataUri; img.style.display='block';
+  }).catch(()=>{
+    alert('⚠ Impossible de compresser cette image, essayez-en une autre.');
+  });
+}
 function toggleMood(el,mood){ el.classList.toggle('active'); el.dataset.mood=mood; }
 let pendingColors=[];
 document.getElementById('cHex').addEventListener('input',e=>{document.getElementById('cHexVal').textContent=e.target.value;});
