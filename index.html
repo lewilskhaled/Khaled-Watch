@@ -977,11 +977,43 @@ function initVideoBg() {
 /* ============================================================
    PRODUITS
    ============================================================ */
+function normalizeProduct(p){
+  p = p || {};
+  const couleurs = Array.isArray(p.couleurs) ? p.couleurs.map(c => ({
+    nom: c.nom || '',
+    hex: c.hex || '#C9A84C',
+    image: c.image || '',
+    img_gauche: c.img_gauche || '',
+    img_droit: c.img_droit || '',
+    img_dos: c.img_dos || ''
+  })) : [];
+  return {
+    id: p.id || p.identifiant || String(p.createdAt || Date.now() + Math.random()),
+    nom: p.nom || '',
+    prix: p.prix != null ? p.prix : 0,
+    categorie: p.categorie || p['catégorie'] || '',
+    genre: p.genre || '',
+    image: p.image || '',
+    description: p.description || '',
+    img_gauche: p.img_gauche || '',
+    img_droit: p.img_droit || '',
+    img_dos: p.img_dos || '',
+    halo_cadran: p.halo_cadran || 'or',
+    is_patron: p.is_patron !== undefined ? p.is_patron : (p.est_patron || false),
+    moods: p.moods || p.humeurs || [],
+    flash_fin: p.flash_fin || '',
+    flash_reduction: p.flash_reduction !== undefined ? p.flash_reduction : (p['réduction du flash'] !== undefined ? p['réduction du flash'] : 0),
+    couleurs,
+    createdAt: p.createdAt || new Date().toISOString()
+  };
+}
+
 async function loadProducts() {
   try {
     const r = await fetch('produits.json?t=' + Date.now());
     if (!r.ok) throw 0;
-    allProducts = await r.json();
+    const raw = await r.json();
+    allProducts = Array.isArray(raw) ? raw.map(normalizeProduct) : [];
   } catch { allProducts = []; }
   updateCounts();
 }
