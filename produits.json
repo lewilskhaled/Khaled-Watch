@@ -246,5 +246,49 @@
       }
     ],
     "createdAt": "2026-07-05T23:47:48.672Z"
+  },
+  {
+    "id": "1783299591775",
+    "nom": "Poedagar",
+    "prix": 12000,
+    "categorie": "Montres",
+    "genre": "Femme",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783299594482-hkrye7-Poedagar-principal.png",
+    "description": "Conçu pour les femmes passionnée de l'élégance 🛍️🤌🏽",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "or",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [
+      {
+        "nom": "Rouge",
+        "hex": "#a40434",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783299594528-hzlv78-Poedagar-Rouge.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Doré",
+        "hex": "#9d6d58",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783299594595-8shqs3-Poedagar-Dore.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Blanc Doré",
+        "hex": "#f4f1f0",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783299594619-s0hvyb-Poedagar-Blanc-Dore.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      }
+    ],
+    "createdAt": "2026-07-06T00:59:51.775Z"
   }
 ]
