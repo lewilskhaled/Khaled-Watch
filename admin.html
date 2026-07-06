@@ -614,10 +614,13 @@ function compressDataUri(dataUri, maxDim=1400, jpegQuality=0.85){
 
 async function planImageUploads(np){
   const fileChanges = [];
+  const isCollier = np.categorie === 'Colliers';
+  const maxDim = isCollier ? 2200 : 1400;
+  const quality = isCollier ? 0.95 : 0.85;
   async function planField(getVal, setVal, hint){
     const val = getVal();
     if(typeof val === 'string' && val.startsWith('data:')){
-      const compressed = await compressDataUri(val);
+      const compressed = await compressDataUri(val, maxDim, quality);
       const match = compressed.match(/^data:(image\/[a-zA-Z0-9.+-]+);base64,([\s\S]*)$/);
       if(match){
         let ext = match[1].split('/')[1].toLowerCase();
@@ -933,7 +936,12 @@ function handleFileField(input,fieldId,previewId){
   const file=input.files[0]; if(!file)return;
   if(file.size>15*1024*1024){alert('⚠ Image trop lourde (max 15 Mo avant compression).');return;}
   const img=document.getElementById(previewId);
-  compressImageFile(file).then(dataUri=>{
+  const catEl = document.getElementById('fCat');
+  const isCollier = catEl && catEl.value === 'Colliers';
+  // Qualité renforcée spécifiquement pour les Colliers (détails fins de chaîne bien nets)
+  const maxDim = isCollier ? 2200 : 1400;
+  const quality = isCollier ? 0.95 : 0.85;
+  compressImageFile(file, maxDim, quality).then(dataUri=>{
     document.getElementById(fieldId).value = dataUri;
     img.src = dataUri; img.style.display='block';
   }).catch(()=>{
