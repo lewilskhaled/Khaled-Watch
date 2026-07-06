@@ -652,15 +652,53 @@ async function getFile(){
   const d = await r.json();
   const sha = d.sha;
 
-  function toArray(text){
+  function usesLegacyFields(p){
+    return !!(p && (p.identifiant || p['catégorie'] || p.est_patron !== undefined || p.humeurs || p['réduction du flash'] !== undefined));
+  }
+
+  function normalizeProduct(p){
+    p = p || {};
+    const couleurs = Array.isArray(p.couleurs) ? p.couleurs.map(c => ({
+      nom: c.nom || '',
+      hex: c.hex || '#C9A84C',
+      image: c.image || '',
+      img_gauche: c.img_gauche || '',
+      img_droit: c.img_droit || '',
+      img_dos: c.img_dos || ''
+    })) : [];
+    return {
+      id: p.id || p.identifiant || String(p.createdAt || Date.now() + Math.random()),
+      nom: p.nom || '',
+      prix: p.prix != null ? p.prix : 0,
+      categorie: p.categorie || p['catégorie'] || '',
+      genre: p.genre || '',
+      image: p.image || '',
+      description: p.description || '',
+      img_gauche: p.img_gauche || '',
+      img_droit: p.img_droit || '',
+      img_dos: p.img_dos || '',
+      halo_cadran: p.halo_cadran || 'or',
+      is_patron: p.is_patron !== undefined ? p.is_patron : (p.est_patron || false),
+      moods: p.moods || p.humeurs || [],
+      flash_fin: p.flash_fin || '',
+      flash_reduction: p.flash_reduction !== undefined ? p.flash_reduction : (p['réduction du flash'] !== undefined ? p['réduction du flash'] : 0),
+      couleurs,
+      createdAt: p.createdAt || new Date().toISOString()
+    };
+  }
+
+  function toArray(text, flags){
     if(!text || !text.trim()) return [];
     const parsed = JSON.parse(text);
-    return Array.isArray(parsed) ? parsed : [];
+    if(!Array.isArray(parsed)) return [];
+    if(flags && parsed.some(usesLegacyFields)) flags.legacy = true;
+    return parsed.map(normalizeProduct);
   }
 
   let products = [];
   let repaired = false;
   let sizeBytes = 0;
+  const flags = { legacy: false };
 
   // 1) Lecture directe du fichier brut (fiable même si le fichier dépasse 1 Mo,
   //    limite de l'API GitHub pour le champ "content" encodé en base64).
@@ -672,7 +710,7 @@ async function getFile(){
     if(rawR.ok){
       const text = await rawR.text();
       sizeBytes = new Blob([text]).size;
-      products = toArray(text);
+      products = toArray(text, flags);
     }else{
       throw new Error('raw fetch failed: '+rawR.status);
     }
@@ -682,7 +720,7 @@ async function getFile(){
       if(d.content){
         const raw = atob(d.content.replace(/\n/g,''));
         sizeBytes = new Blob([raw]).size;
-        products = toArray(raw);
+        products = toArray(raw, flags);
       }else{
         products = [];
         repaired = true;
@@ -694,7 +732,7 @@ async function getFile(){
     }
   }
 
-  return {sha, products, repaired, sizeBytes};
+  return {sha, products, repaired, sizeBytes, legacy: flags.legacy};
 }
 async function commitFile(products, sha, msg){
   const content = utf8ToBase64(JSON.stringify(products,null,2));
@@ -708,7 +746,7 @@ async function loadProducts(){
   if(!cfg.token){ showSt('list','err','Configurez GitHub d\'abord.'); return; }
   showSt('list','load','⌛ Chargement…');
   try{
-    const {products, sha, repaired, sizeBytes} = await getFile();
+    const {products, sha, repaired, sizeBytes, legacy} = await getFile();
     prods = products;
     renderList();
     const sizeMo = (sizeBytes/1024/1024).toFixed(2);
@@ -718,6 +756,13 @@ async function loadProducts(){
         showSt('list','ok', `✓ Fichier réparé automatiquement (il était vide ou corrompu). ${prods.length} produit(s).`);
       }catch(e2){
         showSt('list','ok', `✓ ${prods.length} produit(s). (Le fichier semblait corrompu, réparation locale appliquée.)`);
+      }
+    } else if (legacy){
+      try{
+        await commitFile(prods, sha, '🔤 Correction automatique des noms de champs');
+        showSt('list','ok', `✓ Anciens noms de champs corrigés automatiquement. ${prods.length} produit(s).`);
+      }catch(e2){
+        showSt('list','ok', `✓ ${prods.length} produit(s) affichés correctement (correction en attente : ${e2.message}).`);
       }
     } else if (sizeBytes > 1024*1024) {
       showSt('list','err', `⚠ Fichier lourd (${sizeMo} Mo) — ${prods.length} produit(s). Clique sur "🧹 Optimiser le stockage des images" ci-dessous MAINTENANT pour éviter les erreurs.`);
