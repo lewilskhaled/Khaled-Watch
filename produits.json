@@ -290,24 +290,5 @@
       }
     ],
     "createdAt": "2026-07-06T00:59:51.775Z"
-  },
-  {
-    "id": "1783303435862",
-    "nom": "colliers",
-    "prix": 5000,
-    "categorie": "Colliers",
-    "genre": "Femme",
-    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783303437434-2yismc-colliers-principal.png",
-    "description": "",
-    "img_gauche": "",
-    "img_droit": "",
-    "img_dos": "",
-    "halo_cadran": "or",
-    "is_patron": false,
-    "moods": [],
-    "flash_fin": "",
-    "flash_reduction": 0,
-    "couleurs": [],
-    "createdAt": "2026-07-06T02:03:55.862Z"
   }
 ]
