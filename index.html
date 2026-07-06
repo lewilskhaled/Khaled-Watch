@@ -170,6 +170,9 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--txt);m
   border-bottom:1px solid rgba(201,168,76,.2);
   display:flex;align-items:center;justify-content:center;position:relative;
 }
+.prod-img-zone.neutral-bg{
+  background:radial-gradient(ellipse at center, #262422 0%, #171513 62%, #0c0b0a 100%);
+}
 @media(min-width:400px){.prod-img-zone{height:260px;}}
 @media(min-width:600px){.prod-img-zone{height:280px;}}
 
@@ -288,12 +291,18 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--txt);m
   display:flex;align-items:center;justify-content:center;
   position:relative;padding:4px;overflow:hidden;
 }
+.modal-img-wrap.neutral-bg{
+  background:radial-gradient(ellipse at center, #262422 0%, #171513 62%, #0c0b0a 100%);
+}
 .modal-img-wrap img{
   max-width:98%;max-height:98%;
   object-fit:contain;border-radius:8px;
   filter:drop-shadow(0 6px 28px rgba(201,168,76,.22)) drop-shadow(0 2px 8px rgba(0,0,0,.8));
   transition:transform .08s linear;
   will-change:transform;
+}
+.modal-img-wrap.neutral-bg img{
+  filter:drop-shadow(0 6px 28px rgba(0,0,0,.55)) drop-shadow(0 2px 10px rgba(0,0,0,.85));
 }
 
 .modal-color-strip{display:flex;gap:.4rem;padding:.5rem 1rem;overflow-x:auto;flex-shrink:0;scrollbar-width:none;}
@@ -420,6 +429,21 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--txt);m
     50% { --x:80; --y:70; opacity:.4; }
     75% { --x:30; --y:75; opacity:.6; }
     100%{ --x:20; --y:30; opacity:.3; }
+  }
+}
+/* Variante atténuée — uniquement pour la catégorie Colliers (contraste bijou doré) */
+.sunburst-overlay.neutral-bg{
+  background:radial-gradient(circle 140px at calc(var(--x, 50%) * 1%) calc(var(--y, 50%) * 1%),rgba(255,240,180,.28) 0%,rgba(255,215,100,.14) 25%,rgba(201,168,76,.06) 55%,transparent 75%);
+}
+.prod-card:hover .sunburst-overlay.neutral-bg{opacity:.55;}
+@media(hover:none){
+  .sunburst-overlay.neutral-bg{opacity:.22;animation:sunburstAutoNeutral 4s ease-in-out infinite;}
+  @keyframes sunburstAutoNeutral{
+    0%  { --x:20; --y:30; opacity:.14; }
+    25% { --x:70; --y:25; opacity:.28; }
+    50% { --x:80; --y:70; opacity:.18; }
+    75% { --x:30; --y:75; opacity:.28; }
+    100%{ --x:20; --y:30; opacity:.14; }
   }
 }
 .sunburst-overlay::after{
@@ -1119,9 +1143,11 @@ function renderProducts() {
         </div>
       </div>` : '';
 
+    const neutralBg = p.categorie === 'Colliers' ? ' neutral-bg' : '';
+
     return `
     <div class="prod-card" data-idx="${i}" style="animation-delay:${i*.06}s" onclick="openModal(${i})">
-      <div class="prod-img-zone">
+      <div class="prod-img-zone${neutralBg}">
         ${colors.length > 1 ? `
         <div class="cvar-viewport prod-img" data-pid="${h(p.id)}">
           ${colors.map((c,ci) => `<img class="cvar-img" data-ci="${ci}" src="${h(c.image||mainImg)}" alt="${h(p.nom)}" loading="lazy" onerror="this.src='${FALLBACK_IMG}'" style="transform:translateY(${ci===0?'0%':'100%'});">`).join('')}
@@ -1131,7 +1157,7 @@ function renderProducts() {
         <img class="prod-img" id="cimg-${h(p.id)}" src="${h(mainImg)}" alt="${h(p.nom)}" loading="lazy"
              onerror="this.src='${FALLBACK_IMG}'">
         `}
-        <div class="sunburst-overlay" id="sburst-${h(p.id)}"></div>
+        <div class="sunburst-overlay${neutralBg}" id="sburst-${h(p.id)}"></div>
         <div class="card-hint-3d">👆 Toucher pour agrandir</div>
       </div>
       <div class="prod-body">
@@ -1287,7 +1313,7 @@ function buildAllSlides() {
 
     return `
     <div class="modal-slide" data-slide="${i}">
-      <div class="modal-img-wrap" id="wrap360-${i}"
+      <div class="modal-img-wrap${p.categorie === 'Colliers' ? ' neutral-bg' : ''}" id="wrap360-${i}"
            ${has360 ? `ontouchstart="start360(event,${i})" ontouchmove="move360(event,${i})" ontouchend="end360(event,${i})" onmousedown="mdown360(event,${i})"` : ''}>
         <img id="mimg-${i}" src="${h(mainImg)}" alt="${h(p.nom)}" onerror="this.src='${FALLBACK_IMG}'" draggable="false">
         ${has360 ? `<div class="badge360">🔄 360°<br><span>Glisser</span></div>` : ''}
@@ -1588,10 +1614,12 @@ function renderSearchResults(list, q) {
       imgZoneHTML = '<img class="prod-img" id="cimg-' + h(p.id) + '" src="' + h(mainImg) + '" alt="' + h(p.nom) + '" loading="lazy" onerror="this.src=\'' + FALLBACK_IMG + '\'">';
     }
 
+    var neutralBg = p.categorie === 'Colliers' ? ' neutral-bg' : '';
+
     return '<div class="prod-card" data-idx="' + i + '" style="animation-delay:' + (i*.06) + 's" onclick="openModal(' + i + ')">'
-      + '<div class="prod-img-zone">'
+      + '<div class="prod-img-zone' + neutralBg + '">'
       + imgZoneHTML
-      + '<div class="sunburst-overlay"></div>'
+      + '<div class="sunburst-overlay' + neutralBg + '"></div>'
       + '<div class="card-hint-3d">👆 Toucher pour agrandir</div>'
       + '</div>'
       + '<div class="prod-body">'
