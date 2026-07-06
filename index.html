@@ -6,6 +6,10 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>KHALED WATCH — Prestige</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://raw.githubusercontent.com" crossorigin>
+<link rel="preconnect" href="https://images.unsplash.com" crossorigin>
+<link rel="dns-prefetch" href="https://raw.githubusercontent.com">
+<link rel="dns-prefetch" href="https://images.unsplash.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -177,6 +181,23 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--txt);m
 @media(min-width:600px){.prod-img-zone{height:280px;}}
 
 /* ============================================================
+   SHIMMER DE CHARGEMENT — évite l'impression de lenteur
+   pendant que les photos se téléchargent
+   ============================================================ */
+img.prod-img{opacity:0;transition:opacity .35s ease, transform .08s linear;}
+img.prod-img.loaded{opacity:1;}
+.prod-img-zone::before{
+  content:'';position:absolute;inset:0;z-index:0;
+  background:linear-gradient(100deg,transparent 30%,rgba(201,168,76,.14) 48%,transparent 66%);
+  background-size:200% 100%;
+  animation:imgShimmer 1.4s ease-in-out infinite;
+  opacity:1;transition:opacity .3s ease;
+  pointer-events:none;
+}
+.prod-img-zone.img-ready::before{opacity:0;}
+@keyframes imgShimmer{0%{background-position:150% 0;}100%{background-position:-50% 0;}}
+
+/* ============================================================
    IMAGE PRODUIT — EFFET GYROSCOPE
    La transform est contrôlée par JS via --gx et --gy
    translateX suit l'axe gamma (gauche/droite)
@@ -205,7 +226,9 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--txt);m
   position:absolute;inset:0;
   width:100%;height:100%;object-fit:contain;
   display:block;will-change:transform;
+  opacity:0;transition:opacity .35s ease;
 }
+.cvar-img.loaded{opacity:1;}
 .cvar-dots{
   position:absolute;top:8px;right:8px;z-index:6;
   display:flex;flex-direction:column;gap:4px;
@@ -1150,12 +1173,12 @@ function renderProducts() {
       <div class="prod-img-zone${neutralBg}">
         ${colors.length > 1 ? `
         <div class="cvar-viewport prod-img" data-pid="${h(p.id)}">
-          ${colors.map((c,ci) => `<img class="cvar-img" data-ci="${ci}" src="${h(c.image||mainImg)}" alt="${h(p.nom)}" loading="lazy" onerror="this.src='${FALLBACK_IMG}'" style="transform:translateY(${ci===0?'0%':'100%'});">`).join('')}
+          ${colors.map((c,ci) => `<img class="cvar-img${ci===0?' loaded':''}" data-ci="${ci}" src="${h(c.image||mainImg)}" alt="${h(p.nom)}" loading="${i<6?'eager':'lazy'}" decoding="async" ${i<6&&ci===0?'fetchpriority="high"':''} onerror="this.src='${FALLBACK_IMG}'" onload="this.classList.add('loaded');this.closest('.prod-img-zone').classList.add('img-ready')" style="transform:translateY(${ci===0?'0%':'100%'});">`).join('')}
         </div>
         <div class="cvar-dots">${colors.map((c,ci)=>`<div class="cvar-dot${ci===0?' active':''}"></div>`).join('')}</div>
         ` : `
-        <img class="prod-img" id="cimg-${h(p.id)}" src="${h(mainImg)}" alt="${h(p.nom)}" loading="lazy"
-             onerror="this.src='${FALLBACK_IMG}'">
+        <img class="prod-img" id="cimg-${h(p.id)}" src="${h(mainImg)}" alt="${h(p.nom)}" loading="${i<6?'eager':'lazy'}" decoding="async" ${i<6?'fetchpriority="high"':''}
+             onload="this.classList.add('loaded');this.closest('.prod-img-zone').classList.add('img-ready')" onerror="this.src='${FALLBACK_IMG}'">
         `}
         <div class="sunburst-overlay${neutralBg}" id="sburst-${h(p.id)}"></div>
         <div class="card-hint-3d">👆 Toucher pour agrandir</div>
@@ -1203,6 +1226,7 @@ function advanceColorCycle(vp) {
   imgs[idx].style.transform   = 'translateY(-100%)';
   imgs[next].style.transition = 'transform .7s cubic-bezier(.65,0,.35,1)';
   imgs[next].style.transform  = 'translateY(0%)';
+  imgs[next].classList.add('loaded');
   setTimeout(() => {
     imgs[idx].style.transition = 'none';
     imgs[idx].style.transform  = 'translateY(100%)';
@@ -1224,6 +1248,7 @@ function jumpToColor(vp, targetIdx) {
     img.style.transition = 'none';
     img.style.transform  = i===targetIdx ? 'translateY(0%)' : 'translateY(100%)';
   });
+  imgs[targetIdx].classList.add('loaded');
   vp._cvarIdx = targetIdx;
 }
 
@@ -1603,15 +1628,16 @@ function renderSearchResults(list, q) {
     }
 
     var imgZoneHTML;
+    var eagerAttrs = i<6 ? 'loading="eager" fetchpriority="high"' : 'loading="lazy"';
     if (colors.length > 1) {
       imgZoneHTML = '<div class="cvar-viewport prod-img" data-pid="' + h(p.id) + '">'
         + colors.map(function(c,ci){
-            return '<img class="cvar-img" data-ci="' + ci + '" src="' + h(c.image||mainImg) + '" alt="' + h(p.nom) + '" loading="lazy" onerror="this.src=\'' + FALLBACK_IMG + '\'" style="transform:translateY(' + (ci===0?'0%':'100%') + ');">';
+            return '<img class="cvar-img' + (ci===0?' loaded':'') + '" data-ci="' + ci + '" src="' + h(c.image||mainImg) + '" alt="' + h(p.nom) + '" ' + (i<6?'loading="eager" fetchpriority="high"':'loading="lazy"') + ' decoding="async" onerror="this.src=\'' + FALLBACK_IMG + '\'" onload="this.classList.add(\'loaded\');this.closest(\'.prod-img-zone\').classList.add(\'img-ready\')" style="transform:translateY(' + (ci===0?'0%':'100%') + ');">';
           }).join('')
         + '</div>'
         + '<div class="cvar-dots">' + colors.map(function(c,ci){ return '<div class="cvar-dot' + (ci===0?' active':'') + '"></div>'; }).join('') + '</div>';
     } else {
-      imgZoneHTML = '<img class="prod-img" id="cimg-' + h(p.id) + '" src="' + h(mainImg) + '" alt="' + h(p.nom) + '" loading="lazy" onerror="this.src=\'' + FALLBACK_IMG + '\'">';
+      imgZoneHTML = '<img class="prod-img" id="cimg-' + h(p.id) + '" src="' + h(mainImg) + '" alt="' + h(p.nom) + '" ' + eagerAttrs + ' decoding="async" onload="this.classList.add(\'loaded\');this.closest(\'.prod-img-zone\').classList.add(\'img-ready\')" onerror="this.src=\'' + FALLBACK_IMG + '\'">';
     }
 
     var neutralBg = p.categorie === 'Colliers' ? ' neutral-bg' : '';
