@@ -290,5 +290,57 @@
       }
     ],
     "createdAt": "2026-07-06T00:59:51.775Z"
+  },
+  {
+    "id": "1783302805848",
+    "nom": "Colliers",
+    "prix": 5000,
+    "categorie": "Colliers",
+    "genre": "Femme",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783302807768-ftgw5a-Colliers-principal.png",
+    "description": "La délicatesse gravée dans un collier 👌🏽✨",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "or",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [
+      {
+        "nom": "Doré",
+        "hex": "#c9a84c",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783302807803-jarong-Colliers-Dore.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Doré",
+        "hex": "#c9a84c",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783302807824-ojck4c-Colliers-Dore.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Doré",
+        "hex": "#c9a84c",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783302807852-5aka5b-Colliers-Dore.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Blanc",
+        "hex": "#fcfbf7",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783302807886-ys6l1u-Colliers-Blanc.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      }
+    ],
+    "createdAt": "2026-07-06T01:53:25.848Z"
   }
 ]
