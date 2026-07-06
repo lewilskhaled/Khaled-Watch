@@ -290,5 +290,49 @@
       }
     ],
     "createdAt": "2026-07-06T00:59:51.775Z"
+  },
+  {
+    "id": "1783330003926",
+    "nom": "Collier",
+    "prix": 5000,
+    "categorie": "Colliers",
+    "genre": "Femme",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783330005165-rypwy0-Collier-principal.png",
+    "description": "ccccc",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "or",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [
+      {
+        "nom": "blanc",
+        "hex": "#f1f0ef",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783330005181-bptus3-Collier-blanc.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Doré",
+        "hex": "#f0bf0f",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783330005198-nga0it-Collier-Dore.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Doré",
+        "hex": "#f0bf0f",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783330005214-trp1mm-Collier-Dore.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      }
+    ],
+    "createdAt": "2026-07-06T09:26:43.926Z"
   }
 ]
