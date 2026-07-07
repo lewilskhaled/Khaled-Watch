@@ -576,5 +576,41 @@
       }
     ],
     "createdAt": "2026-07-07T21:44:40.591Z"
+  },
+  {
+    "id": "1783461416058",
+    "nom": "Bracelet torsadé",
+    "prix": 3500,
+    "categorie": "Bracelets",
+    "genre": "Homme",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783461419066-ncsno9-Bracelet-torsade-principal.png",
+    "description": "Rends ton style unique",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "or",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [
+      {
+        "nom": "Argenté",
+        "hex": "#ababab",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783461419077-clt42e-Bracelet-torsade-Argente.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Argenté",
+        "hex": "#ababab",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783461419101-tjf0ue-Bracelet-torsade-Argente.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      }
+    ],
+    "createdAt": "2026-07-07T21:56:56.058Z"
   }
 ]
