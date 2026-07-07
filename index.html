@@ -275,6 +275,144 @@ img.prod-img.loaded{opacity:1;}
 /* ============================================================
    MODAL
    ============================================================ */
+/* ============================================================
+   VUE IMMERSIVE COLLIERS — défilé plein écran type Stories
+   Réservée UNIQUEMENT à la catégorie Colliers
+   ============================================================ */
+#colliersFeed{
+  position:fixed;inset:0;z-index:9700;
+  background:#000;
+  display:none;flex-direction:column;
+}
+#colliersFeed.open{display:flex;}
+.cf-topbar{
+  position:absolute;top:0;left:0;right:0;z-index:6;
+  display:flex;align-items:center;justify-content:space-between;gap:.6rem;
+  padding:calc(.7rem + env(safe-area-inset-top,0px)) 1rem .8rem;
+  background:linear-gradient(180deg,rgba(0,0,0,.8) 0%,rgba(0,0,0,.35) 60%,transparent 100%);
+}
+.cf-back{
+  background:rgba(255,255,255,.08);border:1px solid rgba(201,168,76,.45);
+  border-radius:50%;width:38px;height:38px;color:var(--or-l);flex-shrink:0;
+  font-size:1.1rem;font-weight:700;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;-webkit-tap-highlight-color:transparent;
+}
+.cf-title{
+  font-family:'Cormorant Garamond',serif;font-size:.92rem;font-weight:700;
+  letter-spacing:.16em;text-transform:uppercase;white-space:nowrap;
+  background:linear-gradient(90deg,var(--or-d),var(--or-l));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  filter:drop-shadow(0 0 12px rgba(201,168,76,.4));
+}
+.cf-counter{
+  font-size:.6rem;color:var(--or-l);letter-spacing:.1em;font-weight:700;
+  background:rgba(0,0,0,.45);border:1px solid rgba(201,168,76,.35);border-radius:50px;
+  padding:.28rem .68rem;white-space:nowrap;flex-shrink:0;
+}
+.cf-gender-tabs{
+  position:absolute;top:calc(3.4rem + env(safe-area-inset-top,0px));left:0;right:0;z-index:6;
+  display:flex;justify-content:center;gap:.5rem;padding:0 1rem;
+  pointer-events:none;
+}
+.cf-gender-tabs button{pointer-events:auto;}
+.cf-g-tab{
+  padding:.32rem .95rem;border-radius:50px;font-size:.58rem;letter-spacing:.14em;
+  text-transform:uppercase;font-weight:700;font-family:'Montserrat',sans-serif;
+  border:1px solid rgba(201,168,76,.4);color:#E8DFC8;background:rgba(0,0,0,.5);
+  backdrop-filter:blur(8px);cursor:pointer;-webkit-tap-highlight-color:transparent;
+  transition:all .2s;
+}
+.cf-g-tab.active{background:rgba(201,168,76,.28);border-color:var(--or-l);color:#fff;}
+.cf-scroll{
+  flex:1;overflow-y:scroll;scroll-snap-type:y mandatory;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none;
+}
+.cf-scroll::-webkit-scrollbar{display:none;}
+.cf-slide{
+  height:100%;width:100%;scroll-snap-align:start;scroll-snap-stop:always;
+  position:relative;display:flex;flex-direction:column;
+  flex-shrink:0;overflow:hidden;
+}
+.cf-glow{
+  position:absolute;inset:0;pointer-events:none;z-index:1;
+  background:radial-gradient(circle at 50% 40%, rgba(201,168,76,.18) 0%, rgba(201,168,76,.05) 38%, transparent 62%);
+}
+.cf-img-wrap{
+  position:relative;z-index:2;width:100%;flex:1;
+  display:flex;align-items:center;justify-content:center;
+  padding:5.2rem 1.8rem 1rem;
+}
+.cf-img-wrap img{
+  max-width:80%;max-height:100%;object-fit:contain;
+  filter:drop-shadow(0 24px 55px rgba(0,0,0,.75)) drop-shadow(0 0 45px rgba(201,168,76,.14));
+  animation:cfFloat 4.5s ease-in-out infinite;
+}
+@keyframes cfFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-12px);}}
+.cf-info{
+  position:relative;z-index:3;width:100%;
+  padding:1.5rem 1.3rem calc(var(--safe-bottom) + 1.7rem);
+  background:linear-gradient(0deg,rgba(0,0,0,.94) 12%,rgba(0,0,0,.68) 52%,transparent 100%);
+}
+.cf-badge{
+  display:inline-block;font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--or-l);border:1px solid rgba(201,168,76,.5);border-radius:50px;
+  padding:.22rem .7rem;margin-bottom:.6rem;font-weight:700;
+  background:rgba(201,168,76,.09);
+}
+.cf-name{
+  font-family:'Cormorant Garamond',serif;font-size:clamp(1.5rem,6.2vw,2.15rem);font-weight:700;
+  color:#fff;line-height:1.15;margin-bottom:.32rem;
+  text-shadow:0 2px 12px rgba(0,0,0,.85);
+}
+.cf-genre{
+  font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:#C8BDA0;
+  margin-bottom:.5rem;font-weight:600;
+}
+.cf-desc{
+  font-size:.72rem;color:#D8CFB8;line-height:1.65;margin-bottom:.85rem;
+  max-width:34rem;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+.cf-price-row{
+  display:flex;align-items:center;justify-content:space-between;gap:.8rem;margin-bottom:.9rem;flex-wrap:wrap;
+}
+.cf-price{
+  font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;
+  background:linear-gradient(90deg,var(--or-d),var(--or-l));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.cf-price small{font-family:'Montserrat',sans-serif;font-size:.68rem;}
+.cf-colors{display:flex;gap:.45rem;flex-wrap:wrap;}
+.cf-color-dot{
+  width:23px;height:23px;border-radius:50%;border:2px solid rgba(255,255,255,.28);
+  cursor:pointer;transition:transform .2s,border-color .2s;flex-shrink:0;
+  -webkit-tap-highlight-color:transparent;
+}
+.cf-color-dot.active{border-color:var(--or-l);transform:scale(1.18);box-shadow:0 0 10px rgba(201,168,76,.65);}
+.cf-cta{
+  display:flex;align-items:center;justify-content:center;gap:.6rem;width:100%;
+  padding:.95rem;background:linear-gradient(135deg,#0f7a5e,#25D366);
+  border:none;border-radius:14px;color:#fff;font-size:.76rem;font-weight:700;
+  letter-spacing:.14em;text-transform:uppercase;font-family:'Montserrat',sans-serif;
+  cursor:pointer;-webkit-tap-highlight-color:transparent;
+  box-shadow:0 6px 24px rgba(37,211,102,.3);transition:opacity .2s;
+}
+.cf-cta:active{opacity:.85;}
+.cf-swipe-hint{
+  position:absolute;bottom:calc(var(--safe-bottom) + .6rem);left:50%;transform:translateX(-50%);
+  z-index:4;display:flex;flex-direction:column;align-items:center;gap:.15rem;
+  color:rgba(201,168,76,.85);font-size:.54rem;letter-spacing:.18em;text-transform:uppercase;
+  font-weight:700;animation:cfBounce 1.8s ease-in-out infinite;pointer-events:none;
+  text-shadow:0 2px 8px rgba(0,0,0,.8);
+}
+@keyframes cfBounce{0%,100%{transform:translate(-50%,0);opacity:.55;}50%{transform:translate(-50%,-10px);opacity:1;}}
+.cf-empty{
+  height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:1rem;color:var(--gris);text-align:center;padding:2rem;
+}
+.cf-empty h3{font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--or-l);}
+.cf-empty p{font-size:.78rem;line-height:1.7;max-width:22rem;}
+
 #prodModal{
   position:fixed;inset:0;z-index:9800;
   display:none;flex-direction:column;
@@ -765,6 +903,21 @@ img.prod-img.loaded{opacity:1;}
   <div style="padding:0 1rem 6rem;text-align:center;"><div style="font-size:.62rem;color:var(--gris);line-height:1.9;text-shadow:var(--ts);">Les offres sont validées sur présentation de vos achats via WhatsApp.</div></div>
 </div>
 
+<!-- VUE IMMERSIVE COLLIERS — plein écran type Stories, catégorie Colliers uniquement -->
+<div id="colliersFeed">
+  <div class="cf-topbar">
+    <button class="cf-back" onclick="closeColliersFeed()" aria-label="Retour">←</button>
+    <div class="cf-title">✦ Collection Colliers</div>
+    <div class="cf-counter" id="cfCounter">1 / 1</div>
+  </div>
+  <div class="cf-gender-tabs" id="cfGenderTabs">
+    <button class="cf-g-tab active" data-g="tous" onclick="setCfGender(this)">Tous</button>
+    <button class="cf-g-tab" data-g="Homme" onclick="setCfGender(this)">Homme</button>
+    <button class="cf-g-tab" data-g="Femme" onclick="setCfGender(this)">Femme</button>
+  </div>
+  <div class="cf-scroll" id="cfScroll" onscroll="onCfScroll()"></div>
+</div>
+
 <!-- MODAL PRODUIT -->
 <div id="prodModal">
   <div class="modal-topbar">
@@ -1085,6 +1238,7 @@ function hideAll() {
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
 }
 function goHome() {
+  closeColliersFeed();
   clearTimeout(searchTimer);
   lastPageBeforeSearch = null;
   var si = document.getElementById('searchInput');
@@ -1098,6 +1252,7 @@ function goHome() {
   window.scrollTo(0, 0);
 }
 function openCat(cat) {
+  if (cat === 'Colliers') { openColliersFeed(); return; }
   currentCat = cat; currentGender = 'tous';
   document.querySelectorAll('.g-tab').forEach(t => t.classList.remove('active'));
   document.querySelector('.g-tab[data-g="tous"]').classList.add('active');
@@ -1108,6 +1263,120 @@ function openCat(cat) {
   window.scrollTo(0, 0);
   renderProducts();
 }
+
+/* ============================================================
+   VUE IMMERSIVE COLLIERS — défilé plein écran type Stories
+   Réservée UNIQUEMENT à la catégorie Colliers
+   ============================================================ */
+let cfGender = 'tous';
+let cfList   = [];
+
+function openColliersFeed() {
+  cfGender = 'tous';
+  document.querySelectorAll('.cf-g-tab').forEach(t => t.classList.remove('active'));
+  document.querySelector('.cf-g-tab[data-g="tous"]').classList.add('active');
+  document.getElementById('colliersFeed').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  renderColliersFeed();
+}
+
+function closeColliersFeed() {
+  document.getElementById('colliersFeed').classList.remove('open');
+  document.body.style.overflow = '';
+  const scroll = document.getElementById('cfScroll');
+  if (scroll) scroll.scrollTop = 0;
+}
+
+function setCfGender(btn) {
+  document.querySelectorAll('.cf-g-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  cfGender = btn.dataset.g;
+  renderColliersFeed();
+}
+
+function renderColliersFeed() {
+  let list = allProducts.filter(p => p.categorie === 'Colliers');
+  if (cfGender !== 'tous') list = list.filter(p => p.genre === cfGender);
+  cfList = list;
+
+  const scroll = document.getElementById('cfScroll');
+  updateCfCounter(list.length ? 1 : 0, list.length);
+
+  if (!list.length) {
+    scroll.innerHTML = `<div class="cf-slide"><div class="cf-empty">
+      <h3>✦ Collection à venir</h3>
+      <p>Aucun collier disponible ${cfGender!=='tous' ? 'pour '+cfGender+' ' : ''}pour le moment.<br>Revenez bientôt !</p>
+    </div></div>`;
+    return;
+  }
+
+  scroll.innerHTML = list.map((p, i) => {
+    const colors  = p.couleurs && p.couleurs.length ? p.couleurs : [];
+    const mainImg = colors.length && colors[0].image ? colors[0].image : (p.image || FALLBACK_IMG);
+
+    const colorDots = colors.length > 1 ? `
+      <div class="cf-colors">
+        ${colors.map((c,ci) => `<div class="cf-color-dot${ci===0?' active':''}" style="background:${h(c.hex)}" title="${h(c.nom)}" onclick="switchCfColor(this,${i},${ci})"></div>`).join('')}
+      </div>` : '';
+
+    return `
+    <div class="cf-slide" data-idx="${i}">
+      <div class="cf-glow"></div>
+      <div class="cf-img-wrap">
+        <img id="cfimg-${i}" src="${h(mainImg)}" alt="${h(p.nom)}" loading="${i<2?'eager':'lazy'}" decoding="async" onerror="this.src='${FALLBACK_IMG}'">
+      </div>
+      <div class="cf-info">
+        <div class="cf-badge">✦ Collier</div>
+        <div class="cf-name">${h(p.nom)}</div>
+        <div class="cf-genre">${h(p.genre||'')}</div>
+        ${p.description ? `<div class="cf-desc">${h(p.description)}</div>` : ''}
+        <div class="cf-price-row">
+          <div class="cf-price">${fmt(p.prix)} <small>FCFA</small></div>
+          ${colorDots}
+        </div>
+        <button class="cf-cta" onclick="commander('${js(p.nom)}','${js(p.prix)}')">${WA_SVG} Commander sur WhatsApp</button>
+      </div>
+      ${i===0 ? '<div class="cf-swipe-hint">↑ Glissez pour découvrir</div>' : ''}
+    </div>`;
+  }).join('');
+}
+
+function switchCfColor(dot, slideIdx, colorIdx) {
+  const p = cfList[slideIdx];
+  if (!p || !p.couleurs) return;
+  const c = p.couleurs[colorIdx];
+  const img = document.getElementById('cfimg-' + slideIdx);
+  if (img && c.image) {
+    img.style.opacity = '0';
+    setTimeout(() => { img.src = c.image; img.style.opacity = '1'; }, 150);
+    img.style.transition = 'opacity .2s';
+  }
+  dot.closest('.cf-colors').querySelectorAll('.cf-color-dot').forEach((d,i) => d.classList.toggle('active', i===colorIdx));
+}
+
+function updateCfCounter(current, total) {
+  const el = document.getElementById('cfCounter');
+  if (el) el.textContent = total ? `${current} / ${total}` : '0 / 0';
+}
+
+let cfScrollRaf = null;
+function onCfScroll() {
+  if (cfScrollRaf) return;
+  cfScrollRaf = requestAnimationFrame(() => {
+    cfScrollRaf = null;
+    const scroll = document.getElementById('cfScroll');
+    if (!scroll || !cfList.length) return;
+    const idx = Math.round(scroll.scrollTop / scroll.clientHeight);
+    updateCfCounter(Math.min(idx+1, cfList.length), cfList.length);
+  });
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && document.getElementById('colliersFeed').classList.contains('open')) {
+    closeColliersFeed();
+  }
+});
+
 function openOffres() {
   hideAll();
   document.getElementById('page-offre').style.display = 'block';
