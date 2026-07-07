@@ -540,5 +540,41 @@
       }
     ],
     "createdAt": "2026-07-07T21:26:28.047Z"
+  },
+  {
+    "id": "1783460680591",
+    "nom": "Bracelet Ice",
+    "prix": 2500,
+    "categorie": "Bracelets",
+    "genre": "Homme",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783460684153-5m5ijw-Bracelet-Ice-principal.png",
+    "description": "La qualité au poignet",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "or",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [
+      {
+        "nom": "Argenté",
+        "hex": "#dbdbdb",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783460684164-nuo63i-Bracelet-Ice-Argente.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Argent",
+        "hex": "#dbdbdb",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783460684189-ygadiw-Bracelet-Ice-Argent.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      }
+    ],
+    "createdAt": "2026-07-07T21:44:40.591Z"
   }
 ]
