@@ -387,25 +387,6 @@
     "createdAt": "2026-07-07T17:19:53.472Z"
   },
   {
-    "id": "1783445385239",
-    "nom": "Bracelets torsadé",
-    "prix": 3000,
-    "categorie": "Bracelets",
-    "genre": "Homme",
-    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783445388605-asy2r6-Bracelets-torsade-principal.png",
-    "description": "Rends ton style unique",
-    "img_gauche": "",
-    "img_droit": "",
-    "img_dos": "",
-    "halo_cadran": "or",
-    "is_patron": false,
-    "moods": [],
-    "flash_fin": "",
-    "flash_reduction": 0,
-    "couleurs": [],
-    "createdAt": "2026-07-07T17:29:45.239Z"
-  },
-  {
     "id": "1783458676453",
     "nom": "Bracelet Lacoste",
     "prix": 10.5,
