@@ -292,6 +292,25 @@
     "createdAt": "2026-07-06T00:59:51.775Z"
   },
   {
+    "id": "1783438291586",
+    "nom": "Chaine en argent",
+    "prix": 6000,
+    "categorie": "Chaînes",
+    "genre": "Homme",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783438295001-4kwjpj-Chaine-en-argent-principal.png",
+    "description": "L'art du détail imposant. L'éclat de l'argent pur à votre cou",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "or",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [],
+    "createdAt": "2026-07-07T15:31:31.586Z"
+  },
+  {
     "id": "1783438616257",
     "nom": "Chaine en argent",
     "prix": 6000,
@@ -555,5 +574,41 @@
       }
     ],
     "createdAt": "2026-07-07T21:56:56.058Z"
+  },
+  {
+    "id": "1783468591875",
+    "nom": "Chaine en argent",
+    "prix": 6000,
+    "categorie": "Chaînes",
+    "genre": "Homme",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783468593229-5982ze-Chaine-en-argent-principal.png",
+    "description": "L'art du détail imposant. L'éclat de l'argent pur à votre cou✨👌🏽",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "or",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [
+      {
+        "nom": "Argenté",
+        "hex": "#bab9b5",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783468593236-272jn3-Chaine-en-argent-Argente.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Argenté",
+        "hex": "#bab9b5",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783468593246-gszjn3-Chaine-en-argent-Argente.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      }
+    ],
+    "createdAt": "2026-07-07T23:56:31.875Z"
   }
 ]
