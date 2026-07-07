@@ -368,25 +368,6 @@
     "createdAt": "2026-07-07T16:30:09.561Z"
   },
   {
-    "id": "1783444793472",
-    "nom": "Bracelets ice",
-    "prix": 2500,
-    "categorie": "Bracelets",
-    "genre": "Homme",
-    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783444796191-felidd-Bracelets-ice-principal.png",
-    "description": "La qualité au poignet",
-    "img_gauche": "",
-    "img_droit": "",
-    "img_dos": "",
-    "halo_cadran": "or",
-    "is_patron": false,
-    "moods": [],
-    "flash_fin": "",
-    "flash_reduction": 0,
-    "couleurs": [],
-    "createdAt": "2026-07-07T17:19:53.472Z"
-  },
-  {
     "id": "1783458676453",
     "nom": "Bracelet Lacoste",
     "prix": 10.5,
