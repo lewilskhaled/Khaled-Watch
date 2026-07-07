@@ -540,5 +540,57 @@
       }
     ],
     "createdAt": "2026-07-07T19:52:48.277Z"
+  },
+  {
+    "id": "1783454742422",
+    "nom": "Bracelet Lacoste",
+    "prix": 10.5,
+    "categorie": "Bracelets",
+    "genre": "Homme",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783454746353-2ss3u0-Bracelet-Lacoste-principal.png",
+    "description": "Le privilège du design brut",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "or",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [
+      {
+        "nom": "Doré",
+        "hex": "#e3d968",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783454746364-1qqdh2-Bracelet-Lacoste-Dore.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Doré",
+        "hex": "#e3d968",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783454746388-e99lyr-Bracelet-Lacoste-Dore.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Argenté",
+        "hex": "#d7d6cc",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783454746406-ujcuv1-Bracelet-Lacoste-Argente.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Argenté",
+        "hex": "#d7d6cc",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783454746439-ukdq4q-Bracelet-Lacoste-Argente.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      }
+    ],
+    "createdAt": "2026-07-07T20:05:42.422Z"
   }
 ]
