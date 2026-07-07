@@ -456,5 +456,89 @@
       }
     ],
     "createdAt": "2026-07-07T18:27:12.916Z"
+  },
+  {
+    "id": "1783453968277",
+    "nom": "Bracelet à menotte",
+    "prix": 4000,
+    "categorie": "Bracelets",
+    "genre": "Homme",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783453972542-azdj3l-Bracelet-a-menotte-principal.png",
+    "description": "Design simple mais efficace.",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "or",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [
+      {
+        "nom": "Rouge",
+        "hex": "#450202",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783453972559-2f6lc3-Bracelet-a-menotte-Rouge.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Rouge",
+        "hex": "#450202",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783453972581-82pgn5-Bracelet-a-menotte-Rouge.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Bleu",
+        "hex": "#0b0977",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783453972610-d1a6tn-Bracelet-a-menotte-Bleu.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Bleu",
+        "hex": "#0b0977",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783453972630-jptjpx-Bracelet-a-menotte-Bleu.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Vert émeraude",
+        "hex": "#33e6b0",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783453972658-n2ycx5-Bracelet-a-menotte-Vert-emeraude.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Vert émeraude",
+        "hex": "#33e6b0",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783453972679-p6wka7-Bracelet-a-menotte-Vert-emeraude.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Noir",
+        "hex": "#000504",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783453972693-c34bp5-Bracelet-a-menotte-Noir.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Noir",
+        "hex": "#000504",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783453972713-331mml-Bracelet-a-menotte-Noir.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      }
+    ],
+    "createdAt": "2026-07-07T19:52:48.277Z"
   }
 ]
