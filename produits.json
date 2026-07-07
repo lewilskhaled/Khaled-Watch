@@ -328,5 +328,24 @@
     "flash_reduction": 0,
     "couleurs": [],
     "createdAt": "2026-07-07T15:36:56.257Z"
+  },
+  {
+    "id": "1783440068776",
+    "nom": "Chaine torsadée",
+    "prix": 6000,
+    "categorie": "Chaînes",
+    "genre": "Homme",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783440073721-krh8ro-Chaine-torsadee-principal.png",
+    "description": "Des maillons parfaits pour un look sans faille",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "or",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [],
+    "createdAt": "2026-07-07T16:01:08.776Z"
   }
 ]
