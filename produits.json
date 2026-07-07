@@ -290,5 +290,24 @@
       }
     ],
     "createdAt": "2026-07-06T00:59:51.775Z"
+  },
+  {
+    "id": "1783436772243",
+    "nom": "Chaine",
+    "prix": 5000,
+    "categorie": "Chaînes",
+    "genre": "Homme",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783436774046-5ifkrb-Chaine-principal.png",
+    "description": "L'art du détail imposant . L'éclat de l'argent pur à votre cou",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "or",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [],
+    "createdAt": "2026-07-07T15:06:12.243Z"
   }
 ]
