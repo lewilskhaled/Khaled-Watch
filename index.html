@@ -350,7 +350,7 @@ img.prod-img.loaded{opacity:1;}
 @keyframes cfFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-12px);}}
 .cf-info{
   position:absolute;left:0;right:0;bottom:0;z-index:3;width:100%;
-  padding:3.5rem 1.3rem calc(var(--safe-bottom) + 1.5rem);
+  padding:3.5rem 1.3rem calc(var(--safe-bottom) + 1.1rem);
   background:linear-gradient(0deg,rgba(0,0,0,.96) 22%,rgba(0,0,0,.75) 55%,transparent 100%);
   pointer-events:none;
 }
@@ -371,12 +371,12 @@ img.prod-img.loaded{opacity:1;}
   margin-bottom:.5rem;font-weight:600;
 }
 .cf-desc{
-  font-size:.72rem;color:#D8CFB8;line-height:1.65;margin-bottom:.85rem;
+  font-size:.72rem;color:#D8CFB8;line-height:1.65;margin-bottom:.7rem;
   max-width:34rem;
   display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
 }
 .cf-price-row{
-  display:flex;align-items:center;justify-content:space-between;gap:.8rem;margin-bottom:.9rem;flex-wrap:wrap;
+  display:flex;align-items:center;justify-content:space-between;gap:.8rem;margin-bottom:.65rem;flex-wrap:wrap;
 }
 .cf-price{
   font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;
@@ -392,12 +392,12 @@ img.prod-img.loaded{opacity:1;}
 }
 .cf-color-dot.active{border-color:var(--or-l);transform:scale(1.18);box-shadow:0 0 10px rgba(201,168,76,.65);}
 .cf-cta{
-  display:flex;align-items:center;justify-content:center;gap:.6rem;width:100%;
-  padding:.95rem;background:linear-gradient(135deg,#0f7a5e,#25D366);
-  border:none;border-radius:14px;color:#fff;font-size:.76rem;font-weight:700;
-  letter-spacing:.14em;text-transform:uppercase;font-family:'Montserrat',sans-serif;
+  display:flex;align-items:center;justify-content:center;gap:.4rem;width:100%;
+  padding:.6rem;background:linear-gradient(135deg,#0f7a5e,#25D366);
+  border:none;border-radius:11px;color:#fff;font-size:.64rem;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;font-family:'Montserrat',sans-serif;
   cursor:pointer;-webkit-tap-highlight-color:transparent;
-  box-shadow:0 6px 24px rgba(37,211,102,.3);transition:opacity .2s;
+  box-shadow:0 4px 18px rgba(37,211,102,.28);transition:opacity .2s;
 }
 .cf-cta:active{opacity:.85;}
 .cf-swipe-hint{
@@ -415,6 +415,66 @@ img.prod-img.loaded{opacity:1;}
 .cf-empty h3{font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--or-l);}
 .cf-empty p{font-size:.78rem;line-height:1.7;max-width:22rem;}
 
+/* ============================================================
+   VUE IMMERSIVE CHAÎNES — défilé circulaire type aiguille d'horloge
+   Réservée UNIQUEMENT à la catégorie Chaînes
+   ============================================================ */
+#chainesFeed{
+  position:fixed;inset:0;z-index:9700;
+  background:#000;
+  display:none;flex-direction:column;
+}
+#chainesFeed.open{display:flex;}
+.ch-stage{
+  flex:1;position:relative;overflow:hidden;
+  perspective:1500px;-webkit-perspective:1500px;
+  background:radial-gradient(ellipse at 50% 20%, #1a1712 0%, #050403 72%);
+}
+.ch-slide{
+  position:absolute;inset:0;width:100%;height:100%;
+  transform-origin:50% 145%;
+  will-change:transform,opacity,filter;
+  backface-visibility:hidden;-webkit-backface-visibility:hidden;
+}
+@keyframes chOutCW{
+  0%{transform:rotate(0deg) scale(1);opacity:1;filter:blur(0);}
+  35%{filter:blur(2.5px);}
+  55%{transform:rotate(40deg) scale(.9);opacity:.4;}
+  100%{transform:rotate(88deg) scale(.78);opacity:0;filter:blur(0);}
+}
+@keyframes chInCW{
+  0%{transform:rotate(-88deg) scale(.78);opacity:0;filter:blur(0);}
+  30%{filter:blur(2.5px);}
+  45%{transform:rotate(-26deg) scale(1.06);opacity:.85;}
+  75%{transform:rotate(7deg) scale(1.015);opacity:1;}
+  100%{transform:rotate(0deg) scale(1);opacity:1;filter:blur(0);}
+}
+@keyframes chOutCCW{
+  0%{transform:rotate(0deg) scale(1);opacity:1;filter:blur(0);}
+  35%{filter:blur(2.5px);}
+  55%{transform:rotate(-40deg) scale(.9);opacity:.4;}
+  100%{transform:rotate(-88deg) scale(.78);opacity:0;filter:blur(0);}
+}
+@keyframes chInCCW{
+  0%{transform:rotate(88deg) scale(.78);opacity:0;filter:blur(0);}
+  30%{filter:blur(2.5px);}
+  45%{transform:rotate(26deg) scale(1.06);opacity:.85;}
+  75%{transform:rotate(-7deg) scale(1.015);opacity:1;}
+  100%{transform:rotate(0deg) scale(1);opacity:1;filter:blur(0);}
+}
+.ch-pivot-dot{
+  position:absolute;bottom:10px;left:50%;transform:translateX(-50%);z-index:8;
+  width:9px;height:9px;border-radius:50%;
+  background:radial-gradient(circle,#fff8dd 0%,#E8C97A 45%,#8B6914 100%);
+  box-shadow:0 0 4px 1px rgba(255,248,221,.9),0 0 16px rgba(201,168,76,.85);
+  pointer-events:none;
+}
+.ch-pivot-dot::after{
+  content:'';position:absolute;left:50%;bottom:100%;transform:translateX(-50%);
+  width:1px;height:60px;background:linear-gradient(0deg,rgba(201,168,76,.55),transparent);
+}
+
+.qr-box{text-align:center;padding:1.2rem;background:rgba(0,0,0,.3);border-radius:10px;border:1px solid var(--bord);}
 #prodModal{
   position:fixed;inset:0;z-index:9800;
   display:none;flex-direction:column;
@@ -920,6 +980,22 @@ img.prod-img.loaded{opacity:1;}
   <div class="cf-scroll" id="cfScroll" onscroll="onCfScroll()"></div>
 </div>
 
+<!-- VUE IMMERSIVE CHAÎNES — défilé circulaire type aiguille d'horloge, catégorie Chaînes uniquement -->
+<div id="chainesFeed">
+  <div class="cf-topbar">
+    <button class="cf-back" onclick="closeChainesFeed()" aria-label="Retour">←</button>
+    <div class="cf-title">✦ Collection Chaînes</div>
+    <div class="cf-counter" id="chCounter">1 / 1</div>
+  </div>
+  <div class="cf-gender-tabs" id="chGenderTabs">
+    <button class="cf-g-tab active" data-g="tous" onclick="setChGender(this)">Tous</button>
+    <button class="cf-g-tab" data-g="Homme" onclick="setChGender(this)">Homme</button>
+    <button class="cf-g-tab" data-g="Femme" onclick="setChGender(this)">Femme</button>
+  </div>
+  <div class="ch-stage" id="chStage"></div>
+  <div class="ch-pivot-dot"></div>
+</div>
+
 <!-- MODAL PRODUIT -->
 <div id="prodModal">
   <div class="modal-topbar">
@@ -1241,6 +1317,7 @@ function hideAll() {
 }
 function goHome() {
   closeColliersFeed();
+  closeChainesFeed();
   clearTimeout(searchTimer);
   lastPageBeforeSearch = null;
   var si = document.getElementById('searchInput');
@@ -1255,6 +1332,7 @@ function goHome() {
 }
 function openCat(cat) {
   if (cat === 'Colliers') { openColliersFeed(); return; }
+  if (cat === 'Chaînes') { openChainesFeed(); return; }
   currentCat = cat; currentGender = 'tous';
   document.querySelectorAll('.g-tab').forEach(t => t.classList.remove('active'));
   document.querySelector('.g-tab[data-g="tous"]').classList.add('active');
@@ -1377,6 +1455,186 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape' && document.getElementById('colliersFeed').classList.contains('open')) {
     closeColliersFeed();
   }
+});
+
+/* ============================================================
+   VUE IMMERSIVE CHAÎNES — défilé circulaire type aiguille d'horloge
+   Réservée UNIQUEMENT à la catégorie Chaînes
+   Chaque swipe fait "tourner" la chaîne autour d'un pivot fixe,
+   exactement comme l'aiguille d'une montre qui avance d'un cran.
+   ============================================================ */
+let chGender    = 'tous';
+let chList      = [];
+let chIndex     = 0;
+let chAnimating = false;
+let chTouchBound = false;
+
+function openChainesFeed() {
+  chGender = 'tous';
+  document.querySelectorAll('#chGenderTabs .cf-g-tab').forEach(t => t.classList.remove('active'));
+  document.querySelector('#chGenderTabs .cf-g-tab[data-g="tous"]').classList.add('active');
+  document.getElementById('chainesFeed').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  buildChainList();
+  initChainStage();
+  if (!chTouchBound) { bindChainTouch(); chTouchBound = true; }
+}
+
+function closeChainesFeed() {
+  const feed = document.getElementById('chainesFeed');
+  if (feed) feed.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function setChGender(btn) {
+  document.querySelectorAll('#chGenderTabs .cf-g-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  chGender = btn.dataset.g;
+  buildChainList();
+  initChainStage();
+}
+
+function buildChainList() {
+  let list = allProducts.filter(p => p.categorie === 'Chaînes');
+  if (chGender !== 'tous') list = list.filter(p => p.genre === chGender);
+  chList = list;
+}
+
+function chainSlideHTML(p, idx) {
+  const colors  = p.couleurs && p.couleurs.length ? p.couleurs : [];
+  const mainImg = colors.length && colors[0].image ? colors[0].image : (p.image || FALLBACK_IMG);
+
+  const colorDots = colors.length > 1 ? `
+    <div class="cf-colors">
+      ${colors.map((c,ci) => `<div class="cf-color-dot${ci===0?' active':''}" style="background:${h(c.hex)}" title="${h(c.nom)}" onclick="switchChColor(this,${idx},${ci})"></div>`).join('')}
+    </div>` : '';
+
+  return `
+    <div class="cf-glow"></div>
+    <div class="cf-img-wrap">
+      <img id="chimg-${idx}" src="${h(mainImg)}" alt="${h(p.nom)}" decoding="async" onerror="this.src='${FALLBACK_IMG}'">
+    </div>
+    <div class="cf-info">
+      <div class="cf-badge">✦ Chaîne</div>
+      <div class="cf-name">${h(p.nom)}</div>
+      <div class="cf-genre">${h(p.genre||'')}</div>
+      ${p.description ? `<div class="cf-desc">${h(p.description)}</div>` : ''}
+      <div class="cf-price-row">
+        <div class="cf-price">${fmt(p.prix)} <small>FCFA</small></div>
+        ${colorDots}
+      </div>
+      <button class="cf-cta" onclick="commander('${js(p.nom)}','${js(p.prix)}')">${WA_SVG} Commander sur WhatsApp</button>
+    </div>
+    <div class="cf-swipe-hint">↻ Glissez pour tourner</div>
+  `;
+}
+
+function initChainStage() {
+  const stage = document.getElementById('chStage');
+  chIndex = 0;
+  updateChCounter();
+  if (!chList.length) {
+    stage.innerHTML = `<div class="ch-slide current"><div class="cf-empty">
+      <h3>✦ Collection à venir</h3>
+      <p>Aucune chaîne disponible ${chGender!=='tous' ? 'pour '+chGender+' ' : ''}pour le moment.<br>Revenez bientôt !</p>
+    </div></div>`;
+    return;
+  }
+  stage.innerHTML = `<div class="ch-slide current">${chainSlideHTML(chList[0], 0)}</div>`;
+}
+
+function updateChCounter() {
+  const el = document.getElementById('chCounter');
+  if (el) el.textContent = chList.length ? `${chIndex+1} / ${chList.length}` : '0 / 0';
+}
+
+function switchChColor(dot, idx, colorIdx) {
+  const p = chList[idx];
+  if (!p || !p.couleurs) return;
+  const c = p.couleurs[colorIdx];
+  const img = document.getElementById('chimg-' + idx);
+  if (img && c.image) {
+    img.style.opacity = '0';
+    setTimeout(() => { img.src = c.image; img.style.opacity = '1'; }, 150);
+    img.style.transition = 'opacity .2s';
+  }
+  dot.closest('.cf-colors').querySelectorAll('.cf-color-dot').forEach((d,i) => d.classList.toggle('active', i===colorIdx));
+}
+
+/**
+ * Fait "tourner" la chaîne affichée d'un cran, comme l'aiguille d'une
+ * montre : la chaîne actuelle pivote et s'efface autour du pivot doré
+ * en bas de l'écran, pendant que la suivante arrive en tournant dans
+ * le même sens, jusqu'à se stabiliser pile en face du client.
+ * dir = 1 -> sens horaire (suivant) · dir = -1 -> sens anti-horaire (précédent)
+ */
+function goChain(dir) {
+  if (chAnimating || chList.length < 2) return;
+  chAnimating = true;
+  const newIndex = (chIndex + dir + chList.length) % chList.length;
+  const stage = document.getElementById('chStage');
+  const oldSlide = stage.querySelector('.ch-slide.current');
+
+  const newSlide = document.createElement('div');
+  newSlide.className = 'ch-slide incoming';
+  newSlide.innerHTML = chainSlideHTML(chList[newIndex], newIndex);
+  stage.appendChild(newSlide);
+
+  requestAnimationFrame(() => {
+    oldSlide.style.animation = (dir > 0 ? 'chOutCW' : 'chOutCCW') + ' .62s cubic-bezier(.65,0,.35,1) forwards';
+    newSlide.style.animation = (dir > 0 ? 'chInCW'  : 'chInCCW')  + ' .62s cubic-bezier(.65,0,.35,1) forwards';
+  });
+
+  setTimeout(() => {
+    if (oldSlide && oldSlide.parentNode) oldSlide.remove();
+    newSlide.classList.remove('incoming');
+    newSlide.classList.add('current');
+    chIndex = newIndex;
+    chAnimating = false;
+    updateChCounter();
+  }, 640);
+}
+
+function bindChainTouch() {
+  const stage = document.getElementById('chStage');
+  let sx = 0, sy = 0, active = false;
+
+  stage.addEventListener('touchstart', e => {
+    if (e.touches.length !== 1) return;
+    sx = e.touches[0].clientX; sy = e.touches[0].clientY; active = true;
+  }, {passive:true});
+
+  stage.addEventListener('touchend', e => {
+    if (!active) return; active = false;
+    const dx = e.changedTouches[0].clientX - sx;
+    const dy = e.changedTouches[0].clientY - sy;
+    if (Math.abs(dx) < 42 && Math.abs(dy) < 42) return;
+    if (Math.abs(dy) >= Math.abs(dx)) {
+      if (dy < -42) goChain(1); else if (dy > 42) goChain(-1);
+    } else {
+      if (dx < -42) goChain(1); else if (dx > 42) goChain(-1);
+    }
+  }, {passive:true});
+
+  let mDown = false, mStartY = 0;
+  stage.addEventListener('mousedown', e => { mDown = true; mStartY = e.clientY; });
+  window.addEventListener('mouseup', e => {
+    if (!mDown) return; mDown = false;
+    const dy = e.clientY - mStartY;
+    if (dy < -42) goChain(1); else if (dy > 42) goChain(-1);
+  });
+
+  stage.addEventListener('wheel', e => {
+    if (chAnimating) return;
+    if (e.deltaY > 24) goChain(1); else if (e.deltaY < -24) goChain(-1);
+  }, {passive:true});
+}
+
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('chainesFeed').classList.contains('open')) return;
+  if (e.key === 'Escape') closeChainesFeed();
+  if (e.key === 'ArrowDown' || e.key === 'ArrowRight') goChain(1);
+  if (e.key === 'ArrowUp'   || e.key === 'ArrowLeft')  goChain(-1);
 });
 
 function openOffres() {
