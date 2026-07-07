@@ -404,57 +404,5 @@
     "flash_reduction": 0,
     "couleurs": [],
     "createdAt": "2026-07-07T17:29:45.239Z"
-  },
-  {
-    "id": "1783448832916",
-    "nom": "Bracelets à menotte",
-    "prix": 10500,
-    "categorie": "Bracelets",
-    "genre": "Homme",
-    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783448835212-v1l7qq-Bracelets-a-menotte-principal.png",
-    "description": "Design simple mais efficace.",
-    "img_gauche": "",
-    "img_droit": "",
-    "img_dos": "",
-    "halo_cadran": "or",
-    "is_patron": false,
-    "moods": [],
-    "flash_fin": "",
-    "flash_reduction": 0,
-    "couleurs": [
-      {
-        "nom": "Rouge",
-        "hex": "#9e0505",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783448835231-xnxtj3-Bracelets-a-menotte-Rouge.png",
-        "img_gauche": "",
-        "img_droit": "",
-        "img_dos": ""
-      },
-      {
-        "nom": "Bleu",
-        "hex": "#051e9e",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783448835246-m1lv5l-Bracelets-a-menotte-Bleu.png",
-        "img_gauche": "",
-        "img_droit": "",
-        "img_dos": ""
-      },
-      {
-        "nom": "Noir",
-        "hex": "#010413",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783448835264-x3xn8a-Bracelets-a-menotte-Noir.png",
-        "img_gauche": "",
-        "img_droit": "",
-        "img_dos": ""
-      },
-      {
-        "nom": "Verre émeraude",
-        "hex": "#10b191",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783448835278-8fqhex-Bracelets-a-menotte-Verre-emeraude.png",
-        "img_gauche": "",
-        "img_droit": "",
-        "img_dos": ""
-      }
-    ],
-    "createdAt": "2026-07-07T18:27:12.916Z"
   }
 ]
