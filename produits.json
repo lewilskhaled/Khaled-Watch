@@ -347,5 +347,24 @@
     "flash_reduction": 0,
     "couleurs": [],
     "createdAt": "2026-07-07T16:14:44.772Z"
+  },
+  {
+    "id": "1783441809561",
+    "nom": "Chaine a maille fine",
+    "prix": 5000,
+    "categorie": "Chaînes",
+    "genre": "Homme",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783441812105-1we1yn-Chaine-a-maille-fine-principal.png",
+    "description": "La fluidité du design , la force du métal",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "or",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [],
+    "createdAt": "2026-07-07T16:30:09.561Z"
   }
 ]
