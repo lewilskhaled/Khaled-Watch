@@ -406,12 +406,12 @@
     "createdAt": "2026-07-07T17:29:45.239Z"
   },
   {
-    "id": "1783453968277",
-    "nom": "Bracelet à menotte",
-    "prix": 4000,
+    "id": "1783448832916",
+    "nom": "Bracelets à menotte",
+    "prix": 10500,
     "categorie": "Bracelets",
     "genre": "Homme",
-    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783453972542-azdj3l-Bracelet-a-menotte-principal.png",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783448835212-v1l7qq-Bracelets-a-menotte-principal.png",
     "description": "Design simple mais efficace.",
     "img_gauche": "",
     "img_droit": "",
@@ -424,69 +424,37 @@
     "couleurs": [
       {
         "nom": "Rouge",
-        "hex": "#450202",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783453972559-2f6lc3-Bracelet-a-menotte-Rouge.png",
-        "img_gauche": "",
-        "img_droit": "",
-        "img_dos": ""
-      },
-      {
-        "nom": "Rouge",
-        "hex": "#450202",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783453972581-82pgn5-Bracelet-a-menotte-Rouge.png",
+        "hex": "#9e0505",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783448835231-xnxtj3-Bracelets-a-menotte-Rouge.png",
         "img_gauche": "",
         "img_droit": "",
         "img_dos": ""
       },
       {
         "nom": "Bleu",
-        "hex": "#0b0977",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783453972610-d1a6tn-Bracelet-a-menotte-Bleu.png",
-        "img_gauche": "",
-        "img_droit": "",
-        "img_dos": ""
-      },
-      {
-        "nom": "Bleu",
-        "hex": "#0b0977",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783453972630-jptjpx-Bracelet-a-menotte-Bleu.png",
-        "img_gauche": "",
-        "img_droit": "",
-        "img_dos": ""
-      },
-      {
-        "nom": "Vert émeraude",
-        "hex": "#33e6b0",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783453972658-n2ycx5-Bracelet-a-menotte-Vert-emeraude.png",
-        "img_gauche": "",
-        "img_droit": "",
-        "img_dos": ""
-      },
-      {
-        "nom": "Vert émeraude",
-        "hex": "#33e6b0",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783453972679-p6wka7-Bracelet-a-menotte-Vert-emeraude.png",
+        "hex": "#051e9e",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783448835246-m1lv5l-Bracelets-a-menotte-Bleu.png",
         "img_gauche": "",
         "img_droit": "",
         "img_dos": ""
       },
       {
         "nom": "Noir",
-        "hex": "#000504",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783453972693-c34bp5-Bracelet-a-menotte-Noir.png",
+        "hex": "#010413",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783448835264-x3xn8a-Bracelets-a-menotte-Noir.png",
         "img_gauche": "",
         "img_droit": "",
         "img_dos": ""
       },
       {
-        "nom": "Noir",
-        "hex": "#000504",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783453972713-331mml-Bracelet-a-menotte-Noir.png",
+        "nom": "Verre émeraude",
+        "hex": "#10b191",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783448835278-8fqhex-Bracelets-a-menotte-Verre-emeraude.png",
         "img_gauche": "",
         "img_droit": "",
         "img_dos": ""
       }
     ],
-    "createdAt": "2026-07-07T19:52:48.277Z"
+    "createdAt": "2026-07-07T18:27:12.916Z"
   }
 ]
