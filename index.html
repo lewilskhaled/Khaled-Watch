@@ -502,9 +502,8 @@ img.prod-img.loaded{opacity:1;}
              opacity .55s ease, filter .55s ease;
 }
 .br-card.depth-0{transform:translateY(0) scale(1);opacity:1;z-index:5;filter:none;}
-.br-card.depth-1{transform:translateY(-42px) scale(.9);opacity:.55;z-index:4;filter:brightness(.74) blur(.5px);}
-.br-card.depth-2{transform:translateY(-74px) scale(.8);opacity:.26;z-index:3;filter:brightness(.5) blur(1px);}
-.br-card.depth-exit{transform:translateY(-110px) scale(.64);opacity:0;z-index:2;filter:brightness(.32) blur(2px);}
+.br-card.depth-1{transform:translateY(-52px) scale(.86);opacity:.5;z-index:4;filter:brightness(.68) blur(.6px);}
+.br-card.depth-exit{transform:translateY(-110px) scale(.64);opacity:0;z-index:3;filter:brightness(.32) blur(2px);}
 .br-card.depth-enter-front{transform:translateY(72px) scale(1.14);opacity:0;z-index:6;filter:brightness(1.15);}
 
 .qr-box{text-align:center;padding:1.2rem;background:rgba(0,0,0,.3);border-radius:10px;border:1px solid var(--bord);}
@@ -1774,8 +1773,8 @@ function initBraceletStage() {
     return;
   }
 
-  const depthClasses = ['depth-0','depth-1','depth-2'];
-  const count = Math.min(3, brList.length);
+  const depthClasses = ['depth-0','depth-1'];
+  const count = Math.min(2, brList.length);
   for (let d = 0; d < count; d++) {
     const idx  = (brIndex + d) % brList.length;
     const card = document.createElement('div');
@@ -1819,11 +1818,10 @@ function goBracelet(dir) {
   brAnimating = true;
   const stage = document.getElementById('brStage');
   const front = stage.querySelector('.depth-0');
-  const mid   = stage.querySelector('.depth-1');
-  const back  = stage.querySelector('.depth-2');
+  const back  = stage.querySelector('.depth-1');
 
   if (dir > 0) {
-    const newIdx = (brIndex + 3) % brList.length;
+    const newIdx = (brIndex + 2) % brList.length;
     const enter = document.createElement('div');
     enter.className = 'br-card depth-exit';
     enter.dataset.pidx = newIdx;
@@ -1832,9 +1830,8 @@ function goBracelet(dir) {
 
     requestAnimationFrame(() => {
       if (front) { front.classList.remove('depth-0'); front.classList.add('depth-exit'); }
-      if (mid)   { mid.classList.remove('depth-1');   mid.classList.add('depth-0'); }
-      if (back)  { back.classList.remove('depth-2');  back.classList.add('depth-1'); }
-      enter.classList.remove('depth-exit'); enter.classList.add('depth-2');
+      if (back)  { back.classList.remove('depth-1');  back.classList.add('depth-0'); }
+      enter.classList.remove('depth-exit'); enter.classList.add('depth-1');
     });
 
     setTimeout(() => {
@@ -1853,8 +1850,7 @@ function goBracelet(dir) {
     stage.appendChild(enter);
 
     requestAnimationFrame(() => {
-      if (back)  { back.classList.remove('depth-2');  back.classList.add('depth-exit'); }
-      if (mid)   { mid.classList.remove('depth-1');   mid.classList.add('depth-2'); }
+      if (back)  { back.classList.remove('depth-1');  back.classList.add('depth-exit'); }
       if (front) { front.classList.remove('depth-0'); front.classList.add('depth-1'); }
       enter.classList.remove('depth-enter-front'); enter.classList.add('depth-0');
     });
