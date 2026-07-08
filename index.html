@@ -1444,7 +1444,7 @@ function renderColliersFeed() {
     <div class="cf-slide" data-idx="${i}">
       <div class="cf-glow"></div>
       <div class="cf-img-wrap">
-        <img id="cfimg-${i}" src="${h(mainImg)}" alt="${h(p.nom)}" loading="${i<2?'eager':'lazy'}" decoding="async" onerror="this.src='${FALLBACK_IMG}'">
+        <img id="cfimg-${i}" src="${h(thumbUrl(mainImg, 900))}" alt="${h(p.nom)}" loading="${i<2?'eager':'lazy'}" decoding="async" onerror="this.src='${FALLBACK_IMG}'">
       </div>
       <div class="cf-info">
         <div class="cf-badge">✦ Collier</div>
@@ -1469,7 +1469,7 @@ function switchCfColor(dot, slideIdx, colorIdx) {
   const img = document.getElementById('cfimg-' + slideIdx);
   if (img && c.image) {
     img.style.opacity = '0';
-    setTimeout(() => { img.src = c.image; img.style.opacity = '1'; }, 150);
+    setTimeout(() => { img.src = thumbUrl(c.image, 900); img.style.opacity = '1'; }, 150);
     img.style.transition = 'opacity .2s';
   }
   dot.closest('.cf-colors').querySelectorAll('.cf-color-dot').forEach((d,i) => d.classList.toggle('active', i===colorIdx));
@@ -1553,7 +1553,7 @@ function chainSlideHTML(p, idx) {
   return `
     <div class="cf-glow"></div>
     <div class="cf-img-wrap">
-      <img id="chimg-${idx}" src="${h(mainImg)}" alt="${h(p.nom)}" decoding="async" onerror="this.src='${FALLBACK_IMG}'">
+      <img id="chimg-${idx}" src="${h(thumbUrl(mainImg, 900))}" alt="${h(p.nom)}" decoding="async" onerror="this.src='${FALLBACK_IMG}'">
     </div>
     <div class="cf-info">
       <div class="cf-badge">✦ Chaîne</div>
@@ -1596,7 +1596,7 @@ function switchChColor(dot, idx, colorIdx) {
   const img = document.getElementById('chimg-' + idx);
   if (img && c.image) {
     img.style.opacity = '0';
-    setTimeout(() => { img.src = c.image; img.style.opacity = '1'; }, 150);
+    setTimeout(() => { img.src = thumbUrl(c.image, 900); img.style.opacity = '1'; }, 150);
     img.style.transition = 'opacity .2s';
   }
   dot.closest('.cf-colors').querySelectorAll('.cf-color-dot').forEach((d,i) => d.classList.toggle('active', i===colorIdx));
@@ -1734,7 +1734,7 @@ function braceletSlideHTML(p, idx) {
   return `
     <div class="cf-glow"></div>
     <div class="cf-img-wrap">
-      <img id="brimg-${idx}" src="${h(mainImg)}" alt="${h(p.nom)}" decoding="async" onerror="this.src='${FALLBACK_IMG}'">
+      <img id="brimg-${idx}" src="${h(thumbUrl(mainImg, 900))}" alt="${h(p.nom)}" decoding="async" onerror="this.src='${FALLBACK_IMG}'">
     </div>
     <div class="cf-info">
       <div class="cf-badge">✦ Bracelet</div>
@@ -1788,7 +1788,7 @@ function switchBrColor(dot, idx, colorIdx) {
   const img = document.getElementById('brimg-' + idx);
   if (img && c.image) {
     img.style.opacity = '0';
-    setTimeout(() => { img.src = c.image; img.style.opacity = '1'; }, 150);
+    setTimeout(() => { img.src = thumbUrl(c.image, 900); img.style.opacity = '1'; }, 150);
     img.style.transition = 'opacity .2s';
   }
   dot.closest('.cf-colors').querySelectorAll('.cf-color-dot').forEach((d,i) => d.classList.toggle('active', i===colorIdx));
@@ -1962,11 +1962,11 @@ function renderProducts() {
       <div class="prod-img-zone${neutralBg}">
         ${colors.length > 1 ? `
         <div class="cvar-viewport prod-img" data-pid="${h(p.id)}">
-          ${colors.map((c,ci) => `<img class="cvar-img${ci===0?' loaded':''}" data-ci="${ci}" src="${h(c.image||mainImg)}" alt="${h(p.nom)}" loading="${i<6?'eager':'lazy'}" decoding="async" ${i<6&&ci===0?'fetchpriority="high"':''} onerror="this.src='${FALLBACK_IMG}'" onload="this.classList.add('loaded');this.closest('.prod-img-zone').classList.add('img-ready')" style="transform:translateY(${ci===0?'0%':'100%'});">`).join('')}
+          ${colors.map((c,ci) => `<img class="cvar-img${ci===0?' loaded':''}" data-ci="${ci}" src="${h(thumbUrl(c.image||mainImg, 460))}" alt="${h(p.nom)}" loading="${i<6?'eager':'lazy'}" decoding="async" ${i<6&&ci===0?'fetchpriority="high"':''} onerror="this.src='${FALLBACK_IMG}'" onload="this.classList.add('loaded');this.closest('.prod-img-zone').classList.add('img-ready')" style="transform:translateY(${ci===0?'0%':'100%'});">`).join('')}
         </div>
         <div class="cvar-dots">${colors.map((c,ci)=>`<div class="cvar-dot${ci===0?' active':''}"></div>`).join('')}</div>
         ` : `
-        <img class="prod-img" id="cimg-${h(p.id)}" src="${h(mainImg)}" alt="${h(p.nom)}" loading="${i<6?'eager':'lazy'}" decoding="async" ${i<6?'fetchpriority="high"':''}
+        <img class="prod-img" id="cimg-${h(p.id)}" src="${h(thumbUrl(mainImg, 460))}" alt="${h(p.nom)}" loading="${i<6?'eager':'lazy'}" decoding="async" ${i<6?'fetchpriority="high"':''}
              onload="this.classList.add('loaded');this.closest('.prod-img-zone').classList.add('img-ready')" onerror="this.src='${FALLBACK_IMG}'">
         `}
         <div class="sunburst-overlay${neutralBg}" id="sburst-${h(p.id)}"></div>
@@ -2057,7 +2057,7 @@ function swatchCard(sw, prodId, ci) {
   const img = document.getElementById('cimg-' + prodId);
   if (img && c.image) {
     img.style.opacity = '0';
-    setTimeout(() => { img.src = c.image; img.style.opacity = '1'; }, 150);
+    setTimeout(() => { img.src = thumbUrl(c.image, 460); img.style.opacity = '1'; }, 150);
     img.style.transition = 'opacity .15s';
   }
 }
@@ -2111,7 +2111,7 @@ function buildAllSlides() {
       <div class="modal-color-strip">
         ${colors.map((c,ci) => `
           <div class="modal-color-thumb${ci===0?' active':''}" onclick="switchModalColor(${i},${ci},this)">
-            <img src="${h(c.image||mainImg)}" alt="${h(c.nom)}" onerror="this.src='${FALLBACK_IMG}'">
+            <img src="${h(thumbUrl(c.image||mainImg, 110))}" alt="${h(c.nom)}" onerror="this.src='${FALLBACK_IMG}'">
           </div>
         `).join('')}
       </div>` : '';
@@ -2129,7 +2129,7 @@ function buildAllSlides() {
     <div class="modal-slide" data-slide="${i}">
       <div class="modal-img-wrap${p.categorie === 'Colliers' ? ' neutral-bg' : ''}" id="wrap360-${i}"
            ${has360 ? `ontouchstart="start360(event,${i})" ontouchmove="move360(event,${i})" ontouchend="end360(event,${i})" onmousedown="mdown360(event,${i})"` : ''}>
-        <img id="mimg-${i}" src="${h(mainImg)}" alt="${h(p.nom)}" onerror="this.src='${FALLBACK_IMG}'" draggable="false">
+        <img id="mimg-${i}" src="${h(thumbUrl(mainImg, 1000))}" alt="${h(p.nom)}" onerror="this.src='${FALLBACK_IMG}'" draggable="false">
         ${has360 ? `<div class="badge360">🔄 360°<br><span>Glisser</span></div>` : ''}
         ${arrows360}
         ${dots360}
@@ -2169,7 +2169,7 @@ function showAngle(slideIdx, frameIdx) {
   if (!s) return;
   s.cur = ((frameIdx % s.frames.length) + s.frames.length) % s.frames.length;
   const img = document.getElementById('mimg-' + slideIdx);
-  if (img) { img.style.opacity = '.7'; img.src = s.frames[s.cur]; img.onload = () => { img.style.opacity = '1'; }; }
+  if (img) { img.style.opacity = '.7'; img.src = thumbUrl(s.frames[s.cur], 1000); img.onload = () => { img.style.opacity = '1'; }; }
   const dotsEl = document.getElementById('dots360-' + slideIdx);
   if (dotsEl) dotsEl.querySelectorAll('.dot360').forEach((d,i) => d.classList.toggle('active', i===s.cur));
 }
@@ -2204,7 +2204,7 @@ function updateModalNav() {
 function switchModalColor(slideIdx, colorIdx, thumb) {
   const p = currentList[slideIdx]; const c = p.couleurs[colorIdx];
   const img = document.getElementById('mimg-' + slideIdx);
-  if (img && (c.image || p.image)) img.src = c.image || p.image;
+  if (img && (c.image || p.image)) img.src = thumbUrl(c.image || p.image, 1000);
   thumb.closest('.modal-color-strip').querySelectorAll('.modal-color-thumb').forEach((t,i) => t.classList.toggle('active', i===colorIdx));
 }
 
@@ -2248,6 +2248,32 @@ function ctaOffre(type) { const msg=`Bonjour Khaled Watch 👋\n\nJe souhaite pr
 function h(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 function js(s){ return String(s||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'"); }
 function fmt(n){ return Number(n||0).toLocaleString('fr-FR'); }
+
+/* ============================================================
+   REDIMENSIONNEMENT D'IMAGES À LA VOLÉE — chargement ultra rapide
+   Les photos hébergées (GitHub) sont souvent bien plus grandes que
+   nécessaire pour une simple vignette. On les fait transiter par un
+   CDN de redimensionnement (images.weserv.nl) qui renvoie une
+   version compressée en WebP à la taille exacte demandée, mise en
+   cache. Les photos Unsplash utilisent leur propre paramètre "w=".
+   En cas d'échec du CDN, onerror bascule vers l'image d'origine.
+   ============================================================ */
+function thumbUrl(url, width) {
+  if (!url || url.startsWith('data:')) return url;
+  try {
+    if (url.includes('images.unsplash.com')) {
+      const u = new URL(url);
+      u.searchParams.set('w', width);
+      u.searchParams.set('q', '75');
+      u.searchParams.set('auto', 'format');
+      return u.toString();
+    }
+    const stripped = url.replace(/^https?:\/\//, '');
+    return `https://images.weserv.nl/?url=${encodeURIComponent(stripped)}&w=${width}&output=webp&q=76`;
+  } catch (e) {
+    return url;
+  }
+}
 
 /* ============================================================
    SUNBURST
@@ -2421,12 +2447,12 @@ function renderSearchResults(list, q) {
     if (colors.length > 1) {
       imgZoneHTML = '<div class="cvar-viewport prod-img" data-pid="' + h(p.id) + '">'
         + colors.map(function(c,ci){
-            return '<img class="cvar-img' + (ci===0?' loaded':'') + '" data-ci="' + ci + '" src="' + h(c.image||mainImg) + '" alt="' + h(p.nom) + '" ' + (i<6?'loading="eager" fetchpriority="high"':'loading="lazy"') + ' decoding="async" onerror="this.src=\'' + FALLBACK_IMG + '\'" onload="this.classList.add(\'loaded\');this.closest(\'.prod-img-zone\').classList.add(\'img-ready\')" style="transform:translateY(' + (ci===0?'0%':'100%') + ');">';
+            return '<img class="cvar-img' + (ci===0?' loaded':'') + '" data-ci="' + ci + '" src="' + h(thumbUrl(c.image||mainImg, 460)) + '" alt="' + h(p.nom) + '" ' + (i<6?'loading="eager" fetchpriority="high"':'loading="lazy"') + ' decoding="async" onerror="this.src=\'' + FALLBACK_IMG + '\'" onload="this.classList.add(\'loaded\');this.closest(\'.prod-img-zone\').classList.add(\'img-ready\')" style="transform:translateY(' + (ci===0?'0%':'100%') + ');">';
           }).join('')
         + '</div>'
         + '<div class="cvar-dots">' + colors.map(function(c,ci){ return '<div class="cvar-dot' + (ci===0?' active':'') + '"></div>'; }).join('') + '</div>';
     } else {
-      imgZoneHTML = '<img class="prod-img" id="cimg-' + h(p.id) + '" src="' + h(mainImg) + '" alt="' + h(p.nom) + '" ' + eagerAttrs + ' decoding="async" onload="this.classList.add(\'loaded\');this.closest(\'.prod-img-zone\').classList.add(\'img-ready\')" onerror="this.src=\'' + FALLBACK_IMG + '\'">';
+      imgZoneHTML = '<img class="prod-img" id="cimg-' + h(p.id) + '" src="' + h(thumbUrl(mainImg, 460)) + '" alt="' + h(p.nom) + '" ' + eagerAttrs + ' decoding="async" onload="this.classList.add(\'loaded\');this.closest(\'.prod-img-zone\').classList.add(\'img-ready\')" onerror="this.src=\'' + FALLBACK_IMG + '\'">';
     }
 
     var neutralBg = p.categorie === 'Colliers' ? ' neutral-bg' : '';
