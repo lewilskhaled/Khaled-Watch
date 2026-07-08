@@ -822,5 +822,41 @@
       }
     ],
     "createdAt": "2026-07-08T04:08:36.932Z"
+  },
+  {
+    "id": "1783484352558",
+    "nom": "Chaine élégance",
+    "prix": 10000,
+    "categorie": "Chaînes",
+    "genre": "Homme",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783484355732-esd65k-Chaine-elegance-principal.png",
+    "description": "Imposé votre présence sans dire un mot",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "or",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [
+      {
+        "nom": "Argenté vert émeraude",
+        "hex": "#b8b8b7",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783484355749-5d4isp-Chaine-elegance-Argente-vert-emeraude.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Argenté émeraude",
+        "hex": "#b8b8b7",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783484355841-v1ypl2-Chaine-elegance-Argente-emeraude.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      }
+    ],
+    "createdAt": "2026-07-08T04:19:12.558Z"
   }
 ]
