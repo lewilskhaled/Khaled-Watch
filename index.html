@@ -506,6 +506,12 @@ img.prod-img.loaded{opacity:1;}
 .br-card.depth-exit{transform:translateY(-110px) scale(.64);opacity:0;z-index:3;filter:brightness(.32) blur(2px);}
 .br-card.depth-enter-front{transform:translateY(72px) scale(1.14);opacity:0;z-index:6;filter:brightness(1.15);}
 
+/* Les infos (nom, prix, description, bouton) ne sont visibles que
+   sur le bracelet au premier plan — jamais sur celui d'arrière-plan,
+   pour éviter toute confusion visuelle entre les deux. */
+.br-card .cf-info{opacity:0;pointer-events:none;transition:opacity .22s ease;}
+.br-card.depth-0 .cf-info{opacity:1;pointer-events:auto;transition:opacity .38s ease .22s;}
+
 .qr-box{text-align:center;padding:1.2rem;background:rgba(0,0,0,.3);border-radius:10px;border:1px solid var(--bord);}
 #prodModal{
   position:fixed;inset:0;z-index:9800;
