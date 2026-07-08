@@ -966,5 +966,41 @@
       }
     ],
     "createdAt": "2026-07-08T05:23:19.334Z"
+  },
+  {
+    "id": "1783488701360",
+    "nom": "Chaine élégant",
+    "prix": 12000,
+    "categorie": "Chaînes",
+    "genre": "Homme",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783488704603-v9vf7w-Chaine-elegant-principal.png",
+    "description": "L'essentiel du style haut de gamme",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "or",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [
+      {
+        "nom": "Doré pierre bleu",
+        "hex": "#cdbc51",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783488704614-g2zw4n-Chaine-elegant-Dore-pierre-bleu.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Doré pierre bleu",
+        "hex": "#cdbc51",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783488704718-l4d791-Chaine-elegant-Dore-pierre-bleu.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      }
+    ],
+    "createdAt": "2026-07-08T05:31:41.360Z"
   }
 ]
