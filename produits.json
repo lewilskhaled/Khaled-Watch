@@ -786,5 +786,41 @@
       }
     ],
     "createdAt": "2026-07-08T04:00:12.051Z"
+  },
+  {
+    "id": "1783483716932",
+    "nom": "Chaine élégance",
+    "prix": 10000,
+    "categorie": "Chaînes",
+    "genre": "Homme",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783483721348-ywvwpp-Chaine-elegance-principal.png",
+    "description": "Chaine luxueuse . Fais toi remarqué grâce a cette merveille",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "or",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [
+      {
+        "nom": "Argenté pierre bleu",
+        "hex": "#b8b8b7",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783483721359-i2ao6z-Chaine-elegance-Argente-pierre-bleu.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Argenté pierre bleu",
+        "hex": "#b8b8b7",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783483721421-rd6902-Chaine-elegance-Argente-pierre-bleu.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      }
+    ],
+    "createdAt": "2026-07-08T04:08:36.932Z"
   }
 ]
