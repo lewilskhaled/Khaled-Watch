@@ -714,5 +714,41 @@
       }
     ],
     "createdAt": "2026-07-08T03:01:46.741Z"
+  },
+  {
+    "id": "1783480630983",
+    "nom": "Curban Chaine",
+    "prix": 5000,
+    "categorie": "Chaînes",
+    "genre": "Homme",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783480634277-zcpnip-Curban-Chaine-principal.png",
+    "description": "La chaine essentielle pour finir ton outfit 😍😍",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "or",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [
+      {
+        "nom": "Argenté",
+        "hex": "#b8b8b7",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783480634310-xkc200-Curban-Chaine-Argente.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Argenté",
+        "hex": "#b8b8b7",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783480634344-m7jz82-Curban-Chaine-Argente.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      }
+    ],
+    "createdAt": "2026-07-08T03:17:10.983Z"
   }
 ]
