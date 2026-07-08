@@ -642,5 +642,41 @@
       }
     ],
     "createdAt": "2026-07-08T02:03:33.508Z"
+  },
+  {
+    "id": "1783477727699",
+    "nom": "Snake Chaine",
+    "prix": 5000,
+    "categorie": "Chaînes",
+    "genre": "Homme",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783477729836-3hmjq5-Snake-Chaine-principal.png",
+    "description": "Design impeccable et minimaliste",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "or",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [
+      {
+        "nom": "Argenté",
+        "hex": "#a8a7a4",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783477729842-tr7f6z-Snake-Chaine-Argente.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Argenté",
+        "hex": "#a8a7a4",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783477729850-h2gdgl-Snake-Chaine-Argente.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      }
+    ],
+    "createdAt": "2026-07-08T02:28:47.699Z"
   }
 ]
