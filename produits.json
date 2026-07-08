@@ -292,25 +292,6 @@
     "createdAt": "2026-07-06T00:59:51.775Z"
   },
   {
-    "id": "1783438291586",
-    "nom": "Chaine en argent",
-    "prix": 6000,
-    "categorie": "Chaînes",
-    "genre": "Homme",
-    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783438295001-4kwjpj-Chaine-en-argent-principal.png",
-    "description": "L'art du détail imposant. L'éclat de l'argent pur à votre cou",
-    "img_gauche": "",
-    "img_droit": "",
-    "img_dos": "",
-    "halo_cadran": "or",
-    "is_patron": false,
-    "moods": [],
-    "flash_fin": "",
-    "flash_reduction": 0,
-    "couleurs": [],
-    "createdAt": "2026-07-07T15:31:31.586Z"
-  },
-  {
     "id": "1783438616257",
     "nom": "Chaine en argent",
     "prix": 6000,
