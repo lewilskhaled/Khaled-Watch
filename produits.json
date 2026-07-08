@@ -930,5 +930,41 @@
       }
     ],
     "createdAt": "2026-07-08T05:12:05.204Z"
+  },
+  {
+    "id": "1783488199334",
+    "nom": "Chaine élégant",
+    "prix": 12000,
+    "categorie": "Chaînes",
+    "genre": "Homme",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783488201442-hlycij-Chaine-elegant-principal.png",
+    "description": "Elevez vos standards avec cette pépite",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "or",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [
+      {
+        "nom": "Doré marron",
+        "hex": "#cdbc51",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783488201447-0t7ix8-Chaine-elegant-Dore-marron.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Doré marron",
+        "hex": "#cdbc51",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783488201494-dtyvpn-Chaine-elegant-Dore-marron.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      }
+    ],
+    "createdAt": "2026-07-08T05:23:19.334Z"
   }
 ]
