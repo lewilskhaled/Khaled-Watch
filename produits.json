@@ -572,5 +572,41 @@
       }
     ],
     "createdAt": "2026-07-07T23:56:31.875Z"
+  },
+  {
+    "id": "1783469790432",
+    "nom": "Chaine torsadé",
+    "prix": 7000,
+    "categorie": "Chaînes",
+    "genre": "Homme",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783469792231-k3p2z7-Chaine-torsade-principal.png",
+    "description": "Des maillons parfaits pour un look sans faille🤌🏽🛍️",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "or",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [
+      {
+        "nom": "Argebté",
+        "hex": "#bab9b5",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783469792236-c1dmz6-Chaine-torsade-Argebte.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Argenté",
+        "hex": "#bab9b5",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783469792279-2zj015-Chaine-torsade-Argente.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      }
+    ],
+    "createdAt": "2026-07-08T00:16:30.432Z"
   }
 ]
