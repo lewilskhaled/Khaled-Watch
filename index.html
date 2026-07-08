@@ -14,7 +14,7 @@
 <style>
 :root{
   --or:#C9A84C; --or-l:#E8C97A; --or-d:#8B6914;
-  --bg:#141210; --bg3:#242220;
+  --bg:#1B1815; --bg3:#2C2A26;
   --txt:#FFFFFF; --txt2:#F0EBD8; --gris:#D4C9B0;
   --wa:#25D366;
   --glass:rgba(0,0,0,0.62);
@@ -30,7 +30,7 @@ html{-webkit-text-size-adjust:100%;}
 body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;overflow-x:hidden;transition:background .35s,color .35s;}
 
 #bgLayer{position:fixed;inset:0;z-index:-2;background-size:cover;background-position:center center;background-attachment:fixed;transition:background-image .6s ease;}
-#bgOverlay{position:fixed;inset:0;z-index:-1;background:linear-gradient(170deg,rgba(0,0,0,.52)0%,rgba(0,0,0,.34)50%,rgba(0,0,0,.58)100%);}
+#bgOverlay{position:fixed;inset:0;z-index:-1;background:linear-gradient(170deg,rgba(0,0,0,.38)0%,rgba(0,0,0,.20)50%,rgba(0,0,0,.42)100%);}
 
 
 #splash{position:fixed;inset:0;z-index:9999;background:#000;display:flex;align-items:center;justify-content:center;flex-direction:column;animation:splashOut .8s ease-in-out 3.6s forwards;}
@@ -73,10 +73,10 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--txt);m
 
 .cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.9rem;padding:1rem 1rem 6rem;max-width:600px;margin:0 auto;}
 .cat-card{
-  background:rgba(28,24,18,.5);border:1px solid var(--bord);border-radius:18px;
+  background:rgba(40,35,27,.48);border:1px solid var(--bord);border-radius:18px;
   padding:1.3rem .7rem 1rem;display:flex;flex-direction:column;align-items:center;gap:.6rem;
-  cursor:pointer;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
-  box-shadow:0 4px 24px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.06);
+  cursor:pointer;backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px);
+  box-shadow:0 4px 24px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.07);
   transition:transform .25s,box-shadow .25s,border-color .25s;
   -webkit-tap-highlight-color:transparent;
 }
@@ -122,15 +122,17 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--txt);m
    CARTE PRODUIT
    ============================================================ */
 .prod-card{
-  background:rgba(26,21,15,0.58);
+  background:rgba(40,34,26,0.52);
   border:1px solid var(--card-glow-color);
   border-radius:16px;overflow:hidden;
-  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-  box-shadow:0 4px 20px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.05);
+  backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px);
+  box-shadow:0 4px 20px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.06);
   transition:transform .3s,box-shadow .3s;
   animation:cardPop .45s ease-out both;
   position:relative;
   cursor:pointer;
+  content-visibility:auto;
+  contain-intrinsic-size:auto 380px;
 }
 @keyframes cardPop{from{opacity:0;transform:scale(.92) translateY(12px)}to{opacity:1;transform:scale(1) translateY(0)}}
 
@@ -139,21 +141,15 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--txt);m
 
 .prod-card::after{
   content:'';position:absolute;inset:0;border-radius:16px;pointer-events:none;
+  box-shadow:
+    0 0 calc(32px * var(--glow-intensity)) calc(6px * var(--glow-intensity)) var(--card-glow-color),
+    inset 0 0 calc(16px * var(--glow-intensity)) var(--card-glow-color);
+  will-change:opacity;
   animation:cardHalo calc(3s / max(var(--glow-intensity),.3)) ease-in-out infinite;
 }
 @keyframes cardHalo{
-  0%,100%{
-    box-shadow:
-      0 0 calc(20px * var(--glow-intensity)) calc(4px * var(--glow-intensity)) var(--card-glow-color),
-      0 0 calc(40px * var(--glow-intensity)) calc(2px * var(--glow-intensity)) var(--card-glow-color),
-      inset 0 0 calc(12px * var(--glow-intensity)) var(--card-glow-color);
-  }
-  50%{
-    box-shadow:
-      0 0 calc(50px * var(--glow-intensity)) calc(10px * var(--glow-intensity)) var(--card-glow-color),
-      0 0 calc(90px * var(--glow-intensity)) calc(5px * var(--glow-intensity)) var(--card-glow-color),
-      inset 0 0 calc(25px * var(--glow-intensity)) var(--card-glow-color);
-  }
+  0%,100%{ opacity:.45; }
+  50%{ opacity:1; }
 }
 
 .card-hint-3d{
@@ -170,12 +166,12 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--txt);m
    ============================================================ */
 .prod-img-zone{
   width:100%;height:240px;overflow:hidden;
-  background:linear-gradient(145deg,rgba(201,168,76,.08) 0%,rgba(139,105,20,.12) 50%,rgba(201,168,76,.06) 100%);
+  background:linear-gradient(145deg,rgba(201,168,76,.13) 0%,rgba(139,105,20,.17) 50%,rgba(201,168,76,.1) 100%);
   border-bottom:1px solid rgba(201,168,76,.2);
   display:flex;align-items:center;justify-content:center;position:relative;
 }
 .prod-img-zone.neutral-bg{
-  background:radial-gradient(ellipse at center, #262422 0%, #171513 62%, #0c0b0a 100%);
+  background:radial-gradient(ellipse at center, #322d26 0%, #1e1a15 62%, #120f0b 100%);
 }
 @media(min-width:400px){.prod-img-zone{height:260px;}}
 @media(min-width:600px){.prod-img-zone{height:280px;}}
@@ -212,6 +208,7 @@ img.prod-img.loaded{opacity:1;}
     calc(var(--gy, 0) * 1px)
   );
   will-change: transform;
+  filter:brightness(1.06) contrast(1.05) saturate(1.05);
 }
 .prod-card:hover .prod-img{
 }
@@ -344,7 +341,7 @@ img.prod-img.loaded{opacity:1;}
 }
 .cf-img-wrap img{
   max-width:99%;max-height:100%;width:auto;height:auto;object-fit:contain;
-  filter:drop-shadow(0 24px 55px rgba(0,0,0,.75)) drop-shadow(0 0 45px rgba(201,168,76,.16));
+  filter:drop-shadow(0 24px 55px rgba(0,0,0,.75)) drop-shadow(0 0 45px rgba(201,168,76,.16)) brightness(1.06) contrast(1.05) saturate(1.05);
   animation:cfFloat 4.5s ease-in-out infinite;
 }
 @keyframes cfFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-12px);}}
@@ -428,7 +425,7 @@ img.prod-img.loaded{opacity:1;}
 .ch-stage{
   flex:1;position:relative;overflow:hidden;
   perspective:1500px;-webkit-perspective:1500px;
-  background:radial-gradient(ellipse at 50% 20%, #1a1712 0%, #050403 72%);
+  background:radial-gradient(ellipse at 50% 20%, #211d16 0%, #0a0806 74%);
 }
 .ch-slide{
   position:absolute;inset:0;width:100%;height:100%;
@@ -491,7 +488,7 @@ img.prod-img.loaded{opacity:1;}
 .br-stage{
   flex:1;position:relative;overflow:hidden;
   perspective:1500px;-webkit-perspective:1500px;
-  background:radial-gradient(ellipse at 50% 15%, #1a1712 0%, #050403 76%);
+  background:radial-gradient(ellipse at 50% 15%, #211d16 0%, #0a0806 78%);
 }
 .br-card{
   position:absolute;inset:0;width:100%;height:100%;
@@ -553,17 +550,21 @@ img.prod-img.loaded{opacity:1;}
   position:relative;padding:4px;overflow:hidden;
 }
 .modal-img-wrap.neutral-bg{
-  background:radial-gradient(ellipse at center, #262422 0%, #171513 62%, #0c0b0a 100%);
+  background:radial-gradient(ellipse at center, #322d26 0%, #1e1a15 62%, #120f0b 100%);
 }
 .modal-img-wrap img{
   max-width:98%;max-height:98%;
   object-fit:contain;border-radius:8px;
-  filter:drop-shadow(0 6px 28px rgba(201,168,76,.22)) drop-shadow(0 2px 8px rgba(0,0,0,.8));
+  filter:drop-shadow(0 6px 28px rgba(201,168,76,.22)) drop-shadow(0 2px 8px rgba(0,0,0,.8)) brightness(1.05) contrast(1.04);
   transition:transform .08s linear;
   will-change:transform;
+  transform: translate(
+    calc(var(--gxm, 0) * 1px),
+    calc(var(--gym, 0) * 1px)
+  );
 }
 .modal-img-wrap.neutral-bg img{
-  filter:drop-shadow(0 6px 28px rgba(0,0,0,.55)) drop-shadow(0 2px 10px rgba(0,0,0,.85));
+  filter:drop-shadow(0 6px 28px rgba(0,0,0,.55)) drop-shadow(0 2px 10px rgba(0,0,0,.85)) brightness(1.05) contrast(1.04);
 }
 
 .modal-color-strip{display:flex;gap:.4rem;padding:.5rem 1rem;overflow-x:auto;flex-shrink:0;scrollbar-width:none;}
@@ -639,7 +640,7 @@ img.prod-img.loaded{opacity:1;}
 .offre-section{padding:0 1rem 1.4rem;}
 .offre-section-title{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--or-l);margin-bottom:.8rem;display:flex;align-items:center;gap:.4rem;font-weight:700;text-shadow:0 0 14px rgba(201,168,76,.6),var(--ts);}
 
-.offre-card{background:rgba(0,0,0,.65);border:1px solid rgba(201,168,76,.35);border-radius:14px;padding:1.1rem;margin-bottom:.8rem;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);display:flex;align-items:flex-start;gap:.9rem;transition:transform .22s,box-shadow .22s;}
+.offre-card{background:rgba(20,17,12,.6);border:1px solid rgba(201,168,76,.35);border-radius:14px;padding:1.1rem;margin-bottom:.8rem;backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px);display:flex;align-items:flex-start;gap:.9rem;transition:transform .22s,box-shadow .22s;}
 
 .offre-card:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(201,168,76,.14);}
 .offre-card-icon{font-size:2rem;flex-shrink:0;line-height:1;}
@@ -683,14 +684,7 @@ img.prod-img.loaded{opacity:1;}
 }
 .prod-card:hover .sunburst-overlay{opacity:1;}
 @media(hover:none){
-  .sunburst-overlay{opacity:.5;animation:sunburstAuto 4s ease-in-out infinite;}
-  @keyframes sunburstAuto{
-    0%  { --x:20; --y:30; opacity:.3; }
-    25% { --x:70; --y:25; opacity:.6; }
-    50% { --x:80; --y:70; opacity:.4; }
-    75% { --x:30; --y:75; opacity:.6; }
-    100%{ --x:20; --y:30; opacity:.3; }
-  }
+  .sunburst-overlay{opacity:.28;}
 }
 /* Variante atténuée — uniquement pour la catégorie Colliers (contraste bijou doré) */
 .sunburst-overlay.neutral-bg{
@@ -698,14 +692,7 @@ img.prod-img.loaded{opacity:1;}
 }
 .prod-card:hover .sunburst-overlay.neutral-bg{opacity:.55;}
 @media(hover:none){
-  .sunburst-overlay.neutral-bg{opacity:.22;animation:sunburstAutoNeutral 4s ease-in-out infinite;}
-  @keyframes sunburstAutoNeutral{
-    0%  { --x:20; --y:30; opacity:.14; }
-    25% { --x:70; --y:25; opacity:.28; }
-    50% { --x:80; --y:70; opacity:.18; }
-    75% { --x:30; --y:75; opacity:.28; }
-    100%{ --x:20; --y:30; opacity:.14; }
-  }
+  .sunburst-overlay.neutral-bg{opacity:.16;}
 }
 .sunburst-overlay::after{
   content:'';position:absolute;inset:0;
@@ -1152,16 +1139,14 @@ function startGyroLoop() {
 }
 
 function applyGyroToImages(gx, gy) {
-  document.querySelectorAll('.prod-img').forEach(img => {
-    img.style.transform = `translate(${gx.toFixed(2)}px, ${gy.toFixed(2)}px)`;
-  });
+  document.documentElement.style.setProperty('--gx', gx.toFixed(2));
+  document.documentElement.style.setProperty('--gy', gy.toFixed(2));
 }
 
 function applyGyroToModal(gx, gy) {
   const factor = 1.6;
-  document.querySelectorAll('.modal-img-wrap img').forEach(img => {
-    img.style.transform = `translate(${(gx * factor).toFixed(2)}px, ${(gy * factor).toFixed(2)}px)`;
-  });
+  document.documentElement.style.setProperty('--gxm', (gx * factor).toFixed(2));
+  document.documentElement.style.setProperty('--gym', (gy * factor).toFixed(2));
 }
 
 function showGyroBadge() {
