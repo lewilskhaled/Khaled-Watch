@@ -894,5 +894,41 @@
       }
     ],
     "createdAt": "2026-07-08T04:26:17.511Z"
+  },
+  {
+    "id": "1783487525204",
+    "nom": "Chaine élégant",
+    "prix": 12000,
+    "categorie": "Chaînes",
+    "genre": "Homme",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783487527556-2z31nu-Chaine-elegant-principal.png",
+    "description": "Le détail qui sépare vous sépare de l'ordinaire",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "or",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [
+      {
+        "nom": "Doré pierre noir",
+        "hex": "#cdbc51",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783487527562-ju8gaj-Chaine-elegant-Dore-pierre-noir.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Doré pierre noire",
+        "hex": "#cdbc51",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783487527604-b1kyid-Chaine-elegant-Dore-pierre-noire.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      }
+    ],
+    "createdAt": "2026-07-08T05:12:05.204Z"
   }
 ]
