@@ -292,25 +292,6 @@
     "createdAt": "2026-07-06T00:59:51.775Z"
   },
   {
-    "id": "1783438616257",
-    "nom": "Chaine en argent",
-    "prix": 6000,
-    "categorie": "Chaînes",
-    "genre": "Homme",
-    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783438617858-8v5a20-Chaine-en-argent-principal.png",
-    "description": "Conçues pour durer nées pour briller.",
-    "img_gauche": "",
-    "img_droit": "",
-    "img_dos": "",
-    "halo_cadran": "or",
-    "is_patron": false,
-    "moods": [],
-    "flash_fin": "",
-    "flash_reduction": 0,
-    "couleurs": [],
-    "createdAt": "2026-07-07T15:36:56.257Z"
-  },
-  {
     "id": "1783440884772",
     "nom": "Chaine torsadé",
     "prix": 6000,
