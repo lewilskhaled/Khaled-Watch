@@ -1006,6 +1006,15 @@ body.light-mode .empty-cat p{color:#4a4230;}
 
 /* BADGE GYROSCOPE */
 body.light-mode .gyro-badge{background:rgba(255,255,255,.9);color:#8B6914;border-color:rgba(201,168,76,.6);}
+/* Logo — éclat renforcé en mode clair */
+body.light-mode .logo-txt{
+  filter:drop-shadow(0 0 6px rgba(201,168,76,.9)) drop-shadow(0 0 16px rgba(232,201,122,.6)) drop-shadow(0 2px 4px rgba(0,0,0,.15));
+  animation:goldShimmer 3s linear infinite, logoPulseLight 2.2s ease-in-out infinite;
+}
+@keyframes logoPulseLight{
+  0%,100%{filter:drop-shadow(0 0 6px rgba(201,168,76,.9)) drop-shadow(0 0 16px rgba(232,201,122,.6)) drop-shadow(0 2px 4px rgba(0,0,0,.15));}
+  50%{filter:drop-shadow(0 0 12px rgba(201,168,76,1)) drop-shadow(0 0 28px rgba(245,226,122,.85)) drop-shadow(0 2px 4px rgba(0,0,0,.15));}
+}
 </style>
 </head>
 <body>
