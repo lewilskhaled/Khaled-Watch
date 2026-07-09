@@ -869,7 +869,143 @@ img.prod-img.loaded{opacity:1;}
   #bgVideo { display: none !important; }
   body.video-bg-active #bgLayer { display: block !important; }
 }
+/* ============================================================
+   MODE CLAIR — Espace Infini Blanc
+   ============================================================ */
+#lightSpace{
+  display:none;
+  position:fixed;inset:0;z-index:-2;
+  background:
+    radial-gradient(ellipse 60% 45% at 20% 15%, rgba(255,250,235,.9) 0%, rgba(255,255,255,0) 60%),
+    radial-gradient(ellipse 55% 40% at 85% 25%, rgba(255,248,225,.75) 0%, rgba(255,255,255,0) 65%),
+    radial-gradient(ellipse 70% 55% at 50% 90%, rgba(250,240,210,.55) 0%, rgba(255,255,255,0) 70%),
+    #ffffff;
+  background-size:200% 200%;
+  animation:lightDrift 40s ease-in-out infinite;
+}
+@keyframes lightDrift{
+  0%,100%{background-position:0% 0%, 100% 0%, 50% 100%;}
+  50%{background-position:15% 10%, 85% 15%, 55% 85%;}
+}
+body.light-mode #lightSpace{display:block;}
+body.light-mode #bgLayer,
+body.light-mode #bgOverlay,
+body.light-mode #bgVideo{display:none!important;}
 
+body.light-mode{
+  --ts:0 1px 3px rgba(255,255,255,.9), 0 0 2px rgba(255,255,255,.6);
+  --txt:#171410; --txt2:#3a331f; --gris:#6b6350;
+}
+
+/* Bouton mode clair (en-tête, en haut à droite) */
+.light-toggle-btn{
+  background:rgba(0,0,0,.25);border:1px solid rgba(201,168,76,.5);
+  border-radius:50%;width:38px;height:38px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+  font-size:1.05rem;-webkit-tap-highlight-color:transparent;
+  transition:background .2s, transform .2s, border-color .2s;
+}
+.light-toggle-btn:active{transform:scale(.9);}
+body.light-mode .light-toggle-btn{background:rgba(201,168,76,.14);border-color:rgba(201,168,76,.55);}
+
+/* HEADER + RECHERCHE */
+body.light-mode .app-header{background:rgba(255,255,255,.78);border-bottom-color:rgba(201,168,76,.4);}
+body.light-mode .search-bar-wrap{background:rgba(255,255,255,.82);border-bottom-color:rgba(201,168,76,.25);}
+body.light-mode .search-input-row{background:rgba(255,255,255,.9);border-color:rgba(201,168,76,.5);box-shadow:0 0 0 1px rgba(201,168,76,.15),0 4px 20px rgba(180,150,70,.12);}
+body.light-mode .search-input{color:#1a1a1a;}
+body.light-mode .search-input::placeholder{color:rgba(90,80,55,.55);}
+body.light-mode .search-icon{filter:none;}
+body.light-mode .search-clear{background:rgba(201,168,76,.16);border-color:rgba(201,168,76,.45);color:#8B6914;}
+
+/* ACCUEIL */
+body.light-mode .home-desc{color:#4a4230;}
+
+/* CATÉGORIES — grille d'accueil (le fond blanc reste, le doré des labels ne change pas) */
+body.light-mode .cat-card{background:rgba(255,255,255,.62);border-color:rgba(201,168,76,.45);box-shadow:0 4px 24px rgba(160,140,80,.18),inset 0 1px 0 rgba(255,255,255,.6);}
+body.light-mode .cat-count{color:#6b6350;}
+
+/* ONGLETS HOMME/FEMME — restent dorés, fond adapté */
+body.light-mode .g-tab{background:rgba(255,255,255,.72);color:#7a6a3a;border-color:rgba(201,168,76,.55);}
+body.light-mode .g-tab.active{background:rgba(201,168,76,.22);color:#8B6914;}
+
+/* PAGE CATÉGORIE — header + cartes produit : fond blanc, infos lisibles, doré léger */
+body.light-mode .page-cat-header{background:rgba(255,255,255,.78);}
+body.light-mode .btn-back{background:rgba(201,168,76,.16);color:#8B6914;border-color:rgba(201,168,76,.5);}
+
+body.light-mode .prod-card{
+  background:rgba(255,255,255,.72);
+  border-color:rgba(201,168,76,.45);
+  box-shadow:0 4px 20px rgba(160,140,80,.16),inset 0 1px 0 rgba(255,255,255,.7);
+}
+body.light-mode .prod-img-zone{
+  background:linear-gradient(145deg,rgba(255,248,225,.7) 0%,rgba(240,224,180,.5) 50%,rgba(255,248,225,.6) 100%);
+  border-bottom-color:rgba(201,168,76,.25);
+}
+body.light-mode .prod-img-zone.neutral-bg{
+  background:radial-gradient(ellipse at center, #fbf7ec 0%, #f3ecd9 62%, #ece2c9 100%);
+}
+body.light-mode .prod-name{color:#1c1810;}
+body.light-mode .prod-genre{color:#7a7156;}
+body.light-mode .color-label{color:#7a7156;}
+body.light-mode .card-hint-3d{background:rgba(255,255,255,.85);color:#8B6914;border-color:rgba(201,168,76,.5);}
+
+/* OFFRES */
+body.light-mode .offre-subtitle{color:#4a4230;}
+body.light-mode .offre-card{background:rgba(255,255,255,.72);border-color:rgba(201,168,76,.4);}
+body.light-mode .offre-card:hover{box-shadow:0 8px 28px rgba(180,150,70,.18);}
+body.light-mode .offre-card-title{color:#1c1810;}
+body.light-mode .offre-card-desc{color:#4a4230;}
+body.light-mode .stream-pill{background:rgba(255,255,255,.8);color:#4a4230;border-color:rgba(201,168,76,.5);}
+body.light-mode .stream-pill:hover,body.light-mode .stream-pill.chosen{background:rgba(201,168,76,.2);color:#1c1810;}
+
+/* NAVIGATION BASSE */
+body.light-mode .bottom-nav{background:rgba(255,255,255,.82);border-top-color:rgba(201,168,76,.4);}
+body.light-mode .nav-item{color:#7a7156;}
+body.light-mode .nav-item.active{color:#8B6914;}
+
+/* MODAL PRODUIT (fiche agrandie) — fond blanc avec léger doré */
+body.light-mode #prodModal{
+  background:linear-gradient(160deg,rgba(255,253,247,.98) 0%,rgba(250,242,222,.96) 40%,rgba(255,253,247,.98) 100%);
+}
+body.light-mode .modal-topbar{background:rgba(255,255,255,.85);border-bottom-color:rgba(201,168,76,.4);}
+body.light-mode .modal-close-btn{background:rgba(0,0,0,.06);border-color:rgba(0,0,0,.14);color:#1c1810;}
+body.light-mode .modal-counter{color:#7a7156;}
+body.light-mode .modal-img-wrap{background:linear-gradient(145deg,rgba(255,248,225,.7) 0%,rgba(240,224,180,.45) 50%,rgba(255,248,225,.6) 100%);border-bottom-color:rgba(201,168,76,.3);}
+body.light-mode .modal-img-wrap.neutral-bg{background:radial-gradient(ellipse at center, #fbf7ec 0%, #f3ecd9 62%, #ece2c9 100%);}
+body.light-mode .modal-info{background:rgba(255,253,247,.7);}
+body.light-mode .modal-name{color:#1c1810;}
+body.light-mode .modal-genre{color:#7a7156;}
+body.light-mode .modal-desc-wrap{background:linear-gradient(150deg,rgba(201,168,76,.1) 0%,rgba(255,255,255,.5) 60%);border-color:rgba(201,168,76,.3);}
+body.light-mode .modal-desc-text{color:#3a331f;}
+body.light-mode .modal-swipe-hint{color:rgba(139,105,20,.65);}
+
+/* VUES IMMERSIVES — Colliers / Chaînes / Bracelets : fond blanc doux */
+body.light-mode #colliersFeed,
+body.light-mode #chainesFeed,
+body.light-mode #braceletsFeed{background:#fdfbf5;}
+body.light-mode .ch-stage{background:radial-gradient(ellipse at 50% 20%, #fbf5e6 0%, #f0e6cc 74%);}
+body.light-mode .br-stage{background:radial-gradient(ellipse at 50% 15%, #fbf5e6 0%, #f0e6cc 78%);}
+body.light-mode .cf-topbar{background:linear-gradient(180deg,rgba(255,255,255,.9) 0%,rgba(255,255,255,.5) 60%,transparent 100%);}
+body.light-mode .cf-back{background:rgba(0,0,0,.06);border-color:rgba(201,168,76,.5);color:#8B6914;}
+body.light-mode .cf-counter{color:#8B6914;background:rgba(255,255,255,.7);border-color:rgba(201,168,76,.4);}
+body.light-mode .cf-g-tab{background:rgba(255,255,255,.75);color:#4a4230;border-color:rgba(201,168,76,.5);}
+body.light-mode .cf-g-tab.active{background:rgba(201,168,76,.22);color:#1c1810;}
+body.light-mode .cf-info{background:linear-gradient(0deg,rgba(255,253,247,.97) 22%,rgba(255,253,247,.75) 55%,transparent 100%);}
+body.light-mode .cf-name{color:#1c1810;text-shadow:0 1px 4px rgba(255,255,255,.7);}
+body.light-mode .cf-genre{color:#7a7156;}
+body.light-mode .cf-desc{color:#4a4230;}
+body.light-mode .cf-empty{color:#7a7156;}
+body.light-mode .cf-empty h3{color:#8B6914;}
+body.light-mode .cf-swipe-hint{color:rgba(139,105,20,.75);text-shadow:none;}
+
+/* RECHERCHE */
+body.light-mode .search-results-count{color:#7a7156;}
+body.light-mode .search-soon-sub{color:#4a4230;}
+body.light-mode .empty-cat{background:rgba(255,255,255,.72);border-color:rgba(201,168,76,.25);}
+body.light-mode .empty-cat p{color:#4a4230;}
+
+/* BADGE GYROSCOPE */
+body.light-mode .gyro-badge{background:rgba(255,255,255,.9);color:#8B6914;border-color:rgba(201,168,76,.6);}
 </style>
 </head>
 <body>
@@ -893,9 +1029,11 @@ img.prod-img.loaded{opacity:1;}
        aria-hidden="true">
 </video>
 
+<div id="lightSpace"></div>
+
 <header class="app-header">
   <div class="logo-txt">KHALED WATCH</div>
-  
+  <button class="light-toggle-btn" id="lightModeBtn" onclick="toggleLightMode()" aria-label="Mode clair" title="Mode clair">☀️</button>
 </header>
 
 <!-- BARRE DE RECHERCHE GLOBALE — visible sur tous les onglets -->
@@ -1061,6 +1199,7 @@ img.prod-img.loaded{opacity:1;}
 <a class="wa-float" href="https://wa.me/2290169515730" target="_blank" rel="noopener">
   <svg viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
 </a>
+
 
 <script>
 /* ============================================================
@@ -2509,6 +2648,35 @@ function clearSearch() {
 initDesign();
 loadProducts();
 initGyroscope();  /* ← Gyroscope activé */
+/* ============================================================
+   MODE CLAIR
+   ============================================================ */
+function toggleLightMode() {
+  document.body.classList.toggle('light-mode');
+  localStorage.setItem('kw-light-mode', document.body.classList.contains('light-mode') ? '1' : '0');
+  updateLightToggleIcon();
+}
+function updateLightToggleIcon() {
+  const btn = document.getElementById('lightModeBtn');
+  if (!btn) return;
+  const isLight = document.body.classList.contains('light-mode');
+  btn.textContent = isLight ? '🌙' : '☀️';
+  btn.title = isLight ? 'Mode doré' : 'Mode clair';
+}
+function initLightMode() {
+  if (localStorage.getItem('kw-light-mode') === '1') {
+    document.body.classList.add('light-mode');
+  }
+  updateLightToggleIcon();
+}
+
+/* ============================================================
+   DÉMARRAGE
+   ============================================================ */
+initDesign();
+initLightMode();
+loadProducts();
+initGyroscope();
 </script>
 </body>
 </html>
