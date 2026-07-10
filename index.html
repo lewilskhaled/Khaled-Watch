@@ -1122,7 +1122,20 @@ body.light-mode .logo-txt{
 .del-fab-tip{position:fixed;bottom:calc(var(--safe-bottom)+132px);left:1rem;z-index:410;background:rgba(20,16,8,.92);color:#F0EBD8;border:1px solid rgba(201,168,76,.5);border-radius:14px 14px 14px 4px;padding:.6rem .9rem;font-size:.68rem;font-weight:600;max-width:210px;line-height:1.5;box-shadow:0 6px 20px rgba(0,0,0,.35);opacity:0;transform:translateY(8px);pointer-events:none;animation:delTipShow .5s ease-out 2.4s forwards, delTipHide .5s ease-in 8s forwards;}
 @keyframes delTipShow{to{opacity:1;transform:translateY(0);}}
 @keyframes delTipHide{to{opacity:0;transform:translateY(8px);}}
-body.light-mode .del-fab-tip{background:rgba(255,255,255,.95);color:#3a331f;border-color:rgba(201,168,76,.5);}
+/* Bouton Del — intégré à la barre de recherche */
+.search-bar-flex{display:flex;align-items:center;gap:.55rem;}
+.search-bar-flex .search-input-row{flex:1;min-width:0;}
+.del-launcher{
+  position:relative;flex-shrink:0;width:42px;height:42px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%, #F5E27A 0%, #C9A84C 45%, #8B6914 100%);
+  border:2px solid rgba(255,255,255,.5);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.15rem;cursor:pointer;-webkit-tap-highlight-color:transparent;
+  box-shadow:0 4px 16px rgba(139,105,20,.4);
+  animation:delFabPulse 2.6s ease-in-out infinite;
+}
+@keyframes delFabPulse{0%,100%{box-shadow:0 4px 16px rgba(139,105,20,.4), 0 0 0 0 rgba(201,168,76,.45);}50%{box-shadow:0 4px 16px rgba(139,105,20,.4), 0 0 0 8px rgba(201,168,76,0);}}
+.del-fab-badge{position:absolute;top:-3px;right:-3px;background:#ff4444;color:#fff;font-size:.55rem;font-weight:700;border-radius:50%;width:16px;height:16px;display:flex;align-items:center;justify-content:center;border:2px solid #fff;animation:pulseDot 1.5s ease-in-out infinite;}
 .del-panel{position:fixed;z-index:9600;right:0;left:0;bottom:0;top:0;display:none;flex-direction:column;background:rgba(10,8,4,.55);backdrop-filter:blur(4px);}
 .del-panel.open{display:flex;}
 .del-sheet{margin-top:auto;width:100%;max-width:460px;margin-left:auto;margin-right:auto;height:min(82vh,680px);border-radius:22px 22px 0 0;background:linear-gradient(170deg,#1B1815 0%,#241f18 100%);border:1px solid rgba(201,168,76,.4);border-bottom:none;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 -10px 50px rgba(0,0,0,.6);animation:delSheetUp .38s cubic-bezier(.22,.9,.3,1) forwards;}
@@ -1154,7 +1167,9 @@ body.light-mode .del-msg.user{color:#1a1510;}
 .del-chip{background:rgba(0,0,0,.4);border:1px solid rgba(201,168,76,.5);color:var(--or-l);font-size:.68rem;font-weight:700;letter-spacing:.03em;padding:.42rem .85rem;border-radius:50px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:all .2s;font-family:'Montserrat',sans-serif;}
 .del-chip:hover,.del-chip:active{background:rgba(201,168,76,.25);}
 body.light-mode .del-chip{background:rgba(255,255,255,.8);color:#8B6914;border-color:rgba(201,168,76,.55);}
-.del-prod-card{display:flex;gap:.6rem;background:rgba(0,0,0,.32);border:1px solid rgba(201,168,76,.25);border-radius:12px;padding:.55rem;align-items:center;max-width:92%;align-self:flex-start;}
+.del-prod-card{display:flex;gap:.6rem;background:rgba(0,0,0,.32);border:1px solid rgba(201,168,76,.25);border-radius:12px;padding:.55rem;align-items:center;max-width:92%;align-self:flex-start;cursor:pointer;transition:background .2s,transform .15s;}
+   .del-prod-card:hover{background:rgba(201,168,76,.16);transform:translateY(-1px);}
+   body.light-mode .del-prod-card:hover{background:rgba(201,168,76,.2);}
 body.light-mode .del-prod-card{background:rgba(255,255,255,.85);}
 .del-prod-card img{width:52px;height:52px;object-fit:contain;border-radius:8px;background:rgba(201,168,76,.1);flex-shrink:0;}
 .del-prod-info{flex:1;min-width:0;}
@@ -1260,7 +1275,8 @@ body.light-mode .del-input-row input{background:rgba(255,255,255,.85);color:#1c1
 
 <!-- BARRE DE RECHERCHE GLOBALE — visible sur tous les onglets -->
 <div class="search-bar-wrap" id="globalSearchWrap">
-  <div class="search-input-row">
+     <div class="search-bar-flex">
+     <div class="search-input-row">
     <span class="search-icon">🔍</span>
     <input class="search-input" id="searchInput" type="search" inputmode="search"
            autocomplete="off" autocorrect="off" spellcheck="false"
@@ -1268,9 +1284,14 @@ body.light-mode .del-input-row input{background:rgba(255,255,255,.85);color:#1c1
            aria-label="Rechercher un produit"
            oninput="onSearchInput(this.value)"
            onkeydown="onSearchKeydown(event)">
-    <button class="search-clear" id="searchClear" onclick="clearSearch()" aria-label="Effacer">✕</button>
-  </div>
-  <div class="search-underline"></div>
+   <button class="search-clear" id="searchClear" onclick="clearSearch()" aria-label="Effacer">✕</button>
+   </div>
+   <button class="del-launcher" id="delFab" onclick="openDelPanel()">
+     <span id="delFabBadge" class="del-fab-badge">1</span>
+     🙋🏽‍♀️
+   </button>
+   </div>
+   <div class="search-underline"></div>
 </div>
 
 <!-- PAGE ACCUEIL -->
@@ -1422,12 +1443,6 @@ body.light-mode .del-input-row input{background:rgba(255,255,255,.85);color:#1c1
   <svg viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
 </a>
 
-<!-- DEL — Assistante Style -->
-<div class="del-fab" id="delFab" onclick="openDelPanel()">
-  <span id="delFabBadge" class="del-fab-badge">1</span>
-  👩🏾
-</div>
-<div class="del-fab-tip" id="delFabTip">👋 Besoin d'un conseil style ? Je suis Del, demandez-moi !</div>
 
 <div class="del-panel" id="delPanel">
   <div class="del-sheet">
@@ -1959,9 +1974,9 @@ function chainSlideHTML(p, idx) {
   `;
 }
 
-function initChainStage() {
-  const stage = document.getElementById('chStage');
-  chIndex = 0;
+function initChainStage(startIdx) {
+     const stage = document.getElementById('chStage');
+     chIndex = startIdx || 0;
   updateChCounter();
   if (!chList.length) {
     stage.innerHTML = `<div class="ch-slide current"><div class="cf-empty">
@@ -1970,7 +1985,7 @@ function initChainStage() {
     </div></div>`;
     return;
   }
-  stage.innerHTML = `<div class="ch-slide current">${chainSlideHTML(chList[0], 0)}</div>`;
+stage.innerHTML = `<div class="ch-slide current">${chainSlideHTML(chList[chIndex], chIndex)}</div>`;
 }
 
 function updateChCounter() {
@@ -2139,9 +2154,9 @@ function braceletSlideHTML(p, idx) {
   `;
 }
 
-function initBraceletStage() {
-  const stage = document.getElementById('brStage');
-  brIndex = 0;
+function initBraceletStage(startIdx) {
+     const stage = document.getElementById('brStage');
+     brIndex = startIdx || 0;
   updateBrCounter();
   stage.innerHTML = '';
 
@@ -2931,14 +2946,28 @@ initGyroscope();
 /* ============================================================
    DEL — Assistante Style (guide d'achat intelligent)
    ============================================================ */
-let delState = { genre:null, cart:[], greeted:false };
+let delState = { genre:null, cart:[], greeted:false, pendingCat:null, pendingMood:null, pendingBudget:null };
 const DEL_COMPLIMENTS = ["Vous avez vraiment du goût ✨","Excellent choix, ça va vous aller à merveille !","J'adore cette sélection 💛","Ça, c'est du style !","Un très bel accessoire, bon choix !"];
+const DEL_CAT_KEYWORDS = {
+  'Montres': ['montre','montres'],
+  'Montres Luxueuses': ['luxe','luxueuse','luxueuses','haut de gamme','prestige'],
+  'Chaînes': ['chaine','chaîne','chaines','chaînes'],
+  'Bracelets': ['bracelet','bracelets','gourmette'],
+  'Colliers': ['collier','colliers','pendentif'],
+  'Bagues': ['bague','bagues','alliance'],
+  'Autres': ['accessoire','accessoires']
+};
+const DEL_MOOD_KEYWORDS = {
+  'Business': ['business','travail','bureau','professionnel'],
+  'Gala': ['gala','soiree','mariage','fete','ceremonie'],
+  'Discret': ['discret','discrete','sobre','simple','minimaliste'],
+  'Cadeau': ['cadeau','offrir','surprise']
+};
 
 function openDelPanel(){
   document.getElementById('delPanel').classList.add('open');
-  document.getElementById('delFabBadge').style.display = 'none';
-  const tip = document.getElementById('delFabTip');
-  if (tip) tip.style.display = 'none';
+  const badge = document.getElementById('delFabBadge');
+  if (badge) badge.style.display = 'none';
   document.body.style.overflow = 'hidden';
   if (!delState.greeted) { delState.greeted = true; delStart(); }
 }
@@ -2959,7 +2988,7 @@ function delHideTyping(){ const el = document.getElementById('delTypingIndicator
 async function delBotSay(html, opts){
   opts = opts || {};
   delShowTyping();
-  await delWait(opts.delay || (500 + Math.random()*500));
+  await delWait(opts.delay || (450 + Math.random()*450));
   delHideTyping();
   const body = document.getElementById('delBody');
   const el = document.createElement('div');
@@ -2973,13 +3002,14 @@ function delUserSay(text){
   body.appendChild(el); delScrollBottom();
 }
 function delQuickReplies(options){
+  delClearQuick();
   const body = document.getElementById('delBody');
   const wrap = document.createElement('div');
   wrap.className = 'del-quick'; wrap.id = 'delActiveQuick';
-  options.forEach(opt => {
+  options.slice(0,2).forEach(opt => {
     const btn = document.createElement('button');
     btn.className = 'del-chip'; btn.textContent = opt.label;
-    btn.onclick = () => { delClearQuick(); delUserSay(opt.label); opt.action(); };
+    btn.onclick = () => { delClearQuick(); opt.action(); };
     wrap.appendChild(btn);
   });
   body.appendChild(wrap); delScrollBottom();
@@ -2987,58 +3017,159 @@ function delQuickReplies(options){
 function delClearQuick(){ const el = document.getElementById('delActiveQuick'); if (el) el.remove(); }
 
 async function delStart(){
-  await delBotSay("Bonjour, bienvenue chez Khaled Watch 👋 Je suis <strong>Del</strong>, votre assistante style personnelle.");
-  await delBotSay("Dites-moi, vous cherchez plutôt pour un homme ou une femme ?");
-  delQuickReplies([
-    {label:'👨 Homme', action:() => { delState.genre='Homme'; delAskCategory(); }},
-    {label:'👩 Femme', action:() => { delState.genre='Femme'; delAskCategory(); }},
-    {label:'Peu importe', action:() => { delState.genre=null; delAskCategory(); }},
-  ]);
+  await delBotSay("Bonjour, bienvenue chez Khaled Watch 👋 Je suis <strong>Del</strong>, votre assistante style.");
+  await delBotSay("Dites-moi ce que vous cherchez — un accessoire, un style, une occasion — je vous écoute 🙂");
 }
-async function delAskCategory(){
-  await delBotSay("Parfait ✨ Quel type d'accessoire vous intéresse ?");
-  const cats = Object.keys(CAT_ICONS);
-  delQuickReplies(cats.map(c => ({ label: CAT_ICONS[c] + ' ' + c, action: () => delShowSuggestions(c) }))
-    .concat([{label:'✨ Surprenez-moi', action: () => delShowSuggestions(null)}]));
+
+function delParseIntent(text){
+  const t = text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  const out = { genre:null, cat:null, mood:null, budget:null };
+  if (/\b(homme|monsieur|garcon|lui|mari|papa)\b/.test(t)) out.genre = 'Homme';
+  if (/\b(femme|madame|dame|fille|elle|epouse|maman)\b/.test(t)) out.genre = 'Femme';
+  for (const cat in DEL_CAT_KEYWORDS){
+    if (DEL_CAT_KEYWORDS[cat].some(k => t.includes(k))){ out.cat = cat; break; }
+  }
+  for (const mood in DEL_MOOD_KEYWORDS){
+    if (DEL_MOOD_KEYWORDS[mood].some(k => t.includes(k))){ out.mood = mood; break; }
+  }
+  if (/(pas cher|petit budget|econom|abordable|moins cher)/.test(t)) out.budget = 'low';
+  if (/(tres cher|budget eleve|luxueux|premium|haut de gamme)/.test(t)) out.budget = 'high';
+  return out;
 }
-function delFilterProducts(cat){
-  let list = allProducts.slice();
-  if (cat) list = list.filter(p => p.categorie === cat);
-  if (delState.genre) list = list.filter(p => p.genre === delState.genre || p.genre === 'Unisexe');
-  return list;
-}
-async function delShowSuggestions(cat){
-  const list = delFilterProducts(cat);
-  if (!list.length){
-    await delBotSay("Hmm, je n'ai rien de disponible pour l'instant dans cette catégorie 😔 Voulez-vous voir autre chose ?");
-    delQuickReplies([{label:'⬅ Choisir une autre catégorie', action: delAskCategory}]);
+
+async function delHandleFreeText(text){
+  const t = text.toLowerCase();
+  if (/merci/.test(t)){ await delBotSay("Avec plaisir 💛 Dites-moi si vous avez besoin d'autre chose !"); return; }
+
+  const intent = delParseIntent(text);
+  if (intent.genre) delState.genre = intent.genre;
+  if (intent.cat) delState.pendingCat = intent.cat;
+  if (intent.mood) delState.pendingMood = intent.mood;
+  if (intent.budget) delState.pendingBudget = intent.budget;
+
+  if (!delState.genre){
+    await delBotSay("Très bien ! C'est plutôt pour un homme ou une femme ?");
+    delQuickReplies([
+      {label:'👨 Homme', action:() => { delUserSay('Homme'); delState.genre='Homme'; delResumeAfterGenre(); }},
+      {label:'👩 Femme', action:() => { delUserSay('Femme'); delState.genre='Femme'; delResumeAfterGenre(); }},
+    ]);
     return;
   }
-  const picks = list.sort(() => Math.random()-0.5).slice(0, 4);
-  await delBotSay("Voici ce que je vous propose" + (cat ? ' en ' + cat : '') + " :");
+  delResumeAfterGenre();
+}
+
+async function delResumeAfterGenre(){
+  const cat = delState.pendingCat, mood = delState.pendingMood, budget = delState.pendingBudget;
+  delState.pendingCat=null; delState.pendingMood=null; delState.pendingBudget=null;
+  if (!cat){
+    await delBotSay(`Parfait, pour ${delState.genre==='Homme'?'lui':'elle'}. Vous pensez à une montre, ou à un bijou ?`);
+    delQuickReplies([
+      {label:'⌚ Montre', action:() => { delUserSay('Une montre'); delSuggest('Montres', mood, budget); }},
+      {label:'💎 Un bijou', action:() => { delUserSay('Un bijou'); delAskBijouType(mood, budget); }},
+    ]);
+    return;
+  }
+  delSuggest(cat, mood, budget);
+}
+
+async function delAskBijouType(mood, budget){
+  delState.pendingMood = mood; delState.pendingBudget = budget;
+  await delBotSay("Chaîne, bracelet, collier ou bague — lequel vous ferait plaisir ?");
+}
+
+function delFilterAndSort(cat, mood, budget){
+  let list = allProducts.filter(p => p.categorie === cat);
+  if (delState.genre) list = list.filter(p => p.genre === delState.genre || p.genre === 'Unisexe');
+  if (mood){
+    const withMood = list.filter(p => (p.moods||[]).includes(mood));
+    if (withMood.length) list = withMood;
+  }
+  if (budget === 'low') list = [...list].sort((a,b) => a.prix - b.prix);
+  else if (budget === 'high') list = [...list].sort((a,b) => b.prix - a.prix);
+  else list = [...list].sort(() => Math.random()-0.5);
+  return list;
+}
+
+async function delSuggest(cat, mood, budget){
+  const list = delFilterAndSort(cat, mood, budget);
+  if (!list.length){
+    await delBotSay(`Je n'ai malheureusement rien en ${cat.toLowerCase()} pour le moment 😔`);
+    await delBotSay("Je vous montre autre chose ?");
+    delQuickReplies([
+      {label:'⌚ Montres', action:() => { delUserSay('Montres'); delSuggest('Montres', null, budget); }},
+      {label:'💎 Un bijou', action:() => { delUserSay('Un bijou'); delAskBijouType(null, budget); }},
+    ]);
+    return;
+  }
+  const picks = list.slice(0, 2);
+  await delBotSay(mood ? `Pour un style ${mood.toLowerCase()}, voici ce que je vous conseille :` : "Voici ce que je vous propose :");
   const body = document.getElementById('delBody');
   picks.forEach(p => {
     const colors = p.couleurs && p.couleurs.length ? p.couleurs : [];
     const img = colors.length && colors[0].image ? colors[0].image : (p.image || FALLBACK_IMG);
     const card = document.createElement('div');
     card.className = 'del-prod-card';
-    card.innerHTML = `<img src="${h(thumbUrl(img, 120))}" alt="${h(p.nom)}" onerror="this.src='${FALLBACK_IMG}'"><div class="del-prod-info"><div class="del-prod-name">${h(p.nom)}</div><div class="del-prod-price">${fmt(p.prix)} FCFA</div></div><button class="del-prod-add" onclick="delAddToCart('${js(p.id)}', this)">➕ Ajouter</button>`;
+    card.innerHTML = `<img src="${h(thumbUrl(img, 120))}" alt="${h(p.nom)}" onerror="this.src='${FALLBACK_IMG}'"><div class="del-prod-info"><div class="del-prod-name">${h(p.nom)}</div><div class="del-prod-price">${fmt(p.prix)} FCFA</div></div><button class="del-prod-add" onclick="event.stopPropagation();delAddToCart('${js(p.id)}', this)">➕</button>`;
+    card.onclick = () => delGoToProduct(p.id);
     body.appendChild(card);
   });
   delScrollBottom();
-  await delWait(400);
-  if (Math.random() < 0.5) await delBotSay(DEL_COMPLIMENTS[Math.floor(Math.random()*DEL_COMPLIMENTS.length)]);
-  await delBotSay("Vous voulez ajouter un de ces articles, voir une autre catégorie, ou composer un assemblage complet ?");
+  if (Math.random() < 0.6) await delBotSay(DEL_COMPLIMENTS[Math.floor(Math.random()*DEL_COMPLIMENTS.length)]);
+  await delBotSay("Touchez un article pour le voir en détail, ou je vous compose un assemblage complet avec ?");
   delQuickReplies([
-    {label:'🔁 Autre catégorie', action: delAskCategory},
-    {label:'🛍️ Voir mon assemblage', action: delShowCartReview},
+    {label:'🛍️ Composer un assemblage', action:() => { delUserSay('Composer un assemblage'); picks.forEach(p=>delAddToCart(p.id)); delShowCartReview(); }},
+    {label:'🔁 Autre chose', action:() => { delUserSay('Autre chose'); delBotSay("Bien sûr, dites-moi ce que vous voulez voir 🙂"); }},
   ]);
 }
+
+function delGoToProduct(id){
+  const p = allProducts.find(x=>x.id===id);
+  if (!p) return;
+  closeDelPanel();
+  const cat = p.categorie;
+  if (cat === 'Colliers'){
+    cfGender = 'tous';
+    document.querySelectorAll('#cfGenderTabs .cf-g-tab').forEach(t=>t.classList.toggle('active', t.dataset.g==='tous'));
+    openColliersFeed();
+    requestAnimationFrame(()=>{
+      const idx = cfList.findIndex(x=>x.id===id);
+      const scroll = document.getElementById('cfScroll');
+      if (idx>=0 && scroll){ scroll.scrollTop = idx * scroll.clientHeight; updateCfCounter(idx+1, cfList.length); }
+    });
+    return;
+  }
+  if (cat === 'Chaînes'){
+    chGender = 'tous';
+    document.querySelectorAll('#chGenderTabs .cf-g-tab').forEach(t=>t.classList.toggle('active', t.dataset.g==='tous'));
+    document.getElementById('chainesFeed').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    buildChainList();
+    const idx = chList.findIndex(x=>x.id===id);
+    initChainStage(idx>=0?idx:0);
+    if (!chTouchBound) { bindChainTouch(); chTouchBound = true; }
+    return;
+  }
+  if (cat === 'Bracelets'){
+    brGender = 'tous';
+    document.querySelectorAll('#brGenderTabs .cf-g-tab').forEach(t=>t.classList.toggle('active', t.dataset.g==='tous'));
+    document.getElementById('braceletsFeed').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    buildBraceletList();
+    const idx = brList.findIndex(x=>x.id===id);
+    initBraceletStage(idx>=0?idx:0);
+    if (!brTouchBound) { bindBraceletTouch(); brTouchBound = true; }
+    return;
+  }
+  openCat(cat);
+  const idx = currentList.findIndex(x=>x.id===id);
+  openModal(idx>=0?idx:0);
+}
+
 function delAddToCart(id, btnEl){
   const p = allProducts.find(x => x.id === id);
   if (!p) return;
   if (!delState.cart.find(x => x.id === id)) delState.cart.push(p);
-  if (btnEl){ btnEl.textContent = '✓ Ajouté'; btnEl.classList.add('added'); btnEl.disabled = true; }
+  if (btnEl){ btnEl.textContent = '✓'; btnEl.classList.add('added'); btnEl.disabled = true; }
   delUpdateCartBar();
 }
 function delUpdateCartBar(){
@@ -3052,8 +3183,7 @@ function delUpdateCartBar(){
 }
 async function delShowCartReview(){
   if (!delState.cart.length){
-    await delBotSay("Votre assemblage est vide pour le moment 🙂 Ajoutez d'abord quelques articles !");
-    delQuickReplies([{label:'🔁 Voir des produits', action: delAskCategory}]);
+    await delBotSay("Votre assemblage est vide pour le moment 🙂");
     return;
   }
   await delBotSay("Voici votre assemblage :");
@@ -3065,14 +3195,15 @@ async function delShowCartReview(){
     const img = colors.length && colors[0].image ? colors[0].image : (p.image || FALLBACK_IMG);
     const card = document.createElement('div');
     card.className = 'del-prod-card';
-    card.innerHTML = `<img src="${h(thumbUrl(img, 120))}" alt="${h(p.nom)}" onerror="this.src='${FALLBACK_IMG}'"><div class="del-prod-info"><div class="del-prod-name">${h(p.nom)}</div><div class="del-prod-price">${fmt(p.prix)} FCFA</div></div><button class="del-prod-add" onclick="delRemoveFromCart('${js(p.id)}')">🗑</button>`;
+    card.innerHTML = `<img src="${h(thumbUrl(img, 120))}" alt="${h(p.nom)}" onerror="this.src='${FALLBACK_IMG}'"><div class="del-prod-info"><div class="del-prod-name">${h(p.nom)}</div><div class="del-prod-price">${fmt(p.prix)} FCFA</div></div><button class="del-prod-add" onclick="event.stopPropagation();delRemoveFromCart('${js(p.id)}')">🗑</button>`;
+    card.onclick = (e) => { if (e.target.classList.contains('del-prod-add')) return; delGoToProduct(p.id); };
     body.appendChild(card);
   });
   await delBotSay(`<strong>Total : ${fmt(total)} FCFA</strong> pour ${delState.cart.length} article(s).`);
   delScrollBottom();
   delQuickReplies([
-    {label:'📲 Envoyer à Khaled sur WhatsApp', action: delSendWhatsApp},
-    {label:'🔁 Ajouter encore', action: delAskCategory},
+    {label:'📲 Envoyer sur WhatsApp', action:() => { delUserSay('Envoyer sur WhatsApp'); delSendWhatsApp(); }},
+    {label:'🔁 Ajouter encore', action:() => { delUserSay('Ajouter encore'); delBotSay("Dites-moi ce que vous voulez ajouter 🙂"); }},
   ]);
 }
 function delRemoveFromCart(id){
@@ -3100,18 +3231,9 @@ function delSendFreeText(){
   const input = document.getElementById('delFreeInput');
   const text = input.value.trim();
   if (!text) return;
+  delClearQuick();
   delUserSay(text); input.value = '';
   delHandleFreeText(text);
-}
-async function delHandleFreeText(text){
-  const t = text.toLowerCase();
-  const catMatch = Object.keys(CAT_ICONS).find(c => t.includes(c.toLowerCase()));
-  if (t.includes('homme')) delState.genre = 'Homme';
-  if (t.includes('femme')) delState.genre = 'Femme';
-  if (t.includes('merci')){ await delBotSay("Avec plaisir 💛 N'hésitez pas si vous avez besoin d'autre chose !"); return; }
-  if (catMatch){ await delShowSuggestions(catMatch); return; }
-  await delBotSay("Je peux vous montrer nos montres, chaînes, bracelets, colliers ou bagues. Que préférez-vous ?");
-  delAskCategory();
 }
 </script>
 </body>
