@@ -8,8 +8,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://raw.githubusercontent.com" crossorigin>
 <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
+<link rel="preconnect" href="https://images.weserv.nl" crossorigin>
 <link rel="dns-prefetch" href="https://raw.githubusercontent.com">
 <link rel="dns-prefetch" href="https://images.unsplash.com">
+<link rel="dns-prefetch" href="https://images.weserv.nl">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -1850,7 +1852,7 @@ function renderColliersFeed() {
         <img id="cfimg-${i}" src="${h(thumbUrl(mainImg, 900))}" alt="${h(p.nom)}" loading="${i<2?'eager':'lazy'}" decoding="async" onerror="this.src='${FALLBACK_IMG}'">
       </div>
       <div class="cf-info">
-        <div class="cf-badge">✦ Collier</div>
+       <div class="cf-badge">✦ Collier</div>
         <div class="cf-name">${h(p.nom)}</div>
         <div class="cf-genre">${h(p.genre||'')}</div>
         ${p.description ? `<div class="cf-desc">${h(p.description)}</div>` : ''}
@@ -1858,7 +1860,7 @@ function renderColliersFeed() {
           <div class="cf-price">${fmt(p.prix)} <small>FCFA</small></div>
           ${colorDots}
         </div>
-        <button class="cf-cta" onclick="commander('${js(p.nom)}','${js(p.prix)}')">${WA_SVG} Commander sur WhatsApp</button>
+        <button class="cf-cta" onclick="commander(this,'${js(p.id)}')">${WA_SVG} Commander sur WhatsApp</button>
       </div>
       ${i===0 ? '<div class="cf-swipe-hint">↑ Glissez pour découvrir</div>' : ''}
     </div>`;
@@ -1967,7 +1969,7 @@ function chainSlideHTML(p, idx) {
         <div class="cf-price">${fmt(p.prix)} <small>FCFA</small></div>
         ${colorDots}
       </div>
-      <button class="cf-cta" onclick="commander('${js(p.nom)}','${js(p.prix)}')">${WA_SVG} Commander sur WhatsApp</button>
+      <button class="cf-cta" onclick="commander(this,'${js(p.id)}')">${WA_SVG} Commander sur WhatsApp</button>
     </div>
     <div class="cf-swipe-hint">↻ Glissez pour tourner</div>
   `;
@@ -2140,7 +2142,7 @@ function braceletSlideHTML(p, idx) {
       <img id="brimg-${idx}" src="${h(thumbUrl(mainImg, 900))}" alt="${h(p.nom)}" decoding="async" onerror="this.src='${FALLBACK_IMG}'">
     </div>
     <div class="cf-info">
-      <div class="cf-badge">✦ Bracelet</div>
+     <div class="cf-badge">✦ Bracelet</div>
       <div class="cf-name">${h(p.nom)}</div>
       <div class="cf-genre">${h(p.genre||'')}</div>
       ${p.description ? `<div class="cf-desc">${h(p.description)}</div>` : ''}
@@ -2148,7 +2150,7 @@ function braceletSlideHTML(p, idx) {
         <div class="cf-price">${fmt(p.prix)} <small>FCFA</small></div>
         ${colorDots}
       </div>
-      <button class="cf-cta" onclick="commander('${js(p.nom)}','${js(p.prix)}')">${WA_SVG} Commander sur WhatsApp</button>
+      <button class="cf-cta" onclick="commander(this,'${js(p.id)}')">${WA_SVG} Commander sur WhatsApp</button>
     </div>
   `;
 }
@@ -2381,7 +2383,7 @@ function renderProducts() {
         <div class="prod-genre">${h(p.genre||'')}</div>
         ${colorDots}
         <div class="prod-price">${fmt(p.prix)} <small>FCFA</small></div>
-        <button class="btn-wa" onclick="event.stopPropagation();commander('${js(p.nom)}','${js(p.prix)}')">
+        <button class="btn-wa" onclick="event.stopPropagation();commander(this,'${js(p.id)}')">
           ${WA_SVG} Commander
         </button>
       </div>
@@ -2550,7 +2552,7 @@ function buildAllSlides() {
           <div class="modal-desc-text">${h(p.description)}</div>
         </div>` : ''}
         ${currentList.length > 1 ? '<div class="modal-swipe-hint">← Balayez pour voir les autres produits →</div>' : ''}
-        <button class="modal-wa-btn" onclick="commander('${js(p.nom)}','${js(p.prix)}')">
+        <button class="modal-wa-btn" onclick="commander(this,'${js(p.id)}')">
           ${WA_SVG_BIG} Commander sur WhatsApp
         </button>
       </div>
@@ -2633,11 +2635,28 @@ document.addEventListener('keydown', e => {
 /* ============================================================
    WHATSAPP
    ============================================================ */
-function commander(nom, prix) {
-  const msg = `Bonjour Khaled Watch 👋\n\nJe suis intéressé(e) par :\n✦ *${nom}*\n💰 Prix : ${fmt(prix)} FCFA\n\nPouvez-vous me donner plus d'informations ? Merci !`;
+function commander(el, productId) {
+  const p = allProducts.find(x => x.id === productId);
+  if (!p) return;
+  let img = p.image || FALLBACK_IMG;
+  let colorName = '';
+  if (el && el.closest) {
+    const card = el.closest('.prod-card, .cf-slide, .ch-slide, .br-card, .modal-slide');
+    if (card && p.couleurs && p.couleurs.length) {
+      const activeDot = card.querySelector('.color-swatch.active, .cf-color-dot.active, .cvar-dot.active, .modal-color-thumb.active');
+      if (activeDot) {
+        const siblings = Array.from(activeDot.parentElement.children);
+        const ci = siblings.indexOf(activeDot);
+        if (ci >= 0 && p.couleurs[ci]) {
+          if (p.couleurs[ci].image) img = p.couleurs[ci].image;
+          if (p.couleurs[ci].nom) colorName = p.couleurs[ci].nom;
+        }
+      }
+    }
+  }
+  const msg = `Bonjour Khaled Watch 👋\n\nJe suis intéressé(e) par :\n✦ *${p.nom}*${colorName ? '\n🎨 Coloris : *' + colorName + '*' : ''}\n💰 Prix : ${fmt(p.prix)} FCFA\n\n${img}\n\nPouvez-vous me donner plus d'informations ? Merci !`;
   window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`, '_blank');
 }
-
 /* ============================================================
    OFFRES
    ============================================================ */
@@ -2872,7 +2891,7 @@ function renderSearchResults(list, q) {
       + '<div class="prod-genre">' + h(p.genre||'') + '</div>'
       + colorDots
       + '<div class="prod-price">' + fmt(p.prix) + ' <small>FCFA</small></div>'
-      + '<button class="btn-wa" onclick="event.stopPropagation();commander(\'' + js(p.nom) + '\',\'' + js(p.prix) + '\')">' + WA_SVG + ' Commander</button>'
+      + '<button class="btn-wa" onclick="event.stopPropagation();commander(this,\'' + js(p.id) + '\')">' + WA_SVG + ' Commander</button>'
       + '</div>'
       + '</div>';
   }).join('');
