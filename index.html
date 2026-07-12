@@ -1472,6 +1472,7 @@ body.light-mode .del-input-row input{background:rgba(255,255,255,.85);color:#1c1
    CONSTANTES
    ============================================================ */
 const WA = '2290169515730';
+const DEL_WORKER_URL = 'https://khaled-watch-del.VOTRE-PSEUDO.workers.dev'; // ⚠️ collez ici l'URL copiée à l'étape 1.8
 /* ── Fonds d'écran rotatifs — mobile uniquement, toutes les 10h ── */
 const DEFAULT_BG = 'https://images.unsplash.com/photo-1618215649514-c73c18549d63?w=1600&q=85';
 
@@ -2964,7 +2965,7 @@ initGyroscope();
 /* ============================================================
    DEL — Assistante Style (guide d'achat intelligent)
    ============================================================ */
-let delState = { genre:null, cart:[], greeted:false, pendingCat:null, pendingMood:null, pendingBudget:null };
+let delState = { genre:null, cart:[], greeted:false, pendingCat:null, pendingMood:null, pendingBudget:null, history:[] };
 const DEL_COMPLIMENTS = ["Vous avez vraiment du goût ✨","Excellent choix, ça va vous aller à merveille !","J'adore cette sélection 💛","Ça, c'est du style !","Un très bel accessoire, bon choix !"];
 const DEL_CAT_KEYWORDS = {
   'Montres': ['montre','montres'],
@@ -3055,26 +3056,74 @@ function delParseIntent(text){
   return out;
 }
 
-async function delHandleFreeText(text){
-  const t = text.toLowerCase();
-  if (/merci/.test(t)){ await delBotSay("Avec plaisir 💛 Dites-moi si vous avez besoin d'autre chose !"); return; }
-
-  const intent = delParseIntent(text);
-  if (intent.genre) delState.genre = intent.genre;
-  if (intent.cat) delState.pendingCat = intent.cat;
-  if (intent.mood) delState.pendingMood = intent.mood;
-  if (intent.budget) delState.pendingBudget = intent.budget;
-
-  if (!delState.genre){
-    await delBotSay("Très bien ! C'est plutôt pour un homme ou une femme ?");
-    delQuickReplies([
-      {label:'👨 Homme', action:() => { delUserSay('Homme'); delState.genre='Homme'; delResumeAfterGenre(); }},
-      {label:'👩 Femme', action:() => { delUserSay('Femme'); delState.genre='Femme'; delResumeAfterGenre(); }},
-    ]);
-    return;
-  }
-  delResumeAfterGenre();
+function buildProductsForAI(){
+  return allProducts.map(p => ({
+    id: p.id, nom: p.nom, categorie: p.categorie,
+    genre: p.genre, prix: p.prix
+  }));
 }
+
+async function delHandleFreeText(text){
+  delState.history.push({ role:'user', content:text });
+  delShowTyping();
+
+  try {
+    const res = await fetch(DEL_WORKER_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: text,
+        history: delState.history.slice(-8),
+        products: buildProductsForAI(),
+        genre: delState.genre
+      })
+    });
+
+    if (!res.ok) throw new Error('Réponse serveur invalide');
+    const data = await res.json();
+
+    delHideTyping();
+
+    if (data.error) {
+      await delBotSay("Désolée, j'ai un petit souci technique 😔 Pouvez-vous réessayer ou me contacter directement sur WhatsApp ?");
+      return;
+    }
+
+    const body = document.getElementById('delBody');
+    const el = document.createElement('div');
+    el.className = 'del-msg bot';
+    el.textContent = data.reply || "Pouvez-vous préciser votre demande ?";
+    body.appendChild(el);
+    delScrollBottom();
+
+    delState.history.push({ role:'assistant', content: data.reply || '' });
+
+    if (data.product_ids && data.product_ids.length){
+      delRenderAiProducts(data.product_ids);
+    }
+
+  } catch(err){
+    delHideTyping();
+    await delBotSay("Je n'arrive pas à me connecter en ce moment 😔 Vous pouvez me contacter directement sur WhatsApp en attendant !");
+  }
+}
+
+function delRenderAiProducts(ids){
+  const body = document.getElementById('delBody');
+  ids.forEach(id => {
+    const p = allProducts.find(x => x.id === id);
+    if (!p) return;
+    const colors = p.couleurs && p.couleurs.length ? p.couleurs : [];
+    const img = colors.length && colors[0].image ? colors[0].image : (p.image || FALLBACK_IMG);
+    const card = document.createElement('div');
+    card.className = 'del-prod-card';
+    card.innerHTML = `<img src="${h(thumbUrl(img, 120))}" alt="${h(p.nom)}" onerror="this.src='${FALLBACK_IMG}'"><div class="del-prod-info"><div class="del-prod-name">${h(p.nom)}</div><div class="del-prod-price">${fmt(p.prix)} FCFA</div></div><button class="del-prod-add" onclick="event.stopPropagation();delAddToCart('${js(p.id)}', this)">➕</button>`;
+    card.onclick = (e) => { if (e.target.classList.contains('del-prod-add')) return; delGoToProduct(p.id); };
+    body.appendChild(card);
+  });
+  delScrollBottom();
+}
+
 
 async function delResumeAfterGenre(){
   const cat = delState.pendingCat, mood = delState.pendingMood, budget = delState.pendingBudget;
