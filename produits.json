@@ -1076,39 +1076,39 @@
     "createdAt": "2026-07-16T18:34:11.373Z"
   },
   {
-    "id": "1784227540372",
-    "nom": "Double collier",
-    "prix": 8000,
+    "id": "1784229174771",
+    "nom": "Collier",
+    "prix": 5000,
     "categorie": "Colliers",
     "genre": "Femme",
-    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784227543055-5wuwbp-Double-collier-principal.png",
-    "description": "Rends ton style beaucoup plus unique",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784229178434-o9g6rx-Collier-principal.png",
+    "description": "Simple mais efficace",
     "img_gauche": "",
     "img_droit": "",
     "img_dos": "",
-    "halo_cadran": "argent",
+    "halo_cadran": "or",
     "is_patron": false,
     "moods": [],
     "flash_fin": "",
     "flash_reduction": 0,
     "couleurs": [
       {
-        "nom": "Argent",
-        "hex": "#c0c0bf",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784227543073-wuqgq4-Double-collier-Argent.png",
+        "nom": "or",
+        "hex": "#a59009",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784229178449-hc279e-Collier-or.png",
         "img_gauche": "",
         "img_droit": "",
         "img_dos": ""
       },
       {
-        "nom": "Argent",
-        "hex": "#c0c0bf",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784227543091-n0sn2q-Double-collier-Argent.png",
+        "nom": "or",
+        "hex": "#a59009",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784229178466-n5z5l2-Collier-or.png",
         "img_gauche": "",
         "img_droit": "",
         "img_dos": ""
       }
     ],
-    "createdAt": "2026-07-16T18:45:40.372Z"
+    "createdAt": "2026-07-16T19:12:54.771Z"
   }
 ]
