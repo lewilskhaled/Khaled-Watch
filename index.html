@@ -471,8 +471,10 @@ img.prod-img.loaded{opacity:1;}
 }
 .cf-price small{font-family:'Montserrat',sans-serif;font-size:.68rem;}
 .cf-colors{display:flex;gap:.45rem;flex-wrap:wrap;}
+.cf-color-name{font-size:.6rem;color:#E8DFC8;letter-spacing:.1em;margin-top:.35rem;font-weight:700;text-transform:uppercase;text-shadow:var(--ts);}
+.cf-color-name{font-size:.6rem;color:#E8DFC8;letter-spacing:.1em;margin-top:.35rem;font-weight:700;text-transform:uppercase;text-shadow:var(--ts);}
 .cf-color-dot{
-  width:23px;height:23px;border-radius:50%;border:2px solid rgba(255,255,255,.28);
+  width:27px;height:27px;border-radius:50%;border:2px solid rgba(255,255,255,.28);
   cursor:pointer;transition:transform .2s,border-color .2s;flex-shrink:0;
   -webkit-tap-highlight-color:transparent;
 }
@@ -1876,7 +1878,7 @@ function renderColliersFeed() {
     const colors  = p.couleurs && p.couleurs.length ? p.couleurs : [];
     const mainImg = colors.length && colors[0].image ? colors[0].image : (p.image || FALLBACK_IMG);
 
-    const colorDots = colors.length > 1 ? `
+    .cf-color-dot{`
       <div class="cf-colors">
         ${colors.map((c,ci) => `<div class="cf-color-dot${ci===0?' active':''}" style="background:${h(c.hex)}" title="${h(c.nom)}" onclick="switchCfColor(this,${i},${ci})"></div>`).join('')}
       </div>` : '';
@@ -1885,7 +1887,7 @@ function renderColliersFeed() {
     <div class="cf-slide" data-idx="${i}">
       <div class="cf-glow"></div>
       <div class="cf-img-wrap">
-        <img id="cfimg-${i}" src="${h(thumbUrl(mainImg, 900))}" alt="${h(p.nom)}" loading="${i<2?'eager':'lazy'}" decoding="async" onerror="this.src='${FALLBACK_IMG}'">
+        <img id="cfimg-${i}" src="${h(thumbUrl(mainImg, 1300))}" alt="${h(p.nom)}" loading="${i<2?'eager':'lazy'}" decoding="async" onerror="this.src='${FALLBACK_IMG}'">
       </div>
       <div class="cf-info">
        <div class="cf-badge">✦ Collier</div>
@@ -1909,9 +1911,18 @@ function switchCfColor(dot, slideIdx, colorIdx) {
   const c = p.couleurs[colorIdx];
   const img = document.getElementById('cfimg-' + slideIdx);
   if (img && c.image) {
-    img.style.opacity = '0';
-    setTimeout(() => { img.src = thumbUrl(c.image, 900); img.style.opacity = '1'; }, 150);
-    img.style.transition = 'opacity .2s';
+    const newSrc = thumbUrl(c.image, 1300, 90);
+    const preload = new Image();
+    preload.onload = () => {
+      img.style.transition = 'opacity .28s ease';
+      img.style.opacity = '0.15';
+      setTimeout(() => {
+        img.src = newSrc;
+        img.style.opacity = '1';
+      }, 140);
+    };
+    preload.onerror = () => { img.src = newSrc; };
+    preload.src = newSrc;
   }
   dot.closest('.cf-colors').querySelectorAll('.cf-color-dot').forEach((d,i) => d.classList.toggle('active', i===colorIdx));
 }
@@ -1986,7 +1997,7 @@ function chainSlideHTML(p, idx) {
   const colors  = p.couleurs && p.couleurs.length ? p.couleurs : [];
   const mainImg = colors.length && colors[0].image ? colors[0].image : (p.image || FALLBACK_IMG);
 
-  const colorDots = colors.length > 1 ? `
+  width:23px;height:23px;`
     <div class="cf-colors">
       ${colors.map((c,ci) => `<div class="cf-color-dot${ci===0?' active':''}" style="background:${h(c.hex)}" title="${h(c.nom)}" onclick="switchChColor(this,${idx},${ci})"></div>`).join('')}
     </div>` : '';
@@ -1994,7 +2005,7 @@ function chainSlideHTML(p, idx) {
   return `
     <div class="cf-glow"></div>
     <div class="cf-img-wrap">
-      <img id="chimg-${idx}" src="${h(thumbUrl(mainImg, 900))}" alt="${h(p.nom)}" decoding="async" onerror="this.src='${FALLBACK_IMG}'">
+      <img id="chimg-${idx}" src="${h(thumbUrl(mainImg, 1300))}" alt="${h(p.nom)}" decoding="async" onerror="this.src='${FALLBACK_IMG}'">
     </div>
     <div class="cf-info">
       <div class="cf-badge">✦ Chaîne</div>
@@ -2037,7 +2048,7 @@ function switchChColor(dot, idx, colorIdx) {
   const img = document.getElementById('chimg-' + idx);
   if (img && c.image) {
     img.style.opacity = '0';
-    setTimeout(() => { img.src = thumbUrl(c.image, 900); img.style.opacity = '1'; }, 150);
+    setTimeout(() => { img.src = thumbUrl(c.image, 1300); img.style.opacity = '1'; }, 150);
     img.style.transition = 'opacity .2s';
   }
   dot.closest('.cf-colors').querySelectorAll('.cf-color-dot').forEach((d,i) => d.classList.toggle('active', i===colorIdx));
@@ -2167,15 +2178,15 @@ function braceletSlideHTML(p, idx) {
   const colors  = p.couleurs && p.couleurs.length ? p.couleurs : [];
   const mainImg = colors.length && colors[0].image ? colors[0].image : (p.image || FALLBACK_IMG);
 
-  const colorDots = colors.length > 1 ? `
-    <div class="cf-colors">
-      ${colors.map((c,ci) => `<div class="cf-color-dot${ci===0?' active':''}" style="background:${h(c.hex)}" title="${h(c.nom)}" onclick="switchBrColor(this,${idx},${ci})"></div>`).join('')}
-    </div>` : '';
-
+ const colorDots = colors.length > 1 ? `
+      <div class="cf-colors">
+        ${colors.map((c,ci) => `<div class="cf-color-dot${ci===0?' active':''}" style="background:${h(c.hex)}" title="${h(c.nom)}" onclick="switchCfColor(this,${i},${ci})"></div>`).join('')}
+      </div>
+      <div class="cf-color-name" id="cfColorName-${i}">${h(colors[0].nom||'')}</div>` : '';
   return `
     <div class="cf-glow"></div>
     <div class="cf-img-wrap">
-      <img id="brimg-${idx}" src="${h(thumbUrl(mainImg, 900))}" alt="${h(p.nom)}" decoding="async" onerror="this.src='${FALLBACK_IMG}'">
+      <img id="brimg-${idx}" src="${h(thumbUrl(mainImg, 1300))}" alt="${h(p.nom)}" decoding="async" onerror="this.src='${FALLBACK_IMG}'">
     </div>
     <div class="cf-info">
      <div class="cf-badge">✦ Bracelet</div>
@@ -2197,7 +2208,7 @@ function initBraceletStage(startIdx) {
   updateBrCounter();
   stage.innerHTML = '';
 
-  if (!brList.length) {
+  ;im (!brList.length) {
     stage.innerHTML = `<div class="cf-empty">
       <h3>✦ Collection à venir</h3>
       <p>Aucun bracelet disponible ${brGender!=='tous' ? 'pour '+brGender+' ' : ''}pour le moment.<br>Revenez bientôt !</p>
@@ -2229,9 +2240,11 @@ function switchBrColor(dot, idx, colorIdx) {
   const img = document.getElementById('brimg-' + idx);
   if (img && c.image) {
     img.style.opacity = '0';
-    setTimeout(() => { img.src = thumbUrl(c.image, 900); img.style.opacity = '1'; }, 150);
+    setTimeout(() => { img.src = thumbUrl(c.image, 1300); img.style.opacity = '1'; }, 150);
     img.style.transition = 'opacity .2s';
   }
+  const nameEl = document.getElementById('cfColorName-' + slideIdx);
+  if (nameEl) nameEl.textContent = c.nom || '';
   dot.closest('.cf-colors').querySelectorAll('.cf-color-dot').forEach((d,i) => d.classList.toggle('active', i===colorIdx));
 }
 
@@ -2403,11 +2416,11 @@ function renderProducts() {
       <div class="prod-img-zone${neutralBg}">
         ${colors.length > 1 ? `
         <div class="cvar-viewport prod-img" data-pid="${h(p.id)}">
-          ${colors.map((c,ci) => `<img class="cvar-img${ci===0?' loaded':''}" data-ci="${ci}" src="${h(thumbUrl(c.image||mainImg, 460))}" alt="${h(p.nom)}" loading="${i<6?'eager':'lazy'}" decoding="async" ${i<6&&ci===0?'fetchpriority="high"':''} onerror="this.src='${FALLBACK_IMG}'" onload="this.classList.add('loaded');this.closest('.prod-img-zone').classList.add('img-ready')" style="transform:translateY(${ci===0?'0%':'100%'});">`).join('')}
+          ${colors.map((c,ci) => `<img class="cvar-img${ci===0?' loaded':''}" data-ci="${ci}" src="${h(thumbUrl(c.image||mainImg, 640))}" alt="${h(p.nom)}" loading="${i<6?'eager':'lazy'}" decoding="async" ${i<6&&ci===0?'fetchpriority="high"':''} onerror="this.src='${FALLBACK_IMG}'" onload="this.classList.add('loaded');this.closest('.prod-img-zone').classList.add('img-ready')" style="transform:translateY(${ci===0?'0%':'100%'});">`).join('')}
         </div>
         <div class="cvar-dots">${colors.map((c,ci)=>`<div class="cvar-dot${ci===0?' active':''}"></div>`).join('')}</div>
         ` : `
-        <img class="prod-img" id="cimg-${h(p.id)}" src="${h(thumbUrl(mainImg, 460))}" alt="${h(p.nom)}" loading="${i<6?'eager':'lazy'}" decoding="async" ${i<6?'fetchpriority="high"':''}
+        <img class="prod-img" id="cimg-${h(p.id)}" src="${h(thumbUrl(mainImg, 640))}" alt="${h(p.nom)}" loading="${i<6?'eager':'lazy'}" decoding="async" ${i<6?'fetchpriority="high"':''}
              onload="this.classList.add('loaded');this.closest('.prod-img-zone').classList.add('img-ready')" onerror="this.src='${FALLBACK_IMG}'">
         `}
         <div class="sunburst-overlay${neutralBg}" id="sburst-${h(p.id)}"></div>
@@ -2552,7 +2565,7 @@ function buildAllSlides() {
       <div class="modal-color-strip">
         ${colors.map((c,ci) => `
           <div class="modal-color-thumb${ci===0?' active':''}" onclick="switchModalColor(${i},${ci},this)">
-            <img src="${h(thumbUrl(c.image||mainImg, 110))}" alt="${h(c.nom)}" onerror="this.src='${FALLBACK_IMG}'">
+            <img src="${h(thumbUrl(c.image||mainImg, 160))}" alt="${h(c.nom)}" onerror="this.src='${FALLBACK_IMG}'">
           </div>
         `).join('')}
       </div>` : '';
@@ -2570,7 +2583,7 @@ function buildAllSlides() {
     <div class="modal-slide" data-slide="${i}">
       <div class="modal-img-wrap${p.categorie === 'Colliers' ? ' neutral-bg' : ''}" id="wrap360-${i}"
            ${has360 ? `ontouchstart="start360(event,${i})" ontouchmove="move360(event,${i})" ontouchend="end360(event,${i})" onmousedown="mdown360(event,${i})"` : ''}>
-        <img id="mimg-${i}" src="${h(thumbUrl(mainImg, 1000))}" alt="${h(p.nom)}" onerror="this.src='${FALLBACK_IMG}'" draggable="false">
+        <img id="mimg-${i}" src="${h(thumbUrl(mainImg, 1400))}" alt="${h(p.nom)}" onerror="this.src='${FALLBACK_IMG}'" draggable="false">
         ${has360 ? `<div class="badge360">🔄 360°<br><span>Glisser</span></div>` : ''}
         ${arrows360}
         ${dots360}
@@ -2716,18 +2729,19 @@ function fmt(n){ return Number(n||0).toLocaleString('fr-FR'); }
    cache. Les photos Unsplash utilisent leur propre paramètre "w=".
    En cas d'échec du CDN, onerror bascule vers l'image d'origine.
    ============================================================ */
-function thumbUrl(url, width) {
+function thumbUrl(url, width, quality) {
   if (!url || url.startsWith('data:')) return url;
+  const q = quality || 88;
   try {
     if (url.includes('images.unsplash.com')) {
       const u = new URL(url);
       u.searchParams.set('w', width);
-      u.searchParams.set('q', '75');
+      u.searchParams.set('q', String(q));
       u.searchParams.set('auto', 'format');
       return u.toString();
     }
     const stripped = url.replace(/^https?:\/\//, '');
-    return `https://images.weserv.nl/?url=${encodeURIComponent(stripped)}&w=${width}&output=webp&q=76`;
+    return `https://images.weserv.nl/?url=${encodeURIComponent(stripped)}&w=${width}&output=webp&q=${q}&sharp=1`;
   } catch (e) {
     return url;
   }
@@ -2905,12 +2919,12 @@ function renderSearchResults(list, q) {
     if (colors.length > 1) {
       imgZoneHTML = '<div class="cvar-viewport prod-img" data-pid="' + h(p.id) + '">'
         + colors.map(function(c,ci){
-            return '<img class="cvar-img' + (ci===0?' loaded':'') + '" data-ci="' + ci + '" src="' + h(thumbUrl(c.image||mainImg, 460)) + '" alt="' + h(p.nom) + '" ' + (i<6?'loading="eager" fetchpriority="high"':'loading="lazy"') + ' decoding="async" onerror="this.src=\'' + FALLBACK_IMG + '\'" onload="this.classList.add(\'loaded\');this.closest(\'.prod-img-zone\').classList.add(\'img-ready\')" style="transform:translateY(' + (ci===0?'0%':'100%') + ');">';
+            return '<img class="cvar-img' + (ci===0?' loaded':'') + '" data-ci="' + ci + '" src="' + h(thumbUrl(c.image||mainImg, 640)) + '" alt="' + h(p.nom) + '" ' + (i<6?'loading="eager" fetchpriority="high"':'loading="lazy"') + ' decoding="async" onerror="this.src=\'' + FALLBACK_IMG + '\'" onload="this.classList.add(\'loaded\');this.closest(\'.prod-img-zone\').classList.add(\'img-ready\')" style="transform:translateY(' + (ci===0?'0%':'100%') + ');">';
           }).join('')
         + '</div>'
         + '<div class="cvar-dots">' + colors.map(function(c,ci){ return '<div class="cvar-dot' + (ci===0?' active':'') + '"></div>'; }).join('') + '</div>';
     } else {
-      imgZoneHTML = '<img class="prod-img" id="cimg-' + h(p.id) + '" src="' + h(thumbUrl(mainImg, 460)) + '" alt="' + h(p.nom) + '" ' + eagerAttrs + ' decoding="async" onload="this.classList.add(\'loaded\');this.closest(\'.prod-img-zone\').classList.add(\'img-ready\')" onerror="this.src=\'' + FALLBACK_IMG + '\'">';
+      imgZoneHTML = '<img class="prod-img" id="cimg-' + h(p.id) + '" src="' + h(thumbUrl(mainImg, 640)) + '" alt="' + h(p.nom) + '" ' + eagerAttrs + ' decoding="async" onload="this.classList.add(\'loaded\');this.closest(\'.prod-img-zone\').classList.add(\'img-ready\')" onerror="this.src=\'' + FALLBACK_IMG + '\'">';
     }
 
     var neutralBg = p.categorie === 'Colliers' ? ' neutral-bg' : '';
@@ -3188,7 +3202,7 @@ function delRenderAiProducts(ids){
     const img = colors.length && colors[0].image ? colors[0].image : (p.image || FALLBACK_IMG);
     const card = document.createElement('div');
     card.className = 'del-prod-card';
-    card.innerHTML = `<img src="${h(thumbUrl(img, 120))}" alt="${h(p.nom)}" onerror="this.src='${FALLBACK_IMG}'"><div class="del-prod-info"><div class="del-prod-name">${h(p.nom)}</div><div class="del-prod-price">${fmt(p.prix)} FCFA</div></div><button class="del-prod-add" onclick="event.stopPropagation();delAddToCart('${js(p.id)}', this)">➕</button>`;
+    card.innerHTML = `<img src="${h(thumbUrl(img, 160))}" alt="${h(p.nom)}" onerror="this.src='${FALLBACK_IMG}'"><div class="del-prod-info"><div class="del-prod-name">${h(p.nom)}</div><div class="del-prod-price">${fmt(p.prix)} FCFA</div></div><button class="del-prod-add" onclick="event.stopPropagation();delAddToCart('${js(p.id)}', this)">➕</button>`;
     card.onclick = (e) => { if (e.target.classList.contains('del-prod-add')) return; delGoToProduct(p.id); };
     body.appendChild(card);
   });
