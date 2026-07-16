@@ -964,16 +964,49 @@ img.prod-img.loaded{opacity:1;}
   display:none;
   position:fixed;inset:0;z-index:-2;
   background:
-    radial-gradient(ellipse 60% 45% at 20% 15%, rgba(255,250,235,.9) 0%, rgba(255,255,255,0) 60%),
-    radial-gradient(ellipse 55% 40% at 85% 25%, rgba(255,248,225,.75) 0%, rgba(255,255,255,0) 65%),
-    radial-gradient(ellipse 70% 55% at 50% 90%, rgba(250,240,210,.55) 0%, rgba(255,255,255,0) 70%),
-    #ffffff;
-  background-size:200% 200%;
-  animation:lightDrift 40s ease-in-out infinite;
+    radial-gradient(ellipse 55% 40% at 15% 10%, rgba(255,247,225,.95) 0%, rgba(255,255,255,0) 62%),
+    radial-gradient(ellipse 50% 38% at 88% 18%, rgba(255,240,200,.8) 0%, rgba(255,255,255,0) 65%),
+    radial-gradient(ellipse 65% 50% at 50% 95%, rgba(250,235,195,.6) 0%, rgba(255,255,255,0) 70%),
+    radial-gradient(ellipse 40% 35% at 40% 55%, rgba(255,250,235,.5) 0%, rgba(255,255,255,0) 68%),
+    #fffdf8;
+  background-size:220% 220%;
+  animation:lightDrift 34s ease-in-out infinite;
+  overflow:hidden;
+}
+#lightSpace::before{
+  content:'';position:absolute;inset:-20%;
+  background:linear-gradient(120deg,transparent 35%,rgba(255,240,190,.35) 48%,rgba(255,250,225,.5) 52%,transparent 65%);
+  background-size:300% 300%;
+  animation:lightSheen 11s ease-in-out infinite;
+  mix-blend-mode:screen;pointer-events:none;
 }
 @keyframes lightDrift{
-  0%,100%{background-position:0% 0%, 100% 0%, 50% 100%;}
-  50%{background-position:15% 10%, 85% 15%, 55% 85%;}
+  0%,100%{background-position:0% 0%, 100% 0%, 50% 100%, 30% 50%;}
+  50%{background-position:18% 12%, 82% 20%, 55% 82%, 60% 40%;}
+}
+@keyframes lightSheen{
+  0%{background-position:200% -50%;opacity:.5;}
+  50%{background-position:-40% 60%;opacity:.9;}
+  100%{background-position:-200% 150%;opacity:.5;}
+}
+
+/* Particules dorées flottantes — mode clair uniquement */
+#lightParticles{
+  display:none;position:fixed;inset:0;z-index:-2;overflow:hidden;pointer-events:none;
+}
+body.light-mode #lightParticles{display:block;}
+.lp{
+  position:absolute;bottom:-40px;border-radius:50%;
+  background:radial-gradient(circle,#fff8dd 0%,#F5E27A 45%,rgba(201,168,76,0) 75%);
+  opacity:0;filter:blur(.3px);
+  animation:lpFloat linear infinite;
+}
+@keyframes lpFloat{
+  0%{transform:translateY(0) translateX(0) scale(.8);opacity:0;}
+  8%{opacity:.85;}
+  50%{transform:translateY(-52vh) translateX(var(--lp-drift,20px)) scale(1);}
+  92%{opacity:.5;}
+  100%{transform:translateY(-108vh) translateX(calc(var(--lp-drift,20px) * -1)) scale(.6);opacity:0;}
 }
 body.light-mode #lightSpace{display:block;}
 body.light-mode #bgLayer,
@@ -1269,6 +1302,7 @@ body.light-mode .del-input-row input{background:rgba(255,255,255,.85);color:#1c1
 </video>
 
 <div id="lightSpace"></div>
+<div id="lightParticles"></div>
 
 <header class="app-header">
   <button class="light-toggle-btn" id="lightModeBtn" onclick="toggleLightMode()" aria-label="Mode clair" title="Mode clair">☀️</button>
@@ -2947,11 +2981,30 @@ function updateLightToggleIcon() {
   btn.textContent = isLight ? '🌙' : '☀️';
   btn.title = isLight ? 'Mode doré' : 'Mode clair';
 }
+function spawnLightParticles(){
+  const wrap = document.getElementById('lightParticles');
+  if (!wrap || wrap.dataset.done) return;
+  wrap.dataset.done = '1';
+  const n = 16; // léger, peu coûteux
+  for (let i = 0; i < n; i++){
+    const p = document.createElement('div');
+    p.className = 'lp';
+    const size = 3 + Math.random() * 6;
+    p.style.width = p.style.height = size + 'px';
+    p.style.left = (Math.random() * 100) + '%';
+    p.style.setProperty('--lp-drift', (Math.random() * 60 - 30) + 'px');
+    p.style.animationDuration = (14 + Math.random() * 12) + 's';
+    p.style.animationDelay = (Math.random() * -20) + 's';
+    wrap.appendChild(p);
+  }
+}
+
 function initLightMode() {
   if (localStorage.getItem('kw-light-mode') === '1') {
     document.body.classList.add('light-mode');
   }
   updateLightToggleIcon();
+  spawnLightParticles();
 }
 
 /* ============================================================
