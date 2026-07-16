@@ -960,7 +960,15 @@ img.prod-img.loaded{opacity:1;}
 /* ============================================================
    MODE CLAIR — Espace Infini Blanc
    ============================================================ */
-#lightSpace{
+
+body.light-mode #lightSpace{display:block;}
+body.light-mode #bgLayer,
+body.light-mode #bgOverlay,
+body.light-mode #bgVideo{display:none!important;}
+
+body.light-mode{
+  --ts:0 1px 3px rgba(255,255,255,.9), 0 0 2px rgba(255,255,255,.6);
+  --txt:#171410; --txt2:#3a331f; --gris:#6b6350;#lightSpace{
   display:none;
   position:fixed;inset:0;z-index:-2;
   background:
@@ -990,11 +998,27 @@ img.prod-img.loaded{opacity:1;}
   100%{background-position:-200% 150%;opacity:.5;}
 }
 
-/* Particules dorées flottantes — mode clair uniquement */
-#lightParticles{
-  display:none;position:fixed;inset:0;z-index:-2;overflow:hidden;pointer-events:none;
+/* Respiration dorée — mode sombre uniquement, très discrète */
+#darkGlow{
+  position:fixed;inset:0;z-index:-1;pointer-events:none;
+  opacity:0;transition:opacity .5s;
+  background:
+    radial-gradient(ellipse 45% 35% at 12% 15%, rgba(201,168,76,.16) 0%, transparent 65%),
+    radial-gradient(ellipse 40% 32% at 90% 80%, rgba(232,201,122,.14) 0%, transparent 65%);
+  background-size:180% 180%;
+  animation:darkGlowDrift 26s ease-in-out infinite;
+  mix-blend-mode:screen;
 }
-body.light-mode #lightParticles{display:block;}
+body:not(.light-mode) #darkGlow{opacity:1;}
+@keyframes darkGlowDrift{
+  0%,100%{background-position:0% 0%, 100% 100%;}
+  50%{background-position:20% 15%, 78% 85%;}
+}
+
+/* Particules dorées flottantes — visibles en permanence, très légères */
+#lightParticles{
+  position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none;
+}
 .lp{
   position:absolute;bottom:-40px;border-radius:50%;
   background:radial-gradient(circle,#fff8dd 0%,#F5E27A 45%,rgba(201,168,76,0) 75%);
@@ -1002,20 +1026,14 @@ body.light-mode #lightParticles{display:block;}
   animation:lpFloat linear infinite;
 }
 @keyframes lpFloat{
-  0%{transform:translateY(0) translateX(0) scale(.8);opacity:0;}
-  8%{opacity:.85;}
+  0%{transform:translateY(0) translateX(0) scale(.75);opacity:0;}
+  10%{opacity:.5;}
   50%{transform:translateY(-52vh) translateX(var(--lp-drift,20px)) scale(1);}
-  92%{opacity:.5;}
-  100%{transform:translateY(-108vh) translateX(calc(var(--lp-drift,20px) * -1)) scale(.6);opacity:0;}
+  90%{opacity:.28;}
+  100%{transform:translateY(-108vh) translateX(calc(var(--lp-drift,20px) * -1)) scale(.55);opacity:0;}
 }
-body.light-mode #lightSpace{display:block;}
-body.light-mode #bgLayer,
-body.light-mode #bgOverlay,
-body.light-mode #bgVideo{display:none!important;}
-
-body.light-mode{
-  --ts:0 1px 3px rgba(255,255,255,.9), 0 0 2px rgba(255,255,255,.6);
-  --txt:#171410; --txt2:#3a331f; --gris:#6b6350;
+/* En mode clair : particules un peu plus visibles (le fond blanc les "avale" plus vite) */
+body.light-mode .lp{ filter:blur(0); }
 }
 
 /* Bouton mode clair (en-tête, en haut à droite) */
@@ -1294,6 +1312,7 @@ body.light-mode .del-input-row input{background:rgba(255,255,255,.85);color:#1c1
 </div>
 <div id="bgLayer"></div>
 <div id="bgOverlay"></div>
+<div id="darkGlow"></div>
 <!-- FOND VIDÉO — Mobile uniquement, géré depuis admin -->
 <video id="bgVideo"
        autoplay muted loop playsinline
@@ -2969,6 +2988,23 @@ initGyroscope();  /* ← Gyroscope activé */
 /* ============================================================
    MODE CLAIR
    ============================================================ */
+function spawnLightParticles(){
+  const wrap = document.getElementById('lightParticles');
+  if (!wrap || wrap.dataset.done) return;
+  wrap.dataset.done = '1';
+  const n = 14;
+  for (let i = 0; i < n; i++){
+    const p = document.createElement('div');
+    p.className = 'lp';
+    const size = 3 + Math.random() * 5;
+    p.style.width = p.style.height = size + 'px';
+    p.style.left = (Math.random() * 100) + '%';
+    p.style.setProperty('--lp-drift', (Math.random() * 50 - 25) + 'px');
+    p.style.animationDuration = (16 + Math.random() * 14) + 's';
+    p.style.animationDelay = (Math.random() * -25) + 's';
+    wrap.appendChild(p);
+  }
+}
 function toggleLightMode() {
   document.body.classList.toggle('light-mode');
   localStorage.setItem('kw-light-mode', document.body.classList.contains('light-mode') ? '1' : '0');
@@ -3014,6 +3050,7 @@ initDesign();
 initLightMode();
 loadProducts();
 initGyroscope();
+spawnLightParticles();
 
 /* ============================================================
    DEL — Assistante Style (guide d'achat intelligent)
