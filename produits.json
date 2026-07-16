@@ -1110,5 +1110,41 @@
       }
     ],
     "createdAt": "2026-07-16T18:45:40.372Z"
+  },
+  {
+    "id": "1784229174771",
+    "nom": "Collier",
+    "prix": 5000,
+    "categorie": "Colliers",
+    "genre": "Femme",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784229178434-o9g6rx-Collier-principal.png",
+    "description": "Simple mais efficace",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "or",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [
+      {
+        "nom": "or",
+        "hex": "#a59009",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784229178449-hc279e-Collier-or.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "or",
+        "hex": "#a59009",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784229178466-n5z5l2-Collier-or.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      }
+    ],
+    "createdAt": "2026-07-16T19:12:54.771Z"
   }
 ]
