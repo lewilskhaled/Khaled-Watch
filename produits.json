@@ -1038,5 +1038,41 @@
       }
     ],
     "createdAt": "2026-07-09T14:01:36.264Z"
+  },
+  {
+    "id": "1784226851373",
+    "nom": "Double collier de perle",
+    "prix": 8000,
+    "categorie": "Colliers",
+    "genre": "Femme",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784226853757-008z9i-Double-collier-de-perle-principal.png",
+    "description": "Soit la reine que tu penses être avec cette pure merveille",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "argent",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [
+      {
+        "nom": "Argent",
+        "hex": "#c0c0bf",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784226853773-bku6bc-Double-collier-de-perle-Argent.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Argent",
+        "hex": "#c0c0bf",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784226853804-tkc42h-Double-collier-de-perle-Argent.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      }
+    ],
+    "createdAt": "2026-07-16T18:34:11.373Z"
   }
 ]
