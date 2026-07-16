@@ -1076,12 +1076,12 @@
     "createdAt": "2026-07-16T18:34:11.373Z"
   },
   {
-    "id": "1784231364486",
+    "id": "1784229174771",
     "nom": "Collier",
     "prix": 5000,
     "categorie": "Colliers",
     "genre": "Femme",
-    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784231368464-urjd8u-Collier-principal.png",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784229178434-o9g6rx-Collier-principal.png",
     "description": "Simple mais efficace",
     "img_gauche": "",
     "img_droit": "",
@@ -1093,23 +1093,23 @@
     "flash_reduction": 0,
     "couleurs": [
       {
-        "nom": "Or",
+        "nom": "or",
         "hex": "#a59009",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784231368498-j4yzos-Collier-Or.png",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784229178449-hc279e-Collier-or.png",
         "img_gauche": "",
         "img_droit": "",
         "img_dos": ""
       },
       {
-        "nom": "Or",
+        "nom": "or",
         "hex": "#a59009",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784231368533-aqoed9-Collier-Or.png",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784229178466-n5z5l2-Collier-or.png",
         "img_gauche": "",
         "img_droit": "",
         "img_dos": ""
       }
     ],
-    "createdAt": "2026-07-16T19:49:24.486Z"
+    "createdAt": "2026-07-16T19:12:54.771Z"
   },
   {
     "id": "1784231981143",
