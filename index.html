@@ -1343,9 +1343,9 @@ body.light-mode .del-input-row input{background:rgba(255,255,255,.85);color:#1c1
   <div class="cat-grid">
     <div class="cat-card" onclick="openCat('Montres')">         <div class="cat-icon">⌚</div><div class="cat-label">Montres</div>      <div class="cat-count" id="cnt-Montres">—</div></div>
     <div class="cat-card" onclick="openCat('Montres Luxueuses')"><div class="cat-icon">💎</div><div class="cat-label">Montres Luxe</div><div class="cat-count" id="cnt-Montres Luxueuses">—</div></div>
-    <div class="cat-card" onclick="openCat('Chaînes')">         <div class="cat-icon">⛓</div><div class="cat-label">Chaînes</div>      <div class="cat-count" id="cnt-Chaînes">—</div></div>
+    <div class="cat-card" onclick="openCat('Chaînes')">         <div class="cat-icon">⛓</div><div class="cat-label">Chaîne Homme</div>      <div class="cat-count" id="cnt-Chaînes">—</div></div>
     <div class="cat-card" onclick="openCat('Bracelets')">       <div class="cat-icon">💫</div><div class="cat-label">Bracelets</div>    <div class="cat-count" id="cnt-Bracelets">—</div></div>
-    <div class="cat-card" onclick="openCat('Colliers')">        <div class="cat-icon">📿</div><div class="cat-label">Colliers</div>     <div class="cat-count" id="cnt-Colliers">—</div></div>
+    <div class="cat-card" onclick="openCat('Colliers')">        <div class="cat-icon">📿</div><div class="cat-label">Collier Femme</div>     <div class="cat-count" id="cnt-Colliers">—</div></div>
     <div class="cat-card" onclick="openCat('Bagues')">          <div class="cat-icon">💍</div><div class="cat-label">Bagues</div>       <div class="cat-count" id="cnt-Bagues">—</div></div>
     <div class="cat-card" onclick="openCat('Autres')">          <div class="cat-icon">✨</div><div class="cat-label">Autres</div>       <div class="cat-count" id="cnt-Autres">—</div></div>
     <div class="cat-card offre-card" onclick="openOffres()">    <div class="cat-icon">🎁</div><div class="cat-label" style="color:#FFD700;">Offres</div><div class="cat-count" style="color:var(--or-l);">Promos &amp; Cadeaux</div></div>
@@ -1412,13 +1412,8 @@ body.light-mode .del-input-row input{background:rgba(255,255,255,.85);color:#1c1
 <div id="colliersFeed">
   <div class="cf-topbar">
     <button class="cf-back" onclick="closeColliersFeed()" aria-label="Retour">←</button>
-    <div class="cf-title">✦ Collection Colliers</div>
+    <div class="cf-title">✦ Collier pour Femme</div>
     <div class="cf-counter" id="cfCounter">1 / 1</div>
-  </div>
-  <div class="cf-gender-tabs" id="cfGenderTabs">
-    <button class="cf-g-tab active" data-g="tous" onclick="setCfGender(this)">Tous</button>
-    <button class="cf-g-tab" data-g="Homme" onclick="setCfGender(this)">Homme</button>
-    <button class="cf-g-tab" data-g="Femme" onclick="setCfGender(this)">Femme</button>
   </div>
   <div class="cf-scroll" id="cfScroll" onscroll="onCfScroll()"></div>
 </div>
@@ -1427,13 +1422,8 @@ body.light-mode .del-input-row input{background:rgba(255,255,255,.85);color:#1c1
 <div id="chainesFeed">
   <div class="cf-topbar">
     <button class="cf-back" onclick="closeChainesFeed()" aria-label="Retour">←</button>
-    <div class="cf-title">✦ Collection Chaînes</div>
+    <div class="cf-title">✦ Chaîne pour Homme</div>
     <div class="cf-counter" id="chCounter">1 / 1</div>
-  </div>
-  <div class="cf-gender-tabs" id="chGenderTabs">
-    <button class="cf-g-tab active" data-g="tous" onclick="setChGender(this)">Tous</button>
-    <button class="cf-g-tab" data-g="Homme" onclick="setChGender(this)">Homme</button>
-    <button class="cf-g-tab" data-g="Femme" onclick="setChGender(this)">Femme</button>
   </div>
   <div class="ch-stage" id="chStage"></div>
   <div class="ch-pivot-dot"></div>
@@ -1471,7 +1461,7 @@ body.light-mode .del-input-row input{background:rgba(255,255,255,.85);color:#1c1
 <nav class="bottom-nav">
   <button class="nav-item active" id="nav-home" onclick="goHome()"><span class="nav-icon">🏠</span>Accueil</button>
   <button class="nav-item" onclick="openCat('Montres')"><span class="nav-icon">⌚</span>Montres</button>
-  <button class="nav-item" onclick="openCat('Chaînes')"><span class="nav-icon">⛓</span>Chaînes</button>
+  <button class="nav-item" onclick="openCat('Chaînes')"><span class="nav-icon">⛓</span>Chaîne H.</button>
   <button class="nav-item" onclick="openCat('Bracelets')"><span class="nav-icon">💫</span>Bijoux</button>
   <button class="nav-item nav-offre" onclick="openOffres()"><span class="nav-icon">🎁</span>Offres<div class="pulse-dot"></div></button>
 </nav>
@@ -1781,7 +1771,10 @@ function updateCounts() {
   Object.keys(CAT_ICONS).forEach(c => {
     const el = document.getElementById('cnt-' + c);
     if (!el) return;
-    const n = allProducts.filter(p => p.categorie === c).length;
+    let n;
+    if (c === 'Chaînes') n = allProducts.filter(p => p.categorie === c && p.genre === 'Homme').length;
+    else if (c === 'Colliers') n = allProducts.filter(p => p.categorie === c && p.genre === 'Femme').length;
+    else n = allProducts.filter(p => p.categorie === c).length;
     el.textContent = n + (n <= 1 ? ' article' : ' articles');
   });
 }
@@ -1835,9 +1828,6 @@ let cfGender = 'tous';
 let cfList   = [];
 
 function openColliersFeed() {
-  cfGender = 'tous';
-  document.querySelectorAll('.cf-g-tab').forEach(t => t.classList.remove('active'));
-  document.querySelector('.cf-g-tab[data-g="tous"]').classList.add('active');
   document.getElementById('colliersFeed').classList.add('open');
   document.body.style.overflow = 'hidden';
   renderColliersFeed();
@@ -1850,16 +1840,8 @@ function closeColliersFeed() {
   if (scroll) scroll.scrollTop = 0;
 }
 
-function setCfGender(btn) {
-  document.querySelectorAll('.cf-g-tab').forEach(t => t.classList.remove('active'));
-  btn.classList.add('active');
-  cfGender = btn.dataset.g;
-  renderColliersFeed();
-}
-
 function renderColliersFeed() {
-  let list = allProducts.filter(p => p.categorie === 'Colliers');
-  if (cfGender !== 'tous') list = list.filter(p => p.genre === cfGender);
+  let list = allProducts.filter(p => p.categorie === 'Colliers' && p.genre === 'Femme');
   cfList = list;
 
   const scroll = document.getElementById('cfScroll');
@@ -1868,7 +1850,7 @@ function renderColliersFeed() {
   if (!list.length) {
     scroll.innerHTML = `<div class="cf-slide"><div class="cf-empty">
       <h3>✦ Collection à venir</h3>
-      <p>Aucun collier disponible ${cfGender!=='tous' ? 'pour '+cfGender+' ' : ''}pour le moment.<br>Revenez bientôt !</p>
+      <p>Aucun collier disponible pour le moment.<br>Revenez bientôt !</p>
     </div></div>`;
     return;
   }
@@ -1965,9 +1947,6 @@ let chAnimating = false;
 let chTouchBound = false;
 
 function openChainesFeed() {
-  chGender = 'tous';
-  document.querySelectorAll('#chGenderTabs .cf-g-tab').forEach(t => t.classList.remove('active'));
-  document.querySelector('#chGenderTabs .cf-g-tab[data-g="tous"]').classList.add('active');
   document.getElementById('chainesFeed').classList.add('open');
   document.body.style.overflow = 'hidden';
   buildChainList();
@@ -1981,17 +1960,8 @@ function closeChainesFeed() {
   document.body.style.overflow = '';
 }
 
-function setChGender(btn) {
-  document.querySelectorAll('#chGenderTabs .cf-g-tab').forEach(t => t.classList.remove('active'));
-  btn.classList.add('active');
-  chGender = btn.dataset.g;
-  buildChainList();
-  initChainStage();
-}
-
 function buildChainList() {
-  let list = allProducts.filter(p => p.categorie === 'Chaînes');
-  if (chGender !== 'tous') list = list.filter(p => p.genre === chGender);
+  let list = allProducts.filter(p => p.categorie === 'Chaînes' && p.genre === 'Homme');
   chList = list;
 }
 
@@ -3251,8 +3221,6 @@ function delGoToProduct(id){
   closeDelPanel();
   const cat = p.categorie;
   if (cat === 'Colliers'){
-    cfGender = 'tous';
-    document.querySelectorAll('#cfGenderTabs .cf-g-tab').forEach(t=>t.classList.toggle('active', t.dataset.g==='tous'));
     openColliersFeed();
     requestAnimationFrame(()=>{
       const idx = cfList.findIndex(x=>x.id===id);
@@ -3262,8 +3230,6 @@ function delGoToProduct(id){
     return;
   }
   if (cat === 'Chaînes'){
-    chGender = 'tous';
-    document.querySelectorAll('#chGenderTabs .cf-g-tab').forEach(t=>t.classList.toggle('active', t.dataset.g==='tous'));
     document.getElementById('chainesFeed').classList.add('open');
     document.body.style.overflow = 'hidden';
     buildChainList();
