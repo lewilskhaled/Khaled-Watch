@@ -1254,5 +1254,41 @@
       }
     ],
     "createdAt": "2026-07-17T16:48:43.555Z"
+  },
+  {
+    "id": "1784307991541",
+    "nom": "Collier hello kitty",
+    "prix": 4000,
+    "categorie": "Colliers",
+    "genre": "Femme",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784307993847-e5j8rf-Collier-hello-kitty-principal.png",
+    "description": "Si t'aime ce qui brille vient chercher",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "argent",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [
+      {
+        "nom": "Argent",
+        "hex": "#999794",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784307993854-fc9ez9-Collier-hello-kitty-Argent.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Argent",
+        "hex": "#999794",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784307993906-c49muc-Collier-hello-kitty-Argent.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      }
+    ],
+    "createdAt": "2026-07-17T17:06:31.541Z"
   }
 ]
