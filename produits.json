@@ -1218,5 +1218,41 @@
       }
     ],
     "createdAt": "2026-07-17T16:28:43.365Z"
+  },
+  {
+    "id": "1784306923555",
+    "nom": "Collier nœud papillon",
+    "prix": 5000,
+    "categorie": "Colliers",
+    "genre": "Femme",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784306927535-jkumvn-Collier-n-ud-papillon-principal.png",
+    "description": "Sur une belle robe imagine",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "argent",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [
+      {
+        "nom": "Argent",
+        "hex": "#999794",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784306927551-bgdloy-Collier-n-ud-papillon-Argent.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Argent",
+        "hex": "#999794",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784306927626-9bxujr-Collier-n-ud-papillon-Argent.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      }
+    ],
+    "createdAt": "2026-07-17T16:48:43.555Z"
   }
 ]
