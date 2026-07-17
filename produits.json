@@ -1182,5 +1182,41 @@
       }
     ],
     "createdAt": "2026-07-17T16:11:39.133Z"
+  },
+  {
+    "id": "1784305723365",
+    "nom": "Collier fleur",
+    "prix": 6000,
+    "categorie": "Colliers",
+    "genre": "Femme",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784305726244-kr7zmb-Collier-fleur-principal.png",
+    "description": "Collier unique pour les uniques",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "or",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [
+      {
+        "nom": "Argent",
+        "hex": "#999794",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784305726259-tncick-Collier-fleur-Argent.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Argent",
+        "hex": "#999794",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784305726279-hbmyxu-Collier-fleur-Argent.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      }
+    ],
+    "createdAt": "2026-07-17T16:28:43.365Z"
   }
 ]
