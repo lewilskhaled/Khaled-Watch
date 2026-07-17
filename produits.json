@@ -1110,5 +1110,41 @@
       }
     ],
     "createdAt": "2026-07-17T15:52:36.354Z"
+  },
+  {
+    "id": "1784304224440",
+    "nom": "Double collier en perle",
+    "prix": 8000,
+    "categorie": "Colliers",
+    "genre": "Femme",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784304226731-814fae-Double-collier-en-perle-principal.png",
+    "description": "Soit la reine que tu pense être",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "argent",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [
+      {
+        "nom": "Argent",
+        "hex": "#999794",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784304226761-cizvy1-Double-collier-en-perle-Argent.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Argent",
+        "hex": "#999794",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784304226796-gxi3bb-Double-collier-en-perle-Argent.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      }
+    ],
+    "createdAt": "2026-07-17T16:03:44.440Z"
   }
 ]
