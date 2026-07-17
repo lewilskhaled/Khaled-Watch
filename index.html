@@ -471,14 +471,13 @@ img.prod-img.loaded{opacity:1;}
 }
 .cf-price small{font-family:'Montserrat',sans-serif;font-size:.68rem;}
 .cf-colors{display:flex;gap:.45rem;flex-wrap:wrap;}
-.cf-color-name{font-size:.6rem;color:#E8DFC8;letter-spacing:.1em;margin-top:.35rem;font-weight:700;text-transform:uppercase;text-shadow:var(--ts);}
-.cf-color-name{font-size:.6rem;color:#E8DFC8;letter-spacing:.1em;margin-top:.35rem;font-weight:700;text-transform:uppercase;text-shadow:var(--ts);}
 .cf-color-dot{
   width:27px;height:27px;border-radius:50%;border:2px solid rgba(255,255,255,.28);
   cursor:pointer;transition:transform .2s,border-color .2s;flex-shrink:0;
   -webkit-tap-highlight-color:transparent;
 }
 .cf-color-dot.active{border-color:var(--or-l);transform:scale(1.18);box-shadow:0 0 10px rgba(201,168,76,.65);}
+.cf-color-name{font-size:.6rem;color:#E8DFC8;letter-spacing:.1em;margin-top:.35rem;font-weight:700;text-transform:uppercase;text-shadow:var(--ts);}
 .cf-cta{
   display:flex;align-items:center;justify-content:center;gap:.4rem;width:100%;
   padding:.6rem;background:linear-gradient(135deg,#0f7a5e,#25D366);
@@ -1878,16 +1877,17 @@ function renderColliersFeed() {
     const colors  = p.couleurs && p.couleurs.length ? p.couleurs : [];
     const mainImg = colors.length && colors[0].image ? colors[0].image : (p.image || FALLBACK_IMG);
 
-    .cf-color-dot{`
+    const colorDots = colors.length > 1 ? `
       <div class="cf-colors">
         ${colors.map((c,ci) => `<div class="cf-color-dot${ci===0?' active':''}" style="background:${h(c.hex)}" title="${h(c.nom)}" onclick="switchCfColor(this,${i},${ci})"></div>`).join('')}
-      </div>` : '';
+      </div>
+      <div class="cf-color-name" id="cfColorName-${i}">${h(colors[0].nom||'')}</div>` : '';
 
     return `
     <div class="cf-slide" data-idx="${i}">
       <div class="cf-glow"></div>
       <div class="cf-img-wrap">
-        <img id="cfimg-${i}" src="${h(thumbUrl(mainImg, 1300))}" alt="${h(p.nom)}" loading="${i<2?'eager':'lazy'}" decoding="async" onerror="this.src='${FALLBACK_IMG}'">
+        <img id="cfimg-${i}" src="${h(thumbUrl(mainImg, 1300, 90))}" alt="${h(p.nom)}" loading="${i<2?'eager':'lazy'}" decoding="async" onerror="this.src='${FALLBACK_IMG}'">
       </div>
       <div class="cf-info">
        <div class="cf-badge">✦ Collier</div>
@@ -1924,6 +1924,8 @@ function switchCfColor(dot, slideIdx, colorIdx) {
     preload.onerror = () => { img.src = newSrc; };
     preload.src = newSrc;
   }
+  const nameEl = document.getElementById('cfColorName-' + slideIdx);
+  if (nameEl) nameEl.textContent = c.nom || '';
   dot.closest('.cf-colors').querySelectorAll('.cf-color-dot').forEach((d,i) => d.classList.toggle('active', i===colorIdx));
 }
 
@@ -1997,7 +1999,7 @@ function chainSlideHTML(p, idx) {
   const colors  = p.couleurs && p.couleurs.length ? p.couleurs : [];
   const mainImg = colors.length && colors[0].image ? colors[0].image : (p.image || FALLBACK_IMG);
 
-  width:23px;height:23px;`
+  const colorDots = colors.length > 1 ? `
     <div class="cf-colors">
       ${colors.map((c,ci) => `<div class="cf-color-dot${ci===0?' active':''}" style="background:${h(c.hex)}" title="${h(c.nom)}" onclick="switchChColor(this,${idx},${ci})"></div>`).join('')}
     </div>` : '';
@@ -2005,7 +2007,7 @@ function chainSlideHTML(p, idx) {
   return `
     <div class="cf-glow"></div>
     <div class="cf-img-wrap">
-      <img id="chimg-${idx}" src="${h(thumbUrl(mainImg, 1300))}" alt="${h(p.nom)}" decoding="async" onerror="this.src='${FALLBACK_IMG}'">
+      <img id="chimg-${idx}" src="${h(thumbUrl(mainImg, 1300, 90))}" alt="${h(p.nom)}" decoding="async" onerror="this.src='${FALLBACK_IMG}'">
     </div>
     <div class="cf-info">
       <div class="cf-badge">✦ Chaîne</div>
@@ -2048,7 +2050,7 @@ function switchChColor(dot, idx, colorIdx) {
   const img = document.getElementById('chimg-' + idx);
   if (img && c.image) {
     img.style.opacity = '0';
-    setTimeout(() => { img.src = thumbUrl(c.image, 1300); img.style.opacity = '1'; }, 150);
+    setTimeout(() => { img.src = thumbUrl(c.image, 1300, 90); img.style.opacity = '1'; }, 150);
     img.style.transition = 'opacity .2s';
   }
   dot.closest('.cf-colors').querySelectorAll('.cf-color-dot').forEach((d,i) => d.classList.toggle('active', i===colorIdx));
@@ -2178,15 +2180,15 @@ function braceletSlideHTML(p, idx) {
   const colors  = p.couleurs && p.couleurs.length ? p.couleurs : [];
   const mainImg = colors.length && colors[0].image ? colors[0].image : (p.image || FALLBACK_IMG);
 
- const colorDots = colors.length > 1 ? `
-      <div class="cf-colors">
-        ${colors.map((c,ci) => `<div class="cf-color-dot${ci===0?' active':''}" style="background:${h(c.hex)}" title="${h(c.nom)}" onclick="switchCfColor(this,${i},${ci})"></div>`).join('')}
-      </div>
-      <div class="cf-color-name" id="cfColorName-${i}">${h(colors[0].nom||'')}</div>` : '';
+  const colorDots = colors.length > 1 ? `
+    <div class="cf-colors">
+      ${colors.map((c,ci) => `<div class="cf-color-dot${ci===0?' active':''}" style="background:${h(c.hex)}" title="${h(c.nom)}" onclick="switchBrColor(this,${idx},${ci})"></div>`).join('')}
+    </div>` : '';
+
   return `
     <div class="cf-glow"></div>
     <div class="cf-img-wrap">
-      <img id="brimg-${idx}" src="${h(thumbUrl(mainImg, 1300))}" alt="${h(p.nom)}" decoding="async" onerror="this.src='${FALLBACK_IMG}'">
+      <img id="brimg-${idx}" src="${h(thumbUrl(mainImg, 1300, 90))}" alt="${h(p.nom)}" decoding="async" onerror="this.src='${FALLBACK_IMG}'">
     </div>
     <div class="cf-info">
      <div class="cf-badge">✦ Bracelet</div>
@@ -2208,7 +2210,7 @@ function initBraceletStage(startIdx) {
   updateBrCounter();
   stage.innerHTML = '';
 
-  ;im (!brList.length) {
+  if (!brList.length) {
     stage.innerHTML = `<div class="cf-empty">
       <h3>✦ Collection à venir</h3>
       <p>Aucun bracelet disponible ${brGender!=='tous' ? 'pour '+brGender+' ' : ''}pour le moment.<br>Revenez bientôt !</p>
@@ -2240,11 +2242,9 @@ function switchBrColor(dot, idx, colorIdx) {
   const img = document.getElementById('brimg-' + idx);
   if (img && c.image) {
     img.style.opacity = '0';
-    setTimeout(() => { img.src = thumbUrl(c.image, 1300); img.style.opacity = '1'; }, 150);
+    setTimeout(() => { img.src = thumbUrl(c.image, 1300, 90); img.style.opacity = '1'; }, 150);
     img.style.transition = 'opacity .2s';
   }
-  const nameEl = document.getElementById('cfColorName-' + slideIdx);
-  if (nameEl) nameEl.textContent = c.nom || '';
   dot.closest('.cf-colors').querySelectorAll('.cf-color-dot').forEach((d,i) => d.classList.toggle('active', i===colorIdx));
 }
 
@@ -2511,7 +2511,7 @@ function swatchCard(sw, prodId, ci) {
   const img = document.getElementById('cimg-' + prodId);
   if (img && c.image) {
     img.style.opacity = '0';
-    setTimeout(() => { img.src = thumbUrl(c.image, 460); img.style.opacity = '1'; }, 150);
+    setTimeout(() => { img.src = thumbUrl(c.image, 640); img.style.opacity = '1'; }, 150);
     img.style.transition = 'opacity .15s';
   }
 }
@@ -2583,7 +2583,7 @@ function buildAllSlides() {
     <div class="modal-slide" data-slide="${i}">
       <div class="modal-img-wrap${p.categorie === 'Colliers' ? ' neutral-bg' : ''}" id="wrap360-${i}"
            ${has360 ? `ontouchstart="start360(event,${i})" ontouchmove="move360(event,${i})" ontouchend="end360(event,${i})" onmousedown="mdown360(event,${i})"` : ''}>
-        <img id="mimg-${i}" src="${h(thumbUrl(mainImg, 1400))}" alt="${h(p.nom)}" onerror="this.src='${FALLBACK_IMG}'" draggable="false">
+        <img id="mimg-${i}" src="${h(thumbUrl(mainImg, 1400, 90))}" alt="${h(p.nom)}" onerror="this.src='${FALLBACK_IMG}'" draggable="false">
         ${has360 ? `<div class="badge360">🔄 360°<br><span>Glisser</span></div>` : ''}
         ${arrows360}
         ${dots360}
@@ -2623,7 +2623,7 @@ function showAngle(slideIdx, frameIdx) {
   if (!s) return;
   s.cur = ((frameIdx % s.frames.length) + s.frames.length) % s.frames.length;
   const img = document.getElementById('mimg-' + slideIdx);
-  if (img) { img.style.opacity = '.7'; img.src = thumbUrl(s.frames[s.cur], 1000); img.onload = () => { img.style.opacity = '1'; }; }
+  if (img) { img.style.opacity = '.7'; img.src = thumbUrl(s.frames[s.cur], 1400, 90); img.onload = () => { img.style.opacity = '1'; }; }
   const dotsEl = document.getElementById('dots360-' + slideIdx);
   if (dotsEl) dotsEl.querySelectorAll('.dot360').forEach((d,i) => d.classList.toggle('active', i===s.cur));
 }
@@ -2658,7 +2658,7 @@ function updateModalNav() {
 function switchModalColor(slideIdx, colorIdx, thumb) {
   const p = currentList[slideIdx]; const c = p.couleurs[colorIdx];
   const img = document.getElementById('mimg-' + slideIdx);
-  if (img && (c.image || p.image)) img.src = thumbUrl(c.image || p.image, 1000);
+  if (img && (c.image || p.image)) img.src = thumbUrl(c.image || p.image, 1400, 90);
   thumb.closest('.modal-color-strip').querySelectorAll('.modal-color-thumb').forEach((t,i) => t.classList.toggle('active', i===colorIdx));
 }
 
@@ -2722,12 +2722,7 @@ function fmt(n){ return Number(n||0).toLocaleString('fr-FR'); }
 
 /* ============================================================
    REDIMENSIONNEMENT D'IMAGES À LA VOLÉE — chargement ultra rapide
-   Les photos hébergées (GitHub) sont souvent bien plus grandes que
-   nécessaire pour une simple vignette. On les fait transiter par un
-   CDN de redimensionnement (images.weserv.nl) qui renvoie une
-   version compressée en WebP à la taille exacte demandée, mise en
-   cache. Les photos Unsplash utilisent leur propre paramètre "w=".
-   En cas d'échec du CDN, onerror bascule vers l'image d'origine.
+   ET meilleure qualité (netteté + compression réduite)
    ============================================================ */
 function thumbUrl(url, width, quality) {
   if (!url || url.startsWith('data:')) return url;
@@ -2976,12 +2971,6 @@ function clearSearch() {
 }
 
 /* ============================================================
-   DÉMARRAGE
-   ============================================================ */
-initDesign();
-loadProducts();
-initGyroscope();  /* ← Gyroscope activé */
-/* ============================================================
    MODE CLAIR
    ============================================================ */
 function spawnLightParticles(){
@@ -3013,24 +3002,6 @@ function updateLightToggleIcon() {
   btn.textContent = isLight ? '🌙' : '☀️';
   btn.title = isLight ? 'Mode doré' : 'Mode clair';
 }
-function spawnLightParticles(){
-  const wrap = document.getElementById('lightParticles');
-  if (!wrap || wrap.dataset.done) return;
-  wrap.dataset.done = '1';
-  const n = 16; // léger, peu coûteux
-  for (let i = 0; i < n; i++){
-    const p = document.createElement('div');
-    p.className = 'lp';
-    const size = 3 + Math.random() * 6;
-    p.style.width = p.style.height = size + 'px';
-    p.style.left = (Math.random() * 100) + '%';
-    p.style.setProperty('--lp-drift', (Math.random() * 60 - 30) + 'px');
-    p.style.animationDuration = (14 + Math.random() * 12) + 's';
-    p.style.animationDelay = (Math.random() * -20) + 's';
-    wrap.appendChild(p);
-  }
-}
-
 function initLightMode() {
   if (localStorage.getItem('kw-light-mode') === '1') {
     document.body.classList.add('light-mode');
@@ -3261,7 +3232,7 @@ async function delSuggest(cat, mood, budget){
     const img = colors.length && colors[0].image ? colors[0].image : (p.image || FALLBACK_IMG);
     const card = document.createElement('div');
     card.className = 'del-prod-card';
-    card.innerHTML = `<img src="${h(thumbUrl(img, 120))}" alt="${h(p.nom)}" onerror="this.src='${FALLBACK_IMG}'"><div class="del-prod-info"><div class="del-prod-name">${h(p.nom)}</div><div class="del-prod-price">${fmt(p.prix)} FCFA</div></div><button class="del-prod-add" onclick="event.stopPropagation();delAddToCart('${js(p.id)}', this)">➕</button>`;
+    card.innerHTML = `<img src="${h(thumbUrl(img, 160))}" alt="${h(p.nom)}" onerror="this.src='${FALLBACK_IMG}'"><div class="del-prod-info"><div class="del-prod-name">${h(p.nom)}</div><div class="del-prod-price">${fmt(p.prix)} FCFA</div></div><button class="del-prod-add" onclick="event.stopPropagation();delAddToCart('${js(p.id)}', this)">➕</button>`;
     card.onclick = () => delGoToProduct(p.id);
     body.appendChild(card);
   });
@@ -3347,7 +3318,7 @@ async function delShowCartReview(){
     const img = colors.length && colors[0].image ? colors[0].image : (p.image || FALLBACK_IMG);
     const card = document.createElement('div');
     card.className = 'del-prod-card';
-    card.innerHTML = `<img src="${h(thumbUrl(img, 120))}" alt="${h(p.nom)}" onerror="this.src='${FALLBACK_IMG}'"><div class="del-prod-info"><div class="del-prod-name">${h(p.nom)}</div><div class="del-prod-price">${fmt(p.prix)} FCFA</div></div><button class="del-prod-add" onclick="event.stopPropagation();delRemoveFromCart('${js(p.id)}')">🗑</button>`;
+    card.innerHTML = `<img src="${h(thumbUrl(img, 160))}" alt="${h(p.nom)}" onerror="this.src='${FALLBACK_IMG}'"><div class="del-prod-info"><div class="del-prod-name">${h(p.nom)}</div><div class="del-prod-price">${fmt(p.prix)} FCFA</div></div><button class="del-prod-add" onclick="event.stopPropagation();delRemoveFromCart('${js(p.id)}')">🗑</button>`;
     card.onclick = (e) => { if (e.target.classList.contains('del-prod-add')) return; delGoToProduct(p.id); };
     body.appendChild(card);
   });
