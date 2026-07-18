@@ -1362,5 +1362,41 @@
       }
     ],
     "createdAt": "2026-07-17T17:43:37.906Z"
+  },
+  {
+    "id": "1784384338606",
+    "nom": "Chaine",
+    "prix": 6000,
+    "categorie": "Colliers",
+    "genre": "Femme",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784384359064-kvahuz-Chaine-principal.png",
+    "description": "Crée une ligne nette autour du cou",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "or",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [
+      {
+        "nom": "Or",
+        "hex": "#a9690a",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784384359098-hqozpu-Chaine-Or.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "or",
+        "hex": "#a9690a",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784384359181-jo8eh7-Chaine-or.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      }
+    ],
+    "createdAt": "2026-07-18T14:18:58.606Z"
   }
 ]
