@@ -1010,6 +1010,32 @@ body.light-mode #lightParticles{display:block;}
   88%{opacity:.6;}
   100%{transform:translateY(-108vh) translateX(calc(var(--lp-drift,20px) * -1)) scale(.6);opacity:0;}
 }
+
+/* ============================================================
+   BULLES DORÉES — fond commun pour Chaîne Homme, Bracelets,
+   Collier Femme et Bagues. Toujours visibles (pas liées au mode clair).
+   ============================================================ */
+.feed-bubbles{
+  position:absolute;inset:0;z-index:1;overflow:hidden;pointer-events:none;
+}
+.fb{
+  position:absolute;bottom:-50px;border-radius:50%;
+  background:radial-gradient(circle,#fffceb 0%,#F5E27A 40%,#C9A84C 65%,rgba(201,168,76,0) 78%);
+  box-shadow:0 0 8px rgba(245,226,122,.6);
+  opacity:0;
+  animation:fbFloat linear infinite;
+}
+@keyframes fbFloat{
+  0%{transform:translateY(0) translateX(0) scale(.7);opacity:0;}
+  12%{opacity:.85;}
+  50%{transform:translateY(-52vh) translateX(var(--fb-drift,20px)) scale(1.1);opacity:.75;}
+  88%{opacity:.5;}
+  100%{transform:translateY(-108vh) translateX(calc(var(--fb-drift,20px) * -1)) scale(.6);opacity:0;}
+}
+#baguesBubbles{
+  display:none;position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none;
+}
+#baguesBubbles.show{display:block;}
 body.light-mode #lightSpace{display:block;}
 body.light-mode #bgLayer,
 body.light-mode #bgOverlay,
@@ -1366,6 +1392,7 @@ body.light-mode .del-input-row input{background:rgba(255,255,255,.85);color:#1c1
 
 <!-- PAGE CATÉGORIE -->
 <div id="page-cat">
+  <div class="feed-bubbles" id="baguesBubbles"></div>
   <div class="page-cat-header">
     <div class="btn-back" onclick="goHome()">←</div>
     <span class="cat-page-icon" id="catPageIcon"></span>
@@ -1415,6 +1442,7 @@ body.light-mode .del-input-row input{background:rgba(255,255,255,.85);color:#1c1
     <div class="cf-title">✦ Collier pour Femme</div>
     <div class="cf-counter" id="cfCounter">1 / 1</div>
   </div>
+  <div class="feed-bubbles" id="cfBubbles"></div>
   <div class="cf-scroll" id="cfScroll" onscroll="onCfScroll()"></div>
 </div>
 
@@ -1425,6 +1453,7 @@ body.light-mode .del-input-row input{background:rgba(255,255,255,.85);color:#1c1
     <div class="cf-title">✦ Chaîne pour Homme</div>
     <div class="cf-counter" id="chCounter">1 / 1</div>
   </div>
+  <div class="feed-bubbles" id="chBubbles"></div>
   <div class="ch-stage" id="chStage"></div>
   <div class="ch-pivot-dot"></div>
 </div>
@@ -1441,6 +1470,7 @@ body.light-mode .del-input-row input{background:rgba(255,255,255,.85);color:#1c1
     <button class="cf-g-tab" data-g="Homme" onclick="setBrGender(this)">Homme</button>
     <button class="cf-g-tab" data-g="Femme" onclick="setBrGender(this)">Femme</button>
   </div>
+  <div class="feed-bubbles" id="brBubbles"></div>
   <div class="br-stage" id="brStage"></div>
   <div class="cf-swipe-hint">↑ Glissez vers le haut</div>
 </div>
@@ -1793,6 +1823,8 @@ function goHome() {
   closeColliersFeed();
   closeChainesFeed();
   closeBraceletsFeed();
+  const baguesBg = document.getElementById('baguesBubbles');
+  if (baguesBg) baguesBg.classList.remove('show');
   clearTimeout(searchTimer);
   lastPageBeforeSearch = null;
   var si = document.getElementById('searchInput');
@@ -1816,6 +1848,11 @@ function openCat(cat) {
   document.getElementById('catPageIcon').textContent  = CAT_ICONS[cat] || '✦';
   hideAll();
   document.getElementById('page-cat').style.display = 'block';
+  const baguesBg = document.getElementById('baguesBubbles');
+  if (baguesBg) {
+    if (cat === 'Bagues') { baguesBg.classList.add('show'); spawnBubbles('baguesBubbles', 18); }
+    else baguesBg.classList.remove('show');
+  }
   window.scrollTo(0, 0);
   renderProducts();
 }
@@ -1830,6 +1867,7 @@ let cfList   = [];
 function openColliersFeed() {
   document.getElementById('colliersFeed').classList.add('open');
   document.body.style.overflow = 'hidden';
+  spawnBubbles('cfBubbles', 18);
   renderColliersFeed();
 }
 
@@ -1949,6 +1987,7 @@ let chTouchBound = false;
 function openChainesFeed() {
   document.getElementById('chainesFeed').classList.add('open');
   document.body.style.overflow = 'hidden';
+  spawnBubbles('chBubbles', 18);
   buildChainList();
   initChainStage();
   if (!chTouchBound) { bindChainTouch(); chTouchBound = true; }
@@ -2121,6 +2160,7 @@ function openBraceletsFeed() {
   document.querySelector('#brGenderTabs .cf-g-tab[data-g="tous"]').classList.add('active');
   document.getElementById('braceletsFeed').classList.add('open');
   document.body.style.overflow = 'hidden';
+  spawnBubbles('brBubbles', 18);
   buildBraceletList();
   initBraceletStage();
   if (!brTouchBound) { bindBraceletTouch(); brTouchBound = true; }
@@ -2960,6 +3000,27 @@ function spawnLightParticles(){
     wrap.appendChild(p);
   }
 }
+
+/* ============================================================
+   BULLES DORÉES — Chaîne Homme, Bracelets, Collier Femme, Bagues
+   ============================================================ */
+function spawnBubbles(containerId, count){
+  const wrap = document.getElementById(containerId);
+  if (!wrap || wrap.dataset.done) return;
+  wrap.dataset.done = '1';
+  const n = count || 18;
+  for (let i = 0; i < n; i++){
+    const b = document.createElement('div');
+    b.className = 'fb';
+    const size = 5 + Math.random() * 9;
+    b.style.width = b.style.height = size + 'px';
+    b.style.left = (Math.random() * 100) + '%';
+    b.style.setProperty('--fb-drift', (Math.random() * 60 - 30) + 'px');
+    b.style.animationDuration = (12 + Math.random() * 10) + 's';
+    b.style.animationDelay = (Math.random() * -18) + 's';
+    wrap.appendChild(b);
+  }
+}
 function toggleLightMode() {
   document.body.classList.toggle('light-mode');
   localStorage.setItem('kw-light-mode', document.body.classList.contains('light-mode') ? '1' : '0');
@@ -3232,6 +3293,7 @@ function delGoToProduct(id){
   if (cat === 'Chaînes'){
     document.getElementById('chainesFeed').classList.add('open');
     document.body.style.overflow = 'hidden';
+    spawnBubbles('chBubbles', 18);
     buildChainList();
     const idx = chList.findIndex(x=>x.id===id);
     initChainStage(idx>=0?idx:0);
@@ -3243,6 +3305,7 @@ function delGoToProduct(id){
     document.querySelectorAll('#brGenderTabs .cf-g-tab').forEach(t=>t.classList.toggle('active', t.dataset.g==='tous'));
     document.getElementById('braceletsFeed').classList.add('open');
     document.body.style.overflow = 'hidden';
+    spawnBubbles('brBubbles', 18);
     buildBraceletList();
     const idx = brList.findIndex(x=>x.id===id);
     initBraceletStage(idx>=0?idx:0);
