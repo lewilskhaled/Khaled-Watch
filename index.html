@@ -1315,6 +1315,63 @@ body.light-mode .avis-card-name{color:#1c1810;}
 body.light-mode .avis-card-text{color:#4a4230;}
 body.light-mode .avis-toast{background:rgba(255,255,255,.95);border-color:rgba(201,168,76,.5);}
 body.light-mode .avis-toast-txt{color:#3a331f;}
+
+/* ============================================================
+   COUPS DE CŒUR — appui long sur un produit pour réagir
+   ============================================================ */
+.coeur-badge{
+  position:absolute;top:8px;right:8px;z-index:6;
+  background:rgba(0,0,0,.62);border:1px solid rgba(201,168,76,.45);
+  color:var(--or-l);font-size:.6rem;font-weight:700;letter-spacing:.02em;
+  border-radius:50px;padding:.2rem .55rem;
+  pointer-events:none;transition:transform .25s,border-color .25s,background .25s;
+  text-shadow:0 1px 4px rgba(0,0,0,.9);
+  display:flex;align-items:center;gap:.2rem;
+}
+.coeur-badge.has{border-color:rgba(255,90,120,.65);background:rgba(30,8,12,.68);}
+.coeur-badge.bump{transform:scale(1.35);}
+body.light-mode .coeur-badge{background:rgba(255,255,255,.85);color:#8B6914;border-color:rgba(201,168,76,.5);}
+body.light-mode .coeur-badge.has{background:rgba(255,240,242,.92);border-color:rgba(255,90,120,.55);}
+
+.coeur-popup{
+  position:fixed;z-index:9900;left:0;top:0;
+  transform:translate(-50%,-100%) scale(.4);
+  opacity:0;pointer-events:none;
+  transition:transform .2s cubic-bezier(.34,1.56,.64,1), opacity .18s;
+  display:flex;align-items:center;gap:.15rem;
+  background:rgba(15,12,6,.95);border:1px solid rgba(201,168,76,.55);
+  border-radius:50px;padding:.45rem .5rem;
+  box-shadow:0 10px 34px rgba(0,0,0,.55);
+  -webkit-tap-highlight-color:transparent;
+}
+.coeur-popup.show{opacity:1;transform:translate(-50%,-108%) scale(1);pointer-events:auto;}
+.coeur-popup::after{
+  content:'';position:absolute;left:50%;bottom:-7px;transform:translateX(-50%);
+  width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;
+  border-top:8px solid rgba(201,168,76,.55);
+}
+.coeur-emoji{
+  font-size:1.65rem;line-height:1;padding:.32rem .5rem;border-radius:50%;
+  transition:transform .15s ease, background .15s ease;
+  user-select:none;-webkit-user-select:none;
+}
+.coeur-emoji.sel{transform:scale(1.55);background:rgba(201,168,76,.3);}
+.coeur-emoji.burst{animation:coeurBurstAnim .5s ease-out;}
+@keyframes coeurBurstAnim{0%{transform:scale(1.55);}50%{transform:scale(2.15);}100%{transform:scale(1);}}
+body.light-mode .coeur-popup{background:rgba(255,255,255,.97);border-color:rgba(201,168,76,.55);}
+body.light-mode .coeur-popup::after{border-top-color:rgba(201,168,76,.55);}
+body.light-mode .coeur-emoji.sel{background:rgba(201,168,76,.25);}
+
+.coeur-toast{
+  position:fixed;left:50%;bottom:calc(var(--safe-bottom) + 140px);z-index:9910;
+  transform:translate(-50%,10px);opacity:0;pointer-events:none;
+  background:rgba(15,12,6,.92);border:1px solid rgba(201,168,76,.5);
+  color:var(--or-l);font-size:.66rem;font-weight:700;letter-spacing:.05em;
+  border-radius:50px;padding:.5rem 1rem;white-space:nowrap;
+  transition:opacity .3s,transform .3s;
+}
+.coeur-toast.show{opacity:1;transform:translate(-50%,0);}
+body.light-mode .coeur-toast{background:rgba(255,255,255,.95);color:#8B6914;border-color:rgba(201,168,76,.55);}
 </style>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#1B1815">
@@ -1597,6 +1654,14 @@ body.light-mode .avis-toast-txt{color:#3a331f;}
   <div class="avis-toast-txt">Votre avis compte pour nous <span>⭐</span><br>Aidez-nous à améliorer le site</div>
   <button class="avis-toast-btn" onclick="goToAvisFromToast()">Laisser un avis</button>
 </div>
+
+<!-- POPUP COUP DE CŒUR — appui long sur un produit -->
+<div class="coeur-popup" id="coeurPopup">
+  <div class="coeur-emoji" data-emoji="❤️">❤️</div>
+  <div class="coeur-emoji" data-emoji="👍">👍</div>
+  <div class="coeur-emoji" data-emoji="👎">👎</div>
+</div>
+<div class="coeur-toast" id="coeurToast"></div>
 
 <div class="del-panel" id="delPanel">
   <div class="del-sheet">
@@ -2519,7 +2584,7 @@ function renderProducts() {
     const neutralBg = p.categorie === 'Colliers' ? ' neutral-bg' : '';
 
     return `
-    <div class="prod-card" data-idx="${i}" style="animation-delay:${i*.06}s" onclick="openModal(${i})">
+    <div class="prod-card" data-idx="${i}" data-pid="${h(p.id)}" style="animation-delay:${i*.06}s" onclick="openModal(${i})">
       <div class="prod-img-zone${neutralBg}">
         ${colors.length > 1 ? `
         <div class="cvar-viewport prod-img" data-pid="${h(p.id)}">
@@ -2531,7 +2596,8 @@ function renderProducts() {
              onload="this.classList.add('loaded');this.closest('.prod-img-zone').classList.add('img-ready')" onerror="this.src='${FALLBACK_IMG}'">
         `}
         <div class="sunburst-overlay${neutralBg}" id="sburst-${h(p.id)}"></div>
-        <div class="card-hint-3d">👆 Toucher pour agrandir</div>
+        ${coeurBadgeHtml(p.id)}
+        <div class="card-hint-3d">👆 Toucher · appui long : réagir</div>
       </div>
       <div class="prod-body">
         <div class="prod-badge">${h(p.categorie)}</div>
@@ -3031,11 +3097,12 @@ function renderSearchResults(list, q) {
 
     var neutralBg = p.categorie === 'Colliers' ? ' neutral-bg' : '';
 
-    return '<div class="prod-card" data-idx="' + i + '" style="animation-delay:' + (i*.06) + 's" onclick="openModal(' + i + ')">'
+    return '<div class="prod-card" data-idx="' + i + '" data-pid="' + h(p.id) + '" style="animation-delay:' + (i*.06) + 's" onclick="openModal(' + i + ')">'
       + '<div class="prod-img-zone' + neutralBg + '">'
       + imgZoneHTML
       + '<div class="sunburst-overlay' + neutralBg + '"></div>'
-      + '<div class="card-hint-3d">👆 Toucher pour agrandir</div>'
+      + coeurBadgeHtml(p.id)
+      + '<div class="card-hint-3d">👆 Toucher · appui long : réagir</div>'
       + '</div>'
       + '<div class="prod-body">'
       + '<div class="prod-badge">' + h(p.categorie) + '</div>'
@@ -3211,6 +3278,204 @@ function goToAvisFromToast(){
 }
 
 /* ============================================================
+   COUPS DE CŒUR — appui long sur une carte produit pour réagir
+   Le client maintient son doigt sur un produit, un petit popup
+   apparaît avec 3 émojis (❤️ 👍 👎). Il glisse son doigt pour
+   choisir puis relâche pour valider. Le compteur s'affiche
+   sur la carte du produit.
+   ============================================================ */
+const COEUR_KEY      = 'kw-reactions';
+const COEUR_MINE_KEY = 'kw-reactions-mine';
+const COEUR_LONGPRESS_MS = 460;
+const COEUR_MOVE_TOLERANCE = 12;
+
+let coeurLongPressTimer = null;
+let coeurLongPressFired = false;
+let coeurActiveCard     = null;
+let coeurStartX = 0, coeurStartY = 0;
+
+function getCoeurData(){
+  try { return JSON.parse(localStorage.getItem(COEUR_KEY) || '{}'); } catch(e){ return {}; }
+}
+function saveCoeurData(d){
+  try { localStorage.setItem(COEUR_KEY, JSON.stringify(d)); } catch(e){}
+}
+function getCoeurMine(){
+  try { return JSON.parse(localStorage.getItem(COEUR_MINE_KEY) || '{}'); } catch(e){ return {}; }
+}
+function saveCoeurMine(d){
+  try { localStorage.setItem(COEUR_MINE_KEY, JSON.stringify(d)); } catch(e){}
+}
+function coeurTotalFor(pid){
+  const rec = getCoeurData()[pid];
+  if (!rec) return 0;
+  return Object.values(rec).reduce((s,n) => s + (n||0), 0);
+}
+function coeurBadgeHtml(pid){
+  const total = coeurTotalFor(pid);
+  return `<div class="coeur-badge${total>0?' has':''}" id="coeur-${h(pid)}">❤ <span>${total}</span></div>`;
+}
+function updateCoeurBadge(pid){
+  document.querySelectorAll('#coeur-' + cssEscape(pid)).forEach(badge => {
+    const total = coeurTotalFor(pid);
+    badge.innerHTML = '❤ <span>' + total + '</span>';
+    badge.classList.toggle('has', total > 0);
+    badge.classList.add('bump');
+    setTimeout(() => badge.classList.remove('bump'), 260);
+  });
+}
+function cssEscape(s){
+  return String(s).replace(/([ #.;?%&,+*~':"!^$\[\]()=>|\/@])/g,'\\$1');
+}
+
+function coeurGetPoint(e){
+  if (e.touches && e.touches[0]) return {x:e.touches[0].clientX, y:e.touches[0].clientY};
+  if (e.changedTouches && e.changedTouches[0]) return {x:e.changedTouches[0].clientX, y:e.changedTouches[0].clientY};
+  return {x:e.clientX, y:e.clientY};
+}
+
+function coeurOnStart(e){
+  if (coeurActiveCard) return;
+  const card = e.target.closest('.prod-card');
+  if (!card) return;
+  if (e.target.closest('.btn-wa, .color-swatch, .cvar-dot, .coeur-badge')) return;
+  const pid = card.dataset.pid;
+  if (!pid) return;
+  const point = coeurGetPoint(e);
+  coeurStartX = point.x; coeurStartY = point.y;
+  coeurLongPressFired = false;
+  coeurActiveCard = card;
+
+  clearTimeout(coeurLongPressTimer);
+  coeurLongPressTimer = setTimeout(() => {
+    coeurLongPressFired = true;
+    openCoeurPopup(pid, coeurStartX, coeurStartY);
+    if (navigator.vibrate) { try { navigator.vibrate(12); } catch(err){} }
+  }, COEUR_LONGPRESS_MS);
+}
+
+function coeurOnMove(e){
+  if (!coeurActiveCard) return;
+  const point = coeurGetPoint(e);
+  if (!coeurLongPressFired){
+    if (Math.abs(point.x - coeurStartX) > COEUR_MOVE_TOLERANCE || Math.abs(point.y - coeurStartY) > COEUR_MOVE_TOLERANCE){
+      clearTimeout(coeurLongPressTimer);
+      coeurActiveCard = null;
+    }
+    return;
+  }
+  coeurUpdateHighlight(point.x, point.y);
+}
+
+function coeurOnEnd(e){
+  clearTimeout(coeurLongPressTimer);
+  if (coeurLongPressFired){
+    const point = coeurGetPoint(e);
+    coeurConfirmSelection(point.x, point.y);
+  }
+  coeurActiveCard = null;
+}
+function coeurOnCancel(){
+  clearTimeout(coeurLongPressTimer);
+  coeurActiveCard = null;
+}
+function coeurBlockClick(e){
+  if (coeurLongPressFired){
+    e.preventDefault();
+    e.stopPropagation();
+    coeurLongPressFired = false;
+  }
+}
+
+function openCoeurPopup(pid, x, y){
+  const popup = document.getElementById('coeurPopup');
+  if (!popup) return;
+  popup.dataset.pid = pid;
+  const clampedX = Math.min(Math.max(x, 80), window.innerWidth - 80);
+  const clampedY = Math.max(y, 70);
+  popup.style.left = clampedX + 'px';
+  popup.style.top  = clampedY + 'px';
+  popup.querySelectorAll('.coeur-emoji').forEach(el => el.classList.remove('sel'));
+  popup.classList.add('show');
+  coeurUpdateHighlight(x, y);
+}
+function coeurUpdateHighlight(x, y){
+  const popup = document.getElementById('coeurPopup');
+  if (!popup || !popup.classList.contains('show')) return;
+  let closest = null, closestDist = Infinity;
+  popup.querySelectorAll('.coeur-emoji').forEach(el => {
+    const r = el.getBoundingClientRect();
+    const cx = r.left + r.width/2, cy = r.top + r.height/2;
+    const dist = Math.hypot(x - cx, y - cy);
+    if (dist < closestDist){ closestDist = dist; closest = el; }
+  });
+  popup.querySelectorAll('.coeur-emoji').forEach(el => el.classList.toggle('sel', el === closest));
+}
+function coeurConfirmSelection(x, y){
+  const popup = document.getElementById('coeurPopup');
+  if (!popup || !popup.classList.contains('show')){ hideCoeurPopup(); return; }
+  coeurUpdateHighlight(x, y);
+  const sel = popup.querySelector('.coeur-emoji.sel');
+  const pid = popup.dataset.pid;
+  if (sel && pid){
+    saveReaction(pid, sel.dataset.emoji);
+    coeurBurst(sel);
+    showCoeurToast(sel.dataset.emoji);
+  }
+  setTimeout(hideCoeurPopup, 160);
+}
+function hideCoeurPopup(){
+  const popup = document.getElementById('coeurPopup');
+  if (popup) popup.classList.remove('show');
+}
+function saveReaction(pid, emoji){
+  const data = getCoeurData();
+  const mine = getCoeurMine();
+  if (!data[pid]) data[pid] = {};
+  const prev = mine[pid];
+  if (prev !== emoji){
+    if (prev && data[pid][prev]) data[pid][prev] = Math.max(0, data[pid][prev] - 1);
+    data[pid][emoji] = (data[pid][emoji] || 0) + 1;
+    mine[pid] = emoji;
+    saveCoeurMine(mine);
+    saveCoeurData(data);
+  }
+  updateCoeurBadge(pid);
+}
+function coeurBurst(el){
+  el.classList.add('burst');
+  setTimeout(() => el.classList.remove('burst'), 500);
+}
+function showCoeurToast(emoji){
+  const toast = document.getElementById('coeurToast');
+  if (!toast) return;
+  const msgs = { '❤️':'Merci pour ce coup de cœur ❤️', '👍':'Merci pour votre retour 👍', '👎':"Merci, on va s'améliorer 👎" };
+  toast.textContent = msgs[emoji] || 'Merci pour votre réaction !';
+  toast.classList.add('show');
+  clearTimeout(toast._hideTimer);
+  toast._hideTimer = setTimeout(() => toast.classList.remove('show'), 1800);
+}
+
+function initCoeurLongPress(){
+  if (window._coeurBound) return;
+  window._coeurBound = true;
+
+  document.addEventListener('touchstart', coeurOnStart, {passive:true});
+  document.addEventListener('touchmove',  coeurOnMove,  {passive:true});
+  document.addEventListener('touchend',   coeurOnEnd,   {passive:true});
+  document.addEventListener('touchcancel',coeurOnCancel,{passive:true});
+
+  document.addEventListener('mousedown', coeurOnStart);
+  document.addEventListener('mousemove', coeurOnMove);
+  document.addEventListener('mouseup',   coeurOnEnd);
+
+  document.addEventListener('click', coeurBlockClick, true);
+  document.addEventListener('contextmenu', e => {
+    if (e.target.closest && e.target.closest('.prod-card')) e.preventDefault();
+  });
+}
+
+/* ============================================================
    MODE CLAIR
    ============================================================ */
 function spawnLightParticles(){
@@ -3280,6 +3545,7 @@ loadProducts();
 initGyroscope();
 renderAvisList();
 initAvisToast();
+initCoeurLongPress();
 
 /* ============================================================
    DEL — Assistante Style (guide d'achat intelligent)
