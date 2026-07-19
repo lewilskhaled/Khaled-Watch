@@ -178,7 +178,7 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--txt);m
 
 .cat-count{font-size:.54rem;color:var(--gris);letter-spacing:.08em;font-weight:600;text-shadow:var(--ts);}
 
-#page-cat,#page-offre{display:none;}
+#page-cat,#page-offre,#page-avis{display:none;}
 .page-cat-header{
   display:flex;align-items:center;gap:.85rem;
   padding:.95rem 1rem .4rem;
@@ -1254,6 +1254,67 @@ body.light-mode .del-cartbar-total{color:#8B6914;}
 body.light-mode .del-input-row input{background:rgba(255,255,255,.85);color:#1c1810;border-color:rgba(201,168,76,.4);}
 .del-input-row input::placeholder{color:#948a6f;}
 .del-input-send{background:linear-gradient(135deg,#8B6914,#C9A84C);border:none;border-radius:50%;width:40px;height:40px;color:#1a1510;font-size:1rem;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent;}
+
+/* ============================================================
+   AVIS CLIENTS — étoiles + commentaires
+   ============================================================ */
+.avis-summary{text-align:center;padding:1.4rem 1.2rem 1rem;}
+.avis-summary-score{font-family:'Cormorant Garamond',serif;font-size:2.4rem;font-weight:700;background:linear-gradient(90deg,var(--or-d),var(--or-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.avis-summary-stars{font-size:1.2rem;color:var(--or-l);letter-spacing:.1em;margin:.2rem 0;text-shadow:var(--ts);}
+.avis-summary-count{font-size:.65rem;color:var(--gris);letter-spacing:.08em;font-weight:600;text-shadow:var(--ts);}
+
+.avis-form-wrap{margin:0 1rem 1.2rem;background:rgba(20,17,12,.6);border:1px solid rgba(201,168,76,.35);border-radius:16px;padding:1.1rem;backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px);}
+.avis-form-title{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;color:#fff;text-shadow:var(--ts);margin-bottom:.2rem;}
+.avis-form-sub{font-size:.68rem;color:#E8E0CC;line-height:1.5;font-weight:500;margin-bottom:.8rem;text-shadow:var(--ts);}
+.avis-stars-input{display:flex;gap:.4rem;font-size:1.8rem;margin-bottom:.8rem;justify-content:center;}
+.avis-stars-input span{color:rgba(201,168,76,.28);cursor:pointer;transition:transform .15s,color .15s;-webkit-tap-highlight-color:transparent;}
+.avis-stars-input span.on{color:var(--or-l);text-shadow:0 0 10px rgba(201,168,76,.6);}
+.avis-stars-input span:active{transform:scale(1.2);}
+.avis-input-name,.avis-input-text{width:100%;background:rgba(0,0,0,.45);border:1px solid rgba(201,168,76,.35);border-radius:10px;color:#fff;font-family:'Montserrat',sans-serif;font-size:.75rem;padding:.6rem .75rem;margin-bottom:.6rem;outline:none;resize:vertical;}
+.avis-input-name::placeholder,.avis-input-text::placeholder{color:#948a6f;}
+.avis-submit-btn{width:100%;background:linear-gradient(135deg,var(--or-d),var(--or));color:#000;border:none;border-radius:10px;font-family:'Montserrat',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:.75rem;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:opacity .2s;}
+.avis-submit-btn:active{opacity:.8;}
+.avis-thanks{display:none;text-align:center;font-size:.7rem;color:#6fcf97;font-weight:700;margin-top:.6rem;}
+.avis-thanks.show{display:block;animation:fadeUp .5s ease-out;}
+
+.avis-list{padding:0 1rem 6rem;display:flex;flex-direction:column;gap:.7rem;}
+.avis-card{background:rgba(30,25,18,.5);border:1px solid rgba(201,168,76,.25);border-radius:14px;padding:.85rem .95rem;backdrop-filter:blur(8px);}
+.avis-card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:.35rem;gap:.6rem;}
+.avis-card-name{font-family:'Cormorant Garamond',serif;font-size:.95rem;font-weight:700;color:#fff;text-shadow:var(--ts);}
+.avis-card-stars{font-size:.78rem;color:var(--or-l);letter-spacing:.06em;white-space:nowrap;}
+.avis-card-date{font-size:.55rem;color:var(--gris);letter-spacing:.05em;margin-top:.1rem;}
+.avis-card-text{font-size:.72rem;color:#E8E0CC;line-height:1.6;font-weight:500;white-space:pre-line;}
+.avis-empty{text-align:center;padding:2rem 1rem;color:var(--gris);font-size:.7rem;font-weight:600;}
+
+/* toast discret d'invitation à laisser un avis */
+.avis-toast{
+  position:fixed;left:1rem;right:1rem;
+  bottom:calc(var(--safe-bottom) + 70px);
+  z-index:390;
+  max-width:380px;margin:0 auto;
+  background:rgba(20,16,8,.92);border:1px solid rgba(201,168,76,.5);
+  border-radius:14px;padding:.7rem .8rem .7rem .9rem;
+  display:flex;align-items:center;gap:.6rem;
+  box-shadow:0 8px 30px rgba(0,0,0,.45);
+  transform:translateY(120%);opacity:0;
+  transition:transform .5s cubic-bezier(.22,.9,.3,1),opacity .5s;
+  pointer-events:none;
+}
+.avis-toast.show{transform:translateY(0);opacity:1;pointer-events:auto;}
+.avis-toast-txt{flex:1;font-size:.66rem;color:#F0EBD8;line-height:1.45;font-weight:600;}
+.avis-toast-txt span{color:var(--or-l);font-weight:700;}
+.avis-toast-btn{flex-shrink:0;background:linear-gradient(135deg,var(--or-d),var(--or));color:#000;border:none;border-radius:8px;font-size:.6rem;font-weight:700;letter-spacing:.05em;padding:.45rem .6rem;cursor:pointer;white-space:nowrap;-webkit-tap-highlight-color:transparent;}
+.avis-toast-close{position:absolute;top:-8px;right:-8px;background:rgba(0,0,0,.8);border:1px solid rgba(201,168,76,.5);color:var(--or-l);border-radius:50%;width:22px;height:22px;font-size:.65rem;display:flex;align-items:center;justify-content:center;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+
+body.light-mode .avis-form-wrap{background:rgba(255,255,255,.72);border-color:rgba(201,168,76,.4);}
+body.light-mode .avis-form-title{color:#1c1810;}
+body.light-mode .avis-form-sub{color:#4a4230;}
+body.light-mode .avis-input-name,body.light-mode .avis-input-text{background:rgba(255,255,255,.85);color:#1c1810;border-color:rgba(201,168,76,.4);}
+body.light-mode .avis-card{background:rgba(255,255,255,.72);border-color:rgba(201,168,76,.35);}
+body.light-mode .avis-card-name{color:#1c1810;}
+body.light-mode .avis-card-text{color:#4a4230;}
+body.light-mode .avis-toast{background:rgba(255,255,255,.95);border-color:rgba(201,168,76,.5);}
+body.light-mode .avis-toast-txt{color:#3a331f;}
 </style>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#1B1815">
@@ -1374,6 +1435,7 @@ body.light-mode .del-input-row input{background:rgba(255,255,255,.85);color:#1c1
     <div class="cat-card" onclick="openCat('Colliers')">        <div class="cat-icon">📿</div><div class="cat-label">Collier Femme</div>     <div class="cat-count" id="cnt-Colliers">—</div></div>
     <div class="cat-card" onclick="openCat('Bagues')">          <div class="cat-icon">💍</div><div class="cat-label">Bagues</div>       <div class="cat-count" id="cnt-Bagues">—</div></div>
     <div class="cat-card" onclick="openCat('Autres')">          <div class="cat-icon">✨</div><div class="cat-label">Autres</div>       <div class="cat-count" id="cnt-Autres">—</div></div>
+    <div class="cat-card" onclick="openAvis()">                 <div class="cat-icon">⭐</div><div class="cat-label">Avis Clients</div> <div class="cat-count" id="cnt-Avis">—</div></div>
     <div class="cat-card offre-card" onclick="openOffres()">    <div class="cat-icon">🎁</div><div class="cat-label" style="color:#FFD700;">Offres</div><div class="cat-count" style="color:var(--or-l);">Promos &amp; Cadeaux</div></div>
   </div>
 </div>
@@ -1433,6 +1495,35 @@ body.light-mode .del-input-row input{background:rgba(255,255,255,.85);color:#1c1
     <div class="offre-card"><div class="offre-card-icon">🔥</div><div class="offre-card-body"><div class="offre-badge">5 produits achetés</div><div class="offre-card-title">Réduction progressive sur vos commandes</div><div class="offre-card-desc"><strong style="color:var(--or-l)">5 produits</strong> → <strong style="color:#6fcf97">-5%</strong><br><strong style="color:var(--or-l)">7 produits</strong> → <strong style="color:#6fcf97">-10%</strong><br><strong style="color:var(--or-l)">10 produits</strong> → <strong style="color:#6fcf97">-15%</strong> + cadeau surprise</div><button class="offre-cta" onclick="ctaOffre('Réduction fidélité')">Profiter de l'offre</button></div></div>
   </div>
   <div style="padding:0 1rem 6rem;text-align:center;"><div style="font-size:.62rem;color:var(--gris);line-height:1.9;text-shadow:var(--ts);">Les offres sont validées sur présentation de vos achats via WhatsApp.</div></div>
+</div>
+
+<!-- PAGE AVIS CLIENTS -->
+<div id="page-avis">
+  <div class="page-cat-header">
+    <div class="btn-back" onclick="goHome()">←</div>
+    <span class="cat-page-icon">⭐</span>
+    <div class="cat-page-title">Avis Clients</div>
+  </div>
+
+  <div class="avis-summary" id="avisSummary">
+    <div class="avis-summary-score" id="avisAvgScore">—</div>
+    <div class="avis-summary-stars" id="avisAvgStars">☆☆☆☆☆</div>
+    <div class="avis-summary-count" id="avisCount">Aucun avis pour le moment</div>
+  </div>
+
+  <div class="avis-form-wrap">
+    <div class="avis-form-title">Donnez votre avis</div>
+    <div class="avis-form-sub">Dites-nous ce que vous aimez et ce qu'on peut améliorer sur le site 🙂 Vous pouvez tout dire !</div>
+    <div class="avis-stars-input" id="avisStarsInput">
+      <span data-v="1">★</span><span data-v="2">★</span><span data-v="3">★</span><span data-v="4">★</span><span data-v="5">★</span>
+    </div>
+    <input type="text" class="avis-input-name" id="avisName" placeholder="Votre nom (optionnel)">
+    <textarea class="avis-input-text" id="avisText" rows="3" placeholder="Votre avis, ce qui vous a plu, ce qu'on peut améliorer…"></textarea>
+    <button class="avis-submit-btn" onclick="submitAvis()">Envoyer mon avis</button>
+    <div class="avis-thanks" id="avisThanks">Merci pour votre avis 💛</div>
+  </div>
+
+  <div class="avis-list" id="avisList"></div>
 </div>
 
 <!-- VUE IMMERSIVE COLLIERS — plein écran type Stories, catégorie Colliers uniquement -->
@@ -1500,6 +1591,12 @@ body.light-mode .del-input-row input{background:rgba(255,255,255,.85);color:#1c1
   <svg viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
 </a>
 
+<!-- TOAST DISCRET — invitation à laisser un avis -->
+<div class="avis-toast" id="avisToast">
+  <button class="avis-toast-close" onclick="closeAvisToast()">✕</button>
+  <div class="avis-toast-txt">Votre avis compte pour nous <span>⭐</span><br>Aidez-nous à améliorer le site</div>
+  <button class="avis-toast-btn" onclick="goToAvisFromToast()">Laisser un avis</button>
+</div>
 
 <div class="del-panel" id="delPanel">
   <div class="del-sheet">
@@ -1813,7 +1910,7 @@ function updateCounts() {
    NAVIGATION
    ============================================================ */
 function hideAll() {
-  ['page-home','page-cat','page-offre','page-search'].forEach(id => {
+  ['page-home','page-cat','page-offre','page-search','page-avis'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.style.display = 'none';
   });
@@ -2981,6 +3078,139 @@ function clearSearch() {
 }
 
 /* ============================================================
+   AVIS CLIENTS — étoiles + commentaires (stockage local à l'appareil)
+   ============================================================ */
+const AVIS_KEY = 'kw-reviews';
+let avisSelectedStars = 0;
+
+function getAvisReviews(){
+  try { return JSON.parse(localStorage.getItem(AVIS_KEY) || '[]'); } catch(e){ return []; }
+}
+function saveAvisReviews(list){
+  try { localStorage.setItem(AVIS_KEY, JSON.stringify(list)); } catch(e){}
+}
+function starsToHtml(n){
+  let s='';
+  for (let i=1;i<=5;i++) s += (i<=n ? '★' : '☆');
+  return s;
+}
+function initAvisStars(){
+  const wrap = document.getElementById('avisStarsInput');
+  if (!wrap || wrap.dataset.bound) return;
+  wrap.dataset.bound = '1';
+  wrap.querySelectorAll('span').forEach(s => {
+    s.addEventListener('click', () => {
+      avisSelectedStars = parseInt(s.dataset.v);
+      wrap.querySelectorAll('span').forEach(x => x.classList.toggle('on', parseInt(x.dataset.v) <= avisSelectedStars));
+    });
+  });
+}
+function submitAvis(){
+  if (!avisSelectedStars){
+    alert('Merci de choisir une note en étoiles ⭐');
+    return;
+  }
+  const nameInput = document.getElementById('avisName');
+  const textInput = document.getElementById('avisText');
+  const name = (nameInput.value || 'Client anonyme').trim() || 'Client anonyme';
+  const text = (textInput.value || '').trim();
+  if (!text){
+    alert("Merci d'écrire quelques mots pour votre avis 🙂");
+    return;
+  }
+  const review = { id: Date.now()+'-'+Math.random().toString(36).slice(2), name: name, stars: avisSelectedStars, text: text, date: new Date().toISOString() };
+  const list = getAvisReviews();
+  list.unshift(review);
+  saveAvisReviews(list);
+
+  nameInput.value = '';
+  textInput.value = '';
+  avisSelectedStars = 0;
+  document.querySelectorAll('#avisStarsInput span').forEach(x => x.classList.remove('on'));
+
+  const thanks = document.getElementById('avisThanks');
+  thanks.classList.add('show');
+  setTimeout(() => thanks.classList.remove('show'), 3000);
+
+  renderAvisList();
+  localStorage.setItem('kw-has-reviewed', '1');
+  hideAvisToast();
+}
+function renderAvisList(){
+  const list = getAvisReviews();
+  const listEl = document.getElementById('avisList');
+  const avgEl = document.getElementById('avisAvgScore');
+  const avgStarsEl = document.getElementById('avisAvgStars');
+  const countEl = document.getElementById('avisCount');
+  const cnt = document.getElementById('cnt-Avis');
+
+  if (!list.length){
+    if (listEl) listEl.innerHTML = '<div class="avis-empty">Soyez le premier à laisser un avis ✨</div>';
+    if (avgEl) avgEl.textContent = '—';
+    if (avgStarsEl) avgStarsEl.textContent = '☆☆☆☆☆';
+    if (countEl) countEl.textContent = 'Aucun avis pour le moment';
+    if (cnt) cnt.textContent = 'Soyez le premier';
+    return;
+  }
+
+  const avg = list.reduce((s,r) => s + (r.stars||0), 0) / list.length;
+  if (avgEl) avgEl.textContent = avg.toFixed(1);
+  if (avgStarsEl) avgStarsEl.textContent = starsToHtml(Math.round(avg));
+  if (countEl) countEl.textContent = list.length + (list.length===1 ? ' avis' : ' avis');
+  if (cnt) cnt.textContent = list.length + (list.length===1?' avis':' avis') + ' · ' + avg.toFixed(1) + '★';
+
+  if (listEl){
+    listEl.innerHTML = list.map(r => {
+      const d = new Date(r.date);
+      const dateStr = isNaN(d) ? '' : d.toLocaleDateString('fr-FR', {day:'numeric',month:'short',year:'numeric'});
+      return `<div class="avis-card">
+        <div class="avis-card-head">
+          <div>
+            <div class="avis-card-name">${h(r.name)}</div>
+            <div class="avis-card-date">${dateStr}</div>
+          </div>
+          <div class="avis-card-stars">${starsToHtml(r.stars)}</div>
+        </div>
+        <div class="avis-card-text">${h(r.text)}</div>
+      </div>`;
+    }).join('');
+  }
+}
+function openAvis(){
+  hideAll();
+  document.getElementById('page-avis').style.display = 'block';
+  initAvisStars();
+  renderAvisList();
+  window.scrollTo(0,0);
+}
+
+/* Toast discret d'invitation — apparaît une fois, sans gêner la navigation */
+function initAvisToast(){
+  if (localStorage.getItem('kw-has-reviewed') === '1') return;
+  const lastShown = parseInt(localStorage.getItem('kw-avis-toast-time') || '0', 10);
+  const now = Date.now();
+  if (now - lastShown < 24*60*60*1000) return; // une seule fois par jour maximum
+  setTimeout(() => {
+    const toast = document.getElementById('avisToast');
+    if (!toast) return;
+    const delOpen = document.getElementById('delPanel');
+    if (delOpen && delOpen.classList.contains('open')) return;
+    toast.classList.add('show');
+    localStorage.setItem('kw-avis-toast-time', String(Date.now()));
+    setTimeout(() => { toast.classList.remove('show'); }, 12000);
+  }, 25000);
+}
+function closeAvisToast(){
+  const t = document.getElementById('avisToast');
+  if (t) t.classList.remove('show');
+}
+function hideAvisToast(){ closeAvisToast(); }
+function goToAvisFromToast(){
+  closeAvisToast();
+  openAvis();
+}
+
+/* ============================================================
    MODE CLAIR
    ============================================================ */
 function spawnLightParticles(){
@@ -3048,6 +3278,8 @@ initDesign();
 initLightMode();
 loadProducts();
 initGyroscope();
+renderAvisList();
+initAvisToast();
 
 /* ============================================================
    DEL — Assistante Style (guide d'achat intelligent)
