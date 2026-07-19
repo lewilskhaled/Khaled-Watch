@@ -3289,19 +3289,31 @@ const COEUR_TAP_WINDOW = 400; // ms max entre 2 tapotements pour compter la sér
 let coeurTapState = {}; // pid -> {count, timer}
 
 function getCoeurData(){
-  try { return JSON.parse(localStorage.getItem(COEUR_KEY) || '{}'); } catch(e){ return {}; }
+  let d;
+  try { d = JSON.parse(localStorage.getItem(COEUR_KEY) || '{}'); } catch(e){ d = {}; }
+  if (!d || typeof d !== 'object' || Array.isArray(d)) d = {};
+  // Nettoyage : toute ancienne valeur qui n'est pas un nombre (résidu d'une
+  // version précédente) est ramenée à 0 pour éviter l'affichage "[object Object]".
+  Object.keys(d).forEach(pid => {
+    if (typeof d[pid] !== 'number' || isNaN(d[pid]) || d[pid] < 0) d[pid] = 0;
+  });
+  return d;
 }
 function saveCoeurData(d){
   try { localStorage.setItem(COEUR_KEY, JSON.stringify(d)); } catch(e){}
 }
 function getCoeurMine(){
-  try { return JSON.parse(localStorage.getItem(COEUR_MINE_KEY) || '{}'); } catch(e){ return {}; }
+  let d;
+  try { d = JSON.parse(localStorage.getItem(COEUR_MINE_KEY) || '{}'); } catch(e){ d = {}; }
+  if (!d || typeof d !== 'object' || Array.isArray(d)) d = {};
+  return d;
 }
 function saveCoeurMine(d){
   try { localStorage.setItem(COEUR_MINE_KEY, JSON.stringify(d)); } catch(e){}
 }
 function coeurTotalFor(pid){
-  return getCoeurData()[pid] || 0;
+  const v = getCoeurData()[pid];
+  return (typeof v === 'number' && !isNaN(v)) ? v : 0;
 }
 function coeurBadgeHtml(pid){
   const total = coeurTotalFor(pid);
@@ -3356,8 +3368,9 @@ function triggerCoeur(card, pid){
     return;
   }
 
-  const data = getCoeurData();
-  data[pid] = (data[pid] || 0) + 1;
+  const data = getCoeurData(); // déjà nettoyé : uniquement des nombres, un par produit
+  const currentCount = typeof data[pid] === 'number' ? data[pid] : 0;
+  data[pid] = currentCount + 1;
   saveCoeurData(data);
   mine[pid] = true;
   saveCoeurMine(mine);
