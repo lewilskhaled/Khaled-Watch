@@ -3318,10 +3318,17 @@ function coeurTotalFor(pid){
 function coeurBadgeHtml(pid){
   const total = coeurTotalFor(pid);
   const mine  = !!getCoeurMine()[pid];
-  return `<div class="coeur-badge${total>0?' has':''}${mine?' mine':''}" id="coeur-${h(pid)}">❤ <span>${total}</span></div>`;
+  return `<div class="coeur-badge${total>0?' has':''}${mine?' mine':''}" data-pid="${h(pid)}">❤ <span>${total}</span></div>`;
 }
 function updateCoeurBadge(pid){
-  document.querySelectorAll('#coeur-' + cssEscape(pid)).forEach(badge => {
+  const safe = String(pid).replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+  let badges = [];
+  try {
+    badges = document.querySelectorAll('.coeur-badge[data-pid="' + safe + '"]');
+  } catch(err){
+    badges = [];
+  }
+  badges.forEach(badge => {
     const total = coeurTotalFor(pid);
     const mine  = !!getCoeurMine()[pid];
     badge.innerHTML = '❤ <span>' + total + '</span>';
@@ -3330,9 +3337,6 @@ function updateCoeurBadge(pid){
     badge.classList.add('bump');
     setTimeout(() => badge.classList.remove('bump'), 260);
   });
-}
-function cssEscape(s){
-  return String(s).replace(/([ #.;?%&,+*~':"!^$\[\]()=>|\/@])/g,'\\$1');
 }
 
 /**
@@ -3375,7 +3379,7 @@ function triggerCoeur(card, pid){
   mine[pid] = true;
   saveCoeurMine(mine);
 
-  updateCoeurBadge(pid);
+  try { updateCoeurBadge(pid); } catch(err){ /* n'empêche pas la suite */ }
   flashCoeur(zone, false);
   showCoeurToast('aimé');
   if (navigator.vibrate) { try { navigator.vibrate(15); } catch(err){} }
