@@ -1373,6 +1373,61 @@ body.light-mode .coeur-badge.mine{color:#e0355a;border-color:rgba(224,53,90,.7);
 }
 .coeur-toast.show{opacity:1;transform:translate(-50%,0);}
 body.light-mode .coeur-toast{background:rgba(255,255,255,.95);color:#8B6914;border-color:rgba(201,168,76,.55);}
+
+/* ============================================================
+   AJOUTS — Focus clavier, tri, partage, loader catalogue
+   ============================================================ */
+.btn-back:focus-visible,
+.modal-close-btn:focus-visible,
+.cf-back:focus-visible,
+.nav-item:focus-visible,
+.light-toggle-btn:focus-visible,
+.del-close:focus-visible,
+.del-launcher:focus-visible,
+.search-clear:focus-visible,
+.coeur-badge:focus-visible,
+.g-tab:focus-visible,
+.cf-g-tab:focus-visible,
+.color-swatch:focus-visible,
+.arr360:focus-visible,
+.sort-select:focus-visible,
+.modal-share-btn:focus-visible {
+  outline: 2px solid var(--or-l);
+  outline-offset: 3px;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.sort-select-wrap{display:flex;align-items:center;gap:.4rem;padding:0 1rem .5rem;}
+.sort-select{
+  flex:1;background:rgba(0,0,0,.55);border:1px solid rgba(201,168,76,.4);
+  color:var(--or-l);font-family:'Montserrat',sans-serif;font-size:.62rem;
+  letter-spacing:.08em;text-transform:uppercase;font-weight:700;
+  border-radius:50px;padding:.4rem .8rem;outline:none;-webkit-appearance:none;appearance:none;
+}
+body.light-mode .sort-select{background:rgba(255,255,255,.8);color:#8B6914;border-color:rgba(201,168,76,.5);}
+
+.modal-share-btn{
+  display:flex;align-items:center;justify-content:center;gap:.5rem;width:100%;
+  padding:.7rem;margin-top:.5rem;background:rgba(201,168,76,.14);
+  border:1px solid rgba(201,168,76,.45);border-radius:12px;color:var(--or-l);
+  font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  font-family:'Montserrat',sans-serif;cursor:pointer;-webkit-tap-highlight-color:transparent;
+  transition:background .2s;
+}
+.modal-share-btn:active{background:rgba(201,168,76,.28);}
+
+#catalogLoader{
+  position:fixed;inset:0;z-index:9500;display:none;align-items:center;justify-content:center;
+  flex-direction:column;gap:.8rem;background:rgba(20,16,8,.55);backdrop-filter:blur(6px);
+}
+#catalogLoader.show{display:flex;}
+#catalogLoader span{font-size:.65rem;letter-spacing:.15em;color:var(--or-l);text-transform:uppercase;font-weight:700;text-shadow:var(--ts);}
 </style>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#1B1815">
@@ -1382,7 +1437,6 @@ body.light-mode .coeur-toast{background:rgba(255,255,255,.95);color:#8B6914;bord
 <link rel="icon" href="icons/icon-192.png">
 </head>
 <body>
-
 <!-- Badge gyroscope -->
 <div class="gyro-badge" id="gyroBadge">🌀 Gyroscope actif</div>
 
@@ -1439,6 +1493,10 @@ body.light-mode .coeur-toast{background:rgba(255,255,255,.95);color:#8B6914;bord
     <div class="splash-sub">Collection Prestige · Montres &amp; Bijoux</div>
   </div>
 </div>
+
+<!-- NOUVEAU : loader catalogue, affiché si le chargement de produits.json est lent -->
+<div id="catalogLoader"><div class="loader"></div><span>Chargement de la collection…</span></div>
+
 <div id="bgLayer"></div>
 <div id="bgOverlay"></div>
 <!-- FOND VIDÉO — Mobile uniquement, géré depuis admin -->
@@ -1493,6 +1551,7 @@ body.light-mode .coeur-toast{background:rgba(255,255,255,.95);color:#8B6914;bord
     <div class="cat-card" onclick="openCat('Colliers')">        <div class="cat-icon">📿</div><div class="cat-label">Collier Femme</div>     <div class="cat-count" id="cnt-Colliers">—</div></div>
     <div class="cat-card" onclick="openCat('Bagues')">          <div class="cat-icon">💍</div><div class="cat-label">Bagues</div>       <div class="cat-count" id="cnt-Bagues">—</div></div>
     <div class="cat-card" onclick="openCat('Autres')">          <div class="cat-icon">✨</div><div class="cat-label">Autres</div>       <div class="cat-count" id="cnt-Autres">—</div></div>
+    <div class="cat-card" onclick="openFavoris()">              <div class="cat-icon">❤️</div><div class="cat-label">Coups de Cœur</div> <div class="cat-count" id="cnt-Favoris">—</div></div>
     <div class="cat-card" onclick="openAvis()">                 <div class="cat-icon">⭐</div><div class="cat-label">Avis Clients</div> <div class="cat-count" id="cnt-Avis">—</div></div>
     <div class="cat-card offre-card" onclick="openOffres()">    <div class="cat-icon">🎁</div><div class="cat-label" style="color:#FFD700;">Offres</div><div class="cat-count" style="color:var(--or-l);">Promos &amp; Cadeaux</div></div>
   </div>
@@ -1522,6 +1581,14 @@ body.light-mode .coeur-toast{background:rgba(255,255,255,.95);color:#8B6914;bord
     <button class="g-tab active" data-g="tous"  onclick="setGender(this)">Tous</button>
     <button class="g-tab"        data-g="Homme" onclick="setGender(this)">Homme</button>
     <button class="g-tab"        data-g="Femme" onclick="setGender(this)">Femme</button>
+  </div>
+  <div class="sort-select-wrap">
+    <select class="sort-select" id="sortSelect" onchange="onSortChange(this.value)">
+      <option value="default">Trier par défaut</option>
+      <option value="price_asc">Prix croissant</option>
+      <option value="price_desc">Prix décroissant</option>
+      <option value="newest">Nouveautés</option>
+    </select>
   </div>
   <div class="prod-grid" id="prodGrid">
     <div class="loader-wrap"><div class="loader"></div></div>
@@ -1582,6 +1649,16 @@ body.light-mode .coeur-toast{background:rgba(255,255,255,.95);color:#8B6914;bord
   </div>
 
   <div class="avis-list" id="avisList"></div>
+</div>
+
+<!-- PAGE MES COUPS DE CŒUR (NOUVEAU) -->
+<div id="page-favoris">
+  <div class="page-cat-header">
+    <div class="btn-back" onclick="goHome()">←</div>
+    <span class="cat-page-icon">❤️</span>
+    <div class="cat-page-title">Mes Coups de Cœur</div>
+  </div>
+  <div class="prod-grid" id="favorisGrid"></div>
 </div>
 
 <!-- VUE IMMERSIVE COLLIERS — plein écran type Stories, catégorie Colliers uniquement -->
@@ -1680,13 +1757,35 @@ body.light-mode .coeur-toast{background:rgba(255,255,255,.95);color:#8B6914;bord
     </div>
   </div>
 </div>
-
 <script>
 /* ============================================================
    CONSTANTES
    ============================================================ */
 const WA = '2290169515730';
 const DEL_WORKER_URL = 'https://khaled-watch-del.lewilskhaled.workers.dev';
+
+/* NOUVEAU — backend partagé pour avis clients & coups de cœur.
+   Remplacez cette URL par celle de votre Worker une fois déployé
+   (voir khaled-watch-worker-reviews.js). */
+const DATA_WORKER_URL = 'https://REMPLACEZ-PAR-VOTRE-WORKER.workers.dev';
+let reviewsCache = [];
+let likesCache = {};
+let productsLoaded = false;
+let currentSort = 'default';
+
+async function fetchSharedData() {
+  try {
+    const [rRes, lRes] = await Promise.all([
+      fetch(DATA_WORKER_URL + '/reviews'),
+      fetch(DATA_WORKER_URL + '/likes'),
+    ]);
+    reviewsCache = rRes.ok ? await rRes.json() : [];
+    likesCache   = lRes.ok ? await lRes.json() : {};
+  } catch (e) {
+    reviewsCache = []; likesCache = {};
+  }
+}
+
   /* ── Fonds d'écran rotatifs — mobile uniquement, toutes les 10h ── */
 const DEFAULT_BG = 'https://images.unsplash.com/photo-1618215649514-c73c18549d63?w=1600&q=85';
 
@@ -1946,13 +2045,19 @@ function normalizeProduct(p){
 }
 
 async function loadProducts() {
+  const loader = document.getElementById('catalogLoader');
+  const loaderTimer = setTimeout(()=>{ if(!productsLoaded && loader) loader.classList.add('show'); }, 500);
   try {
     const r = await fetch('produits.json?t=' + Date.now());
     if (!r.ok) throw 0;
     const raw = await r.json();
     allProducts = Array.isArray(raw) ? raw.map(normalizeProduct) : [];
   } catch { allProducts = []; }
+  productsLoaded = true;
+  clearTimeout(loaderTimer);
+  if (loader) loader.classList.remove('show');
   updateCounts();
+  updateFavorisCount();
 }
 
 function updateCounts() {
@@ -1965,13 +2070,14 @@ function updateCounts() {
     else n = allProducts.filter(p => p.categorie === c).length;
     el.textContent = n + (n <= 1 ? ' article' : ' articles');
   });
+  updateFavorisCount();
 }
 
 /* ============================================================
    NAVIGATION
    ============================================================ */
 function hideAll() {
-  ['page-home','page-cat','page-offre','page-search','page-avis'].forEach(id => {
+  ['page-home','page-cat','page-offre','page-search','page-avis','page-favoris'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.style.display = 'none';
   });
@@ -2000,6 +2106,9 @@ function openCat(cat) {
   if (cat === 'Chaînes') { openChainesFeed(); return; }
   if (cat === 'Bracelets') { openBraceletsFeed(); return; }
   currentCat = cat; currentGender = 'tous';
+  currentSort = 'default';
+  const sortSel = document.getElementById('sortSelect');
+  if (sortSel) sortSel.value = 'default';
   document.querySelectorAll('.g-tab').forEach(t => t.classList.remove('active'));
   document.querySelector('.g-tab[data-g="tous"]').classList.add('active');
   document.getElementById('catPageTitle').textContent = cat;
@@ -2013,6 +2122,55 @@ function openCat(cat) {
   }
   window.scrollTo(0, 0);
   renderProducts();
+}
+
+/* ============================================================
+   TRI DES PRODUITS (NOUVEAU)
+   ============================================================ */
+function onSortChange(val){
+  currentSort = val;
+  renderProducts();
+}
+function applySort(list){
+  if (currentSort === 'price_asc')  return [...list].sort((a,b)=>a.prix-b.prix);
+  if (currentSort === 'price_desc') return [...list].sort((a,b)=>b.prix-a.prix);
+  if (currentSort === 'newest')     return [...list].sort((a,b)=> new Date(b.createdAt) - new Date(a.createdAt));
+  return list;
+}
+
+/* ============================================================
+   MES COUPS DE CŒUR — page dédiée (NOUVEAU)
+   ============================================================ */
+function openFavoris(){
+  hideAll();
+  document.getElementById('page-favoris').style.display = 'block';
+  renderFavorisGrid();
+  window.scrollTo(0,0);
+}
+function renderFavorisGrid(){
+  const mine = getCoeurMine();
+  const ids = Object.keys(mine).filter(id => mine[id]);
+  const list = allProducts.filter(p => ids.includes(String(p.id)));
+  currentList = list;
+  const grid = document.getElementById('favorisGrid');
+  if (!list.length){
+    if (!productsLoaded){
+      grid.innerHTML = `<div class="loader-wrap"><div class="loader"></div></div>`;
+      return;
+    }
+    grid.innerHTML = `<div class="empty-cat"><h3>Aucun coup de cœur pour l'instant</h3><p>Touchez 3 fois une carte produit pour l'ajouter ici ❤️</p></div>`;
+    return;
+  }
+  grid.innerHTML = list.map((p,i) => renderProdCardHTML(p, i, 6)).join('');
+  if (gyroActive) applyGyroToImages(gyroX, gyroY);
+  initColorCycles('#favorisGrid');
+}
+function updateFavorisCount(){
+  const el = document.getElementById('cnt-Favoris');
+  if (!el) return;
+  const mine = getCoeurMine();
+  const n = Object.keys(mine).filter(id=>mine[id]).length;
+  el.textContent = n + (n<=1?' article':' articles');
 }
 
 /* ============================================================
@@ -2133,8 +2291,6 @@ document.addEventListener('keydown', e => {
 /* ============================================================
    VUE IMMERSIVE CHAÎNES — défilé circulaire type aiguille d'horloge
    Réservée UNIQUEMENT à la catégorie Chaînes
-   Chaque swipe fait "tourner" la chaîne autour d'un pivot fixe,
-   exactement comme l'aiguille d'une montre qui avance d'un cran.
    ============================================================ */
 let chGender    = 'tous';
 let chList      = [];
@@ -2223,13 +2379,6 @@ function switchChColor(dot, idx, colorIdx) {
   dot.closest('.cf-colors').querySelectorAll('.cf-color-dot').forEach((d,i) => d.classList.toggle('active', i===colorIdx));
 }
 
-/**
- * Fait "tourner" la chaîne affichée d'un cran, comme l'aiguille d'une
- * montre : la chaîne actuelle pivote et s'efface autour du pivot doré
- * en bas de l'écran, pendant que la suivante arrive en tournant dans
- * le même sens, jusqu'à se stabiliser pile en face du client.
- * dir = 1 -> sens horaire (suivant) · dir = -1 -> sens anti-horaire (précédent)
- */
 function goChain(dir) {
   if (chAnimating || chList.length < 2) return;
   chAnimating = true;
@@ -2301,10 +2450,6 @@ document.addEventListener('keydown', e => {
 
 /* ============================================================
    VUE IMMERSIVE BRACELETS — pile de cartes en profondeur
-   Réservée UNIQUEMENT à la catégorie Bracelets.
-   Au swipe : le bracelet actuel recule dans la pile (rétrécit,
-   s'assombrit, glisse derrière) et reste légèrement visible tout
-   au fond, pendant que le suivant avance en pleine lumière.
    ============================================================ */
 let brGender    = 'tous';
 let brList      = [];
@@ -2416,16 +2561,6 @@ function switchBrColor(dot, idx, colorIdx) {
   dot.closest('.cf-colors').querySelectorAll('.cf-color-dot').forEach((d,i) => d.classList.toggle('active', i===colorIdx));
 }
 
-/**
- * Fait avancer la pile de bracelets d'un cran, façon "multitâche iPhone".
- * dir = 1  -> le bracelet suivant : le devant recule tout au fond
- *             de la pile (rétréci, assombri, légèrement visible)
- *             et un nouveau bracelet arrive discrètement à l'arrière
- *             pour reconstituer la pile.
- * dir = -1 -> le bracelet précédent : un nouveau bracelet arrive de
- *             très près (comme s'il sortait vers le client) et prend
- *             la première place, pendant que toute la pile recule d'un cran.
- */
 function goBracelet(dir) {
   if (brAnimating || brList.length < 2) return;
   brAnimating = true;
@@ -2548,65 +2683,78 @@ function getImages(p) {
   return imgs.length ? imgs : [FALLBACK_IMG];
 }
 
+/* ============================================================
+   CARTE PRODUIT — fonction commune (NOUVEAU)
+   ============================================================ */
+function renderProdCardHTML(p, i, eagerLimit){
+  const eager = i < (eagerLimit || 6);
+  const colors  = p.couleurs && p.couleurs.length ? p.couleurs : [];
+  const mainImg = colors.length && colors[0].image ? colors[0].image : p.image;
+
+  const colorDots = colors.length ? `
+    <div class="color-section">
+      <div class="color-label">Couleurs</div>
+      <div class="color-swatches">
+        ${colors.map((c,ci) => `
+          <div class="color-swatch${ci===0?' active':''}"
+               style="background:${h(c.hex)}" title="${h(c.nom)}"
+               onclick="event.stopPropagation();swatchCard(this,'${js(p.id)}',${ci})"></div>
+        `).join('')}
+      </div>
+    </div>` : '';
+
+  const neutralBg = p.categorie === 'Colliers' ? ' neutral-bg' : '';
+
+  const imgZoneHTML = colors.length > 1 ? `
+    <div class="cvar-viewport prod-img" data-pid="${h(p.id)}">
+      ${colors.map((c,ci) => `<img class="cvar-img${ci===0?' loaded':''}" data-ci="${ci}" src="${h(thumbUrl(c.image||mainImg, 640))}" alt="${h(p.nom)}" loading="${eager?'eager':'lazy'}" decoding="async" ${eager&&ci===0?'fetchpriority="high"':''} onerror="this.src='${FALLBACK_IMG}'" onload="this.classList.add('loaded');this.closest('.prod-img-zone').classList.add('img-ready')" style="transform:translateY(${ci===0?'0%':'100%'});">`).join('')}
+    </div>
+    <div class="cvar-dots">${colors.map((c,ci)=>`<div class="cvar-dot${ci===0?' active':''}"></div>`).join('')}</div>
+    ` : `
+    <img class="prod-img" id="cimg-${h(p.id)}" src="${h(thumbUrl(mainImg, 640))}" alt="${h(p.nom)}" loading="${eager?'eager':'lazy'}" decoding="async" ${eager?'fetchpriority="high"':''}
+         onload="this.classList.add('loaded');this.closest('.prod-img-zone').classList.add('img-ready')" onerror="this.src='${FALLBACK_IMG}'">
+    `;
+
+  return `
+  <div class="prod-card" data-idx="${i}" data-pid="${h(p.id)}" style="animation-delay:${i*.06}s" onclick="handleProductTap(this,'${js(p.id)}',${i})">
+    <div class="prod-img-zone${neutralBg}">
+      ${imgZoneHTML}
+      <div class="sunburst-overlay${neutralBg}" id="sburst-${h(p.id)}"></div>
+      ${coeurBadgeHtml(p.id)}
+      <div class="card-hint-3d">👆 Toucher : agrandir · 3 taps : ❤️</div>
+    </div>
+    <div class="prod-body">
+      <div class="prod-badge">${h(p.categorie)}</div>
+      <div class="prod-name">${h(p.nom)}</div>
+      <div class="prod-genre">${h(p.genre||'')}</div>
+      ${colorDots}
+      <div class="prod-price">${fmt(p.prix)} <small>FCFA</small></div>
+      <button class="btn-wa" onclick="event.stopPropagation();commander(this,'${js(p.id)}')">
+        ${WA_SVG} Commander
+      </button>
+    </div>
+  </div>`;
+}
+
 function renderProducts() {
   const grid = document.getElementById('prodGrid');
   let list = allProducts.filter(p => p.categorie === currentCat);
   if (currentGender !== 'tous') list = list.filter(p => p.genre === currentGender);
+  list = applySort(list);
   currentList = list;
 
   requestAnimationFrame(initSunburst);
 
   if (!list.length) {
+    if (!productsLoaded){
+      grid.innerHTML = `<div class="loader-wrap"><div class="loader"></div></div>`;
+      return;
+    }
     grid.innerHTML = `<div class="empty-cat"><h3>Collection à venir</h3><p>Aucun produit dans cette catégorie pour le moment.<br>Revenez bientôt !</p></div>`;
     return;
   }
 
-  grid.innerHTML = list.map((p, i) => {
-    const colors  = p.couleurs && p.couleurs.length ? p.couleurs : [];
-    const mainImg = colors.length && colors[0].image ? colors[0].image : p.image;
-
-    const colorDots = colors.length ? `
-      <div class="color-section">
-        <div class="color-label">Couleurs</div>
-        <div class="color-swatches">
-          ${colors.map((c,ci) => `
-            <div class="color-swatch${ci===0?' active':''}"
-                 style="background:${h(c.hex)}" title="${h(c.nom)}"
-                 onclick="event.stopPropagation();swatchCard(this,'${js(p.id)}',${ci})"></div>
-          `).join('')}
-        </div>
-      </div>` : '';
-
-    const neutralBg = p.categorie === 'Colliers' ? ' neutral-bg' : '';
-
-    return `
-    <div class="prod-card" data-idx="${i}" data-pid="${h(p.id)}" style="animation-delay:${i*.06}s" onclick="handleProductTap(this,'${js(p.id)}',${i})">
-      <div class="prod-img-zone${neutralBg}">
-        ${colors.length > 1 ? `
-        <div class="cvar-viewport prod-img" data-pid="${h(p.id)}">
-          ${colors.map((c,ci) => `<img class="cvar-img${ci===0?' loaded':''}" data-ci="${ci}" src="${h(thumbUrl(c.image||mainImg, 640))}" alt="${h(p.nom)}" loading="${i<6?'eager':'lazy'}" decoding="async" ${i<6&&ci===0?'fetchpriority="high"':''} onerror="this.src='${FALLBACK_IMG}'" onload="this.classList.add('loaded');this.closest('.prod-img-zone').classList.add('img-ready')" style="transform:translateY(${ci===0?'0%':'100%'});">`).join('')}
-        </div>
-        <div class="cvar-dots">${colors.map((c,ci)=>`<div class="cvar-dot${ci===0?' active':''}"></div>`).join('')}</div>
-        ` : `
-        <img class="prod-img" id="cimg-${h(p.id)}" src="${h(thumbUrl(mainImg, 640))}" alt="${h(p.nom)}" loading="${i<6?'eager':'lazy'}" decoding="async" ${i<6?'fetchpriority="high"':''}
-             onload="this.classList.add('loaded');this.closest('.prod-img-zone').classList.add('img-ready')" onerror="this.src='${FALLBACK_IMG}'">
-        `}
-        <div class="sunburst-overlay${neutralBg}" id="sburst-${h(p.id)}"></div>
-        ${coeurBadgeHtml(p.id)}
-        <div class="card-hint-3d">👆 Toucher : agrandir · 3 taps : ❤️</div>
-      </div>
-      <div class="prod-body">
-        <div class="prod-badge">${h(p.categorie)}</div>
-        <div class="prod-name">${h(p.nom)}</div>
-        <div class="prod-genre">${h(p.genre||'')}</div>
-        ${colorDots}
-        <div class="prod-price">${fmt(p.prix)} <small>FCFA</small></div>
-        <button class="btn-wa" onclick="event.stopPropagation();commander(this,'${js(p.id)}')">
-          ${WA_SVG} Commander
-        </button>
-      </div>
-    </div>`;
-  }).join('');
+  grid.innerHTML = list.map((p, i) => renderProdCardHTML(p, i, 6)).join('');
 
   if (gyroActive) {
     applyGyroToImages(gyroX, gyroY);
@@ -2773,6 +2921,7 @@ function buildAllSlides() {
         <button class="modal-wa-btn" onclick="commander(this,'${js(p.id)}')">
           ${WA_SVG_BIG} Commander sur WhatsApp
         </button>
+        <button class="modal-share-btn" onclick="shareProduct('${js(p.id)}')">🔗 Partager ce produit</button>
       </div>
     </div>`;
   }).join('');
@@ -2851,6 +3000,26 @@ document.addEventListener('keydown', e => {
 });
 
 /* ============================================================
+   PARTAGE PRODUIT (NOUVEAU)
+   ============================================================ */
+async function shareProduct(id){
+  const p = allProducts.find(x => x.id === id);
+  if (!p) return;
+  const text = `${p.nom} — ${fmt(p.prix)} FCFA — Khaled Watch`;
+  const url  = location.href.split('#')[0] + '#produit-' + encodeURIComponent(id);
+  if (navigator.share){
+    try { await navigator.share({ title: p.nom, text, url }); } catch(e){ /* annulé par l'utilisateur */ }
+  } else {
+    try {
+      await navigator.clipboard.writeText(`${text}\n${url}`);
+      showCoeurToast('lien-copie');
+    } catch(e){
+      window.prompt('Copiez ce lien :', url);
+    }
+  }
+}
+
+/* ============================================================
    WHATSAPP
    ============================================================ */
 function commander(el, productId) {
@@ -2889,10 +3058,6 @@ function h(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').r
 function js(s){ return String(s||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'"); }
 function fmt(n){ return Number(n||0).toLocaleString('fr-FR'); }
 
-/* ============================================================
-   REDIMENSIONNEMENT D'IMAGES À LA VOLÉE — chargement ultra rapide
-   ET meilleure qualité (netteté + compression réduite)
-   ============================================================ */
 function thumbUrl(url, width, quality) {
   if (!url || url.startsWith('data:')) return url;
   const q = quality || 88;
@@ -2948,10 +3113,32 @@ function initSunburst() {
 
 
 /* ============================================================
-   RECHERCHE
+   RECHERCHE (recherche floue ajoutée — tolère les fautes de frappe)
    ============================================================ */
 let searchQuery  = '';
 let searchTimer  = null;
+
+function levenshtein(a, b){
+  if (a === b) return 0;
+  const al = a.length, bl = b.length;
+  if (!al) return bl; if (!bl) return al;
+  let prev = Array.from({length: bl+1}, (_,i)=>i);
+  for (let i=1;i<=al;i++){
+    let cur = [i];
+    for (let j=1;j<=bl;j++){
+      cur[j] = a[i-1]===b[j-1] ? prev[j-1] : 1 + Math.min(prev[j-1], prev[j], cur[j-1]);
+    }
+    prev = cur;
+  }
+  return prev[bl];
+}
+function fuzzyIncludes(haystack, needle){
+  if (!haystack || !needle) return false;
+  if (haystack.includes(needle)) return true;
+  const words = haystack.split(/\s+/);
+  const maxDist = needle.length <= 4 ? 1 : (needle.length <= 8 ? 2 : 3);
+  return words.some(w => levenshtein(w.slice(0, needle.length+maxDist), needle) <= maxDist);
+}
 
 function onSearchInput(val) {
   var q = val.trim();
@@ -3022,15 +3209,14 @@ function runSearch(q) {
     return String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
   }
   var qn = normalize(q);
+  var qWords = qn.split(/\s+/).filter(Boolean);
 
   var found = allProducts.filter(function(p) {
-    return (
-      normalize(p.nom).includes(qn)        ||
-      normalize(p.categorie).includes(qn)  ||
-      normalize(p.genre).includes(qn)      ||
-      normalize(p.marque||'').includes(qn) ||
-      (p.couleurs||[]).some(function(c){ return normalize(c.nom||'').includes(qn); })
-    );
+    var fields = [normalize(p.nom), normalize(p.categorie), normalize(p.genre), normalize(p.marque||'')]
+      .concat((p.couleurs||[]).map(function(c){ return normalize(c.nom||''); }));
+    return qWords.every(function(word){
+      return fields.some(function(f){ return fuzzyIncludes(f, word); });
+    });
   });
 
   var labelEl = document.getElementById('searchResultsQuery');
@@ -3052,6 +3238,10 @@ function renderSearchResults(list, q) {
   if (!grid) return;
 
   if (!list.length) {
+    if (!productsLoaded){
+      grid.innerHTML = '<div class="loader-wrap"><div class="loader"></div></div>';
+      return;
+    }
     grid.innerHTML = '<div class="search-soon">'
       + '<div class="search-soon-icon">⌛</div>'
       + '<div class="search-soon-title">Produit Bientôt Disponible</div>'
@@ -3065,51 +3255,7 @@ function renderSearchResults(list, q) {
 
   currentList = list;
 
-  grid.innerHTML = list.map(function(p, i) {
-    var colors  = p.couleurs && p.couleurs.length ? p.couleurs : [];
-    var mainImg = colors.length && colors[0].image ? colors[0].image : (p.image || FALLBACK_IMG);
-
-    var colorDots = '';
-    if (colors.length) {
-      colorDots = '<div class="color-section"><div class="color-label">Couleurs</div><div class="color-swatches">'
-        + colors.map(function(c,ci){
-            return '<div class="color-swatch' + (ci===0?' active':'') + '" style="background:' + h(c.hex) + '" title="' + h(c.nom) + '" onclick="event.stopPropagation();swatchCard(this,\'' + js(p.id) + '\',' + ci + ')"></div>';
-          }).join('')
-        + '</div></div>';
-    }
-
-    var imgZoneHTML;
-    var eagerAttrs = i<6 ? 'loading="eager" fetchpriority="high"' : 'loading="lazy"';
-    if (colors.length > 1) {
-      imgZoneHTML = '<div class="cvar-viewport prod-img" data-pid="' + h(p.id) + '">'
-        + colors.map(function(c,ci){
-            return '<img class="cvar-img' + (ci===0?' loaded':'') + '" data-ci="' + ci + '" src="' + h(thumbUrl(c.image||mainImg, 640)) + '" alt="' + h(p.nom) + '" ' + (i<6?'loading="eager" fetchpriority="high"':'loading="lazy"') + ' decoding="async" onerror="this.src=\'' + FALLBACK_IMG + '\'" onload="this.classList.add(\'loaded\');this.closest(\'.prod-img-zone\').classList.add(\'img-ready\')" style="transform:translateY(' + (ci===0?'0%':'100%') + ');">';
-          }).join('')
-        + '</div>'
-        + '<div class="cvar-dots">' + colors.map(function(c,ci){ return '<div class="cvar-dot' + (ci===0?' active':'') + '"></div>'; }).join('') + '</div>';
-    } else {
-      imgZoneHTML = '<img class="prod-img" id="cimg-' + h(p.id) + '" src="' + h(thumbUrl(mainImg, 640)) + '" alt="' + h(p.nom) + '" ' + eagerAttrs + ' decoding="async" onload="this.classList.add(\'loaded\');this.closest(\'.prod-img-zone\').classList.add(\'img-ready\')" onerror="this.src=\'' + FALLBACK_IMG + '\'">';
-    }
-
-    var neutralBg = p.categorie === 'Colliers' ? ' neutral-bg' : '';
-
-    return '<div class="prod-card" data-idx="' + i + '" data-pid="' + h(p.id) + '" style="animation-delay:' + (i*.06) + 's" onclick="handleProductTap(this,\'' + js(p.id) + '\',' + i + ')">'
-      + '<div class="prod-img-zone' + neutralBg + '">'
-      + imgZoneHTML
-      + '<div class="sunburst-overlay' + neutralBg + '"></div>'
-      + coeurBadgeHtml(p.id)
-      + '<div class="card-hint-3d">👆 Toucher : agrandir · 3 taps : ❤️</div>'
-      + '</div>'
-      + '<div class="prod-body">'
-      + '<div class="prod-badge">' + h(p.categorie) + '</div>'
-      + '<div class="prod-name">' + h(p.nom) + '</div>'
-      + '<div class="prod-genre">' + h(p.genre||'') + '</div>'
-      + colorDots
-      + '<div class="prod-price">' + fmt(p.prix) + ' <small>FCFA</small></div>'
-      + '<button class="btn-wa" onclick="event.stopPropagation();commander(this,\'' + js(p.id) + '\')">' + WA_SVG + ' Commander</button>'
-      + '</div>'
-      + '</div>';
-  }).join('');
+  grid.innerHTML = list.map((p, i) => renderProdCardHTML(p, i, 6)).join('');
 
   if (gyroActive) applyGyroToImages(gyroX, gyroY);
 
@@ -3141,17 +3287,13 @@ function clearSearch() {
 }
 
 /* ============================================================
-   AVIS CLIENTS — étoiles + commentaires (stockage local à l'appareil)
+   AVIS CLIENTS — étoiles + commentaires (NOUVEAU : stockage
+   partagé via Worker/KV au lieu de localStorage)
    ============================================================ */
-const AVIS_KEY = 'kw-reviews';
 let avisSelectedStars = 0;
 
-function getAvisReviews(){
-  try { return JSON.parse(localStorage.getItem(AVIS_KEY) || '[]'); } catch(e){ return []; }
-}
-function saveAvisReviews(list){
-  try { localStorage.setItem(AVIS_KEY, JSON.stringify(list)); } catch(e){}
-}
+function getAvisReviews(){ return reviewsCache; }
+
 function starsToHtml(n){
   let s='';
   for (let i=1;i<=5;i++) s += (i<=n ? '★' : '☆');
@@ -3168,7 +3310,7 @@ function initAvisStars(){
     });
   });
 }
-function submitAvis(){
+async function submitAvis(){
   if (!avisSelectedStars){
     alert('Merci de choisir une note en étoiles ⭐');
     return;
@@ -3181,10 +3323,19 @@ function submitAvis(){
     alert("Merci d'écrire quelques mots pour votre avis 🙂");
     return;
   }
-  const review = { id: Date.now()+'-'+Math.random().toString(36).slice(2), name: name, stars: avisSelectedStars, text: text, date: new Date().toISOString() };
-  const list = getAvisReviews();
-  list.unshift(review);
-  saveAvisReviews(list);
+
+  try {
+    const res = await fetch(DATA_WORKER_URL + '/reviews', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ name, stars: avisSelectedStars, text })
+    });
+    if (!res.ok) throw 0;
+    const review = await res.json();
+    reviewsCache.unshift(review);
+  } catch(e){
+    alert("Votre avis n'a pas pu être envoyé, vérifiez votre connexion 😔");
+    return;
+  }
 
   nameInput.value = '';
   textInput.value = '';
@@ -3247,12 +3398,11 @@ function openAvis(){
   window.scrollTo(0,0);
 }
 
-/* Toast discret d'invitation — apparaît une fois, sans gêner la navigation */
 function initAvisToast(){
   if (localStorage.getItem('kw-has-reviewed') === '1') return;
   const lastShown = parseInt(localStorage.getItem('kw-avis-toast-time') || '0', 10);
   const now = Date.now();
-  if (now - lastShown < 24*60*60*1000) return; // une seule fois par jour maximum
+  if (now - lastShown < 24*60*60*1000) return;
   setTimeout(() => {
     const toast = document.getElementById('avisToast');
     if (!toast) return;
@@ -3275,33 +3425,14 @@ function goToAvisFromToast(){
 
 /* ============================================================
    COUPS DE CŒUR — triple-tap sur un produit pour l'aimer
-   Le client tapote 3 fois de suite sur la carte produit : un
-   cœur ❤️ apparaît en grand sur l'image, et le compteur de la
-   carte augmente. Chaque client ne peut aimer qu'UNE seule fois
-   un même produit (mémorisé sur son appareil).
-   Un simple tap (1 ou 2 tapotements) ouvre la fiche produit
-   normalement, comme avant.
+   Le total affiché est désormais PARTAGÉ entre tous les clients
+   (via le Worker), le "1 like par appareil" reste en localStorage.
    ============================================================ */
-const COEUR_KEY      = 'kw-reactions';   // { pid: totalCount }
-const COEUR_MINE_KEY = 'kw-reactions-mine'; // { pid: true }
-const COEUR_TAP_WINDOW = 400; // ms max entre 2 tapotements pour compter la série
+const COEUR_MINE_KEY = 'kw-reactions-mine';
+const COEUR_TAP_WINDOW = 400;
 
-let coeurTapState = {}; // pid -> {count, timer}
+let coeurTapState = {};
 
-function getCoeurData(){
-  let d;
-  try { d = JSON.parse(localStorage.getItem(COEUR_KEY) || '{}'); } catch(e){ d = {}; }
-  if (!d || typeof d !== 'object' || Array.isArray(d)) d = {};
-  // Nettoyage : toute ancienne valeur qui n'est pas un nombre (résidu d'une
-  // version précédente) est ramenée à 0 pour éviter l'affichage "[object Object]".
-  Object.keys(d).forEach(pid => {
-    if (typeof d[pid] !== 'number' || isNaN(d[pid]) || d[pid] < 0) d[pid] = 0;
-  });
-  return d;
-}
-function saveCoeurData(d){
-  try { localStorage.setItem(COEUR_KEY, JSON.stringify(d)); } catch(e){}
-}
 function getCoeurMine(){
   let d;
   try { d = JSON.parse(localStorage.getItem(COEUR_MINE_KEY) || '{}'); } catch(e){ d = {}; }
@@ -3312,7 +3443,7 @@ function saveCoeurMine(d){
   try { localStorage.setItem(COEUR_MINE_KEY, JSON.stringify(d)); } catch(e){}
 }
 function coeurTotalFor(pid){
-  const v = getCoeurData()[pid];
+  const v = likesCache[pid];
   return (typeof v === 'number' && !isNaN(v)) ? v : 0;
 }
 function coeurBadgeHtml(pid){
@@ -3338,12 +3469,10 @@ function updateCoeurBadge(pid){
     setTimeout(() => badge.classList.remove('bump'), 260);
   });
 }
+function updateAllCoeurBadges(){
+  document.querySelectorAll('.coeur-badge').forEach(b => updateCoeurBadge(b.dataset.pid));
+}
 
-/**
- * Appelée au clic/tap sur une carte produit. Compte les
- * tapotements rapprochés : au 3e tap dans la fenêtre de temps,
- * déclenche le cœur au lieu d'ouvrir la fiche produit.
- */
 function handleProductTap(card, pid, idx){
   if (!coeurTapState[pid]) coeurTapState[pid] = { count: 0, timer: null };
   const state = coeurTapState[pid];
@@ -3362,7 +3491,7 @@ function handleProductTap(card, pid, idx){
   }, COEUR_TAP_WINDOW);
 }
 
-function triggerCoeur(card, pid){
+async function triggerCoeur(card, pid){
   const mine = getCoeurMine();
   const zone = card.querySelector('.prod-img-zone');
 
@@ -3372,17 +3501,20 @@ function triggerCoeur(card, pid){
     return;
   }
 
-  const data = getCoeurData(); // déjà nettoyé : uniquement des nombres, un par produit
-  const currentCount = typeof data[pid] === 'number' ? data[pid] : 0;
-  data[pid] = currentCount + 1;
-  saveCoeurData(data);
   mine[pid] = true;
   saveCoeurMine(mine);
-
-  try { updateCoeurBadge(pid); } catch(err){ /* n'empêche pas la suite */ }
+  likesCache[pid] = (likesCache[pid] || 0) + 1;
+  updateCoeurBadge(pid);
   flashCoeur(zone, false);
   showCoeurToast('aimé');
   if (navigator.vibrate) { try { navigator.vibrate(15); } catch(err){} }
+
+  try {
+    await fetch(DATA_WORKER_URL + '/likes', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ pid })
+    });
+  } catch(e) { /* déjà affiché côté client, on ne bloque pas l'utilisateur */ }
 }
 
 function flashCoeur(zone, already){
@@ -3397,7 +3529,11 @@ function flashCoeur(zone, already){
 function showCoeurToast(kind){
   const toast = document.getElementById('coeurToast');
   if (!toast) return;
-  const msgs = { 'aimé': 'Ajouté à vos coups de cœur ❤️', 'déjà aimé': 'Vous avez déjà aimé ce produit ❤️' };
+  const msgs = {
+    'aimé': 'Ajouté à vos coups de cœur ❤️',
+    'déjà aimé': 'Vous avez déjà aimé ce produit ❤️',
+    'lien-copie': 'Lien copié dans le presse-papiers 🔗'
+  };
   toast.textContent = msgs[kind] || '';
   toast.classList.add('show');
   clearTimeout(toast._hideTimer);
@@ -3425,9 +3561,6 @@ function spawnLightParticles(){
   }
 }
 
-/* ============================================================
-   BULLES DORÉES — Chaîne Homme, Bracelets, Collier Femme, Bagues
-   ============================================================ */
 function spawnBubbles(containerId, count){
   const wrap = document.getElementById(containerId);
   if (!wrap || wrap.dataset.done) return;
@@ -3472,7 +3605,7 @@ initDesign();
 initLightMode();
 loadProducts();
 initGyroscope();
-renderAvisList();
+fetchSharedData().then(() => { renderAvisList(); updateAllCoeurBadges(); });
 initAvisToast();
 
 /* ============================================================
@@ -3814,5 +3947,6 @@ function delSendFreeText(){
   delHandleFreeText(text);
 }
 </script>
+
 </body>
 </html>
