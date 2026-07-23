@@ -1423,6 +1423,22 @@
         "img_gauche": "",
         "img_droit": "",
         "img_dos": ""
+      },
+      {
+        "nom": "Marbre",
+        "hex": "#ffbc70",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784836890546-wbukic-Rolex-land-dweiller-Marbre.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Blanc",
+        "hex": "#ffbc70",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784836890576-onn0qu-Rolex-land-dweiller-Blanc.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
       }
     ],
     "createdAt": "2026-07-23T19:50:46.492Z"
