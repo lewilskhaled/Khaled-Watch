@@ -1398,5 +1398,33 @@
       }
     ],
     "createdAt": "2026-07-18T14:18:58.606Z"
+  },
+  {
+    "id": "1784836246492",
+    "nom": "Rolex land dweiller",
+    "prix": 12000,
+    "categorie": "Montres",
+    "genre": "Homme",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784836250204-uhs0hv-Rolex-land-dweiller-principal.png",
+    "description": "Si tu recherche un style young boy cette montre elle est faite pour toi",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "argent",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [
+      {
+        "nom": "Argent Bleu",
+        "hex": "#c7c6c1",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784836250225-4zpkci-Rolex-land-dweiller-Argent-Bleu.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      }
+    ],
+    "createdAt": "2026-07-23T19:50:46.492Z"
   }
 ]
