@@ -345,7 +345,7 @@ input[type=range]{width:100%;accent-color:var(--or);cursor:pointer;}
   </div>
 </div>
 
-<!-- MODAL ÉDITION DESCRIPTION -->
+<!-- MODAL ÉDITION DESCRIPTION (ancien, conservé mais plus utilisé par le bouton) -->
 <div id="descModal" style="display:none;position:fixed;inset:0;z-index:9900;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:1rem;">
   <div style="width:100%;max-width:440px;background:linear-gradient(160deg,#120c02,#1a1204);border:1px solid var(--bord);border-radius:16px;padding:1.3rem;box-shadow:0 20px 60px rgba(0,0,0,.7);">
     <div style="font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:700;color:var(--or-l);margin-bottom:.3rem;" id="descModalTitle">Description</div>
@@ -355,6 +355,73 @@ input[type=range]{width:100%;accent-color:var(--or);cursor:pointer;}
       <button class="btn-gold" style="margin-top:0;background:rgba(255,255,255,.08);color:var(--blanc);" onclick="closeDescModal()">Annuler</button>
       <button class="btn-gold" style="margin-top:0;" id="btnSaveDesc" onclick="saveDescription()">✓ Enregistrer</button>
     </div>
+  </div>
+</div>
+
+<!-- MODAL ÉDITION COMPLÈTE D'UN PRODUIT (NOUVEAU) -->
+<div id="editModal" style="display:none;position:fixed;inset:0;z-index:9900;background:rgba(0,0,0,.78);backdrop-filter:blur(6px);align-items:flex-start;justify-content:center;padding:1rem;overflow-y:auto;">
+  <div style="width:100%;max-width:520px;background:linear-gradient(160deg,#120c02,#1a1204);border:1px solid var(--bord);border-radius:16px;padding:1.3rem;box-shadow:0 20px 60px rgba(0,0,0,.7);margin:1rem 0 3rem;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.3rem;">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:700;color:var(--or-l);" id="editModalTitle">Modifier le produit</div>
+      <button onclick="closeEditModal()" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:#fff;border-radius:50%;width:32px;height:32px;font-size:1rem;cursor:pointer;">✕</button>
+    </div>
+    <div style="font-size:.62rem;color:var(--gris);margin-bottom:1rem;line-height:1.6;">Toute modification est publiée directement sur GitHub et apparaît côté client au prochain chargement.</div>
+    <div id="st-edit" class="status"></div>
+
+    <div class="field"><label>Nom *</label><input type="text" id="eNom" placeholder="Montre Royal Gold"></div>
+    <div class="field-row">
+      <div><label>Prix FCFA *</label><input type="number" id="ePrix" placeholder="75000" inputmode="numeric"></div>
+      <div><label>Halo Cadran</label><select id="eHalo"><option value="or">🟡 Or</option><option value="argent">⚪ Argent</option><option value="sombre">⚫ Sombre</option></select></div>
+    </div>
+    <div class="field-row">
+      <div><label>Catégorie *</label><select id="eCat"><option value="">— Choisir —</option><option>Montres</option><option>Montres Luxueuses</option><option>Chaînes</option><option>Bracelets</option><option>Colliers</option><option>Bagues</option><option>Autres</option></select></div>
+      <div><label>Genre *</label><select id="eGenre"><option value="">— Choisir —</option><option>Homme</option><option>Femme</option><option>Unisexe</option></select></div>
+    </div>
+    <div class="toggle-row"><input type="checkbox" id="ePatron"><label for="ePatron">⭐ Marquer comme "Choix du Patron"</label></div>
+    <div class="field"><label>Humeur &amp; Occasion</label><div class="mood-checks" id="editMoodChecks"><div class="mood-check" onclick="toggleMood(this,'Business')"><span>💼 Business</span></div><div class="mood-check" onclick="toggleMood(this,'Gala')"><span>🥂 Gala</span></div><div class="mood-check" onclick="toggleMood(this,'Discret')"><span>🤫 Discret</span></div><div class="mood-check" onclick="toggleMood(this,'Cadeau')"><span>🎁 Cadeau</span></div></div></div>
+    <div class="divider"></div>
+    <div class="field"><label>📝 Description du Produit</label><textarea id="eDescription" rows="5" placeholder="Décrivez ce produit…" style="resize:vertical;min-height:100px;line-height:1.6;"></textarea></div>
+    <div class="divider"></div>
+
+    <div class="field"><label>📷 Photo Principale *</label>
+      <div class="img-tabs"><button class="img-tab active" onclick="switchImgSrc('url',this,'emainPane')">🔗 URL</button><button class="img-tab" onclick="switchImgSrc('device',this,'emainPane')">📱 Appareil</button></div>
+      <div id="emainPane-url"><input type="url" id="eImage" placeholder="https://..." oninput="previewField(this,'ePrevMain')"></div>
+      <div id="emainPane-device" style="display:none;"><div class="drop-zone" onclick="document.getElementById('efileMain').click()"><input type="file" id="efileMain" accept="image/*" onchange="handleFileField(this,'eImage','ePrevMain','eCat')"><div class="drop-txt"><strong>Appuyer pour choisir</strong><br>JPG · PNG · WEBP · compressée automatiquement</div></div></div>
+      <div class="img-preview-wrap"><img id="ePrevMain" class="img-preview"></div>
+    </div>
+
+    <div class="card-sub">🔄 <strong>Inspecteur 360°</strong></div>
+    <div class="angles-grid">
+      <div class="angle-block"><label>⬅ Gauche</label><div class="img-tabs"><button class="img-tab active" onclick="switchImgSrc('url',this,'egPane')">🔗</button><button class="img-tab" onclick="switchImgSrc('device',this,'egPane')">📱</button></div><div id="egPane-url"><input type="url" id="eImgGauche" placeholder="URL profil gauche" oninput="previewField(this,'ePrevG')"></div><div id="egPane-device" style="display:none;"><div class="drop-zone" onclick="document.getElementById('efileG').click()"><input type="file" id="efileG" accept="image/*" onchange="handleFileField(this,'eImgGauche','ePrevG','eCat')"><div class="drop-txt"><strong>Choisir</strong></div></div></div><div class="img-preview-wrap"><img id="ePrevG" class="img-preview"></div></div>
+      <div class="angle-block"><label>➡ Droit</label><div class="img-tabs"><button class="img-tab active" onclick="switchImgSrc('url',this,'edPane')">🔗</button><button class="img-tab" onclick="switchImgSrc('device',this,'edPane')">📱</button></div><div id="edPane-url"><input type="url" id="eImgDroit" placeholder="URL profil droit" oninput="previewField(this,'ePrevD')"></div><div id="edPane-device" style="display:none;"><div class="drop-zone" onclick="document.getElementById('efileD').click()"><input type="file" id="efileD" accept="image/*" onchange="handleFileField(this,'eImgDroit','ePrevD','eCat')"><div class="drop-txt"><strong>Choisir</strong></div></div></div><div class="img-preview-wrap"><img id="ePrevD" class="img-preview"></div></div>
+      <div class="angle-block"><label>🔙 Dos</label><div class="img-tabs"><button class="img-tab active" onclick="switchImgSrc('url',this,'edosPane')">🔗</button><button class="img-tab" onclick="switchImgSrc('device',this,'edosPane')">📱</button></div><div id="edosPane-url"><input type="url" id="eImgDos" placeholder="URL vue dos" oninput="previewField(this,'ePrevDos')"></div><div id="edosPane-device" style="display:none;"><div class="drop-zone" onclick="document.getElementById('efileDos').click()"><input type="file" id="efileDos" accept="image/*" onchange="handleFileField(this,'eImgDos','ePrevDos','eCat')"><div class="drop-txt"><strong>Choisir</strong></div></div></div><div class="img-preview-wrap"><img id="ePrevDos" class="img-preview"></div></div>
+    </div>
+    <div class="divider"></div>
+
+    <div class="card-sub">⚡ <strong>Vente Flash</strong></div>
+    <div class="field-row"><div><label>Réduction (FCFA)</label><input type="number" id="eFlashReduction" placeholder="5000" inputmode="numeric"></div><div><label>Fin de l'offre</label><input type="datetime-local" id="eFlashFin"></div></div>
+    <div class="divider"></div>
+
+    <div class="field"><label>🎨 Couleurs disponibles <span class="prod-count" id="editColorCount">0</span></label>
+      <div class="color-list" id="editColorList"><div style="font-size:.65rem;color:var(--gris);text-align:center;padding:.5rem;">Aucune couleur.</div></div>
+      <div class="add-color-box">
+        <div style="font-size:.6rem;letter-spacing:.14em;color:var(--or);text-transform:uppercase;margin-bottom:.6rem;">Ajouter une couleur</div>
+        <div class="field" style="margin-bottom:.5rem;"><label>Nom</label><input type="text" id="ecNom" placeholder="Or Rose, Noir Mat…"></div>
+        <div class="color-picker-row"><input type="color" id="ecHex" value="#C9A84C"><span id="ecHexVal" style="font-size:.7rem;color:var(--gris);">#C9A84C</span></div>
+        <div class="field" style="margin-bottom:.5rem;"><label>📷 Photo de cette couleur</label><div class="img-tabs"><button class="img-tab active" onclick="switchImgSrc('url',this,'ecpPane')">🔗 URL</button><button class="img-tab" onclick="switchImgSrc('device',this,'ecpPane')">📱 Galerie</button></div><div id="ecpPane-url"><input type="url" id="ecImage" placeholder="https://..." oninput="previewField(this,'ePrevColor')"></div><div id="ecpPane-device" style="display:none;"><div class="drop-zone" onclick="document.getElementById('efileCPhoto').click()" style="padding:.8rem;"><input type="file" id="efileCPhoto" accept="image/*" onchange="handleFileField(this,'ecImage','ePrevColor','eCat')"><div class="drop-txt"><strong>Choisir depuis la galerie</strong></div></div></div><div class="img-preview-wrap"><img id="ePrevColor" class="img-preview"></div></div>
+        <div style="font-size:.58rem;color:#C8BDA0;margin:.6rem 0 .4rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;">📐 Angles 360° couleur (optionnel)</div>
+        <div class="angle-block" style="margin-bottom:.5rem;"><label>⬅ Gauche</label><div class="img-tabs"><button class="img-tab active" onclick="switchImgSrc('url',this,'ecgPane')">🔗</button><button class="img-tab" onclick="switchImgSrc('device',this,'ecgPane')">📱</button></div><div id="ecgPane-url"><input type="url" id="ecImgGauche" placeholder="https://..." oninput="previewField(this,'ePrevCG')"></div><div id="ecgPane-device" style="display:none;"><div class="drop-zone" onclick="document.getElementById('efileCG').click()" style="padding:.8rem;"><input type="file" id="efileCG" accept="image/*" onchange="handleFileField(this,'ecImgGauche','ePrevCG','eCat')"><div class="drop-txt"><strong>Choisir</strong></div></div></div><div class="img-preview-wrap"><img id="ePrevCG" class="img-preview"></div></div>
+        <div class="angle-block" style="margin-bottom:.5rem;"><label>➡ Droit</label><div class="img-tabs"><button class="img-tab active" onclick="switchImgSrc('url',this,'ecdPane')">🔗</button><button class="img-tab" onclick="switchImgSrc('device',this,'ecdPane')">📱</button></div><div id="ecdPane-url"><input type="url" id="ecImgDroit" placeholder="https://..." oninput="previewField(this,'ePrevCD')"></div><div id="ecdPane-device" style="display:none;"><div class="drop-zone" onclick="document.getElementById('efileCD').click()" style="padding:.8rem;"><input type="file" id="efileCD" accept="image/*" onchange="handleFileField(this,'ecImgDroit','ePrevCD','eCat')"><div class="drop-txt"><strong>Choisir</strong></div></div></div><div class="img-preview-wrap"><img id="ePrevCD" class="img-preview"></div></div>
+        <div class="angle-block" style="margin-bottom:.5rem;"><label>🔙 Dos</label><div class="img-tabs"><button class="img-tab active" onclick="switchImgSrc('url',this,'ecdosPane')">🔗</button><button class="img-tab" onclick="switchImgSrc('device',this,'ecdosPane')">📱</button></div><div id="ecdosPane-url"><input type="url" id="ecImgDos" placeholder="https://..." oninput="previewField(this,'ePrevCDos')"></div><div id="ecdosPane-device" style="display:none;"><div class="drop-zone" onclick="document.getElementById('efileCDos').click()" style="padding:.8rem;"><input type="file" id="efileCDos" accept="image/*" onchange="handleFileField(this,'ecImgDos','ePrevCDos','eCat')"><div class="drop-txt"><strong>Choisir</strong></div></div></div><div class="img-preview-wrap"><img id="ePrevCDos" class="img-preview"></div></div>
+        <button class="btn-gold btn-sm" onclick="addEditColor()" style="width:auto;padding:.5rem 1.2rem;margin-top:.6rem;">＋ Ajouter cette couleur</button>
+      </div>
+    </div>
+
+    <div class="section-divider-strong"></div>
+
+    <button class="btn-gold" id="btnSaveEdit" onclick="saveEditedProduct()">💾 Enregistrer les modifications</button>
+    <button class="btn-gold" style="margin-top:.6rem;background:rgba(255,255,255,.08);color:var(--blanc);" onclick="closeEditModal()">Annuler</button>
+    <button class="btn-gold" id="btnDeleteFromEdit" style="margin-top:.9rem;background:rgba(192,57,43,.18);color:#eb5757;border:1px solid rgba(192,57,43,.4);" onclick="deleteFromEditModal()">🗑 Supprimer définitivement ce produit</button>
   </div>
 </div>
 
@@ -779,7 +846,7 @@ function renderList(){
   const el = document.getElementById('prodList');
   document.getElementById('prodCountBadge').textContent = prods.length;
   if(!prods.length){ el.innerHTML='<div class="empty-list">Aucun produit.</div>'; return; }
-  el.innerHTML = prods.map((p,i)=>`<div class="prod-row"><img src="${h(p.image)}" alt="" onerror="this.src='https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=80&q=60'"><div class="prod-row-info"><div class="prod-row-name">${h(p.nom)}${p.is_patron?' ⭐':''}</div><div class="prod-row-meta">${h(p.categorie)} · ${h(p.genre)}${p.couleurs&&p.couleurs.length?' · '+p.couleurs.length+' coul.':''}${p.description?' · 📝 Description ✓':' · <span style=\"color:#eb5757;\">Pas de description</span>'}</div></div><div class="prod-row-price">${fmt(p.prix)}F</div><button class="btn-del" onclick="editDescription(${i})" style="background:rgba(201,168,76,.15);border-color:rgba(201,168,76,.35);color:var(--or-l);">✎</button><button class="btn-del" onclick="deleteProduct(${i})">🗑</button></div>`).join('');
+  el.innerHTML = prods.map((p,i)=>`<div class="prod-row"><img src="${h(p.image)}" alt="" onerror="this.src='https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=80&q=60'"><div class="prod-row-info"><div class="prod-row-name">${h(p.nom)}${p.is_patron?' ⭐':''}</div><div class="prod-row-meta">${h(p.categorie)} · ${h(p.genre)}${p.couleurs&&p.couleurs.length?' · '+p.couleurs.length+' coul.':''}${p.description?' · 📝 Description ✓':' · <span style=\"color:#eb5757;\">Pas de description</span>'}</div></div><div class="prod-row-price">${fmt(p.prix)}F</div><button class="btn-del" onclick="openEditProduct(${i})" style="background:rgba(201,168,76,.15);border-color:rgba(201,168,76,.35);color:var(--or-l);">✎ Modifier</button><button class="btn-del" onclick="deleteProduct(${i})">🗑</button></div>`).join('');
 }
 async function addProduct(){
   const nom=document.getElementById('fNom').value.trim(),prix=parseFloat(document.getElementById('fPrix').value),cat=document.getElementById('fCat').value,genre=document.getElementById('fGenre').value,img=document.getElementById('fImage').value.trim();
@@ -839,6 +906,204 @@ async function saveDescription(){
     btn.disabled=false; btn.innerHTML='✓ Enregistrer';
   }
 }
+/* ============================================================
+   ÉDITION COMPLÈTE D'UN PRODUIT (NOUVEAU)
+   Permet de tout modifier (nom, prix, catégorie, genre, images,
+   couleurs, description, flash…) et de supprimer le produit
+   directement depuis l'écran d'édition. Publie sur GitHub en
+   un seul commit, donc visible côté client au chargement suivant.
+   ============================================================ */
+let editingIdx = null;
+let editColors = [];
+
+document.getElementById('ecHex').addEventListener('input', e => {
+  document.getElementById('ecHexVal').textContent = e.target.value;
+});
+
+function openEditProduct(idx){
+  editingIdx = idx;
+  const p = prods[idx];
+  if(!p) return;
+
+  document.getElementById('editModalTitle').textContent = '✎ ' + (p.nom || 'Produit');
+  document.getElementById('eNom').value = p.nom || '';
+  document.getElementById('ePrix').value = p.prix != null ? p.prix : '';
+  document.getElementById('eHalo').value = p.halo_cadran || 'or';
+  document.getElementById('eCat').value = p.categorie || '';
+  document.getElementById('eGenre').value = p.genre || '';
+  document.getElementById('ePatron').checked = !!p.is_patron;
+  document.getElementById('eDescription').value = p.description || '';
+  document.getElementById('eFlashReduction').value = p.flash_reduction || '';
+  // datetime-local attend "AAAA-MM-JJTHH:MM" (sans les secondes/fuseau)
+  document.getElementById('eFlashFin').value = p.flash_fin ? p.flash_fin.slice(0,16) : '';
+
+  // Images principales
+  const setImgField = (fieldId, previewId, val) => {
+    document.getElementById(fieldId).value = val || '';
+    const img = document.getElementById(previewId);
+    if(val){ img.src = val; img.style.display = 'block'; } else { img.style.display = 'none'; }
+  };
+  setImgField('eImage','ePrevMain', p.image);
+  setImgField('eImgGauche','ePrevG', p.img_gauche);
+  setImgField('eImgDroit','ePrevD', p.img_droit);
+  setImgField('eImgDos','ePrevDos', p.img_dos);
+
+  // Réinitialiser les onglets URL/Appareil sur "URL" par défaut
+  document.querySelectorAll('#editModal .img-tabs').forEach(tabs=>{
+    const buttons = tabs.querySelectorAll('.img-tab');
+    if(buttons[0]) buttons[0].click();
+  });
+
+  // Réinitialiser le champ d'ajout de couleur
+  ['ecNom','ecImage','ecImgGauche','ecImgDroit','ecImgDos'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('ecHex').value = '#C9A84C';
+  document.getElementById('ecHexVal').textContent = '#C9A84C';
+  document.getElementById('ePrevColor').style.display='none';
+  document.getElementById('ePrevCG').style.display='none';
+  document.getElementById('ePrevCD').style.display='none';
+  document.getElementById('ePrevCDos').style.display='none';
+
+  // Couleurs existantes (copie profonde pour ne rien modifier avant l'enregistrement)
+  editColors = Array.isArray(p.couleurs) ? JSON.parse(JSON.stringify(p.couleurs)) : [];
+  renderEditColorList();
+
+  // Humeurs
+  document.querySelectorAll('#editMoodChecks .mood-check').forEach(el=>{
+    const mood = el.querySelector('span').textContent.split(' ').slice(1).join(' ');
+    const isActive = (p.moods||[]).includes(mood);
+    el.classList.toggle('active', isActive);
+    el.dataset.mood = mood;
+  });
+
+  document.getElementById('st-edit').style.display = 'none';
+  document.getElementById('editModal').style.display = 'flex';
+  document.getElementById('editModal').scrollTop = 0;
+}
+
+function closeEditModal(){
+  document.getElementById('editModal').style.display = 'none';
+  editingIdx = null;
+  editColors = [];
+}
+
+function addEditColor(){
+  const nom = document.getElementById('ecNom').value.trim();
+  const hex = document.getElementById('ecHex').value;
+  if(!nom){ alert('Entrez un nom pour cette couleur.'); return; }
+  editColors.push({
+    nom, hex,
+    image: document.getElementById('ecImage').value.trim(),
+    img_gauche: document.getElementById('ecImgGauche').value.trim(),
+    img_droit: document.getElementById('ecImgDroit').value.trim(),
+    img_dos: document.getElementById('ecImgDos').value.trim()
+  });
+  ['ecNom','ecImage','ecImgGauche','ecImgDroit','ecImgDos'].forEach(id=>document.getElementById(id).value='');
+  ['ePrevColor','ePrevCG','ePrevCD','ePrevCDos'].forEach(id=>document.getElementById(id).style.display='none');
+  renderEditColorList();
+}
+
+function removeEditColor(i){
+  editColors.splice(i,1);
+  renderEditColorList();
+}
+
+function renderEditColorList(){
+  const el = document.getElementById('editColorList');
+  document.getElementById('editColorCount').textContent = editColors.length;
+  if(!editColors.length){
+    el.innerHTML = '<div style="font-size:.65rem;color:var(--gris);text-align:center;padding:.5rem;">Aucune couleur.</div>';
+    return;
+  }
+  el.innerHTML = editColors.map((c,i)=>`<div class="color-row"><div class="color-dot" style="background:${h(c.hex)}"></div><div class="color-row-info"><div class="color-row-name">${h(c.nom)}</div><div class="color-row-hex">${h(c.hex)}${c.image?' · Photo ✓':''}</div></div><button class="btn-del-color" onclick="removeEditColor(${i})">✕</button></div>`).join('');
+}
+
+async function saveEditedProduct(){
+  if(editingIdx === null) return;
+  const original = prods[editingIdx];
+  if(!original) return;
+
+  const nom = document.getElementById('eNom').value.trim();
+  const prix = parseFloat(document.getElementById('ePrix').value);
+  const cat = document.getElementById('eCat').value;
+  const genre = document.getElementById('eGenre').value;
+  const img = document.getElementById('eImage').value.trim();
+
+  if(!nom || !prix || !cat || !genre || !img){
+    showSt('edit','err','⚠ Remplissez les champs obligatoires (nom, prix, catégorie, genre, photo principale).');
+    return;
+  }
+  if(!cfg.token){ showSt('edit','err','Configurez GitHub d\'abord.'); return; }
+
+  const moods = [];
+  document.querySelectorAll('#editMoodChecks .mood-check.active').forEach(el=>moods.push(el.dataset.mood));
+  const flashFin = document.getElementById('eFlashFin').value;
+  const flashRed = parseFloat(document.getElementById('eFlashReduction').value) || 0;
+  const description = document.getElementById('eDescription').value.trim();
+
+  const updatedProduct = {
+    ...original,
+    nom, prix, categorie: cat, genre, image: img, description,
+    img_gauche: document.getElementById('eImgGauche').value.trim() || '',
+    img_droit: document.getElementById('eImgDroit').value.trim() || '',
+    img_dos: document.getElementById('eImgDos').value.trim() || '',
+    halo_cadran: document.getElementById('eHalo').value,
+    is_patron: document.getElementById('ePatron').checked,
+    moods,
+    flash_fin: flashFin ? new Date(flashFin).toISOString() : '',
+    flash_reduction: flashFin ? flashRed : 0,
+    couleurs: editColors
+  };
+
+  const btn = document.getElementById('btnSaveEdit');
+  btn.disabled = true; btn.innerHTML = '<span class="mini-loader"></span>Publication…';
+  showSt('edit','load','⌛ Préparation des images…');
+
+  try{
+    const {products} = await getFile();
+    const imgChanges = await planImageUploads(updatedProduct);
+    const updatedProducts = products.map(x => x.id === original.id ? updatedProduct : x);
+    const jsonChange = { path: FILE, content: JSON.stringify(updatedProducts, null, 2), isBase64:false };
+
+    showSt('edit','load', `⌛ Publication en 1 seul commit (${imgChanges.length} image(s))…`);
+    btn.innerHTML = '<span class="mini-loader"></span>Publication…';
+    await publishSingleCommit(`✎ Modification : ${nom}`, [...imgChanges, jsonChange]);
+
+    prods = updatedProducts;
+    renderList();
+    showSt('edit','ok', `✓ "${nom}" mis à jour et publié.`);
+    setTimeout(closeEditModal, 900);
+  }catch(e){
+    showSt('edit','err','Erreur : '+e.message);
+  }finally{
+    btn.disabled = false; btn.innerHTML = '💾 Enregistrer les modifications';
+  }
+}
+
+async function deleteFromEditModal(){
+  if(editingIdx === null) return;
+  const p = prods[editingIdx];
+  if(!p) return;
+  if(!confirm(`Supprimer définitivement "${p.nom}" ? Cette action est irréversible.`)) return;
+
+  const btn = document.getElementById('btnDeleteFromEdit');
+  btn.disabled = true; btn.innerHTML = '<span class="mini-loader"></span>Suppression…';
+  showSt('edit','load','⌛ Suppression…');
+
+  try{
+    const {sha, products} = await getFile();
+    const upd = products.filter(x => x.id !== p.id);
+    await commitFile(upd, sha, `🗑 Suppression : ${p.nom}`);
+    prods = upd;
+    renderList();
+    showSt('edit','ok', `✓ "${p.nom}" supprimé.`);
+    setTimeout(closeEditModal, 700);
+  }catch(e){
+    showSt('edit','err','Erreur : '+e.message);
+  }finally{
+    btn.disabled = false; btn.innerHTML = '🗑 Supprimer définitivement ce produit';
+  }
+}
+
 function countBase64Fields(p){
   let n = 0;
   const isB64 = v => typeof v === 'string' && v.startsWith('data:');
@@ -932,11 +1197,11 @@ function compressImageFile(file, maxDim=1400, jpegQuality=0.85){
   });
 }
 
-function handleFileField(input,fieldId,previewId){
+function handleFileField(input,fieldId,previewId,catElId){
   const file=input.files[0]; if(!file)return;
   if(file.size>15*1024*1024){alert('⚠ Image trop lourde (max 15 Mo avant compression).');return;}
   const img=document.getElementById(previewId);
-  const catEl = document.getElementById('fCat');
+  const catEl = document.getElementById(catElId||'fCat');
   const isCollier = catEl && catEl.value === 'Colliers';
   // Qualité renforcée spécifiquement pour les Colliers (détails fins de chaîne bien nets)
   const maxDim = isCollier ? 2200 : 1400;
