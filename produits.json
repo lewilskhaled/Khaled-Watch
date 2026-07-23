@@ -1442,5 +1442,41 @@
       }
     ],
     "createdAt": "2026-07-23T19:50:46.492Z"
+  },
+  {
+    "id": "1784840855564",
+    "nom": "Maurice  lacroix",
+    "prix": 10000,
+    "categorie": "Montres",
+    "genre": "Homme",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784840859146-18e5n7-Maurice-lacroix-principal.png",
+    "description": "La touche parfaite pour ton style",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "argent",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [
+      {
+        "nom": "Argent",
+        "hex": "#bdbdbc",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784840859158-an110c-Maurice-lacroix-Argent.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Argent",
+        "hex": "#bdbdbc",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784840859172-14hmu4-Maurice-lacroix-Argent.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      }
+    ],
+    "createdAt": "2026-07-23T21:07:35.564Z"
   }
 ]
