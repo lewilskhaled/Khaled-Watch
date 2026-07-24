@@ -50,6 +50,12 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--txt);m
     #ffffff;
   display:flex;align-items:center;justify-content:center;flex-direction:column;
   overflow:hidden;
+}
+/* NOUVEAU — le décompte de sortie du splash ne démarre plus tout seul au
+   chargement de la page : il ne démarre que lorsque le JS ajoute cette
+   classe (une fois l'authentification terminée), pour ne jamais jouer
+   le splash "dans le vide" pendant que l'écran de connexion est affiché. */
+#splash.start-timer{
   animation:splashOut 1s ease-in 4.6s forwards;
 }
 
@@ -1428,6 +1434,149 @@ body.light-mode .sort-select{background:rgba(255,255,255,.8);color:#8B6914;borde
 }
 #catalogLoader.show{display:flex;}
 #catalogLoader span{font-size:.65rem;letter-spacing:.15em;color:var(--or-l);text-transform:uppercase;font-weight:700;text-shadow:var(--ts);}
+
+/* ============================================================
+   ÉCRAN DE CONNEXION / INSCRIPTION (NOUVEAU)
+   Bloque l'accès au site tant que le client n'est pas identifié.
+   Reste au-dessus de tout, y compris le splash (z-index 9999).
+   ============================================================ */
+#authGate{
+  position:fixed;inset:0;z-index:10500;
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 0%, rgba(201,168,76,.14) 0%, rgba(201,168,76,0) 60%),
+    linear-gradient(170deg,#0d0b08 0%,#1B1815 55%,#0d0b08 100%);
+  display:flex;align-items:center;justify-content:center;
+  padding:1.2rem;overflow-y:auto;
+}
+.auth-box{
+  width:100%;max-width:380px;
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(201,168,76,.35);
+  border-radius:20px;
+  padding:2rem 1.6rem 1.7rem;
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  box-shadow:0 20px 60px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.05);
+  text-align:center;
+  animation:authBoxIn .6s cubic-bezier(.2,.8,.3,1) both;
+}
+@keyframes authBoxIn{from{opacity:0;transform:translateY(18px) scale(.97);}to{opacity:1;transform:translateY(0) scale(1);}}
+.auth-logo{
+  font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:700;letter-spacing:.14em;
+  background:linear-gradient(90deg,#8B6914 0%,#C9A84C 20%,#F5E27A 40%,#FFFBE6 50%,#F5E27A 60%,#C9A84C 80%,#8B6914 100%);
+  background-size:250% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  animation:goldShimmer 3s linear infinite;margin-bottom:.3rem;
+}
+.auth-tagline{font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gris);margin-bottom:1.4rem;font-weight:600;}
+.auth-tabs{display:flex;gap:.5rem;margin-bottom:1.3rem;background:rgba(0,0,0,.35);border-radius:50px;padding:.3rem;border:1px solid rgba(201,168,76,.2);}
+.auth-tab{
+  flex:1;padding:.55rem 0;border-radius:50px;border:none;background:none;cursor:pointer;
+  font-family:'Montserrat',sans-serif;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;
+  color:#B8AB92;font-weight:700;transition:all .25s;-webkit-tap-highlight-color:transparent;
+}
+.auth-tab.active{background:linear-gradient(135deg,var(--or-d),var(--or));color:#000;box-shadow:0 3px 12px rgba(201,168,76,.35);}
+.auth-error{
+  font-size:.68rem;color:#eb5757;background:rgba(192,57,43,.12);border:1px solid rgba(192,57,43,.3);
+  border-radius:8px;padding:.55rem .7rem;margin-bottom:.9rem;line-height:1.5;display:none;text-align:left;
+}
+.auth-error.show{display:block;}
+.auth-field{margin-bottom:.7rem;}
+.auth-field input{
+  width:100%;background:rgba(0,0,0,.4);border:1px solid rgba(201,168,76,.25);border-radius:10px;
+  color:#fff;padding:.75rem .9rem;font-size:.82rem;font-family:'Montserrat',sans-serif;outline:none;
+  transition:border-color .2s;text-align:left;
+}
+.auth-field input:focus{border-color:var(--or);}
+.auth-field input::placeholder{color:#8a8068;}
+.auth-remember{
+  display:flex;align-items:center;gap:.55rem;margin:.3rem 0 1.1rem;cursor:pointer;
+  font-size:.7rem;color:#D4C9B0;letter-spacing:.03em;font-weight:500;text-align:left;
+}
+.auth-remember input{width:16px;height:16px;accent-color:var(--or);cursor:pointer;flex-shrink:0;}
+.auth-submit{
+  width:100%;padding:.85rem;background:linear-gradient(135deg,var(--or-d),var(--or));color:#000;
+  border:none;border-radius:12px;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;
+  font-weight:700;font-family:'Montserrat',sans-serif;cursor:pointer;-webkit-tap-highlight-color:transparent;
+  transition:opacity .25s,transform .15s;box-shadow:0 6px 20px rgba(201,168,76,.3);
+}
+.auth-submit:active{opacity:.85;transform:scale(.98);}
+.auth-submit:disabled{opacity:.5;cursor:not-allowed;}
+.auth-switch-note{font-size:.64rem;color:var(--gris);margin-top:1.1rem;line-height:1.6;}
+.auth-switch-note a{color:var(--or-l);font-weight:700;cursor:pointer;text-decoration:underline;}
+.mini-loader-auth{display:inline-block;width:12px;height:12px;border:2px solid rgba(0,0,0,.25);border-top-color:#000;border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle;margin-right:4px;}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ============================================================
+   ANIMATION DE BIENVENUE — jouée UNE SEULE FOIS, juste après la
+   création d'un compte. Un personnage doré glisse à l'écran
+   ("moonwalk" stylisé, dans l'esprit doré/prestige du site),
+   suivi d'un message de bienvenue, puis laisse place au splash
+   habituel du site (inchangé).
+   ============================================================ */
+#welcomeAnim{
+  position:fixed;inset:0;z-index:10600;display:none;
+  align-items:center;justify-content:center;flex-direction:column;
+  background:radial-gradient(ellipse 70% 55% at 50% 40%, rgba(201,168,76,.12) 0%, rgba(0,0,0,0) 65%),#0d0b08;
+  overflow:hidden;
+}
+#welcomeAnim.show{display:flex;}
+.wa-stage{position:relative;width:100%;max-width:420px;height:320px;display:flex;align-items:flex-end;justify-content:center;}
+.wa-figure{
+  position:absolute;bottom:18px;left:-160px;
+  animation:waWalkIn 2.4s cubic-bezier(.3,.7,.3,1) forwards;
+}
+@keyframes waWalkIn{
+  0%{left:-160px;transform:scaleX(1);}
+  85%{left:calc(50% - 55px);transform:scaleX(1);}
+  92%{transform:scaleX(1) rotate(-4deg);}
+  100%{left:calc(50% - 55px);transform:scaleX(1) rotate(0deg);}
+}
+.wa-figure svg{width:110px;height:238px;display:block;filter:drop-shadow(0 14px 30px rgba(201,168,76,.5));transform:rotate(-9deg);transform-origin:55px 224px;}
+/* Effet moonwalk : chaque jambe glisse vers l'arrière (le pied "racle" le
+   sol en douceur) pendant que la silhouette entière avance — c'est ce
+   décalage entre le mouvement des jambes et l'avancée du corps qui crée
+   l'illusion caractéristique du moonwalk. */
+.wa-leg{animation:waMoonSlide .42s linear infinite;transform-origin:30px 74px;}
+.wa-leg.b{animation-delay:.21s;}
+@keyframes waMoonSlide{
+  0%{transform:translateX(3px) translateY(0) rotate(3deg);}
+  30%{transform:translateX(-2px) translateY(-1px) rotate(-2deg);}
+  55%{transform:translateX(-6px) translateY(0) rotate(-6deg);}
+  80%{transform:translateX(-2px) translateY(0) rotate(-2deg);}
+  100%{transform:translateX(3px) translateY(0) rotate(3deg);}
+}
+/* Petites traînées de glisse sous les pieds, façon "raclement au sol" */
+.wa-dust{
+  position:absolute;bottom:14px;height:3px;width:16px;border-radius:50px;
+  background:linear-gradient(90deg,transparent,rgba(232,201,122,.75),transparent);
+  opacity:0;pointer-events:none;
+}
+.wa-dust.d1{left:calc(50% - 46px);animation:waDust .42s linear infinite;}
+.wa-dust.d2{left:calc(50% - 30px);animation:waDust .42s linear infinite .21s;}
+@keyframes waDust{
+  0%{opacity:0;transform:translateX(6px) scaleX(.4);}
+  25%{opacity:.85;transform:translateX(-2px) scaleX(1);}
+  60%{opacity:.4;transform:translateX(-14px) scaleX(1.3);}
+  100%{opacity:0;transform:translateX(-20px) scaleX(.6);}
+}
+.wa-sparkle-trail{position:absolute;bottom:22px;height:4px;border-radius:50px;
+  background:linear-gradient(90deg,transparent,rgba(201,168,76,.55),transparent);
+  animation:waTrail 2.2s ease-out forwards;opacity:0;
+}
+@keyframes waTrail{0%{left:0;width:0;opacity:0;}10%{opacity:.8;}85%{left:calc(50% - 90px);width:160px;opacity:.5;}100%{opacity:0;}}
+.wa-spark{position:absolute;color:#F5E27A;text-shadow:0 0 8px rgba(245,226,122,.9);opacity:0;animation:waSparkPop 1.6s ease-out forwards;}
+@keyframes waSparkPop{0%{opacity:0;transform:scale(.3) translateY(6px);}40%{opacity:1;transform:scale(1.15) translateY(-4px);}100%{opacity:0;transform:scale(.7) translateY(-14px);}}
+.wa-text{
+  margin-top:1.6rem;text-align:center;opacity:0;
+  animation:fadeUp .8s ease-out 2.3s forwards;
+}
+.wa-welcome-label{font-size:.62rem;letter-spacing:.35em;text-transform:uppercase;color:var(--or-l);font-weight:700;margin-bottom:.5rem;}
+.wa-name{
+  font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,7vw,2.6rem);font-weight:700;
+  background:linear-gradient(90deg,#8B6914 0%,#C9A84C 20%,#F5E27A 40%,#FFFBE6 50%,#F5E27A 60%,#C9A84C 80%,#8B6914 100%);
+  background-size:250% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  animation:goldShimmer 3s linear infinite;
+}
+.wa-sub{font-size:.72rem;color:#D4C9B0;margin-top:.5rem;letter-spacing:.05em;font-weight:500;}
 </style>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#1B1815">
@@ -1437,7 +1586,61 @@ body.light-mode .sort-select{background:rgba(255,255,255,.8);color:#8B6914;borde
 <link rel="icon" href="icons/icon-192.png">
 </head>
 <body>
+<!-- ÉCRAN DE CONNEXION / INSCRIPTION — bloque l'accès tant que le client n'est pas identifié -->
+<div id="authGate">
+  <div class="auth-box">
+    <div class="auth-logo">Khaled Watch</div>
+    <div class="auth-tagline">Accès réservé à nos clients</div>
+    <div class="auth-tabs">
+      <button class="auth-tab" data-mode="login" onclick="setAuthMode('login')" type="button">Se connecter</button>
+      <button class="auth-tab active" data-mode="signup" onclick="setAuthMode('signup')" type="button">Créer un compte</button>
+    </div>
+    <div id="authError" class="auth-error"></div>
+    <form id="authForm" onsubmit="return handleAuthSubmit(event)" autocomplete="on">
+      <div class="auth-field signup-only"><input type="text" id="authPrenom" placeholder="Prénom" autocomplete="given-name"></div>
+      <div class="auth-field signup-only"><input type="text" id="authNom" placeholder="Nom" autocomplete="family-name"></div>
+      <div class="auth-field"><input type="email" id="authEmail" placeholder="Adresse Gmail" autocomplete="email"></div>
+      <div class="auth-field"><input type="password" id="authPassword" placeholder="Mot de passe" autocomplete="new-password"></div>
+      <label class="auth-remember"><input type="checkbox" id="authRemember" checked> Se souvenir de moi (ne plus redemander le mot de passe)</label>
+      <button type="submit" class="auth-submit" id="authSubmitBtn">Créer mon compte</button>
+    </form>
+    <div class="auth-switch-note" id="authSwitchNote">Déjà client ? <a onclick="setAuthMode('login')">Connectez-vous ici</a></div>
+  </div>
+</div>
+
+<!-- ANIMATION DE BIENVENUE — jouée une seule fois, juste après la création d'un compte -->
+<div id="welcomeAnim">
+  <div class="wa-stage">
+    <div class="wa-sparkle-trail"></div>
+    <div class="wa-dust d1"></div>
+    <div class="wa-dust d2"></div>
+    <div class="wa-figure" id="waFigure">
+      <svg viewBox="0 0 60 130" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="waGoldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#8B6914"/>
+            <stop offset="45%" stop-color="#E8C97A"/>
+            <stop offset="100%" stop-color="#C9A84C"/>
+          </linearGradient>
+        </defs>
+        <circle cx="30" cy="16" r="12" fill="url(#waGoldGrad)"/>
+        <rect x="18" y="30" width="24" height="46" rx="10" fill="url(#waGoldGrad)"/>
+        <rect class="wa-leg a" x="18" y="72" width="10" height="42" rx="5" fill="url(#waGoldGrad)"/>
+        <rect class="wa-leg b" x="32" y="72" width="10" height="42" rx="5" fill="url(#waGoldGrad)"/>
+        <rect x="6" y="34" width="10" height="34" rx="5" fill="url(#waGoldGrad)" opacity=".9"/>
+        <rect x="44" y="34" width="10" height="34" rx="5" fill="url(#waGoldGrad)" opacity=".9"/>
+      </svg>
+    </div>
+  </div>
+  <div class="wa-text">
+    <div class="wa-welcome-label">✦ Bienvenue chez ✦</div>
+    <div class="wa-name" id="welcomeName">Khaled Watch</div>
+    <div class="wa-sub">Votre compte a été créé avec succès</div>
+  </div>
+</div>
+
 <!-- Badge gyroscope -->
+
 <div class="gyro-badge" id="gyroBadge">🌀 Gyroscope actif</div>
 
 <!-- SPLASH -->
@@ -1764,14 +1967,180 @@ body.light-mode .sort-select{background:rgba(255,255,255,.8);color:#8B6914;borde
 const WA = '2290169515730';
 const DEL_WORKER_URL = 'https://khaled-watch-del.lewilskhaled.workers.dev';
 
-/* NOUVEAU — backend partagé pour avis clients & coups de cœur.
-   Remplacez cette URL par celle de votre Worker une fois déployé
-   (voir khaled-watch-worker-reviews.js). */
+/* Backend partagé pour avis clients, coups de cœur & comptes clients */
 const DATA_WORKER_URL = 'https://khaled-watch-data.lewilskhaled.workers.dev';
 let reviewsCache = [];
 let likesCache = {};
 let productsLoaded = false;
 let currentSort = 'default';
+
+/* ============================================================
+   AUTHENTIFICATION CLIENT (NOUVEAU)
+   ============================================================ */
+const AUTH_TOKEN_KEY = 'kw-auth-token';
+const AUTH_NAME_KEY  = 'kw-auth-name';
+let authMode = 'signup';
+
+function setAuthMode(mode){
+  authMode = mode;
+  document.querySelectorAll('.auth-tab').forEach(t => t.classList.toggle('active', t.dataset.mode === mode));
+  document.querySelectorAll('.signup-only').forEach(el => el.style.display = mode === 'signup' ? 'block' : 'none');
+  document.getElementById('authSubmitBtn').textContent = mode === 'signup' ? 'Créer mon compte' : 'Se connecter';
+  document.getElementById('authSwitchNote').innerHTML = mode === 'signup'
+    ? 'Déjà client ? <a onclick="setAuthMode(\'login\')">Connectez-vous ici</a>'
+    : 'Pas encore de compte ? <a onclick="setAuthMode(\'signup\')">Inscrivez-vous ici</a>';
+  const err = document.getElementById('authError');
+  err.classList.remove('show'); err.textContent = '';
+}
+
+function showAuthError(msg){
+  const err = document.getElementById('authError');
+  err.textContent = msg;
+  err.classList.add('show');
+}
+
+async function handleAuthSubmit(e){
+  e.preventDefault();
+  const email = document.getElementById('authEmail').value.trim().toLowerCase();
+  const password = document.getElementById('authPassword').value;
+  const remember = document.getElementById('authRemember').checked;
+  const btn = document.getElementById('authSubmitBtn');
+
+  document.getElementById('authError').classList.remove('show');
+
+  if(!email || !password){ showAuthError('Merci de remplir tous les champs.'); return false; }
+
+  const payload = { email, password };
+  let endpoint = '/login';
+
+  if(authMode === 'signup'){
+    const prenom = document.getElementById('authPrenom').value.trim();
+    const nom = document.getElementById('authNom').value.trim();
+    if(!prenom || !nom){ showAuthError('Merci d\'indiquer votre prénom et votre nom.'); return false; }
+    if(!/^[^\s@]+@gmail\.com$/i.test(email)){ showAuthError('Merci d\'utiliser une adresse Gmail valide (ex: nom@gmail.com).'); return false; }
+    if(password.length < 6){ showAuthError('Le mot de passe doit contenir au moins 6 caractères.'); return false; }
+    payload.prenom = prenom;
+    payload.nom = nom;
+    endpoint = '/signup';
+  }
+
+  btn.disabled = true;
+  const originalLabel = btn.textContent;
+  btn.innerHTML = '<span class="mini-loader-auth"></span> Patientez…';
+
+  try{
+    const res = await fetch(DATA_WORKER_URL + endpoint, {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+
+    if(!res.ok){
+      showAuthError(data.error || "Une erreur est survenue, réessayez.");
+      btn.disabled = false; btn.textContent = originalLabel;
+      return false;
+    }
+
+    storeAuthSession(data.token, data.prenom, remember);
+
+    if(authMode === 'signup'){
+      playWelcomeAnimation(data.prenom);
+    } else {
+      closeAuthGate();
+    }
+  }catch(err){
+    showAuthError("Connexion impossible, vérifiez votre connexion internet.");
+    btn.disabled = false; btn.textContent = originalLabel;
+  }
+  return false;
+}
+
+function storeAuthSession(token, prenom, remember){
+  const store = remember ? localStorage : sessionStorage;
+  store.setItem(AUTH_TOKEN_KEY, token);
+  store.setItem(AUTH_NAME_KEY, prenom || '');
+}
+
+function getStoredAuthToken(){
+  return localStorage.getItem(AUTH_TOKEN_KEY) || sessionStorage.getItem(AUTH_TOKEN_KEY);
+}
+
+function clearStoredAuth(){
+  localStorage.removeItem(AUTH_TOKEN_KEY); localStorage.removeItem(AUTH_NAME_KEY);
+  sessionStorage.removeItem(AUTH_TOKEN_KEY); sessionStorage.removeItem(AUTH_NAME_KEY);
+}
+
+function closeAuthGate(){
+  const gate = document.getElementById('authGate');
+  if(!gate) return;
+  gate.style.transition = 'opacity .5s ease';
+  gate.style.opacity = '0';
+  setTimeout(() => {
+    gate.style.display = 'none';
+    beginSplashSequence();
+  }, 500);
+}
+
+function beginSplashSequence(){
+  const splash = document.getElementById('splash');
+  if(splash) splash.classList.add('start-timer');
+}
+
+/* Petites étincelles dorées ajoutées dynamiquement pendant l'animation de bienvenue */
+function spawnWelcomeSparkles(){
+  const stage = document.querySelector('.wa-stage');
+  if(!stage) return;
+  const positions = [
+    {top:'8%', left:'62%', delay:'.9s', size:'1.1rem'},
+    {top:'22%', left:'78%', delay:'1.3s', size:'.8rem'},
+    {top:'4%', left:'40%', delay:'1.6s', size:'.65rem'}
+  ];
+  positions.forEach(p => {
+    const s = document.createElement('span');
+    s.className = 'wa-spark';
+    s.textContent = '✦';
+    s.style.top = p.top; s.style.left = p.left;
+    s.style.fontSize = p.size;
+    s.style.animationDelay = p.delay;
+    stage.appendChild(s);
+  });
+}
+
+function playWelcomeAnimation(prenom){
+  document.getElementById('authForm').style.display = 'none';
+  document.querySelector('.auth-tabs').style.display = 'none';
+  document.getElementById('authSwitchNote').style.display = 'none';
+
+  document.getElementById('authGate').style.display = 'none';
+  const anim = document.getElementById('welcomeAnim');
+  document.getElementById('welcomeName').textContent = prenom || 'cher client';
+  anim.classList.add('show');
+  spawnWelcomeSparkles();
+
+  setTimeout(() => {
+    anim.classList.remove('show');
+    beginSplashSequence();
+  }, 3600);
+}
+
+async function checkExistingAuthSession(){
+  const token = getStoredAuthToken();
+  const gate = document.getElementById('authGate');
+  if(!token){
+    if(gate) gate.style.display = 'flex';
+    return;
+  }
+  try{
+    const res = await fetch(DATA_WORKER_URL + '/me?token=' + encodeURIComponent(token));
+    if(res.ok){
+      if(gate) gate.style.display = 'none';
+      beginSplashSequence();
+      return;
+    }
+  }catch(e){ /* pas de connexion — on retente une prochaine fois, gate reste affiché */ }
+  clearStoredAuth();
+  if(gate) gate.style.display = 'flex';
+}
 
 async function fetchSharedData() {
   try {
@@ -3629,6 +3998,7 @@ function initLightMode() {
 /* ============================================================
    DÉMARRAGE
    ============================================================ */
+checkExistingAuthSession();
 initDesign();
 initLightMode();
 loadProducts();
