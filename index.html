@@ -2222,9 +2222,8 @@ function renderColliersFeed() {
     return `
     <div class="cf-slide" data-idx="${i}">
       <div class="cf-glow"></div>
-      <div class="cf-img-wrap" id="cfzone-${i}" onclick="handleFeedTap(document.getElementById('cfzone-${i}'),'${js(p.id)}')">
+      <div class="cf-img-wrap">
         <img id="cfimg-${i}" src="${h(thumbUrl(mainImg, 1300, 90))}" alt="${h(p.nom)}" loading="${i<2?'eager':'lazy'}" decoding="async" onerror="this.src='${FALLBACK_IMG}'">
-        ${coeurBadgeHtml(p.id)}
       </div>
       <div class="cf-info">
        <div class="cf-badge">✦ Collier</div>
@@ -2330,9 +2329,8 @@ function chainSlideHTML(p, idx) {
 
   return `
     <div class="cf-glow"></div>
-    <div class="cf-img-wrap" id="chzone-${idx}" onclick="handleFeedTap(document.getElementById('chzone-${idx}'),'${js(p.id)}')">
+    <div class="cf-img-wrap">
       <img id="chimg-${idx}" src="${h(thumbUrl(mainImg, 1300, 90))}" alt="${h(p.nom)}" decoding="async" onerror="this.src='${FALLBACK_IMG}'">
-      ${coeurBadgeHtml(p.id)}
     </div>
     <div class="cf-info">
       <div class="cf-badge">✦ Chaîne</div>
@@ -2502,9 +2500,8 @@ function braceletSlideHTML(p, idx) {
 
   return `
     <div class="cf-glow"></div>
-    <div class="cf-img-wrap" id="brzone-${idx}" onclick="handleFeedTap(document.getElementById('brzone-${idx}'),'${js(p.id)}')">
+    <div class="cf-img-wrap">
       <img id="brimg-${idx}" src="${h(thumbUrl(mainImg, 1300, 90))}" alt="${h(p.nom)}" decoding="async" onerror="this.src='${FALLBACK_IMG}'">
-      ${coeurBadgeHtml(p.id)}
     </div>
     <div class="cf-info">
      <div class="cf-badge">✦ Bracelet</div>
@@ -3484,8 +3481,7 @@ function handleProductTap(card, pid, idx){
 
   if (state.count >= 3){
     state.count = 0;
-    const zone = card.querySelector('.prod-img-zone');
-    triggerCoeurOnZone(zone, pid);
+    triggerCoeur(card, pid);
     return;
   }
 
@@ -3495,28 +3491,9 @@ function handleProductTap(card, pid, idx){
   }, COEUR_TAP_WINDOW);
 }
 
-/* NOUVEAU — triple-tap générique pour les vues immersives
-   (Colliers, Chaînes, Bracelets) : contrairement aux grilles,
-   il n'y a rien d'autre à ouvrir sur un simple tap (le produit
-   est déjà affiché en plein écran), donc pas besoin de délai
-   d'attente ni d'action alternative après le compte. */
-function handleFeedTap(zoneEl, pid){
-  if (!coeurTapState[pid]) coeurTapState[pid] = { count: 0, timer: null };
-  const state = coeurTapState[pid];
-  state.count++;
-  clearTimeout(state.timer);
-
-  if (state.count >= 3){
-    state.count = 0;
-    triggerCoeurOnZone(zoneEl, pid);
-    return;
-  }
-
-  state.timer = setTimeout(() => { state.count = 0; }, COEUR_TAP_WINDOW);
-}
-
-async function triggerCoeurOnZone(zone, pid){
+async function triggerCoeur(card, pid){
   const mine = getCoeurMine();
+  const zone = card.querySelector('.prod-img-zone');
 
   if (mine[pid]){
     flashCoeur(zone, true);
@@ -3538,11 +3515,6 @@ async function triggerCoeurOnZone(zone, pid){
       body: JSON.stringify({ pid })
     });
   } catch(e) { /* déjà affiché côté client, on ne bloque pas l'utilisateur */ }
-}
-
-async function triggerCoeur(card, pid){
-  const zone = card.querySelector('.prod-img-zone');
-  await triggerCoeurOnZone(zone, pid);
 }
 
 function flashCoeur(zone, already){
