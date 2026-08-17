@@ -196,7 +196,9 @@ input[type=range]{width:100%;accent-color:var(--or);cursor:pointer;}
   font-family: 'Montserrat', sans-serif; transition: background .2s;
 }
 .btn-del-video:active { background: rgba(192,57,43,.3); }
-
+.btn-set-main{background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.4);color:var(--or-l);border-radius:6px;padding:.28rem .5rem;font-size:.6rem;cursor:pointer;-webkit-tap-highlight-color:transparent;font-family:'Montserrat',sans-serif;flex-shrink:0;}
+.btn-set-main:active{background:rgba(201,168,76,.3);}
+.btn-set-main:disabled{opacity:.35;cursor:not-allowed;}
 
 /* ============================================================
    AÉRATION & SÉPARATION ADMIN — Produits / Clients
@@ -1014,7 +1016,11 @@ function renderEditColorList(){
     el.innerHTML = '<div style="font-size:.65rem;color:var(--gris);text-align:center;padding:.5rem;">Aucune couleur.</div>';
     return;
   }
-  el.innerHTML = editColors.map((c,i)=>`<div class="color-row"><div class="color-dot" style="background:${h(c.hex)}"></div><div class="color-row-info"><div class="color-row-name">${h(c.nom)}</div><div class="color-row-hex">${h(c.hex)}${c.image?' · Photo ✓':''}</div></div><button class="btn-del-color" onclick="removeEditColor(${i})">✕</button></div>`).join('');
+  el.innerHTML = editColors.map((c,i)=>`<div class="color-row">${
+    c.image
+      ? `<img src="${h(c.image)}" style="width:26px;height:26px;object-fit:cover;border-radius:50%;border:2px solid rgba(201,168,76,.4);flex-shrink:0;" onerror="this.outerHTML='<div class=&quot;color-dot&quot; style=&quot;background:${h(c.hex)}&quot;></div>'">`
+      : `<div class="color-dot" style="background:${h(c.hex)}"></div>`
+  }<div class="color-row-info"><div class="color-row-name">${h(c.nom)}</div><div class="color-row-hex">${h(c.hex)}${c.image?' · Photo ✓':''}</div></div><button class="btn-set-main" onclick="setEditColorAsMain(${i})" ${c.image?'':'disabled'} title="Utiliser cette photo comme photo principale">⭐ Principale</button><button class="btn-del-color" onclick="removeEditColor(${i})" title="Supprimer cette couleur">🗑</button></div>`).join('');
 }
 
 async function saveEditedProduct(){
@@ -1218,8 +1224,35 @@ let pendingColors=[];
 document.getElementById('cHex').addEventListener('input',e=>{document.getElementById('cHexVal').textContent=e.target.value;});
 function addColor(){ const nom=document.getElementById('cNom').value.trim(),hex=document.getElementById('cHex').value; if(!nom){alert('Entrez un nom.');return;} pendingColors.push({nom,hex,image:document.getElementById('cImage').value.trim(),img_gauche:document.getElementById('cImgGauche').value.trim(),img_droit:document.getElementById('cImgDroit').value.trim(),img_dos:document.getElementById('cImgDos').value.trim()}); ['cNom','cImage','cImgGauche','cImgDroit','cImgDos'].forEach(id=>document.getElementById(id).value=''); document.getElementById('prevColor').style.display='none'; renderColorList(); }
 function removeColor(i){ pendingColors.splice(i,1); renderColorList(); }
-function renderColorList(){ const el=document.getElementById('colorList'); if(!pendingColors.length){el.innerHTML='<div style="font-size:.65rem;color:var(--gris);text-align:center;padding:.5rem;">Aucune couleur.</div>';return;} el.innerHTML=pendingColors.map((c,i)=>`<div class="color-row"><div class="color-dot" style="background:${h(c.hex)}"></div><div class="color-row-info"><div class="color-row-name">${h(c.nom)}</div><div class="color-row-hex">${h(c.hex)}${c.image?' · Photo ✓':''}</div></div><button class="btn-del-color" onclick="removeColor(${i})">✕</button></div>`).join(''); }
-renderColorList();
+function renderColorList(){
+  const el=document.getElementById('colorList');
+  if(!pendingColors.length){
+    el.innerHTML='<div style="font-size:.65rem;color:var(--gris);text-align:center;padding:.5rem;">Aucune couleur.</div>';
+    return;
+  }
+  el.innerHTML=pendingColors.map((c,i)=>`<div class="color-row">${
+    c.image
+      ? `<img src="${h(c.image)}" style="width:26px;height:26px;object-fit:cover;border-radius:50%;border:2px solid rgba(201,168,76,.4);flex-shrink:0;" onerror="this.outerHTML='<div class=&quot;color-dot&quot; style=&quot;background:${h(c.hex)}&quot;></div>'">`
+      : `<div class="color-dot" style="background:${h(c.hex)}"></div>`
+  }<div class="color-row-info"><div class="color-row-name">${h(c.nom)}</div><div class="color-row-hex">${h(c.hex)}${c.image?' · Photo ✓':''}</div></div><button class="btn-set-main" onclick="setPendingColorAsMain(${i})" ${c.image?'':'disabled'} title="Utiliser cette photo comme photo principale">⭐ Principale</button><button class="btn-del-color" onclick="removeColor(${i})">✕</button></div>`).join('');
+}
+
+function setPendingColorAsMain(i){
+  const c = pendingColors[i];
+  if(!c || !c.image){ alert('Cette couleur n\'a pas de photo.'); return; }
+  document.getElementById('fImage').value = c.image;
+  const prev = document.getElementById('prevMain');
+  prev.src = c.image; prev.style.display = 'block';
+  const setAngle = (fieldId, previewId, val) => {
+    if(!val) return;
+    document.getElementById(fieldId).value = val;
+    const img = document.getElementById(previewId);
+    img.src = val; img.style.display = 'block';
+  };
+  setAngle('fImgGauche','prevG', c.img_gauche);
+  setAngle('fImgDroit','prevD', c.img_droit);
+  setAngle('fImgDos','prevDos', c.img_dos);
+}
 function clearForm(){ ['fNom','fPrix','fImage','fImgGauche','fImgDroit','fImgDos','fDescription','fFlashReduction','fFlashFin','cImage','cImgGauche','cImgDroit','cImgDos'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';}); ['fCat','fGenre'].forEach(id=>document.getElementById(id).value=''); document.getElementById('fHalo').value='or'; document.getElementById('fPatron').checked=false; document.querySelectorAll('.mood-check').forEach(el=>el.classList.remove('active')); ['prevMain','prevG','prevD','prevDos','prevColor','prevCG','prevCD','prevCDos'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';}); pendingColors=[]; renderColorList(); }
 const DEFAULT_ADMIN_BG='https://images.unsplash.com/photo-1618215649514-c73c18549d63?w=1600&q=80';
 function applyAdminBg(url){document.getElementById('bgFixed').style.backgroundImage=`url('${url}')`;localStorage.setItem('kw-admin-bg',url);}
@@ -1362,6 +1395,27 @@ function initVideoSection() {
     showVideoPreview(existing);
     showStVideo('ok', '✓ Une vidéo est actuellement active pour les clients.');
   }
+}
+function setEditColorAsMain(i){
+  const c = editColors[i];
+  if(!c || !c.image){ alert('Cette couleur n\'a pas de photo.'); return; }
+
+  document.getElementById('eImage').value = c.image;
+  const prev = document.getElementById('ePrevMain');
+  prev.src = c.image; prev.style.display = 'block';
+
+  // Copie aussi les angles 360° de la couleur, s'ils existent
+  const setAngle = (fieldId, previewId, val) => {
+    if(!val) return;
+    document.getElementById(fieldId).value = val;
+    const img = document.getElementById(previewId);
+    img.src = val; img.style.display = 'block';
+  };
+  setAngle('eImgGauche','ePrevG', c.img_gauche);
+  setAngle('eImgDroit','ePrevD', c.img_droit);
+  setAngle('eImgDos','ePrevDos', c.img_dos);
+
+  showSt('edit','ok', `✓ Photo de "${c.nom}" définie comme photo principale. N'oubliez pas d'enregistrer.`);
 }
 
 function initAdminDesign(){
