@@ -1137,7 +1137,7 @@
     "prix": 4000,
     "categorie": "Colliers",
     "genre": "Femme",
-    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784304702048-oxqbsb-Collier-en-perle-simple-principal.png",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784304702075-pcv073-Collier-en-perle-simple-Argent.png",
     "description": "Le luxe a porté du cou",
     "img_gauche": "",
     "img_droit": "",
@@ -1148,14 +1148,6 @@
     "flash_fin": "",
     "flash_reduction": 0,
     "couleurs": [
-      {
-        "nom": "Argent",
-        "hex": "#999794",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784304702058-nx5ihu-Collier-en-perle-simple-Argent.png",
-        "img_gauche": "",
-        "img_droit": "",
-        "img_dos": ""
-      },
       {
         "nom": "Argent",
         "hex": "#999794",
