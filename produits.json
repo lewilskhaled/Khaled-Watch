@@ -1045,7 +1045,7 @@
     "prix": 5000,
     "categorie": "Colliers",
     "genre": "Femme",
-    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784231983611-nlud4u-Collier-principal.png",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784231983646-6yd96p-Collier-Or.png",
     "description": "Simple mais très efficace",
     "img_gauche": "",
     "img_droit": "",
@@ -1056,14 +1056,6 @@
     "flash_fin": "",
     "flash_reduction": 0,
     "couleurs": [
-      {
-        "nom": "Or",
-        "hex": "#a59009",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784231983628-dmef3m-Collier-Or.png",
-        "img_gauche": "",
-        "img_droit": "",
-        "img_dos": ""
-      },
       {
         "nom": "Or",
         "hex": "#a59009",
@@ -1293,7 +1285,7 @@
     "prix": 6000,
     "categorie": "Colliers",
     "genre": "Femme",
-    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784310220862-v9mhh3-Collier-tennis-Aegent.png",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784310220806-3wrd6q-Collier-tennis-principal.png",
     "description": "Le luxe autour de votre cou",
     "img_gauche": "",
     "img_droit": "",
@@ -1304,6 +1296,14 @@
     "flash_fin": "",
     "flash_reduction": 0,
     "couleurs": [
+      {
+        "nom": "Argent",
+        "hex": "#999794",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784310220812-9wxgm2-Collier-tennis-Argent.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
       {
         "nom": "Aegent",
         "hex": "#999794",
