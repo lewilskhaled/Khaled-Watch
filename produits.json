@@ -297,7 +297,7 @@
     "prix": 10.5,
     "categorie": "Bracelets",
     "genre": "Homme",
-    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783458679565-m4uebb-Bracelet-Lacoste-Dore.png",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783458679515-4t86zy-Bracelet-Lacoste-principal.png",
     "description": "Le privilège du design brut",
     "img_gauche": "",
     "img_droit": "",
@@ -311,7 +311,23 @@
       {
         "nom": "Doré",
         "hex": "#c9a84c",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783458679529-j4b653-Bracelet-Lacoste-Dore.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Doré",
+        "hex": "#c9a84c",
         "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783458679565-m4uebb-Bracelet-Lacoste-Dore.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Argenté",
+        "hex": "#d2d0cb",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783458679584-sz021e-Bracelet-Lacoste-Argente.png",
         "img_gauche": "",
         "img_droit": "",
         "img_dos": ""
@@ -347,23 +363,7 @@
       {
         "nom": "Bleu",
         "hex": "#112ae4",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783459591690-m88hgu-Bracelet-a-menotte-Bleu.png",
-        "img_gauche": "",
-        "img_droit": "",
-        "img_dos": ""
-      },
-      {
-        "nom": "Bleu",
-        "hex": "#112ae4",
         "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783459591714-03lm4h-Bracelet-a-menotte-Bleu.png",
-        "img_gauche": "",
-        "img_droit": "",
-        "img_dos": ""
-      },
-      {
-        "nom": "Vert émeraude",
-        "hex": "#11e4c1",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783459591730-vjlznm-Bracelet-a-menotte-Vert-emeraude.png",
         "img_gauche": "",
         "img_droit": "",
         "img_dos": ""
@@ -379,23 +379,7 @@
       {
         "nom": "Rouge",
         "hex": "#890606",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783459591767-uu8k3h-Bracelet-a-menotte-Rouge.png",
-        "img_gauche": "",
-        "img_droit": "",
-        "img_dos": ""
-      },
-      {
-        "nom": "Rouge",
-        "hex": "#890606",
         "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783459591789-elhm6n-Bracelet-a-menotte-Rouge.png",
-        "img_gauche": "",
-        "img_droit": "",
-        "img_dos": ""
-      },
-      {
-        "nom": "Noir",
-        "hex": "#0e0101",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783459591800-syg8bu-Bracelet-a-menotte-Noir.png",
         "img_gauche": "",
         "img_droit": "",
         "img_dos": ""
