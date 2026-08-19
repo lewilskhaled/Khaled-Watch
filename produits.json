@@ -1045,7 +1045,7 @@
     "prix": 5000,
     "categorie": "Colliers",
     "genre": "Femme",
-    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784231983646-6yd96p-Collier-Or.png",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784231983611-nlud4u-Collier-principal.png",
     "description": "Simple mais très efficace",
     "img_gauche": "",
     "img_droit": "",
@@ -1056,6 +1056,14 @@
     "flash_fin": "",
     "flash_reduction": 0,
     "couleurs": [
+      {
+        "nom": "Or",
+        "hex": "#a59009",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784231983628-dmef3m-Collier-Or.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
       {
         "nom": "Or",
         "hex": "#a59009",
@@ -1157,7 +1165,7 @@
     "prix": 6000,
     "categorie": "Colliers",
     "genre": "Femme",
-    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784305726244-kr7zmb-Collier-fleur-principal.png",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784305726279-hbmyxu-Collier-fleur-Argent.png",
     "description": "Collier unique pour les uniques",
     "img_gauche": "",
     "img_droit": "",
@@ -1168,14 +1176,6 @@
     "flash_fin": "",
     "flash_reduction": 0,
     "couleurs": [
-      {
-        "nom": "Argent",
-        "hex": "#999794",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784305726259-tncick-Collier-fleur-Argent.png",
-        "img_gauche": "",
-        "img_droit": "",
-        "img_dos": ""
-      },
       {
         "nom": "Argent",
         "hex": "#999794",
