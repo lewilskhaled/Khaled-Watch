@@ -1081,7 +1081,7 @@
     "prix": 5000,
     "categorie": "Colliers",
     "genre": "Femme",
-    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784303558337-tbwd79-Collier-principal.png",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784303558407-v4h4u0-Collier-Argent.png",
     "description": "Toujours efficaces malgré la simplicité",
     "img_gauche": "",
     "img_droit": "",
@@ -1092,14 +1092,6 @@
     "flash_fin": "",
     "flash_reduction": 0,
     "couleurs": [
-      {
-        "nom": "Argent",
-        "hex": "#999794",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784303558343-hzu9ss-Collier-Argent.png",
-        "img_gauche": "",
-        "img_droit": "",
-        "img_dos": ""
-      },
       {
         "nom": "Argent",
         "hex": "#999794",
