@@ -1258,7 +1258,7 @@
   {
     "id": "1784308203110",
     "nom": "Collier hello kitty",
-    "prix": 4000,
+    "prix": 5000,
     "categorie": "Colliers",
     "genre": "Femme",
     "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784308204520-9eiu3h-Collier-hello-kitty-principal.png",
@@ -1272,14 +1272,6 @@
     "flash_fin": "",
     "flash_reduction": 0,
     "couleurs": [
-      {
-        "nom": "Argent",
-        "hex": "#999794",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784308204532-20t6lg-Collier-hello-kitty-Argent.png",
-        "img_gauche": "",
-        "img_droit": "",
-        "img_dos": ""
-      },
       {
         "nom": "Argent",
         "hex": "#999794",
