@@ -3133,7 +3133,7 @@ function initSunburst() { /* désactivé pour la performance */ }
     overlay.style.setProperty('--x', x.toFixed(1));
     overlay.style.setProperty('--y', y.toFixed(1));
     overlay.style.opacity = '.85';
-  }, {passive:true});
+    passive:true});
   grid.addEventListener('touchend', () => {
     document.querySelectorAll('.sunburst-overlay').forEach(o => { o.style.opacity = ''; });
   }, {passive:true});
