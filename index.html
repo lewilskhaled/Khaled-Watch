@@ -13,6 +13,7 @@
 <link rel="dns-prefetch" href="https://images.unsplash.com">
 <link rel="dns-prefetch" href="https://images.weserv.nl">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+
 <style>
 :root{
   --or:#C9A84C; --or-l:#E8C97A; --or-d:#8B6914;
@@ -1428,6 +1429,46 @@ body.light-mode .sort-select{background:rgba(255,255,255,.8);color:#8B6914;borde
 }
 #catalogLoader.show{display:flex;}
 #catalogLoader span{font-size:.65rem;letter-spacing:.15em;color:var(--or-l);text-transform:uppercase;font-weight:700;text-shadow:var(--ts);}
+/* ====== PATCH PERFORMANCE — désactive les animations lourdes ====== */
+
+/* 1) Flou (backdrop-filter) = le plus cher sur mobile, surtout répété sur chaque carte */
+.prod-card, .cat-card, .g-tab, .page-cat-header, .search-bar-wrap,
+.search-input-row, .cf-g-tab, .offre-card, .stream-pill, .bottom-nav,
+.empty-cat, .avis-form-wrap, .avis-card, #prodModal, .del-panel,
+#catalogLoader {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* 2) Halo animé en boucle sur CHAQUE carte produit (très coûteux, multiplié par le nb de cartes) */
+.prod-card::after { animation: none !important; opacity: .55 !important; }
+
+/* 3) Shimmer de chargement d'image en boucle */
+.prod-img-zone::before { animation: none !important; opacity: 0 !important; }
+
+/* 4) Halo pulsant autour de la barre de recherche */
+.search-input-row { animation: none !important; }
+.search-underline { animation: none !important; }
+
+/* 5) Scintillement doré en boucle infinie sur les titres/textes dorés */
+.splash-title, .logo-txt, .home-title, .search-icon { animation: none !important; }
+
+/* 6) Bulles / particules dorées flottantes (nombreux éléments animés en continu) */
+.lp, .fb { display: none !important; }
+
+/* 7) Pastille rouge clignotante + halo bouton WhatsApp + bouton Del */
+.pulse-dot, .wa-float, .del-fab, .del-launcher, .del-fab-badge {
+  animation: none !important;
+}
+
+/* 8) Respiration/rotation du splash screen (impacte le tout premier chargement) */
+.splash-stage, .splash-ring { animation-duration: 0s !important; }
+
+/* 9) Sheen animé dans la description produit (modal) */
+.modal-desc-wrap::before { animation: none !important; }
+
+/* 10) Effet lumineux "sunburst" qui recalcule un dégradé à chaque mouvement de souris/doigt */
+.sunburst-overlay { display: none !important; }
 </style>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#1B1815">
@@ -3082,33 +3123,29 @@ function thumbUrl(url, width, quality) {
 function initSunburst() {
   const grid = document.getElementById('prodGrid');
   if (!grid) return;
-  grid.addEventListener('mousemove', e => {
-    const zone = e.target.closest('.prod-img-zone');
-    if (!zone) return;
-    const overlay = zone.querySelector('.sunburst-overlay');
-    if (!overlay) return;
-    const rect = zone.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width)  * 100;
-    const y = ((e.clientY - rect.top)  / rect.height) * 100;
-    overlay.style.setProperty('--x', x.toFixed(1));
-    overlay.style.setProperty('--y', y.toFixed(1));
-  });
+
   grid.addEventListener('touchmove', e => {
     const t = e.touches[0];
     const zone = document.elementFromPoint(t.clientX, t.clientY)?.closest('.prod-img-zone');
     if (!zone) return;
+
     const overlay = zone.querySelector('.sunburst-overlay');
     if (!overlay) return;
+
     const rect = zone.getBoundingClientRect();
-    const x = Math.max(0, Math.min(100, ((t.clientX - rect.left) / rect.width)  * 100));
-    const y = Math.max(0, Math.min(100, ((t.clientY - rect.top)  / rect.height) * 100));
+    const x = Math.max(0, Math.min(100, ((t.clientX - rect.left) / rect.width) * 100));
+    const y = Math.max(0, Math.min(100, ((t.clientY - rect.top) / rect.height) * 100));
+
     overlay.style.setProperty('--x', x.toFixed(1));
     overlay.style.setProperty('--y', y.toFixed(1));
     overlay.style.opacity = '.85';
-  }, {passive:true});
+  }, { passive: true });
+
   grid.addEventListener('touchend', () => {
-    document.querySelectorAll('.sunburst-overlay').forEach(o => { o.style.opacity = ''; });
-  }, {passive:true});
+    document.querySelectorAll('.sunburst-overlay').forEach(o => { 
+      o.style.opacity = ''; 
+    });
+  }, { passive: true });
 }
 
 
