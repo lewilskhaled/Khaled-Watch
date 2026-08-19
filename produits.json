@@ -1045,7 +1045,7 @@
     "prix": 5000,
     "categorie": "Colliers",
     "genre": "Femme",
-    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784231983646-6yd96p-Collier-Or.png",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784231983611-nlud4u-Collier-principal.png",
     "description": "Simple mais très efficace",
     "img_gauche": "",
     "img_droit": "",
@@ -1056,6 +1056,14 @@
     "flash_fin": "",
     "flash_reduction": 0,
     "couleurs": [
+      {
+        "nom": "Or",
+        "hex": "#a59009",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784231983628-dmef3m-Collier-Or.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
       {
         "nom": "Or",
         "hex": "#a59009",
@@ -1321,7 +1329,7 @@
     "prix": 6000,
     "categorie": "Colliers",
     "genre": "Femme",
-    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784384359064-kvahuz-Chaine-principal.png",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784384359181-jo8eh7-Chaine-or.png",
     "description": "Crée une ligne nette autour du cou",
     "img_gauche": "",
     "img_droit": "",
@@ -1332,14 +1340,6 @@
     "flash_fin": "",
     "flash_reduction": 0,
     "couleurs": [
-      {
-        "nom": "Or",
-        "hex": "#a9690a",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784384359098-hqozpu-Chaine-Or.png",
-        "img_gauche": "",
-        "img_droit": "",
-        "img_dos": ""
-      },
       {
         "nom": "or",
         "hex": "#a9690a",
