@@ -1165,7 +1165,7 @@
     "prix": 6000,
     "categorie": "Colliers",
     "genre": "Femme",
-    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784305726244-kr7zmb-Collier-fleur-principal.png",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784305726279-hbmyxu-Collier-fleur-Argent.png",
     "description": "Collier unique pour les uniques",
     "img_gauche": "",
     "img_droit": "",
@@ -1176,14 +1176,6 @@
     "flash_fin": "",
     "flash_reduction": 0,
     "couleurs": [
-      {
-        "nom": "Argent",
-        "hex": "#999794",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784305726259-tncick-Collier-fleur-Argent.png",
-        "img_gauche": "",
-        "img_droit": "",
-        "img_dos": ""
-      },
       {
         "nom": "Argent",
         "hex": "#999794",
@@ -1265,7 +1257,7 @@
     "prix": 6000,
     "categorie": "Colliers",
     "genre": "Femme",
-    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784308605201-viinsk-Collier-hello-kitty-Argent.png",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784308605145-ssxj2r-Collier-hello-kitty-principal.png",
     "description": "T'aime ce qui brille alors vient chercher",
     "img_gauche": "",
     "img_droit": "",
@@ -1276,6 +1268,14 @@
     "flash_fin": "",
     "flash_reduction": 0,
     "couleurs": [
+      {
+        "nom": "Argent",
+        "hex": "#999794",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784308605154-hykwku-Collier-hello-kitty-Argent.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
       {
         "nom": "Argent",
         "hex": "#999794",
