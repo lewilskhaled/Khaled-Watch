@@ -1277,7 +1277,7 @@
     "prix": 6000,
     "categorie": "Colliers",
     "genre": "Femme",
-    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784310220806-3wrd6q-Collier-tennis-principal.png",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784310220862-v9mhh3-Collier-tennis-Aegent.png",
     "description": "Le luxe autour de votre cou",
     "img_gauche": "",
     "img_droit": "",
@@ -1288,14 +1288,6 @@
     "flash_fin": "",
     "flash_reduction": 0,
     "couleurs": [
-      {
-        "nom": "Argent",
-        "hex": "#999794",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784310220812-9wxgm2-Collier-tennis-Argent.png",
-        "img_gauche": "",
-        "img_droit": "",
-        "img_dos": ""
-      },
       {
         "nom": "Aegent",
         "hex": "#999794",
