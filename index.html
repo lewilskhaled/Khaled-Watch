@@ -3124,21 +3124,30 @@ function initSunburst() {
   const grid = document.getElementById('prodGrid');
   if (!grid) return;
 
+  let ticking = false;
+
   grid.addEventListener('touchmove', e => {
-    const t = e.touches[0];
-    const zone = document.elementFromPoint(t.clientX, t.clientY)?.closest('.prod-img-zone');
-    if (!zone) return;
+    if (ticking) return;
 
-    const overlay = zone.querySelector('.sunburst-overlay');
-    if (!overlay) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      const t = e.touches[0];
+      const zone = document.elementFromPoint(t.clientX, t.clientY)?.closest('.prod-img-zone');
 
-    const rect = zone.getBoundingClientRect();
-    const x = Math.max(0, Math.min(100, ((t.clientX - rect.left) / rect.width) * 100));
-    const y = Math.max(0, Math.min(100, ((t.clientY - rect.top) / rect.height) * 100));
+      if (zone) {
+        const overlay = zone.querySelector('.sunburst-overlay');
+        if (overlay) {
+          const rect = zone.getBoundingClientRect();
+          const x = Math.max(0, Math.min(100, ((t.clientX - rect.left) / rect.width) * 100));
+          const y = Math.max(0, Math.min(100, ((t.clientY - rect.top) / rect.height) * 100));
 
-    overlay.style.setProperty('--x', x.toFixed(1));
-    overlay.style.setProperty('--y', y.toFixed(1));
-    overlay.style.opacity = '.85';
+          overlay.style.setProperty('--x', x.toFixed(1) + '%');
+          overlay.style.setProperty('--y', y.toFixed(1) + '%');
+          overlay.style.opacity = '.85';
+        }
+      }
+      ticking = false;
+    });
   }, { passive: true });
 
   grid.addEventListener('touchend', () => {
@@ -3147,8 +3156,6 @@ function initSunburst() {
     });
   }, { passive: true });
 }
-
-
 /* ============================================================
    RECHERCHE (recherche floue ajoutée — tolère les fautes de frappe)
    ============================================================ */
