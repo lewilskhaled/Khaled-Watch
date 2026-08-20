@@ -1418,5 +1418,65 @@
       }
     ],
     "createdAt": "2026-08-20T15:22:00.833Z"
+  },
+  {
+    "id": "1787241092831",
+    "nom": "Audemars Piguet",
+    "prix": 30000,
+    "categorie": "Montres Luxueuses",
+    "genre": "Homme",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1787241095069-w5ch5e-Audemars-Piguet-principal.png",
+    "description": "",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "or",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [
+      {
+        "nom": "Blanc",
+        "hex": "#e1ded5",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1787241095102-bucdvj-Audemars-Piguet-Blanc.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Bleu",
+        "hex": "#3e3cbe",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1787241095137-kj6ps5-Audemars-Piguet-Bleu.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Doré",
+        "hex": "#ffdfa8",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1787241095170-3udjog-Audemars-Piguet-Dore.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Noir",
+        "hex": "#000000",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1787241095200-ehd4p6-Audemars-Piguet-Noir.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Doré",
+        "hex": "#f7ca69",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1787241095238-84v66k-Audemars-Piguet-Dore.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      }
+    ],
+    "createdAt": "2026-08-20T15:51:32.831Z"
   }
 ]
