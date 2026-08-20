@@ -1374,5 +1374,49 @@
       }
     ],
     "createdAt": "2026-07-23T21:07:35.564Z"
+  },
+  {
+    "id": "1787239320833",
+    "nom": "Paterk Philip",
+    "prix": 15000,
+    "categorie": "Montres",
+    "genre": "Homme",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1787239322643-xxtyig-Paterk-Philip-principal.png",
+    "description": "",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "or",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [
+      {
+        "nom": "Noir",
+        "hex": "#000000",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1787239322687-b4q1co-Paterk-Philip-Noir.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Bleu",
+        "hex": "#21204b",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1787239322724-8hyzzw-Paterk-Philip-Bleu.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Maron",
+        "hex": "#2d2315",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1787239322759-xqxqqa-Paterk-Philip-Maron.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      }
+    ],
+    "createdAt": "2026-08-20T15:22:00.833Z"
   }
 ]
