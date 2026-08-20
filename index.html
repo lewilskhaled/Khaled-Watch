@@ -32,8 +32,8 @@
 html{-webkit-text-size-adjust:100%;}
 body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;overflow-x:hidden;transition:background .35s,color .35s;}
 
-#bgLayer{position:fixed;inset:0;z-index:-2;background-size:cover;background-position:center center;background-attachment:fixed;transition:background-image .6s ease;}
-#bgOverlay{position:fixed;inset:0;z-index:-1;background:linear-gradient(170deg,rgba(0,0,0,.38)0%,rgba(0,0,0,.20)50%,rgba(0,0,0,.42)100%);}
+  #bgLayer{position:fixed;inset:0;z-index:-2;background-size:cover;background-position:center center;transition:background-image .6s ease;}
+  #bgOverlay{position:fixed;inset:0;z-index:-1;background:linear-gradient(170deg,rgba(0,0,0,.38)0%,rgba(0,0,0,.20)50%,rgba(0,0,0,.42)100%);}
 
 
 /* ============================================================
@@ -431,7 +431,8 @@ img.prod-img.loaded{opacity:1;}
 }
 .cf-img-wrap img{
   max-width:99%;max-height:100%;width:auto;height:auto;object-fit:contain;
-  filter:drop-shadow(0 24px 55px rgba(0,0,0,.75)) drop-shadow(0 0 45px rgba(201,168,76,.16)) brightness(1.06) contrast(1.05) saturate(1.05);
+  filter:drop-shadow(0 12px 24px rgba(0,0,0,.5)) brightness(1.06) contrast(1.05) saturate(1.05);
+  will-change:transform;
   animation:cfFloat 4.5s ease-in-out infinite;
 }
 @keyframes cfFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-12px);}}
@@ -1438,6 +1439,8 @@ body.light-mode .sort-select{background:rgba(255,255,255,.8);color:#8B6914;borde
 #catalogLoader {
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
+@media (max-width: 400px), (max-height: 700px) {
+  .cf-img-wrap img { animation: none !important; }
 }
 
 /* 2) Halo animé en boucle sur CHAQUE carte produit (très coûteux, multiplié par le nb de cartes) */
