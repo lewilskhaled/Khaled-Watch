@@ -32,8 +32,8 @@
 html{-webkit-text-size-adjust:100%;}
 body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;overflow-x:hidden;transition:background .35s,color .35s;}
 
-  #bgLayer{position:fixed;inset:0;z-index:-2;background-size:cover;background-position:center center;transition:background-image .6s ease;}
-  #bgOverlay{position:fixed;inset:0;z-index:-1;background:linear-gradient(170deg,rgba(0,0,0,.38)0%,rgba(0,0,0,.20)50%,rgba(0,0,0,.42)100%);}
+#bgLayer{position:fixed;inset:0;z-index:-2;background-size:cover;background-position:center center;background-attachment:fixed;transition:background-image .6s ease;}
+#bgOverlay{position:fixed;inset:0;z-index:-1;background:linear-gradient(170deg,rgba(0,0,0,.38)0%,rgba(0,0,0,.20)50%,rgba(0,0,0,.42)100%);}
 
 
 /* ============================================================
@@ -431,8 +431,7 @@ img.prod-img.loaded{opacity:1;}
 }
 .cf-img-wrap img{
   max-width:99%;max-height:100%;width:auto;height:auto;object-fit:contain;
-  filter:drop-shadow(0 12px 24px rgba(0,0,0,.5)) brightness(1.06) contrast(1.05) saturate(1.05);
-  will-change:transform;
+  filter:drop-shadow(0 24px 55px rgba(0,0,0,.75)) drop-shadow(0 0 45px rgba(201,168,76,.16)) brightness(1.06) contrast(1.05) saturate(1.05);
   animation:cfFloat 4.5s ease-in-out infinite;
 }
 @keyframes cfFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-12px);}}
@@ -1439,8 +1438,6 @@ body.light-mode .sort-select{background:rgba(255,255,255,.8);color:#8B6914;borde
 #catalogLoader {
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
-@media (max-width: 400px), (max-height: 700px) {
-  .cf-img-wrap img { animation: none !important; }
 }
 
 /* 2) Halo animé en boucle sur CHAQUE carte produit (très coûteux, multiplié par le nb de cartes) */
@@ -1834,10 +1831,13 @@ async function fetchSharedData() {
 const DEFAULT_BG = 'https://images.unsplash.com/photo-1618215649514-c73c18549d63?w=1600&q=85';
 
 /* 6 fonds — de VRAIES photos de montres nettes et bien éclairées */
-/* 2 fonds — mode sombre uniquement, ambiance luxe */
 const SLIDESHOW_BGS = [
   'https://images.unsplash.com/photo-1618215650148-e8e61eae521c?w=1600&q=90',
-  'https://images.unsplash.com/photo-1628608569034-e214532ddfde?w=1600&q=90'
+  'https://images.unsplash.com/photo-1628608569034-e214532ddfde?w=1600&q=90',
+  'https://images.unsplash.com/photo-1662333084914-3eea84762671?w=1600&q=90',
+  'https://images.unsplash.com/photo-1618215650067-8e8addd96b0e?w=1600&q=90',
+  'https://images.unsplash.com/photo-1618215650201-8d552591218d?w=1600&q=90',
+  'https://images.unsplash.com/photo-1605143185597-9fe1a8065fbb?w=1600&q=90'
 ];
 
 const SLIDESHOW_INTERVAL_MS = 1 * 60 * 60 * 1000; /* 1 heure */
@@ -2784,8 +2784,6 @@ function renderProducts() {
   list = applySort(list);
   currentList = list;
 
-  requestAnimationFrame(initSunburst);
-
   if (!list.length) {
     if (!productsLoaded){
       grid.innerHTML = `<div class="loader-wrap"><div class="loader"></div></div>`;
@@ -3118,44 +3116,13 @@ function thumbUrl(url, width, quality) {
 }
 
 /* ============================================================
-   SUNBURST
+   SUNBURST — désactivé pour la performance
+   (le halo lumineux au survol/toucher des cartes est coupé
+   via CSS : ".sunburst-overlay{display:none!important}")
    ============================================================ */
-function initSunburst() {
-  const grid = document.getElementById('prodGrid');
-  if (!grid) return;
+function initSunburst() { /* désactivé pour la performance */ }
 
-  let ticking = false;
 
-  grid.addEventListener('touchmove', e => {
-    if (ticking) return;
-
-    ticking = true;
-    requestAnimationFrame(() => {
-      const t = e.touches[0];
-      const zone = document.elementFromPoint(t.clientX, t.clientY)?.closest('.prod-img-zone');
-
-      if (zone) {
-        const overlay = zone.querySelector('.sunburst-overlay');
-        if (overlay) {
-          const rect = zone.getBoundingClientRect();
-          const x = Math.max(0, Math.min(100, ((t.clientX - rect.left) / rect.width) * 100));
-          const y = Math.max(0, Math.min(100, ((t.clientY - rect.top) / rect.height) * 100));
-
-          overlay.style.setProperty('--x', x.toFixed(1) + '%');
-          overlay.style.setProperty('--y', y.toFixed(1) + '%');
-          overlay.style.opacity = '.85';
-        }
-      }
-      ticking = false;
-    });
-  }, { passive: true });
-
-  grid.addEventListener('touchend', () => {
-    document.querySelectorAll('.sunburst-overlay').forEach(o => { 
-      o.style.opacity = ''; 
-    });
-  }, { passive: true });
-}
 /* ============================================================
    RECHERCHE (recherche floue ajoutée — tolère les fautes de frappe)
    ============================================================ */
