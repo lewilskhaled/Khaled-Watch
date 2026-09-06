@@ -3513,11 +3513,7 @@ function handleProductTap(card, pid, idx){
   openModal(idx);
 }
 
-  state.timer = setTimeout(() => {
-    if (state.count > 0) openModal(idx);
-    state.count = 0;
-  }, COEUR_TAP_WINDOW);
-}
+  
 
 async function triggerCoeur(card, pid){
   const mine = getCoeurMine();
