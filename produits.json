@@ -487,6 +487,14 @@
       {
         "nom": "Argenté",
         "hex": "#bab9b5",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783468593236-272jn3-Chaine-en-argent-Argente.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Argenté",
+        "hex": "#bab9b5",
         "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783468593246-gszjn3-Chaine-en-argent-Argente.png",
         "img_gauche": "",
         "img_droit": "",
@@ -501,7 +509,7 @@
     "prix": 7000,
     "categorie": "Chaînes",
     "genre": "Homme",
-    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783469792231-k3p2z7-Chaine-torsade-principal.png",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783469792279-2zj015-Chaine-torsade-Argente.png",
     "description": "Des maillons parfaits pour un look sans faille🤌🏽🛍️",
     "img_gauche": "",
     "img_droit": "",
@@ -511,24 +519,7 @@
     "moods": [],
     "flash_fin": "",
     "flash_reduction": 0,
-    "couleurs": [
-      {
-        "nom": "Argebté",
-        "hex": "#bab9b5",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783469792236-c1dmz6-Chaine-torsade-Argebte.png",
-        "img_gauche": "",
-        "img_droit": "",
-        "img_dos": ""
-      },
-      {
-        "nom": "Argenté",
-        "hex": "#bab9b5",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783469792279-2zj015-Chaine-torsade-Argente.png",
-        "img_gauche": "",
-        "img_droit": "",
-        "img_dos": ""
-      }
-    ],
+    "couleurs": [],
     "createdAt": "2026-07-08T00:16:30.432Z"
   },
   {
