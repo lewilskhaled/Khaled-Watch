@@ -473,7 +473,7 @@
     "prix": 6000,
     "categorie": "Chaînes",
     "genre": "Homme",
-    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783468593246-gszjn3-Chaine-en-argent-Argente.png",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783468593229-5982ze-Chaine-en-argent-principal.png",
     "description": "L'art du détail imposant. L'éclat de l'argent pur à votre cou✨👌🏽",
     "img_gauche": "",
     "img_droit": "",
@@ -483,7 +483,24 @@
     "moods": [],
     "flash_fin": "",
     "flash_reduction": 0,
-    "couleurs": [],
+    "couleurs": [
+      {
+        "nom": "Argenté",
+        "hex": "#bab9b5",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783468593236-272jn3-Chaine-en-argent-Argente.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Argenté",
+        "hex": "#bab9b5",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783468593246-gszjn3-Chaine-en-argent-Argente.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      }
+    ],
     "createdAt": "2026-07-07T23:56:31.875Z"
   },
   {
@@ -547,7 +564,7 @@
     "prix": 7000,
     "categorie": "Chaînes",
     "genre": "Homme",
-    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783476215348-zrvnw2-Chaine-Twiststeel-principal.png",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783476215394-f89a2n-Chaine-Twiststeel-Argente.png",
     "description": "Associe finesse et caractère 😌👌🏽",
     "img_gauche": "",
     "img_droit": "",
@@ -557,24 +574,7 @@
     "moods": [],
     "flash_fin": "",
     "flash_reduction": 0,
-    "couleurs": [
-      {
-        "nom": "Argenté",
-        "hex": "#a8a7a4",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783476215357-xasrik-Chaine-Twiststeel-Argente.png",
-        "img_gauche": "",
-        "img_droit": "",
-        "img_dos": ""
-      },
-      {
-        "nom": "Argenté",
-        "hex": "#a8a7a4",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783476215394-f89a2n-Chaine-Twiststeel-Argente.png",
-        "img_gauche": "",
-        "img_droit": "",
-        "img_dos": ""
-      }
-    ],
+    "couleurs": [],
     "createdAt": "2026-07-08T02:03:33.508Z"
   },
   {
