@@ -1369,13 +1369,13 @@
     "createdAt": "2026-08-20T15:51:32.831Z"
   },
   {
-    "id": "1788719224695",
-    "nom": "Audemars piguet",
-    "prix": 120000,
-    "categorie": "Montres Luxueuses",
+    "id": "1788719472826",
+    "nom": "VVS",
+    "prix": 25000,
+    "categorie": "Montres",
     "genre": "Homme",
-    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1788719228327-lnemb1-Audemars-piguet-principal.png",
-    "description": "Au dessus du luxe",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1788719477665-ggw27q-VVS-principal.jpg",
+    "description": "",
     "img_gauche": "",
     "img_droit": "",
     "img_dos": "",
@@ -1386,22 +1386,30 @@
     "flash_reduction": 0,
     "couleurs": [
       {
-        "nom": "vert émeraude",
-        "hex": "#215804",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1788719228343-qp6gcc-Audemars-piguet-vert-emeraude.png",
+        "nom": "Blanc-rouge",
+        "hex": "#ffffff",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1788719477697-i7ol6b-VVS-Blanc-rouge.jpg",
         "img_gauche": "",
         "img_droit": "",
         "img_dos": ""
       },
       {
-        "nom": "Diamand",
+        "nom": "Blanc-bleu",
         "hex": "#ffffff",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1788719228362-0sky72-Audemars-piguet-Diamand.png",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1788719477732-a1liaz-VVS-Blanc-bleu.jpg",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "blanc-vert",
+        "hex": "#ffffff",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1788719477770-luclk1-VVS-blanc-vert.jpg",
         "img_gauche": "",
         "img_droit": "",
         "img_dos": ""
       }
     ],
-    "createdAt": "2026-09-06T18:27:04.695Z"
+    "createdAt": "2026-09-06T18:31:12.826Z"
   }
 ]
