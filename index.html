@@ -2991,13 +2991,31 @@ function start360(e, idx) { const s = view360[idx]; if (!s || s.frames.length <=
 function move360(e, idx) { const s = view360[idx]; if (!s || !s.active || s.frames.length <= 1) return; const dx = e.touches[0].clientX - s.startX; if (Math.abs(dx) > 40) { showAngle(idx, s.cur + (dx < 0 ? 1 : -1)); s.startX = e.touches[0].clientX; e.stopPropagation(); } }
 function end360(e, idx) { const s = view360[idx]; if (s) s.active = false; }
 
+let drag360State = { active:false, idx:null, startX:0, wrap:null };
+
 function initMouseDrag360() {
   document.querySelectorAll('.modal-img-wrap[ontouchstart]').forEach(wrap => {
-    let down = false, startX = 0;
     const idx = parseInt(wrap.id?.replace('wrap360-',''));
-    wrap.addEventListener('mousedown', e => { down=true; startX=e.clientX; wrap.style.cursor='ew-resize'; });
-    window.addEventListener('mousemove', e => { if (!down) return; const dx = e.clientX - startX; if (Math.abs(dx) > 35) { stepAngle(idx, dx < 0 ? 1 : -1); startX = e.clientX; } });
-    window.addEventListener('mouseup', () => { down=false; wrap.style.cursor=''; });
+    wrap.onmousedown = e => {
+      drag360State.active = true;
+      drag360State.idx = idx;
+      drag360State.startX = e.clientX;
+      drag360State.wrap = wrap;
+      wrap.style.cursor = 'ew-resize';
+    };
+  });
+}
+if (!window._drag360Bound) {
+  window._drag360Bound = true;
+  window.addEventListener('mousemove', e => {
+    const s = drag360State;
+    if (!s.active) return;
+    const dx = e.clientX - s.startX;
+    if (Math.abs(dx) > 35) { stepAngle(s.idx, dx < 0 ? 1 : -1); s.startX = e.clientX; }
+  });
+  window.addEventListener('mouseup', () => {
+    if (drag360State.wrap) drag360State.wrap.style.cursor = '';
+    drag360State.active = false;
   });
 }
 
@@ -3460,7 +3478,13 @@ function coeurTotalFor(pid){
 function coeurBadgeHtml(pid){
   const total = coeurTotalFor(pid);
   const mine  = !!getCoeurMine()[pid];
-  return `<div class="coeur-badge${total>0?' has':''}${mine?' mine':''}" data-pid="${h(pid)}">❤ <span>${total}</span></div>`;
+  return `<div class="coeur-badge${total>0?' has':''}${mine?' mine':''}" data-pid="${h(pid)}"
+            onclick="event.stopPropagation();triggerCoeurByPid('${js(pid)}', this)">❤ <span>${total}</span></div>`;
+}
+
+async function triggerCoeurByPid(pid, badgeEl){
+  const card = badgeEl.closest('.prod-card, .cf-slide, .ch-slide, .br-card') || badgeEl;
+  await triggerCoeur(card, pid);
 }
 function updateCoeurBadge(pid){
   const safe = String(pid).replace(/\\/g, '\\\\').replace(/"/g, '\\"');
@@ -3485,16 +3509,9 @@ function updateAllCoeurBadges(){
 }
 
 function handleProductTap(card, pid, idx){
-  if (!coeurTapState[pid]) coeurTapState[pid] = { count: 0, timer: null };
-  const state = coeurTapState[pid];
-  state.count++;
-  clearTimeout(state.timer);
-
-  if (state.count >= 3){
-    state.count = 0;
-    triggerCoeur(card, pid);
-    return;
-  }
+  // Ouverture INSTANTANÉE — plus aucun délai artificiel
+  openModal(idx);
+}
 
   state.timer = setTimeout(() => {
     if (state.count > 0) openModal(idx);
