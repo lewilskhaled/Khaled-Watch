@@ -1369,50 +1369,6 @@
     "createdAt": "2026-08-20T15:51:32.831Z"
   },
   {
-    "id": "1788719472826",
-    "nom": "VVS",
-    "prix": 25000,
-    "categorie": "Montres",
-    "genre": "Homme",
-    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1788719477665-ggw27q-VVS-principal.jpg",
-    "description": "",
-    "img_gauche": "",
-    "img_droit": "",
-    "img_dos": "",
-    "halo_cadran": "argent",
-    "is_patron": false,
-    "moods": [],
-    "flash_fin": "",
-    "flash_reduction": 0,
-    "couleurs": [
-      {
-        "nom": "Blanc-rouge",
-        "hex": "#ffffff",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1788719477697-i7ol6b-VVS-Blanc-rouge.jpg",
-        "img_gauche": "",
-        "img_droit": "",
-        "img_dos": ""
-      },
-      {
-        "nom": "Blanc-bleu",
-        "hex": "#ffffff",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1788719477732-a1liaz-VVS-Blanc-bleu.jpg",
-        "img_gauche": "",
-        "img_droit": "",
-        "img_dos": ""
-      },
-      {
-        "nom": "blanc-vert",
-        "hex": "#ffffff",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1788719477770-luclk1-VVS-blanc-vert.jpg",
-        "img_gauche": "",
-        "img_droit": "",
-        "img_dos": ""
-      }
-    ],
-    "createdAt": "2026-09-06T18:31:12.826Z"
-  },
-  {
     "id": "1788719826531",
     "nom": "VVS",
     "prix": 25000,
