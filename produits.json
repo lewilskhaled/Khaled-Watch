@@ -1447,5 +1447,57 @@
       }
     ],
     "createdAt": "2026-09-06T18:46:34.172Z"
+  },
+  {
+    "id": "1788723272264",
+    "nom": "Casio",
+    "prix": 15000,
+    "categorie": "Montres",
+    "genre": "Unisexe",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1788723275755-pxu13i-Casio-principal.png",
+    "description": "Simple et minimaliste",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "argent",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [
+      {
+        "nom": "rose",
+        "hex": "#e9afa5",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1788723275763-tphkx7-Casio-rose.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Rouge",
+        "hex": "#aa321d",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1788723275772-n4ox74-Casio-Rouge.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Vert",
+        "hex": "#05570a",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1788723275783-x8muqw-Casio-Vert.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Bleu",
+        "hex": "#3c66b9",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1788723275793-czf0to-Casio-Bleu.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      }
+    ],
+    "createdAt": "2026-09-06T19:34:32.264Z"
   }
 ]
