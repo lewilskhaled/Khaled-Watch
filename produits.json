@@ -1411,5 +1411,41 @@
       }
     ],
     "createdAt": "2026-09-06T18:37:06.531Z"
+  },
+  {
+    "id": "1788720394172",
+    "nom": "Audemars piguet",
+    "prix": 120000,
+    "categorie": "Montres Luxueuses",
+    "genre": "Homme",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1788720396637-z1zd9h-Audemars-piguet-principal.png",
+    "description": "Le sommet du luxe",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "argent",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [
+      {
+        "nom": "Vert émeraude",
+        "hex": "#04672f",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1788720396687-4771tu-Audemars-piguet-Vert-emeraude.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Blanc",
+        "hex": "#f5f5f5",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1788720396733-7agd4i-Audemars-piguet-Blanc.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      }
+    ],
+    "createdAt": "2026-09-06T18:46:34.172Z"
   }
 ]
