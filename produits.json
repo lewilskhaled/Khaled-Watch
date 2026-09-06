@@ -1367,5 +1367,41 @@
       }
     ],
     "createdAt": "2026-08-20T15:51:32.831Z"
+  },
+  {
+    "id": "1788719224695",
+    "nom": "Audemars piguet",
+    "prix": 120000,
+    "categorie": "Montres Luxueuses",
+    "genre": "Homme",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1788719228327-lnemb1-Audemars-piguet-principal.png",
+    "description": "Au dessus du luxe",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "argent",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [
+      {
+        "nom": "vert émeraude",
+        "hex": "#215804",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1788719228343-qp6gcc-Audemars-piguet-vert-emeraude.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Diamand",
+        "hex": "#ffffff",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1788719228362-0sky72-Audemars-piguet-Diamand.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      }
+    ],
+    "createdAt": "2026-09-06T18:27:04.695Z"
   }
 ]
