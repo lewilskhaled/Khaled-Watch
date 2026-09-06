@@ -563,7 +563,7 @@
   {
     "id": "1783477727699",
     "nom": "Snake Chaine",
-    "prix": 5967,
+    "prix": 5000,
     "categorie": "Chaînes",
     "genre": "Homme",
     "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783477729850-h2gdgl-Snake-Chaine-Argente.png",
@@ -618,10 +618,10 @@
   {
     "id": "1783480630983",
     "nom": "Curban Chaine",
-    "prix": 5000,
+    "prix": 6000,
     "categorie": "Chaînes",
     "genre": "Homme",
-    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783480634277-zcpnip-Curban-Chaine-principal.png",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783480634344-m7jz82-Curban-Chaine-Argente.png",
     "description": "La chaine essentielle pour finir ton outfit 😍😍",
     "img_gauche": "",
     "img_droit": "",
@@ -631,24 +631,7 @@
     "moods": [],
     "flash_fin": "",
     "flash_reduction": 0,
-    "couleurs": [
-      {
-        "nom": "Argenté",
-        "hex": "#b8b8b7",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783480634310-xkc200-Curban-Chaine-Argente.png",
-        "img_gauche": "",
-        "img_droit": "",
-        "img_dos": ""
-      },
-      {
-        "nom": "Argenté",
-        "hex": "#b8b8b7",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783480634344-m7jz82-Curban-Chaine-Argente.png",
-        "img_gauche": "",
-        "img_droit": "",
-        "img_dos": ""
-      }
-    ],
+    "couleurs": [],
     "createdAt": "2026-07-08T03:17:10.983Z"
   },
   {
