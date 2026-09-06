@@ -621,7 +621,7 @@
     "prix": 5000,
     "categorie": "Chaînes",
     "genre": "Homme",
-    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783480634344-m7jz82-Curban-Chaine-Argente.png",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783480634277-zcpnip-Curban-Chaine-principal.png",
     "description": "La chaine essentielle pour finir ton outfit 😍😍",
     "img_gauche": "",
     "img_droit": "",
@@ -631,7 +631,24 @@
     "moods": [],
     "flash_fin": "",
     "flash_reduction": 0,
-    "couleurs": [],
+    "couleurs": [
+      {
+        "nom": "Argenté",
+        "hex": "#b8b8b7",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783480634310-xkc200-Curban-Chaine-Argente.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Argenté",
+        "hex": "#b8b8b7",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783480634344-m7jz82-Curban-Chaine-Argente.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      }
+    ],
     "createdAt": "2026-07-08T03:17:10.983Z"
   },
   {
@@ -1170,16 +1187,7 @@
     "moods": [],
     "flash_fin": "",
     "flash_reduction": 0,
-    "couleurs": [
-      {
-        "nom": "Aegent",
-        "hex": "#999794",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784310220862-v9mhh3-Collier-tennis-Aegent.png",
-        "img_gauche": "",
-        "img_droit": "",
-        "img_dos": ""
-      }
-    ],
+    "couleurs": [],
     "createdAt": "2026-07-17T17:43:37.906Z"
   },
   {
