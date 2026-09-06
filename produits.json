@@ -1411,5 +1411,49 @@
       }
     ],
     "createdAt": "2026-09-06T18:31:12.826Z"
+  },
+  {
+    "id": "1788719826531",
+    "nom": "VVS",
+    "prix": 25000,
+    "categorie": "Montres",
+    "genre": "Homme",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1788719830266-osz2gy-VVS-principal.png",
+    "description": "Avec cette montre reste dans les temps",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "argent",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [
+      {
+        "nom": "Blanc-rouge",
+        "hex": "#f5f5f5",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1788719830279-d27vrg-VVS-Blanc-rouge.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Blanc vert",
+        "hex": "#f5f5f5",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1788719830299-z3h6km-VVS-Blanc-vert.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Blanc bleu",
+        "hex": "#f5f5f5",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1788719830315-iea4i9-VVS-Blanc-bleu.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      }
+    ],
+    "createdAt": "2026-09-06T18:37:06.531Z"
   }
 ]
