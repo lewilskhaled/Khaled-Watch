@@ -508,10 +508,10 @@
   {
     "id": "1783473670261",
     "nom": "Chaine à grain de café",
-    "prix": 5000,
+    "prix": 5967,
     "categorie": "Chaînes",
     "genre": "Homme",
-    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783473672416-z6598h-Chaine-a-grain-de-cafe-principal.png",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783473672475-eit2ux-Chaine-a-grain-de-cafe-Argente.png",
     "description": "La fluidité du design , la force du métal🥹🫳🏽",
     "img_gauche": "",
     "img_droit": "",
@@ -521,24 +521,7 @@
     "moods": [],
     "flash_fin": "",
     "flash_reduction": 0,
-    "couleurs": [
-      {
-        "nom": "Argenté",
-        "hex": "#a8a7a4",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783473672432-lmzsa3-Chaine-a-grain-de-cafe-Argente.png",
-        "img_gauche": "",
-        "img_droit": "",
-        "img_dos": ""
-      },
-      {
-        "nom": "Argenté",
-        "hex": "#a8a7a4",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783473672475-eit2ux-Chaine-a-grain-de-cafe-Argente.png",
-        "img_gauche": "",
-        "img_droit": "",
-        "img_dos": ""
-      }
-    ],
+    "couleurs": [],
     "createdAt": "2026-07-08T01:21:10.261Z"
   },
   {
