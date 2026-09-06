@@ -563,7 +563,7 @@
   {
     "id": "1783477727699",
     "nom": "Snake Chaine",
-    "prix": 5000,
+    "prix": 5967,
     "categorie": "Chaînes",
     "genre": "Homme",
     "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783477729850-h2gdgl-Snake-Chaine-Argente.png",
@@ -585,7 +585,7 @@
     "prix": 5000,
     "categorie": "Chaînes",
     "genre": "Homme",
-    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783479709806-cm38k9-Snake-chaine-Dore.png",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783479709781-t7v8s8-Snake-chaine-principal.png",
     "description": "Simple et minimaliste 🤩🤩",
     "img_gauche": "",
     "img_droit": "",
@@ -595,7 +595,24 @@
     "moods": [],
     "flash_fin": "",
     "flash_reduction": 0,
-    "couleurs": [],
+    "couleurs": [
+      {
+        "nom": "Doré",
+        "hex": "#d6bc6b",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783479709790-4shwwr-Snake-chaine-Dore.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Doré",
+        "hex": "#d6bc6b",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783479709806-cm38k9-Snake-chaine-Dore.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      }
+    ],
     "createdAt": "2026-07-08T03:01:46.741Z"
   },
   {
