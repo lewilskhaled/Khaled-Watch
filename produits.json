@@ -473,7 +473,7 @@
     "prix": 6000,
     "categorie": "Chaînes",
     "genre": "Homme",
-    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783468593229-5982ze-Chaine-en-argent-principal.png",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783468593246-gszjn3-Chaine-en-argent-Argente.png",
     "description": "L'art du détail imposant. L'éclat de l'argent pur à votre cou✨👌🏽",
     "img_gauche": "",
     "img_droit": "",
@@ -483,24 +483,7 @@
     "moods": [],
     "flash_fin": "",
     "flash_reduction": 0,
-    "couleurs": [
-      {
-        "nom": "Argenté",
-        "hex": "#bab9b5",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783468593236-272jn3-Chaine-en-argent-Argente.png",
-        "img_gauche": "",
-        "img_droit": "",
-        "img_dos": ""
-      },
-      {
-        "nom": "Argenté",
-        "hex": "#bab9b5",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783468593246-gszjn3-Chaine-en-argent-Argente.png",
-        "img_gauche": "",
-        "img_droit": "",
-        "img_dos": ""
-      }
-    ],
+    "couleurs": [],
     "createdAt": "2026-07-07T23:56:31.875Z"
   },
   {
@@ -655,7 +638,7 @@
     "prix": 5000,
     "categorie": "Chaînes",
     "genre": "Homme",
-    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783480634344-m7jz82-Curban-Chaine-Argente.png",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783480634277-zcpnip-Curban-Chaine-principal.png",
     "description": "La chaine essentielle pour finir ton outfit 😍😍",
     "img_gauche": "",
     "img_droit": "",
@@ -665,7 +648,24 @@
     "moods": [],
     "flash_fin": "",
     "flash_reduction": 0,
-    "couleurs": [],
+    "couleurs": [
+      {
+        "nom": "Argenté",
+        "hex": "#b8b8b7",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783480634310-xkc200-Curban-Chaine-Argente.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Argenté",
+        "hex": "#b8b8b7",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783480634344-m7jz82-Curban-Chaine-Argente.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      }
+    ],
     "createdAt": "2026-07-08T03:17:10.983Z"
   },
   {
