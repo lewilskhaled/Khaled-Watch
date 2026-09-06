@@ -2413,13 +2413,10 @@ function switchChColor(dot, idx, colorIdx) {
   const c = p.couleurs[colorIdx];
   const img = document.getElementById('chimg-' + idx);
   if (img && c.image) {
-    img.style.opacity = '0';
-    setTimeout(() => { img.src = thumbUrl(c.image, 1300, 90); img.style.opacity = '1'; }, 150);
-    img.style.transition = 'opacity .2s';
+    swapImgSmooth(img, thumbUrl(c.image, 1300, 90));
   }
   dot.closest('.cf-colors').querySelectorAll('.cf-color-dot').forEach((d,i) => d.classList.toggle('active', i===colorIdx));
 }
-
 function goChain(dir) {
   if (chAnimating || chList.length < 2) return;
   chAnimating = true;
@@ -2595,9 +2592,7 @@ function switchBrColor(dot, idx, colorIdx) {
   const c = p.couleurs[colorIdx];
   const img = document.getElementById('brimg-' + idx);
   if (img && c.image) {
-    img.style.opacity = '0';
-    setTimeout(() => { img.src = thumbUrl(c.image, 1300, 90); img.style.opacity = '1'; }, 150);
-    img.style.transition = 'opacity .2s';
+    swapImgSmooth(img, thumbUrl(c.image, 1300, 90));
   }
   dot.closest('.cf-colors').querySelectorAll('.cf-color-dot').forEach((d,i) => d.classList.toggle('active', i===colorIdx));
 }
@@ -2866,12 +2861,9 @@ function swatchCard(sw, prodId, ci) {
   const c = p.couleurs[ci];
   const img = document.getElementById('cimg-' + prodId);
   if (img && c.image) {
-    img.style.opacity = '0';
-    setTimeout(() => { img.src = thumbUrl(c.image, 640); img.style.opacity = '1'; }, 150);
-    img.style.transition = 'opacity .15s';
+    swapImgSmooth(img, thumbUrl(c.image, 640));
   }
 }
-
 /* ============================================================
    MODAL PRODUIT
    ============================================================ */
@@ -2888,6 +2880,12 @@ function openModal(idx) {
   goToSlide(idx, false);
   document.getElementById('prodModal').classList.add('open');
   document.body.style.overflow = 'hidden';
+    // Précharge discrètement toutes les variantes de couleur en arrière-plan
+  currentList.forEach(p => {
+    (p.couleurs || []).forEach(c => {
+      if (c.image) preloadImage(thumbUrl(c.image, 1400, 90));
+    });
+  });
 }
 function closeModal() {
   document.getElementById('prodModal').classList.remove('open');
@@ -3033,7 +3031,8 @@ function updateModalNav() {
 function switchModalColor(slideIdx, colorIdx, thumb) {
   const p = currentList[slideIdx]; const c = p.couleurs[colorIdx];
   const img = document.getElementById('mimg-' + slideIdx);
-  if (img && (c.image || p.image)) img.src = thumbUrl(c.image || p.image, 1400, 90);
+  const url = thumbUrl(c.image || p.image, 1400, 90);
+  swapImgSmooth(img, url);
   thumb.closest('.modal-color-strip').querySelectorAll('.modal-color-thumb').forEach((t,i) => t.classList.toggle('active', i===colorIdx));
 }
 
@@ -3132,7 +3131,36 @@ function thumbUrl(url, width, quality) {
     return url;
   }
 }
+/* ============================================================
+   CACHE + PRÉCHARGEMENT D'IMAGES — évite l'attente au changement
+   de couleur/variante (modal, colliers, chaînes, bracelets)
+   ============================================================ */
+const imgPreloadCache = new Map();
 
+function preloadImage(url) {
+  if (imgPreloadCache.has(url)) return imgPreloadCache.get(url);
+  const p = new Promise((resolve) => {
+    const im = new Image();
+    im.onload = () => resolve(url);
+    im.onerror = () => resolve(url); // on continue même en cas d'erreur
+    im.src = url;
+  });
+  imgPreloadCache.set(url, p);
+  return p;
+}
+
+// Change la source d'un <img> avec préchargement, cache, et transition fluide.
+// Si l'image est déjà en cache navigateur, le changement est INSTANTANÉ.
+async function swapImgSmooth(imgEl, newSrc) {
+  if (!imgEl || !newSrc) return;
+  const cached = imgPreloadCache.has(newSrc);
+  if (!cached) {
+    imgEl.style.opacity = '0.4'; // léger effet visuel pendant le chargement, pas de blanc total
+  }
+  await preloadImage(newSrc);
+  imgEl.src = newSrc;
+  imgEl.style.opacity = '1';
+}
 /* ============================================================
    SUNBURST — désactivé pour la performance
    (le halo lumineux au survol/toucher des cartes est coupé
