@@ -508,30 +508,11 @@
   {
     "id": "1783473670261",
     "nom": "Chaine à grain de café",
-    "prix": 5967,
+    "prix": 5000,
     "categorie": "Chaînes",
     "genre": "Homme",
-    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783473672475-eit2ux-Chaine-a-grain-de-cafe-Argente.png",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783473672416-z6598h-Chaine-a-grain-de-cafe-principal.png",
     "description": "La fluidité du design , la force du métal🥹🫳🏽",
-    "img_gauche": "",
-    "img_droit": "",
-    "img_dos": "",
-    "halo_cadran": "or",
-    "is_patron": false,
-    "moods": [],
-    "flash_fin": "",
-    "flash_reduction": 0,
-    "couleurs": [],
-    "createdAt": "2026-07-08T01:21:10.261Z"
-  },
-  {
-    "id": "1783476213508",
-    "nom": "Chaine Twiststeel",
-    "prix": 7000,
-    "categorie": "Chaînes",
-    "genre": "Homme",
-    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783476215348-zrvnw2-Chaine-Twiststeel-principal.png",
-    "description": "Associe finesse et caractère 😌👌🏽",
     "img_gauche": "",
     "img_droit": "",
     "img_dos": "",
@@ -544,7 +525,7 @@
       {
         "nom": "Argenté",
         "hex": "#a8a7a4",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783476215357-xasrik-Chaine-Twiststeel-Argente.png",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783473672432-lmzsa3-Chaine-a-grain-de-cafe-Argente.png",
         "img_gauche": "",
         "img_droit": "",
         "img_dos": ""
@@ -552,12 +533,31 @@
       {
         "nom": "Argenté",
         "hex": "#a8a7a4",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783476215394-f89a2n-Chaine-Twiststeel-Argente.png",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783473672475-eit2ux-Chaine-a-grain-de-cafe-Argente.png",
         "img_gauche": "",
         "img_droit": "",
         "img_dos": ""
       }
     ],
+    "createdAt": "2026-07-08T01:21:10.261Z"
+  },
+  {
+    "id": "1783476213508",
+    "nom": "Chaine Twiststeel",
+    "prix": 6978,
+    "categorie": "Chaînes",
+    "genre": "Homme",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783476215394-f89a2n-Chaine-Twiststeel-Argente.png",
+    "description": "Associe finesse et caractère 😌👌🏽",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "or",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [],
     "createdAt": "2026-07-08T02:03:33.508Z"
   },
   {
