@@ -2002,7 +2002,9 @@ function openColliersFeed(cat) {
   if (t) t.textContent = CF_CONFIG[cfCat].title;
   const sc = document.getElementById('cfScroll');
   if (sc) sc.scrollTop = 0;
-  document.getElementById('colliersFeed').classList.add('open');
+  const feedEl = document.getElementById('colliersFeed');
+  feedEl.classList.toggle('montres-lux', cfCat === 'Montres');
+  feedEl.classList.add('open');
   document.body.style.overflow = 'hidden';
   spawnBubbles('cfBubbles', 18);
   renderColliersFeed();
@@ -3584,6 +3586,55 @@ body .home-title,body .home-subtitle,body .home-desc{filter:drop-shadow(0 3px 14
   });
 })();
 </script>
+
+<style>
+/* ===== FOND LUXE — ONGLET MONTRES (téléphone uniquement) ===== */
+@media (max-width:1024px){
+  #colliersFeed.montres-lux{background:#0c0905!important;}
+  /* photo de marbre doré, légèrement adoucie pour que la montre du client reste la vedette */
+  #colliersFeed.montres-lux::before{
+    content:'';position:absolute;inset:-4%;z-index:-2;pointer-events:none;
+    background:url('fond-montres.jpg') center 30%/cover no-repeat;
+    filter:blur(5px) brightness(.62) saturate(1.2) contrast(1.05);
+  }
+  /* lumière dorée au centre + vignette sombre */
+  #colliersFeed.montres-lux::after{
+    content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;
+    background:
+      radial-gradient(ellipse 75% 45% at 50% 42%,rgba(255,214,120,.22) 0%,rgba(255,214,120,0) 70%),
+      radial-gradient(ellipse 130% 90% at 50% 50%,rgba(0,0,0,0) 40%,rgba(0,0,0,.6) 100%),
+      linear-gradient(180deg,rgba(0,0,0,.35) 0%,rgba(0,0,0,0) 22%,rgba(0,0,0,0) 62%,rgba(0,0,0,.55) 100%);
+  }
+  #colliersFeed.montres-lux .cf-glow{
+    background:radial-gradient(circle at 50% 42%,rgba(255,215,120,.34) 0%,rgba(232,201,122,.1) 38%,transparent 64%);
+  }
+  #colliersFeed.montres-lux .cf-img-wrap img{
+    filter:drop-shadow(0 26px 40px rgba(0,0,0,.7)) drop-shadow(0 0 38px rgba(232,201,122,.35)) brightness(1.07) contrast(1.06) saturate(1.1);
+  }
+  /* panneau d'information : noir profond, liseré or */
+  #colliersFeed.montres-lux .cf-info{
+    padding-top:2.6rem;
+    background:linear-gradient(0deg,rgba(8,6,3,.97) 0%,rgba(12,9,5,.9) 55%,rgba(12,9,5,0) 100%);
+  }
+  #colliersFeed.montres-lux .cf-info::before{
+    content:'';position:absolute;left:12%;right:12%;top:1.9rem;height:1px;
+    background:linear-gradient(90deg,transparent,#E8C97A,transparent);opacity:.85;
+  }
+  #colliersFeed.montres-lux .cf-badge{background:rgba(201,168,76,.16);border-color:rgba(232,201,122,.7);}
+  #colliersFeed.montres-lux .fb{display:block!important;}
+  /* garde le thème sombre même si le mode clair est actif */
+  body.light-mode #colliersFeed.montres-lux .cf-topbar{background:linear-gradient(180deg,rgba(0,0,0,.8) 0%,rgba(0,0,0,.35) 60%,transparent 100%);}
+  body.light-mode #colliersFeed.montres-lux .cf-back{background:rgba(255,255,255,.08);border-color:rgba(201,168,76,.45);color:#E8C97A;}
+  body.light-mode #colliersFeed.montres-lux .cf-counter{color:#E8C97A;background:rgba(0,0,0,.45);border-color:rgba(201,168,76,.35);}
+  body.light-mode #colliersFeed.montres-lux .cf-info{background:linear-gradient(0deg,rgba(8,6,3,.97) 0%,rgba(12,9,5,.9) 55%,rgba(12,9,5,0) 100%);}
+  body.light-mode #colliersFeed.montres-lux .cf-name{color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.85);}
+  body.light-mode #colliersFeed.montres-lux .cf-genre{color:#C8BDA0;}
+  body.light-mode #colliersFeed.montres-lux .cf-desc{color:#D8CFB8;}
+  body.light-mode #colliersFeed.montres-lux .cf-empty{color:#D4C9B0;}
+  body.light-mode #colliersFeed.montres-lux .cf-empty h3{color:#E8C97A;}
+  body.light-mode #colliersFeed.montres-lux .cf-swipe-hint{color:rgba(232,201,122,.85);text-shadow:0 2px 8px rgba(0,0,0,.8);}
+}
+</style>
 
 </body>
 </html>
