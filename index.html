@@ -42,86 +42,103 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--txt);m
 #splash{
   position:fixed;inset:0;z-index:9999;
   background:
-    radial-gradient(ellipse 60% 45% at 20% 15%, rgba(255,250,235,.95) 0%, rgba(255,255,255,0) 60%),
-    radial-gradient(ellipse 55% 40% at 85% 25%, rgba(255,248,225,.85) 0%, rgba(255,255,255,0) 65%),
-    radial-gradient(ellipse 70% 55% at 50% 90%, rgba(250,240,210,.65) 0%, rgba(255,255,255,0) 70%),
-    #ffffff;
+    radial-gradient(ellipse 80% 55% at 50% 42%, #1d1810 0%, rgba(13,10,6,0) 70%),
+    #07060a;
   display:flex;align-items:center;justify-content:center;flex-direction:column;
-  overflow:hidden;
-  animation:splashOut 1s ease-in 4.6s forwards;
+  overflow:hidden;cursor:pointer;
+  animation:splashOut .9s ease-in 5.2s forwards;
+}
+.ks-stage{position:relative;display:flex;align-items:center;justify-content:center;flex-direction:column;width:100%;padding:0 1rem;}
+
+/* Lettres : éteintes au départ, elles s'allument quand la lampe s'allume */
+.ks-line{
+  position:relative;font-family:'Cormorant Garamond',serif;font-weight:700;text-align:center;
+  white-space:nowrap;line-height:1.25;
+}
+.ks-l1{font-size:clamp(1.7rem,8.4vw,3rem);letter-spacing:.05em;}
+.ks-l2{font-size:clamp(2.1rem,10.4vw,4rem);letter-spacing:.06em;margin-top:.1rem;}
+.ks-l{
+  position:relative;z-index:2;display:inline-block;
+  color:rgba(255,255,255,.08);
+  -webkit-text-stroke:1px rgba(255,255,255,.30);
+  text-shadow:none;
+  animation:ksLit 1.1s linear var(--ld,2.4s) forwards;
+}
+.ks-l2 .ks-l{-webkit-text-stroke-width:1.4px;}
+/* reflet de verre sur le haut de chaque lettre */
+.ks-l::after{
+  content:attr(data-c);position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;
+  background:linear-gradient(180deg,rgba(255,255,255,.95) 0%,rgba(255,255,255,.38) 36%,rgba(255,255,255,0) 60%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;
+  -webkit-text-stroke:0;opacity:0;
+  animation:ksGloss .6s ease-out calc(var(--ld,2.4s) + .35s) forwards;
+}
+@keyframes ksGloss{to{opacity:.9;}}
+.ks-sp{display:inline-block;width:.3em;}
+@keyframes ksLit{
+  0%  {color:rgba(255,255,255,.08);-webkit-text-stroke-color:rgba(255,255,255,.30);text-shadow:none;}
+  10% {color:rgba(255,251,224,.92);-webkit-text-stroke-color:#fff;text-shadow:0 0 8px #fff3b0,0 0 22px #F5E27A,0 0 46px rgba(201,168,76,.9);}
+  20% {color:rgba(255,255,255,.12);-webkit-text-stroke-color:rgba(255,255,255,.35);text-shadow:none;}
+  32% {color:rgba(255,251,224,.92);-webkit-text-stroke-color:#fff;text-shadow:0 0 8px #fff3b0,0 0 22px #F5E27A,0 0 46px rgba(201,168,76,.9);}
+  44% {color:rgba(255,236,160,.5);-webkit-text-stroke-color:rgba(255,255,255,.8);text-shadow:0 0 6px rgba(245,226,122,.5);}
+  60%,100%{color:rgba(255,232,150,.40);-webkit-text-stroke-color:rgba(255,255,255,.9);text-shadow:0 0 10px rgba(245,226,122,.65),0 0 26px rgba(201,168,76,.5);}
 }
 
-.splash-stage{position:relative;display:flex;align-items:center;justify-content:center;flex-direction:column;animation:stageBreath 3.4s ease-in-out 1.4s infinite;}
-@keyframes stageBreath{0%,100%{transform:scale(1);}50%{transform:scale(1.025);}}
+/* Emplacement du "i" de Bienvenue : la lampe torche vient s'y poser */
+.ks-slot{position:relative;display:inline-block;width:.42em;height:1em;vertical-align:baseline;}
+.ks-travel{position:absolute;left:0;bottom:0;width:100%;height:100%;z-index:3;animation:ksTravel 1.5s cubic-bezier(.25,.6,.35,1) .3s both;}
+.ks-hop{position:absolute;left:0;bottom:0;width:100%;height:100%;transform-origin:50% 100%;animation:ksHop 1.5s linear .3s both;}
+.ks-lamp{position:absolute;left:-.04em;bottom:-.03em;width:.5em;height:1.06em;overflow:visible;
+  filter:brightness(.8);animation:ksLampOn .45s ease-out 1.85s forwards;}
+.ks-lens-off{animation:ksLensOff .35s ease-out 1.85s forwards;}
+@keyframes ksTravel{from{transform:translateX(95vw);}to{transform:translateX(0);}}
+@keyframes ksHop{
+  0%  {transform:translateY(0) rotate(10deg);animation-timing-function:ease-out;}
+  9%  {transform:translateY(-1.1em) rotate(-8deg);animation-timing-function:ease-in;}
+  18% {transform:translateY(0) rotate(0) scale(1.2,.78);animation-timing-function:ease-out;}
+  23% {transform:translateY(0) rotate(0) scale(1,1);animation-timing-function:ease-out;}
+  36% {transform:translateY(-.9em) rotate(7deg);animation-timing-function:ease-in;}
+  46% {transform:translateY(0) rotate(0) scale(1.17,.82);animation-timing-function:ease-out;}
+  51% {transform:translateY(0) scale(1,1);animation-timing-function:ease-out;}
+  63% {transform:translateY(-.6em) rotate(-5deg);animation-timing-function:ease-in;}
+  72% {transform:translateY(0) rotate(0) scale(1.13,.86);animation-timing-function:ease-out;}
+  76% {transform:translateY(0) scale(1,1);animation-timing-function:ease-out;}
+  86% {transform:translateY(-.28em) rotate(3deg);animation-timing-function:ease-in;}
+  94% {transform:translateY(0) rotate(0) scale(1.08,.92);animation-timing-function:ease-out;}
+  100%{transform:translateY(0) rotate(0) scale(1,1);}
+}
+@keyframes ksLampOn{
+  0%  {filter:brightness(.8);}
+  35% {filter:brightness(1.5) drop-shadow(0 0 14px #fff3b0) drop-shadow(0 0 34px rgba(245,226,122,.95));}
+  100%{filter:brightness(1.12) drop-shadow(0 0 8px #ffe98a) drop-shadow(0 0 22px rgba(245,226,122,.8));}
+}
+@keyframes ksLensOff{to{opacity:0;}}
 
-.splash-emblem{position:relative;width:230px;height:230px;display:flex;align-items:center;justify-content:center;margin-bottom:1.3rem;}
+/* Grand halo de lumière qui s'étale depuis la lampe */
+.ks-flood{position:absolute;left:50%;top:15%;width:0;height:0;z-index:0;pointer-events:none;}
+.ks-flood::before{
+  content:'';position:absolute;left:-65vmax;top:-65vmax;width:130vmax;height:130vmax;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,236,160,.34) 0%,rgba(201,168,76,.15) 24%,rgba(201,168,76,0) 55%);
+  opacity:0;transform:scale(0);animation:ksFlood 1.8s ease-out 1.85s forwards;
+}
+@keyframes ksFlood{0%{opacity:0;transform:scale(0);}25%{opacity:1;transform:scale(.45);}100%{opacity:.8;transform:scale(1);}}
 
-.splash-ring{position:absolute;inset:0;width:100%;height:100%;transform-origin:50% 50%;animation:ringPulseRotate 7s cubic-bezier(.45,0,.55,1) infinite;opacity:0;animation:ringPulseRotate 7s cubic-bezier(.45,0,.55,1) infinite, ringFadeIn .6s ease-out .1s forwards;}
-@keyframes ringPulseRotate{
-  0%{transform:rotate(0deg);}
-  18%{transform:rotate(300deg);}
-  40%{transform:rotate(372deg);}
-  62%{transform:rotate(560deg);}
-  84%{transform:rotate(618deg);}
-  100%{transform:rotate(720deg);}
+.ks-tagline{
+  font-size:.62rem;letter-spacing:.42em;text-transform:uppercase;color:#C9A84C;
+  font-weight:700;margin-top:1.1rem;opacity:0;text-align:center;
+  animation:fadeUp .9s ease-out 3.2s forwards;
 }
-@keyframes ringFadeIn{from{opacity:0;}to{opacity:1;}}
+.ks-bar{width:0;height:1px;margin-top:1.1rem;background:linear-gradient(90deg,transparent,#C9A84C,transparent);animation:barIn .9s ease-out 3.5s forwards;}
+.ks-sub{font-size:.6rem;letter-spacing:.4em;color:#9c8c60;text-transform:uppercase;margin-top:.9rem;opacity:0;text-align:center;animation:fadeUp .8s ease-out 3.8s forwards;}
 
-.splash-watch{position:relative;z-index:2;opacity:0;filter:drop-shadow(0 6px 20px rgba(201,168,76,.45)) blur(10px);animation:watchFlyIn 1.15s cubic-bezier(.2,.7,.2,1) .15s forwards;}
-@keyframes watchFlyIn{
-  0%{transform:translate(-90px,-190px) scale(.32) rotate(-38deg);opacity:0;filter:drop-shadow(0 6px 20px rgba(201,168,76,.45)) blur(12px);}
-  55%{transform:translate(10px,12px) scale(1.1) rotate(5deg);opacity:1;filter:drop-shadow(0 6px 20px rgba(201,168,76,.45)) blur(2px);}
-  75%{transform:translate(-5px,-5px) scale(.96) rotate(-2deg);filter:drop-shadow(0 6px 20px rgba(201,168,76,.45)) blur(0);}
-  100%{transform:translate(0,0) scale(1) rotate(0deg);opacity:1;filter:drop-shadow(0 6px 20px rgba(201,168,76,.45)) blur(0);}
+/* ===== Splash : effet verre (glassmorphism) ===== */
+.ks-stage{z-index:1;}
+.ks-glass{
+  position:relative;display:flex;flex-direction:column;align-items:center;
+  max-width:calc(100% - 1rem);padding:.5rem .4rem;
 }
-
-.splash-landing-flash{
-  position:absolute;z-index:1;width:70px;height:70px;border-radius:50%;
-  background:radial-gradient(circle, rgba(255,251,230,1) 0%, rgba(245,226,122,.7) 35%, rgba(201,168,76,0) 72%);
-  opacity:0;animation:landingFlash .6s ease-out 1.05s forwards;
-}
-@keyframes landingFlash{0%{opacity:0;transform:scale(.3);}35%{opacity:1;}100%{opacity:0;transform:scale(3.6);}}
-
-.splash-spark{position:absolute;z-index:3;color:#F5E27A;text-shadow:0 0 8px rgba(245,226,122,.9),0 0 16px rgba(201,168,76,.7);opacity:0;animation:sparkTwinkle 2.8s ease-in-out infinite;}
-.splash-spark.s1{top:12%;right:8%;font-size:1.15rem;animation-delay:1.1s;}
-.splash-spark.s2{bottom:18%;left:6%;font-size:.85rem;animation-delay:1.9s;}
-.splash-spark.s3{top:52%;right:2%;font-size:.65rem;animation-delay:2.6s;}
-@keyframes sparkTwinkle{0%,100%{opacity:0;transform:scale(.4);}15%{opacity:1;transform:scale(1.2);}30%{opacity:.5;transform:scale(.8);}45%{opacity:0;transform:scale(.4);}}
-
-.splash-shine{
-  position:absolute;inset:-30%;z-index:4;pointer-events:none;border-radius:50%;
-  background:linear-gradient(115deg,transparent 42%, rgba(255,255,255,.95) 50%, transparent 58%);
-  background-size:260% 260%;background-position:150% 150%;
-  opacity:0;
-  animation:shineSweep 1.3s ease-out 1.35s 1;
-}
-@keyframes shineSweep{
-  0%{background-position:160% 160%;opacity:0;}
-  12%{opacity:1;}
-  55%{opacity:1;}
-  100%{background-position:-60% -60%;opacity:0;}
-}
-
-.splash-title{
-  font-family:'Cormorant Garamond',serif;font-size:clamp(1.7rem,7vw,2.6rem);font-weight:700;
-  letter-spacing:.16em;text-align:center;
-  background:linear-gradient(90deg,#8B6914 0%,#C9A84C 20%,#F5E27A 35%,#FFFBE6 50%,#F5E27A 65%,#C9A84C 80%,#8B6914 100%);
-  background-size:250% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  animation:goldShimmer 3s linear infinite, fadeUp 1s ease-out 1.55s forwards;
-  opacity:0;filter:drop-shadow(0 2px 6px rgba(0,0,0,.12));
-}
-.splash-tagline{
-  font-size:.62rem;letter-spacing:.42em;text-transform:uppercase;color:#8B6914;
-  font-weight:700;margin-top:.55rem;opacity:0;
-  animation:fadeUp .9s ease-out 1.9s forwards;
-}
-.splash-txt{
-  font-family:'Cormorant Garamond',serif;font-size:clamp(1rem,4.2vw,1.3rem);font-weight:500;
-  color:#4a3f22;letter-spacing:.05em;text-align:center;padding:0 1.5rem;margin-top:1.5rem;
-  opacity:0;animation:fadeUp 1s ease-out 2.3s forwards;
-}
-.splash-bar{width:0;height:1px;margin-top:1.3rem;background:linear-gradient(90deg,transparent,#C9A84C,transparent);animation:barIn .9s ease-out 2.7s forwards;}
-.splash-sub{font-size:.6rem;letter-spacing:.4em;color:#9c8c60;text-transform:uppercase;margin-top:.9rem;opacity:0;animation:fadeUp .8s ease-out 3.05s forwards;}
+.ks-glass .ks-tagline{margin-top:1rem;}
+.ks-glass .ks-sub{max-width:22rem;line-height:1.7;}
 
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 @keyframes barIn{from{width:0}to{width:160px}}
@@ -1260,10 +1277,9 @@ body.light-mode .sort-select{background:rgba(255,255,255,.8);color:#8B6914;borde
 .prod-img-zone::before { animation: none !important; opacity: 0 !important; }
 .search-input-row { animation: none !important; }
 .search-underline { animation: none !important; }
-.splash-title, .logo-txt, .home-title, .search-icon { animation: none !important; }
+.logo-txt, .home-title, .search-icon { animation: none !important; }
 .lp, .fb { display: none !important; }
 .wa-float, .del-fab, .del-launcher, .del-fab-badge { animation: none !important; }
-.splash-stage, .splash-ring { animation-duration: 0s !important; }
 .modal-desc-wrap::before { animation: none !important; }
 .sunburst-overlay { display: none !important; }
 </style>
@@ -1278,59 +1294,54 @@ body.light-mode .sort-select{background:rgba(255,255,255,.8);color:#8B6914;borde
 <!-- Badge gyroscope -->
 <div class="gyro-badge" id="gyroBadge">🌀 Gyroscope actif</div>
 
-<!-- SPLASH -->
-<div id="splash">
-  <div class="splash-stage">
-    <div class="splash-emblem">
-      <svg class="splash-ring" viewBox="0 0 300 300" aria-hidden="true">
-        <defs>
-          <linearGradient id="splashRingGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#8B6914"/>
-            <stop offset="50%" stop-color="#F5E27A"/>
-            <stop offset="100%" stop-color="#8B6914"/>
-          </linearGradient>
-        </defs>
-        <circle cx="150" cy="150" r="132" fill="none" stroke="url(#splashRingGrad)" stroke-width="3" stroke-dasharray="1 8" stroke-linecap="round"/>
-        <circle cx="150" cy="150" r="114" fill="none" stroke="url(#splashRingGrad)" stroke-width="2" stroke-dasharray="1 6" stroke-linecap="round" opacity=".6"/>
-      </svg>
-      <div class="splash-landing-flash"></div>
-      <span class="splash-spark s1">✦</span>
-      <span class="splash-spark s2">✦</span>
-      <span class="splash-spark s3">✦</span>
-      <div class="splash-shine"></div>
-      <svg class="splash-watch" viewBox="0 0 200 200" width="118" height="118" aria-hidden="true">
-        <defs>
-          <linearGradient id="splashGoldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#8B6914"/>
-            <stop offset="35%" stop-color="#C9A84C"/>
-            <stop offset="55%" stop-color="#F5E27A"/>
-            <stop offset="75%" stop-color="#C9A84C"/>
-            <stop offset="100%" stop-color="#8B6914"/>
-          </linearGradient>
-        </defs>
-        <rect x="78" y="8" width="44" height="36" rx="6" fill="url(#splashGoldGrad)" stroke="#5c4a12" stroke-width="1.5"/>
-        <rect x="78" y="156" width="44" height="36" rx="6" fill="url(#splashGoldGrad)" stroke="#5c4a12" stroke-width="1.5"/>
-        <rect x="174" y="92" width="11" height="16" rx="2" fill="url(#splashGoldGrad)" stroke="#5c4a12" stroke-width="1"/>
-        <circle cx="100" cy="100" r="62" fill="#15120c" stroke="url(#splashGoldGrad)" stroke-width="5"/>
-        <circle cx="100" cy="100" r="50" fill="url(#splashGoldGrad)"/>
-        <g stroke="#2a2210" stroke-width="2">
-          <line x1="100" y1="56" x2="100" y2="64"/>
-          <line x1="100" y1="136" x2="100" y2="144"/>
-          <line x1="56" y1="100" x2="64" y2="100"/>
-          <line x1="136" y1="100" x2="144" y2="100"/>
-        </g>
-        <line x1="100" y1="100" x2="100" y2="68" stroke="#1a1510" stroke-width="4" stroke-linecap="round"/>
-        <line x1="100" y1="100" x2="128" y2="112" stroke="#1a1510" stroke-width="4" stroke-linecap="round"/>
-        <circle cx="100" cy="100" r="4" fill="#1a1510"/>
-      </svg>
-    </div>
-    <div class="splash-title">Khaled Watch</div>
-    <div class="splash-tagline">L'Élégance au Quotidien</div>
-    <div class="splash-txt">Bienvenue sur ma page Khaled Watch 😉</div>
-    <div class="splash-bar"></div>
-    <div class="splash-sub">Collection Prestige · Montres &amp; Bijoux</div>
-  </div>
+<!-- SPLASH : la lampe torche saute à la place du "i" de Bienvenue puis illumine le texte -->
+<div id="splash" aria-label="Bienvenue sur Khaled Watch">
+  <div class="ks-stage"><div class="ks-glass">
+    <div class="ks-line ks-l1" aria-hidden="true"><span class="ks-l" data-c="B">B</span><span class="ks-slot"><span class="ks-flood"></span><span class="ks-travel"><span class="ks-hop">
+<svg class="ks-lamp" viewBox="0 0 40 104" aria-hidden="true">
+  <defs>
+    <linearGradient id="ksBody" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#8B6914"/><stop offset=".35" stop-color="#F5E27A"/><stop offset=".7" stop-color="#C9A84C"/><stop offset="1" stop-color="#7a5a10"/></linearGradient>
+    <radialGradient id="ksLens" cx=".5" cy=".5" r=".6"><stop offset="0" stop-color="#fffbe0"/><stop offset=".6" stop-color="#ffe98a"/><stop offset="1" stop-color="#d9b13c"/></radialGradient>
+  </defs>
+  <path d="M2 4 Q20 -2 38 4 L33 30 L7 30 Z" fill="url(#ksBody)" stroke="#4a3a0c" stroke-width="1.6" stroke-linejoin="round"/>
+  <ellipse cx="20" cy="5" rx="17.5" ry="5.5" fill="url(#ksLens)" stroke="#4a3a0c" stroke-width="1.4"/>
+  <ellipse class="ks-lens-off" cx="20" cy="5" rx="17.5" ry="5.5" fill="#1c170a" opacity=".78"/>
+  <rect x="10" y="30" width="20" height="6" rx="2" fill="#2a2210"/>
+  <rect x="11" y="35" width="18" height="62" rx="5" fill="url(#ksBody)" stroke="#4a3a0c" stroke-width="1.6"/>
+  <g stroke="#4a3a0c" stroke-width="1.6" stroke-linecap="round"><line x1="14" y1="64" x2="26" y2="64"/><line x1="14" y1="70" x2="26" y2="70"/><line x1="14" y1="76" x2="26" y2="76"/></g>
+  <rect x="16.5" y="43" width="7" height="13" rx="3.5" fill="#2a2210"/>
+  <rect x="18" y="45" width="4" height="5" rx="2" fill="#ff5b4a"/>
+  <rect x="13" y="96" width="14" height="6" rx="3" fill="#2a2210"/>
+</svg></span></span></span><span class="ks-l" data-c="e">e</span><span class="ks-l" data-c="n">n</span><span class="ks-l" data-c="v">v</span><span class="ks-l" data-c="e">e</span><span class="ks-l" data-c="n">n</span><span class="ks-l" data-c="u">u</span><span class="ks-l" data-c="e">e</span><span class="ks-sp"></span><span class="ks-l" data-c="s">s</span><span class="ks-l" data-c="u">u</span><span class="ks-l" data-c="r">r</span></div>
+    <div class="ks-line ks-l2" aria-hidden="true"><span class="ks-l" data-c="K">K</span><span class="ks-l" data-c="h">h</span><span class="ks-l" data-c="a">a</span><span class="ks-l" data-c="l">l</span><span class="ks-l" data-c="e">e</span><span class="ks-l" data-c="d">d</span><span class="ks-sp"></span><span class="ks-l" data-c="W">W</span><span class="ks-l" data-c="a">a</span><span class="ks-l" data-c="t">t</span><span class="ks-l" data-c="c">c</span><span class="ks-l" data-c="h">h</span></div>
+    <div class="ks-tagline">L'Élégance au Quotidien</div>
+    <div class="ks-bar"></div>
+    <div class="ks-sub">Collection Prestige · Montres &amp; Bijoux</div>
+  </div></div>
 </div>
+<script>
+(function(){
+  var sp = document.getElementById('splash');
+  if (!sp) return;
+  /* chaque lettre s'allume selon sa distance à la lampe : les plus proches d'abord */
+  function setDelays(){
+    var slot = sp.querySelector('.ks-slot');
+    if (!slot) return;
+    var r = slot.getBoundingClientRect();
+    var cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+    sp.querySelectorAll('.ks-l').forEach(function(l){
+      var b = l.getBoundingClientRect();
+      var dx = b.left + b.width / 2 - cx, dy = b.top + b.height / 2 - cy;
+      var d = Math.sqrt(dx * dx + dy * dy);
+      l.style.setProperty('--ld', (2.0 + d * 0.0034).toFixed(2) + 's');
+    });
+  }
+  setDelays();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(setDelays);
+  /* un toucher passe l'animation */
+  sp.addEventListener('click', function(){ sp.style.animation = 'splashOut .45s ease-in forwards'; });
+})();
+</script>
 
 <div id="catalogLoader"><div class="loader"></div><span>Chargement de la collection…</span></div>
 
@@ -1352,7 +1363,6 @@ body.light-mode .sort-select{background:rgba(255,255,255,.8);color:#8B6914;borde
 <!-- BOUTON ASSISTANTE (la recherche est maintenant dans l'onglet Montres) -->
 <div class="search-bar-wrap" id="globalSearchWrap">
   <div class="search-bar-flex">
-    <button class="snd-toggle" id="sndBtn" onclick="KWSound.toggle()" aria-label="Activer ou couper le son" title="Son">🔊</button>
     <button class="del-launcher" id="delFab" onclick="openDelPanel()">
       <span id="delFabBadge" class="del-fab-badge">1</span>
       🙋🏽‍♀️
@@ -1991,7 +2001,6 @@ function updateFavorisCount(){
    ============================================================ */
 let cfGender = 'tous';
 let cfList   = [];
-let cfLastIdx = 0;
 let cfCat    = 'Colliers';
 const CF_CONFIG = {
   'Colliers':          { title:'✦ Collier pour Femme', badge:'✦ Collier', empty:'Aucun collier disponible pour le moment.' },
@@ -2008,7 +2017,6 @@ function onCfSearch(val) {
   clearTimeout(cfSearchTimer);
   cfSearchTimer = setTimeout(function(){
     const sc = document.getElementById('cfScroll');
-    cfLastIdx = 0;
     if (sc) sc.scrollTop = 0;
     renderColliersFeed();
   }, 250);
@@ -2028,7 +2036,6 @@ function openColliersFeed(cat) {
   const t = document.getElementById('cfTitle');
   if (t) t.textContent = CF_CONFIG[cfCat].title;
   const sc = document.getElementById('cfScroll');
-  cfLastIdx = 0;
   if (sc) sc.scrollTop = 0;
   const feedEl = document.getElementById('colliersFeed');
   feedEl.classList.toggle('montres-lux', cfCat === 'Montres');
@@ -2043,7 +2050,6 @@ function closeColliersFeed() {
   document.getElementById('colliersFeed').classList.remove('open');
   document.body.style.overflow = '';
   const scroll = document.getElementById('cfScroll');
-  cfLastIdx = 0;
   if (scroll) scroll.scrollTop = 0;
   syncNavActive();
 }
@@ -2143,7 +2149,6 @@ function onCfScroll() {
     const scroll = document.getElementById('cfScroll');
     if (!scroll || !cfList.length) return;
     const idx = Math.round(scroll.scrollTop / scroll.clientHeight);
-    if (idx !== cfLastIdx) { cfLastIdx = idx; if (window.KWSound) KWSound.play('scroll'); }
     updateCfCounter(Math.min(idx+1, cfList.length), cfList.length);
   });
 }
@@ -2300,7 +2305,6 @@ function switchChColor(dot, idx, colorIdx) {
 function goChain(dir) {
   if (chAnimating || chList.length < 2) return;
   chAnimating = true;
-  if (window.KWSound) KWSound.play('swipe');
   const n = chList.length;
   const newIndex = (chIndex + dir + n) % n;
   chIndex = newIndex;
@@ -3897,121 +3901,5 @@ body nav.bottom-nav{z-index:9750!important;}
 })();
 </script>
 
-<style>
-.snd-toggle{
-  position:relative;flex-shrink:0;width:42px;height:42px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;font-size:1.05rem;cursor:pointer;
-  -webkit-tap-highlight-color:transparent;color:#fff;
-  background:linear-gradient(135deg,rgba(255,255,255,.22),rgba(255,255,255,.06));
-  border:1px solid rgba(255,255,255,.4);
-  -webkit-backdrop-filter:blur(14px) saturate(190%);backdrop-filter:blur(14px) saturate(190%);
-  box-shadow:0 4px 16px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.7);
-}
-.snd-toggle:active{transform:scale(.92);}
-.snd-toggle.off{opacity:.65;}
-</style>
-<script>
-/* ===== Effets sonores (générés par le navigateur, aucun fichier audio) ===== */
-window.KWSound = (function(){
-  var ctx = null, master = null, noiseBuf = null, enabled = true, last = {};
-  try { enabled = localStorage.getItem('kw-sound') !== '0'; } catch(e) {}
-
-  function ensure(){
-    if (!ctx) {
-      var AC = window.AudioContext || window.webkitAudioContext;
-      if (!AC) return null;
-      try { ctx = new AC(); } catch(e) { return null; }
-      master = ctx.createGain(); master.gain.value = 0.9; master.connect(ctx.destination);
-      noiseBuf = ctx.createBuffer(1, Math.floor(ctx.sampleRate * 0.6), ctx.sampleRate);
-      var d = noiseBuf.getChannelData(0);
-      for (var i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
-    }
-    if (ctx.state === 'suspended') { try { ctx.resume(); } catch(e) {} }
-    return ctx;
-  }
-
-  /* petite note : fréquence qui glisse, enveloppe courte */
-  function tone(t, f0, f1, dur, vol, type){
-    var o = ctx.createOscillator(), g = ctx.createGain();
-    o.type = type || 'sine';
-    o.frequency.setValueAtTime(f0, t);
-    if (f1 && f1 !== f0) o.frequency.exponentialRampToValueAtTime(f1, t + dur);
-    g.gain.setValueAtTime(0.0001, t);
-    g.gain.exponentialRampToValueAtTime(vol, t + 0.006);
-    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-    o.connect(g); g.connect(master);
-    o.start(t); o.stop(t + dur + 0.02);
-  }
-
-  /* souffle (whoosh) : bruit filtré dont la fréquence monte puis redescend */
-  function whoosh(t, dur, f0, f1, vol){
-    var src = ctx.createBufferSource(); src.buffer = noiseBuf;
-    var bp = ctx.createBiquadFilter(); bp.type = 'bandpass'; bp.Q.value = 1.1;
-    bp.frequency.setValueAtTime(f0, t);
-    bp.frequency.exponentialRampToValueAtTime(f1, t + dur * 0.55);
-    bp.frequency.exponentialRampToValueAtTime(f0, t + dur);
-    var g = ctx.createGain();
-    g.gain.setValueAtTime(0.0001, t);
-    g.gain.exponentialRampToValueAtTime(vol, t + dur * 0.35);
-    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-    src.connect(bp); bp.connect(g); g.connect(master);
-    src.start(t); src.stop(t + dur + 0.05);
-  }
-
-  var sounds = {
-    click:  function(t){ tone(t, 1500, 900, 0.05, 0.10); tone(t, 3000, 1800, 0.03, 0.03); },
-    soft:   function(t){ tone(t, 1100, 800, 0.045, 0.07); },
-    tab:    function(t){ tone(t, 700, 1050, 0.07, 0.11); tone(t + 0.055, 1050, 1400, 0.09, 0.09); },
-    scroll: function(t){ tone(t, 1900, 1300, 0.03, 0.06, 'triangle'); },
-    swipe:  function(t){ whoosh(t, 0.42, 400, 2600, 0.16); tone(t + 0.28, 1500, 1000, 0.05, 0.07); },
-    cta:    function(t){ tone(t, 660, 660, 0.09, 0.10); tone(t + 0.07, 880, 880, 0.10, 0.10); tone(t + 0.14, 1320, 1320, 0.16, 0.09); },
-    toggle: function(t){ tone(t, 880, 1320, 0.09, 0.10); }
-  };
-
-  function play(name){
-    if (!enabled || !sounds[name]) return;
-    var now = Date.now();
-    if (last[name] && now - last[name] < 45) return;
-    last[name] = now;
-    var c = ensure();
-    if (!c) return;
-    try { sounds[name](c.currentTime + 0.005); } catch(e) {}
-  }
-
-  function refreshBtn(){
-    var b = document.getElementById('sndBtn');
-    if (!b) return;
-    b.textContent = enabled ? '🔊' : '🔇';
-    b.classList.toggle('off', !enabled);
-  }
-  function toggle(){
-    enabled = !enabled;
-    try { localStorage.setItem('kw-sound', enabled ? '1' : '0'); } catch(e) {}
-    refreshBtn();
-    if (enabled) { var c = ensure(); if (c) sounds.toggle(c.currentTime + 0.005); }
-  }
-
-  /* le navigateur n'autorise le son qu'après un premier toucher */
-  ['pointerdown','touchstart','keydown'].forEach(function(ev){
-    document.addEventListener(ev, function(){ if (enabled) ensure(); }, {passive:true});
-  });
-
-  /* son à chaque clic sur un élément interactif */
-  document.addEventListener('click', function(e){
-    var t = e.target && e.target.closest ? e.target.closest(
-      'button, a, select, .cat-card, .prod-card, .nav-item, .g-tab, .cf-color-dot, .color-swatch, .btn-back, [onclick]'
-    ) : null;
-    if (!t || t.id === 'sndBtn') return;
-    if (t.closest('.nav-item')) play('tab');
-    else if (t.closest('.cf-cta, .btn-wa, .wa-float')) play('cta');
-    else if (t.closest('.cf-color-dot, .color-swatch, .g-tab')) play('soft');
-    else play('click');
-  }, true);
-
-  document.addEventListener('DOMContentLoaded', refreshBtn);
-  refreshBtn();
-  return { play: play, toggle: toggle, isOn: function(){ return enabled; } };
-})();
-</script>
 </body>
 </html>
