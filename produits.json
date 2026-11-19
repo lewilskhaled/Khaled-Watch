@@ -1537,5 +1537,24 @@
     "flash_reduction": 0,
     "couleurs": [],
     "createdAt": "2026-11-19T16:50:50.858Z"
+  },
+  {
+    "id": "1795107550808",
+    "nom": "Cartier strass",
+    "prix": 20000,
+    "categorie": "Montres",
+    "genre": "Unisexe",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1795107554418-3cf0ot-Cartier-strass-principal.png",
+    "description": "",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "argent",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [],
+    "createdAt": "2026-11-19T16:59:10.808Z"
   }
 ]
