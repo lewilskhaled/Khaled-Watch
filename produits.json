@@ -1638,5 +1638,41 @@
       }
     ],
     "createdAt": "2026-11-19T17:25:52.521Z"
+  },
+  {
+    "id": "1795110025622",
+    "nom": "Daniel Wellington",
+    "prix": 20000,
+    "categorie": "Montres",
+    "genre": "Femme",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1795110028079-vqows7-Daniel-Wellington-principal.png",
+    "description": "",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "or",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [
+      {
+        "nom": "Noir",
+        "hex": "#000000",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1795110028086-fipst5-Daniel-Wellington-Noir.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Blanc",
+        "hex": "#ffffff",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1795110028115-xscz0f-Daniel-Wellington-Blanc.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      }
+    ],
+    "createdAt": "2026-11-19T17:40:25.622Z"
   }
 ]
