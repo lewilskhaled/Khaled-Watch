@@ -2018,7 +2018,7 @@ function closeColliersFeed() {
 function renderColliersFeed() {
   let list = cfCat === 'Colliers'
     ? allProducts.filter(p => p.categorie === 'Colliers' && p.genre === 'Femme')
-    : allProducts.filter(p => p.categorie === cfCat);
+    : expandVariants(allProducts.filter(p => p.categorie === cfCat));
   cfList = list;
 
   const scroll = document.getElementById('cfScroll');
