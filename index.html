@@ -3530,5 +3530,60 @@ function delSendFreeText(){
 }
 </script>
 
+<style>
+/* ===== FOND VIDÉO UNIQUE + VERRE LIQUIDE ===== */
+body #bgVideo{display:block!important;position:fixed;inset:0;width:100%;height:100%;object-fit:cover;z-index:-3;}
+body #bgLayer,body #lightSpace,body #lightParticles,.light-toggle-btn{display:none!important;}
+body #bgOverlay{display:block!important;z-index:-1;background:
+  radial-gradient(ellipse at 50% 30%,rgba(0,0,0,.05) 0%,rgba(0,0,0,.35) 100%),
+  linear-gradient(180deg,rgba(0,0,0,.25) 0%,rgba(0,0,0,.1) 45%,rgba(0,0,0,.45) 100%);}
+
+body .cat-card,body .prod-card,body .page-cat-header,body .search-input-row,
+body .bottom-nav,body .avis-form-wrap,body .avis-card,body .empty-cat,
+body .g-tab,body .sort-select,body .del-sheet{
+  background:linear-gradient(135deg,rgba(255,255,255,.20) 0%,rgba(255,255,255,.06) 45%,rgba(255,255,255,.12) 100%)!important;
+  -webkit-backdrop-filter:blur(16px) saturate(190%) brightness(1.08)!important;
+  backdrop-filter:blur(16px) saturate(190%) brightness(1.08)!important;
+  border:1px solid rgba(255,255,255,.28)!important;
+  border-top-color:rgba(255,255,255,.65)!important;
+  border-left-color:rgba(255,255,255,.45)!important;
+  box-shadow:
+    0 12px 40px rgba(0,0,0,.45),
+    inset 0 1.5px 0 rgba(255,255,255,.7),
+    inset 0 -1px 0 rgba(255,255,255,.12),
+    inset 0 0 22px rgba(255,255,255,.07)!important;
+}
+body .cat-card{position:relative;overflow:hidden;}
+body .bottom-nav{border-radius:22px 22px 0 0;}
+body .cat-card::before,body .prod-card::before{
+  content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:5;
+  background:linear-gradient(115deg,transparent 28%,rgba(255,255,255,.28) 46%,rgba(255,255,255,.06) 54%,transparent 70%);
+  background-size:260% 260%;background-position:120% 0;
+  animation:glassSweep 7s ease-in-out infinite;
+}
+body .prod-card:nth-child(2n)::before{animation-delay:-2.3s;}
+body .prod-card:nth-child(3n)::before{animation-delay:-4.6s;}
+@keyframes glassSweep{0%,100%{background-position:120% 0;}50%{background-position:-20% 100%;}}
+body .prod-img-zone,body .prod-img-zone.neutral-bg{background:rgba(255,255,255,.04)!important;border-bottom:1px solid rgba(255,255,255,.18)!important;}
+body .prod-card::after{animation:none!important;opacity:.35!important;}
+body .home-title,body .home-subtitle,body .home-desc{filter:drop-shadow(0 3px 14px rgba(0,0,0,.75));}
+</style>
+<script>
+/* Vidéo = seul fond d'écran (mobile + ordinateur) */
+(function(){
+  document.body.classList.remove('light-mode');
+  localStorage.setItem('kw-light-mode','0');
+  var v=document.getElementById('bgVideo');
+  if(!v)return;
+  v.muted=true;v.loop=true;v.setAttribute('playsinline','');
+  v.src='fond.mp4';
+  document.body.classList.add('video-bg-active');
+  var p=v.play();
+  if(p&&p.catch)p.catch(function(){
+    document.addEventListener('touchstart',function(){v.play().catch(function(){});},{once:true,passive:true});
+  });
+})();
+</script>
+
 </body>
 </html>
