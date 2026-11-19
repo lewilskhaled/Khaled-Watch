@@ -468,52 +468,43 @@ img.prod-img.loaded{opacity:1;}
 #chainesFeed.open{display:flex;}
 .ch-stage{
   flex:1;position:relative;overflow:hidden;
-  perspective:1500px;-webkit-perspective:1500px;
+  perspective:1500px;-webkit-perspective:1500px;perspective-origin:50% 38%;
   background:radial-gradient(ellipse at 50% 20%, #211d16 0%, #0a0806 74%);
 }
-.ch-slide{
+/* Pile 3D : chaque produit est derrière le précédent, légèrement plus haut et plus petit */
+.ch-slide{position:absolute;inset:0;width:100%;height:100%;}
+.ch-card{
   position:absolute;inset:0;width:100%;height:100%;
-  transform-origin:50% 145%;
-  will-change:transform,opacity,filter;
+  --k:0;
+  transform-origin:50% 100%;
+  transform:translate3d(0,calc(var(--k) * -58px),calc(var(--k) * -120px));
+  opacity:calc(1 - var(--k) * .2);
+  filter:brightness(calc(1 - var(--k) * .14));
+  transition:transform .65s cubic-bezier(.22,.8,.3,1),opacity .65s ease,filter .65s ease;
+  will-change:transform,opacity;
   backface-visibility:hidden;-webkit-backface-visibility:hidden;
-}
-@keyframes chOutCW{
-  0%{transform:rotate(0deg) scale(1);opacity:1;filter:blur(0);}
-  35%{filter:blur(2.5px);}
-  55%{transform:rotate(40deg) scale(.9);opacity:.4;}
-  100%{transform:rotate(88deg) scale(.78);opacity:0;filter:blur(0);}
-}
-@keyframes chInCW{
-  0%{transform:rotate(-88deg) scale(.78);opacity:0;filter:blur(0);}
-  30%{filter:blur(2.5px);}
-  45%{transform:rotate(-26deg) scale(1.06);opacity:.85;}
-  75%{transform:rotate(7deg) scale(1.015);opacity:1;}
-  100%{transform:rotate(0deg) scale(1);opacity:1;filter:blur(0);}
-}
-@keyframes chOutCCW{
-  0%{transform:rotate(0deg) scale(1);opacity:1;filter:blur(0);}
-  35%{filter:blur(2.5px);}
-  55%{transform:rotate(-40deg) scale(.9);opacity:.4;}
-  100%{transform:rotate(-88deg) scale(.78);opacity:0;filter:blur(0);}
-}
-@keyframes chInCCW{
-  0%{transform:rotate(88deg) scale(.78);opacity:0;filter:blur(0);}
-  30%{filter:blur(2.5px);}
-  45%{transform:rotate(26deg) scale(1.06);opacity:.85;}
-  75%{transform:rotate(-7deg) scale(1.015);opacity:1;}
-  100%{transform:rotate(0deg) scale(1);opacity:1;filter:blur(0);}
-}
-.ch-pivot-dot{
-  position:absolute;bottom:10px;left:50%;transform:translateX(-50%);z-index:8;
-  width:9px;height:9px;border-radius:50%;
-  background:radial-gradient(circle,#fff8dd 0%,#E8C97A 45%,#8B6914 100%);
-  box-shadow:0 0 4px 1px rgba(255,248,221,.9),0 0 16px rgba(201,168,76,.85);
   pointer-events:none;
 }
-.ch-pivot-dot::after{
-  content:'';position:absolute;left:50%;bottom:100%;transform:translateX(-50%);
-  width:1px;height:60px;background:linear-gradient(0deg,rgba(201,168,76,.55),transparent);
+.ch-card.far{opacity:0;}
+/* Le produit de devant s'envole vers le haut puis va se placer tout au fond de la pile */
+@keyframes chFlyUp{
+  0%  {transform:translate3d(0,0,0) rotateX(0deg) scale(1);opacity:1;filter:brightness(1);}
+  38% {transform:translate3d(0,-64%,90px) rotateX(16deg) scale(1.03);opacity:1;filter:brightness(1.05);}
+  68% {transform:translate3d(0,-40%,-380px) rotateX(8deg) scale(1);opacity:.9;}
+  100%{transform:translate3d(0,calc(var(--kb) * -58px),calc(var(--kb) * -120px)) rotateX(0deg) scale(1);opacity:var(--ob);filter:brightness(var(--bb));}
 }
+/* Swipe inverse : le dernier produit revient du fond jusqu'au premier plan */
+@keyframes chFlyDown{
+  0%  {transform:translate3d(0,calc(var(--kb) * -58px),calc(var(--kb) * -120px)) rotateX(0deg) scale(1);opacity:var(--ob);filter:brightness(var(--bb));}
+  32% {transform:translate3d(0,-40%,-380px) rotateX(8deg) scale(1);opacity:.9;}
+  62% {transform:translate3d(0,-64%,90px) rotateX(16deg) scale(1.03);opacity:1;filter:brightness(1.05);}
+  100%{transform:translate3d(0,0,0) rotateX(0deg) scale(1);opacity:1;filter:brightness(1);}
+}
+.ch-info-layer{
+  position:absolute;inset:0;z-index:500;pointer-events:none;
+  transition:opacity .2s ease;
+}
+.ch-info-layer.swap{opacity:0;}
 
 #prodModal{
   position:fixed;inset:0;z-index:9800;
@@ -1381,7 +1372,6 @@ body.light-mode .sort-select{background:rgba(255,255,255,.8);color:#8B6914;borde
     <div class="cat-card" onclick="openCat('Chaînes')"><div class="cat-icon">⛓</div><div class="cat-label">Chaîne Homme</div><div class="cat-count" id="cnt-Chaînes">—</div></div>
     <div class="cat-card" onclick="openCat('Colliers')"><div class="cat-icon">📿</div><div class="cat-label">Collier Femme</div><div class="cat-count" id="cnt-Colliers">—</div></div>
     <div class="cat-card" onclick="openCat('Autres')"><div class="cat-icon">✨</div><div class="cat-label">Autres</div><div class="cat-count" id="cnt-Autres">—</div></div>
-    <div class="cat-card" onclick="openFavoris()"><div class="cat-icon">❤️</div><div class="cat-label">Coups de Cœur</div><div class="cat-count" id="cnt-Favoris">—</div></div>
     <div class="cat-card" onclick="openAvis()"><div class="cat-icon">⭐</div><div class="cat-label">Avis Clients</div><div class="cat-count" id="cnt-Avis">—</div></div>
   </div>
 </div>
@@ -1452,16 +1442,6 @@ body.light-mode .sort-select{background:rgba(255,255,255,.8);color:#8B6914;borde
   <div class="avis-list" id="avisList"></div>
 </div>
 
-<!-- PAGE MES COUPS DE CŒUR -->
-<div id="page-favoris">
-  <div class="page-cat-header">
-    <div class="btn-back" onclick="goHome()">←</div>
-    <span class="cat-page-icon">❤️</span>
-    <div class="cat-page-title">Mes Coups de Cœur</div>
-  </div>
-  <div class="prod-grid" id="favorisGrid"></div>
-</div>
-
 <!-- VUE IMMERSIVE COLLIERS -->
 <div id="colliersFeed">
   <div class="cf-topbar">
@@ -1493,7 +1473,6 @@ body.light-mode .sort-select{background:rgba(255,255,255,.8);color:#8B6914;borde
   </div>
   <div class="feed-bubbles" id="chBubbles"></div>
   <div class="ch-stage" id="chStage"></div>
-  <div class="ch-pivot-dot"></div>
 </div>
 
 <!-- MODAL PRODUIT -->
@@ -1953,8 +1932,10 @@ function applySort(list){
    MES COUPS DE CŒUR
    ============================================================ */
 function openFavoris(){
+  var pf = document.getElementById('page-favoris');
+  if (!pf) return;
   hideAll();
-  document.getElementById('page-favoris').style.display = 'block';
+  pf.style.display = 'block';
   renderFavorisGrid();
   window.scrollTo(0,0);
 }
@@ -1964,6 +1945,7 @@ function renderFavorisGrid(){
   const list = expandVariants(allProducts.filter(p => ids.includes(String(p.id))));
   currentList = list;
   const grid = document.getElementById('favorisGrid');
+  if (!grid) return;
   if (!list.length){
     if (!productsLoaded){
       grid.innerHTML = `<div class="loader-wrap"><div class="loader"></div></div>`;
@@ -2175,20 +2157,26 @@ function buildChainList() {
   chList = list;
 }
 
-function chainSlideHTML(p, idx) {
+const CH_STEP_Y = 58, CH_STEP_Z = 120, CH_MAXK = 4;   // doit rester identique au CSS (.ch-card)
+const CH_DUR = 720;
+
+function chainImgHTML(p, idx) {
   const colors  = p.couleurs && p.couleurs.length ? p.couleurs : [];
   const mainImg = colors.length && colors[0].image ? colors[0].image : (p.image || FALLBACK_IMG);
+  return `
+    <div class="cf-glow"></div>
+    <div class="cf-img-wrap">
+      <img id="chimg-${idx}" src="${h(thumbUrl(mainImg, 1100, 88))}" alt="${h(p.nom)}" decoding="async" onerror="this.src='${FALLBACK_IMG}'">
+    </div>`;
+}
 
+function chainInfoHTML(p, idx) {
+  const colors  = p.couleurs && p.couleurs.length ? p.couleurs : [];
   const colorDots = colors.length > 1 ? `
     <div class="cf-colors">
       ${colors.map((c,ci) => `<div class="cf-color-dot${ci===0?' active':''}" style="background:${h(c.hex)}" title="${h(c.nom)}" onclick="switchChColor(this,${idx},${ci})"></div>`).join('')}
     </div>` : '';
-
   return `
-    <div class="cf-glow"></div>
-    <div class="cf-img-wrap">
-      <img id="chimg-${idx}" src="${h(thumbUrl(mainImg, 1300, 90))}" alt="${h(p.nom)}" decoding="async" onerror="this.src='${FALLBACK_IMG}'">
-    </div>
     <div class="cf-info">
       <div class="cf-badge">✦ Chaîne</div>
       <div class="cf-name">${h(p.nom)}</div>
@@ -2200,8 +2188,14 @@ function chainSlideHTML(p, idx) {
       </div>
       <button class="cf-cta" onclick="commander(this,'${js(p.id)}')">${WA_SVG} Commander sur WhatsApp</button>
     </div>
-    <div class="cf-swipe-hint">↻ Glissez pour tourner</div>
-  `;
+    <div class="cf-swipe-hint">↑ Glissez pour faire défiler</div>`;
+}
+
+/* place une carte à la profondeur k (0 = devant) */
+function chPlace(card, k) {
+  card.style.setProperty('--k', Math.min(k, CH_MAXK));
+  card.classList.toggle('far', k > CH_MAXK - 1);
+  card.style.zIndex = String(100 - k);
 }
 
 function initChainStage(startIdx) {
@@ -2215,7 +2209,11 @@ function initChainStage(startIdx) {
     </div></div>`;
     return;
   }
-  stage.innerHTML = `<div class="ch-slide current">${chainSlideHTML(chList[chIndex], chIndex)}</div>`;
+  const n = chList.length;
+  stage.innerHTML = chList.map((p, i) =>
+    `<div class="ch-card" data-i="${i}">${chainImgHTML(p, i)}</div>`
+  ).join('') + `<div class="ch-slide ch-info-layer" id="chInfo">${chainInfoHTML(chList[chIndex], chIndex)}</div>`;
+  stage.querySelectorAll('.ch-card').forEach((card, i) => chPlace(card, (i - chIndex + n) % n));
 }
 
 function updateChCounter() {
@@ -2236,28 +2234,54 @@ function switchChColor(dot, idx, colorIdx) {
 function goChain(dir) {
   if (chAnimating || chList.length < 2) return;
   chAnimating = true;
-  const newIndex = (chIndex + dir + chList.length) % chList.length;
+  const n = chList.length;
   const stage = document.getElementById('chStage');
-  const oldSlide = stage.querySelector('.ch-slide.current');
+  const cards = Array.from(stage.querySelectorAll('.ch-card'));
+  const oldIndex = chIndex;
+  const newIndex = (chIndex + dir + n) % n;
+  chIndex = newIndex;
 
-  const newSlide = document.createElement('div');
-  newSlide.className = 'ch-slide incoming';
-  newSlide.innerHTML = chainSlideHTML(chList[newIndex], newIndex);
-  stage.appendChild(newSlide);
+  // la carte qui vole : celle de devant (swipe vers le haut) ou celle du fond (swipe vers le bas)
+  const mover = cards[dir > 0 ? oldIndex : newIndex];
+  const kb = Math.min(n - 1, CH_MAXK);
+  mover.style.transition = 'none';
+  mover.style.setProperty('--kb', kb);
+  mover.style.setProperty('--ob', (n - 1 > CH_MAXK - 1) ? 0 : (1 - kb * .2));
+  mover.style.setProperty('--bb', 1 - kb * .14);
+  mover.style.zIndex = '300';
 
-  requestAnimationFrame(() => {
-    oldSlide.style.animation = (dir > 0 ? 'chOutCCW' : 'chOutCW') + ' .62s cubic-bezier(.65,0,.35,1) forwards';
-    newSlide.style.animation = (dir > 0 ? 'chInCCW'  : 'chInCW')  + ' .62s cubic-bezier(.65,0,.35,1) forwards';
+  // toutes les autres avancent (ou reculent) d'un cran dans la pile
+  cards.forEach((card, i) => {
+    if (card === mover) return;
+    chPlace(card, (i - newIndex + n) % n);
   });
+  // état final de la carte qui vole
+  const finalK = dir > 0 ? n - 1 : 0;
+  mover.style.setProperty('--k', Math.min(finalK, CH_MAXK));
+  mover.classList.toggle('far', finalK > CH_MAXK - 1);
+
+  mover.style.animation = (dir > 0 ? 'chFlyUp' : 'chFlyDown') + ' ' + CH_DUR + 'ms cubic-bezier(.5,0,.25,1) forwards';
+
+  // infos (nom, prix, WhatsApp) : on masque puis on affiche celles du nouveau produit
+  const info = document.getElementById('chInfo');
+  if (info) info.classList.add('swap');
+  setTimeout(() => {
+    if (info) {
+      info.innerHTML = chainInfoHTML(chList[newIndex], newIndex);
+      info.classList.remove('swap');
+    }
+    updateChCounter();
+    // le produit qui part derrière passe sous les autres au milieu de son vol
+    if (dir > 0) mover.style.zIndex = String(100 - finalK);
+  }, CH_DUR * 0.5);
 
   setTimeout(() => {
-    if (oldSlide && oldSlide.parentNode) oldSlide.remove();
-    newSlide.classList.remove('incoming');
-    newSlide.classList.add('current');
-    chIndex = newIndex;
+    mover.style.animation = '';
+    mover.style.zIndex = String(100 - finalK);
+    void mover.offsetWidth;
+    mover.style.transition = '';
     chAnimating = false;
-    updateChCounter();
-  }, 640);
+  }, CH_DUR + 30);
 }
 
 function bindChainTouch() {
