@@ -1477,7 +1477,7 @@ body.light-mode .sort-select{background:rgba(255,255,255,.8);color:#8B6914;borde
 <div id="colliersFeed">
   <div class="cf-topbar">
     <button class="cf-back" onclick="closeColliersFeed()" aria-label="Retour">←</button>
-    <div class="cf-title">✦ Collier pour Femme</div>
+    <div class="cf-title" id="cfTitle">✦ Collier pour Femme</div>
     <div class="cf-counter" id="cfCounter">1 / 1</div>
   </div>
   <div class="feed-bubbles" id="cfBubbles"></div>
@@ -1892,7 +1892,7 @@ function goHome() {
   window.scrollTo(0, 0);
 }
 function openCat(cat) {
-  if (cat === 'Colliers') { openColliersFeed(); return; }
+  if (CF_CONFIG[cat]) { openColliersFeed(cat); return; }
   if (cat === 'Chaînes') { openChainesFeed(); return; }
   currentCat = cat; currentGender = 'tous';
   currentSort = 'default';
@@ -1989,8 +1989,19 @@ function updateFavorisCount(){
    ============================================================ */
 let cfGender = 'tous';
 let cfList   = [];
+let cfCat    = 'Colliers';
+const CF_CONFIG = {
+  'Colliers':          { title:'✦ Collier pour Femme', badge:'✦ Collier', empty:'Aucun collier disponible pour le moment.' },
+  'Montres':           { title:'✦ Montres',            badge:'✦ Montre',  empty:'Aucune montre disponible pour le moment.' },
+  'Montres Luxueuses': { title:'✦ Montres Luxe',       badge:'✦ Luxe',    empty:'Aucune montre de luxe disponible pour le moment.' }
+};
 
-function openColliersFeed() {
+function openColliersFeed(cat) {
+  cfCat = CF_CONFIG[cat] ? cat : 'Colliers';
+  const t = document.getElementById('cfTitle');
+  if (t) t.textContent = CF_CONFIG[cfCat].title;
+  const sc = document.getElementById('cfScroll');
+  if (sc) sc.scrollTop = 0;
   document.getElementById('colliersFeed').classList.add('open');
   document.body.style.overflow = 'hidden';
   spawnBubbles('cfBubbles', 18);
@@ -2005,7 +2016,9 @@ function closeColliersFeed() {
 }
 
 function renderColliersFeed() {
-  let list = allProducts.filter(p => p.categorie === 'Colliers' && p.genre === 'Femme');
+  let list = cfCat === 'Colliers'
+    ? allProducts.filter(p => p.categorie === 'Colliers' && p.genre === 'Femme')
+    : allProducts.filter(p => p.categorie === cfCat);
   cfList = list;
 
   const scroll = document.getElementById('cfScroll');
@@ -2014,7 +2027,7 @@ function renderColliersFeed() {
   if (!list.length) {
     scroll.innerHTML = `<div class="cf-slide"><div class="cf-empty">
       <h3>✦ Collection à venir</h3>
-      <p>Aucun collier disponible pour le moment.<br>Revenez bientôt !</p>
+      <p>${CF_CONFIG[cfCat].empty}<br>Revenez bientôt !</p>
     </div></div>`;
     return;
   }
@@ -2036,7 +2049,7 @@ function renderColliersFeed() {
         <img id="cfimg-${i}" src="${h(thumbUrl(mainImg, 1300, 90))}" alt="${h(p.nom)}" loading="${i<2?'eager':'lazy'}" decoding="async" onerror="this.src='${FALLBACK_IMG}'">
       </div>
       <div class="cf-info">
-       <div class="cf-badge">✦ Collier</div>
+       <div class="cf-badge">${CF_CONFIG[cfCat].badge}</div>
         <div class="cf-name">${h(p.nom)}</div>
         <div class="cf-genre">${h(p.genre||'')}</div>
         ${p.description ? `<div class="cf-desc">${h(p.description)}</div>` : ''}
@@ -3421,8 +3434,8 @@ function delGoToProduct(id){
   if (!p) return;
   closeDelPanel();
   const cat = p.categorie;
-  if (cat === 'Colliers'){
-    openColliersFeed();
+  if (CF_CONFIG[cat]){
+    openColliersFeed(cat);
     requestAnimationFrame(()=>{
       const idx = cfList.findIndex(x=>x.id===id);
       const scroll = document.getElementById('cfScroll');
