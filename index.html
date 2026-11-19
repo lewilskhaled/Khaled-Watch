@@ -46,7 +46,7 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--txt);m
     #07060a;
   display:flex;align-items:center;justify-content:center;flex-direction:column;
   overflow:hidden;cursor:pointer;
-  animation:splashOut .9s ease-in 5.2s forwards;
+  animation:splashOut .9s ease-in 5.7s forwards;
 }
 .ks-stage{position:relative;display:flex;align-items:center;justify-content:center;flex-direction:column;width:100%;padding:0 1rem;}
 
@@ -62,16 +62,23 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--txt);m
   color:rgba(255,255,255,.12);
   -webkit-text-stroke:1.4px rgba(255,255,255,.42);
   text-shadow:none;
-  animation:ksLit 1.1s linear var(--ld,2.4s) forwards;
+  animation:ksLit 1.1s linear var(--ld,2.6s) forwards;
 }
 .ks-l2 .ks-l{-webkit-text-stroke-width:2px;}
+.ks-l1 .ks-l{
+  color:rgba(255,226,130,.74);-webkit-text-stroke:1.4px #fff;
+  text-shadow:0 0 12px rgba(245,226,122,.5),0 2px 12px rgba(0,0,0,.4);
+  animation:ksL1In .8s ease-out .1s both;
+}
+.ks-l1 .ks-l::after{animation:none;opacity:1;}
+@keyframes ksL1In{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
 /* reflet de verre sur le haut de chaque lettre */
 .ks-l::after{
   content:attr(data-c);position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;
   background:linear-gradient(180deg,rgba(255,255,255,.95) 0%,rgba(255,255,255,.38) 36%,rgba(255,255,255,0) 60%);
   -webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;
   -webkit-text-stroke:0;opacity:0;
-  animation:ksGloss .6s ease-out calc(var(--ld,2.4s) + .35s) forwards;
+  animation:ksGloss .6s ease-out calc(var(--ld,2.6s) + .35s) forwards;
 }
 @keyframes ksGloss{to{opacity:1;}}
 .ks-sp{display:inline-block;width:.3em;}
@@ -89,8 +96,15 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--txt);m
 .ks-travel{position:absolute;left:0;bottom:0;width:100%;height:100%;z-index:3;animation:ksTravel 1.5s cubic-bezier(.25,.6,.35,1) .3s both;}
 .ks-hop{position:absolute;left:0;bottom:0;width:100%;height:100%;transform-origin:50% 100%;animation:ksHop 1.5s linear .3s both;}
 .ks-lamp{position:absolute;left:-.04em;bottom:-.03em;width:.5em;height:1.06em;overflow:visible;
-  filter:brightness(.8);animation:ksLampOn .45s ease-out 1.85s forwards;}
-.ks-lens-off{animation:ksLensOff .35s ease-out 1.85s forwards;}
+  filter:brightness(.8);transform-origin:50% 50%;
+  animation:ksSwivel .6s cubic-bezier(.3,.7,.4,1) 1.85s forwards, ksLampOn .45s ease-out 2.4s forwards;}
+.ks-lens-off{animation:ksLensOff .35s ease-out 2.4s forwards;}
+@keyframes ksSwivel{
+  0%  {transform:rotate(0deg);}
+  60% {transform:rotate(200deg);}
+  82% {transform:rotate(172deg);}
+  100%{transform:rotate(180deg);}
+}
 @keyframes ksTravel{from{transform:translateX(95vw);}to{transform:translateX(0);}}
 @keyframes ksHop{
   0%  {transform:translateY(0) rotate(10deg);animation-timing-function:ease-out;}
@@ -114,22 +128,29 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--txt);m
 }
 @keyframes ksLensOff{to{opacity:0;}}
 
-/* Grand halo de lumière qui s'étale depuis la lampe */
-.ks-flood{position:absolute;left:50%;top:15%;width:0;height:0;z-index:0;pointer-events:none;}
-.ks-flood::before{
-  content:'';position:absolute;left:-65vmax;top:-65vmax;width:130vmax;height:130vmax;border-radius:50%;
-  background:radial-gradient(circle,rgba(255,236,160,.34) 0%,rgba(201,168,76,.15) 24%,rgba(201,168,76,0) 55%);
-  opacity:0;transform:scale(0);animation:ksFlood 1.8s ease-out 1.85s forwards;
+/* Faisceau : la lampe, retournée vers le bas, éclaire seulement "Khaled Watch" et ce qui suit */
+.ks-beam{
+  position:absolute;left:calc(50% - 210vw);top:calc(100% - .04em);width:420vw;height:8.8em;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,rgba(255,247,205,.66) 0%,rgba(245,226,122,.32) 36%,rgba(201,168,76,.12) 74%,rgba(201,168,76,0) 100%);
+  clip-path:polygon(calc(50% - .24em) 0,calc(50% + .24em) 0,100% 100%,0 100%);
+  transform-origin:50% 0;opacity:0;transform:scaleY(0);
+  animation:ksBeamOn 1.1s ease-out 2.4s forwards;
 }
-@keyframes ksFlood{0%{opacity:0;transform:scale(0);}25%{opacity:1;transform:scale(.45);}100%{opacity:.8;transform:scale(1);}}
-
+@keyframes ksBeamOn{
+  0%  {opacity:0;transform:scaleY(.08);}
+  12% {opacity:.95;transform:scaleY(.55);}
+  22% {opacity:.25;transform:scaleY(.55);}
+  36% {opacity:1;transform:scaleY(1);}
+  48% {opacity:.5;}
+  62%,100%{opacity:.92;transform:scaleY(1);}
+}
 .ks-tagline{
   font-size:.78rem;letter-spacing:.38em;text-transform:uppercase;color:#F0D480;
   font-weight:700;margin-top:1.3rem;text-shadow:0 0 12px rgba(245,226,122,.45);opacity:0;text-align:center;
-  animation:fadeUp .9s ease-out 3.2s forwards;
+  position:relative;z-index:2;animation:fadeUp .9s ease-out 3.5s forwards;
 }
-.ks-bar{width:0;height:1px;margin-top:1.1rem;background:linear-gradient(90deg,transparent,#C9A84C,transparent);animation:barIn .9s ease-out 3.5s forwards;}
-.ks-sub{font-size:.7rem;letter-spacing:.32em;color:#D8C88F;text-transform:uppercase;margin-top:.9rem;opacity:0;text-align:center;animation:fadeUp .8s ease-out 3.8s forwards;}
+.ks-bar{width:0;height:1px;margin-top:1.1rem;background:linear-gradient(90deg,transparent,#C9A84C,transparent);position:relative;z-index:2;animation:barIn .9s ease-out 3.8s forwards;}
+.ks-sub{font-size:.7rem;letter-spacing:.32em;color:#D8C88F;text-transform:uppercase;margin-top:.9rem;opacity:0;text-align:center;position:relative;z-index:2;animation:fadeUp .8s ease-out 4.1s forwards;}
 
 /* ===== Splash : effet verre (glassmorphism) ===== */
 .ks-stage{z-index:1;}
@@ -1297,7 +1318,7 @@ body.light-mode .sort-select{background:rgba(255,255,255,.8);color:#8B6914;borde
 <!-- SPLASH : la lampe torche saute à la place du "i" de Bienvenue puis illumine le texte -->
 <div id="splash" aria-label="Bienvenue sur Khaled Watch">
   <div class="ks-stage"><div class="ks-glass">
-    <div class="ks-line ks-l1" aria-hidden="true"><span class="ks-l" data-c="B">B</span><span class="ks-slot"><span class="ks-flood"></span><span class="ks-travel"><span class="ks-hop">
+    <div class="ks-line ks-l1" aria-hidden="true"><span class="ks-l" data-c="B">B</span><span class="ks-slot"><span class="ks-beam"></span><span class="ks-travel"><span class="ks-hop">
 <svg class="ks-lamp" viewBox="0 0 40 104" aria-hidden="true">
   <defs>
     <linearGradient id="ksBody" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#8B6914"/><stop offset=".35" stop-color="#F5E27A"/><stop offset=".7" stop-color="#C9A84C"/><stop offset="1" stop-color="#7a5a10"/></linearGradient>
@@ -1329,11 +1350,11 @@ body.light-mode .sort-select{background:rgba(255,255,255,.8);color:#8B6914;borde
     if (!slot) return;
     var r = slot.getBoundingClientRect();
     var cx = r.left + r.width / 2, cy = r.top + r.height / 2;
-    sp.querySelectorAll('.ks-l').forEach(function(l){
+    sp.querySelectorAll('.ks-l2 .ks-l').forEach(function(l){
       var b = l.getBoundingClientRect();
       var dx = b.left + b.width / 2 - cx, dy = b.top + b.height / 2 - cy;
       var d = Math.sqrt(dx * dx + dy * dy);
-      l.style.setProperty('--ld', (2.0 + d * 0.0034).toFixed(2) + 's');
+      l.style.setProperty('--ld', (2.55 + d * 0.0034).toFixed(2) + 's');
     });
   }
   setDelays();
