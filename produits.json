@@ -1520,13 +1520,13 @@
     "createdAt": "2026-11-19T16:36:55.267Z"
   },
   {
-    "id": "1795106772122",
-    "nom": "Audemars Piguet",
-    "prix": 50000,
+    "id": "1795107050858",
+    "nom": "Rolex Daytona",
+    "prix": 130000,
     "categorie": "Montres Luxueuses",
-    "genre": "Unisexe",
-    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1795106774311-rrixoo-Audemars-Piguet-principal.png",
-    "description": "Une pure merveille ⭐",
+    "genre": "Homme",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1795107052644-58oglv-Rolex-Daytona-principal.png",
+    "description": "",
     "img_gauche": "",
     "img_droit": "",
     "img_dos": "",
@@ -1535,24 +1535,7 @@
     "moods": [],
     "flash_fin": "",
     "flash_reduction": 0,
-    "couleurs": [
-      {
-        "nom": "Argent",
-        "hex": "#cfc9c9",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1795106774326-8ew1ww-Audemars-Piguet-Argent.png",
-        "img_gauche": "",
-        "img_droit": "",
-        "img_dos": ""
-      },
-      {
-        "nom": "Bronze",
-        "hex": "#ffd285",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1795106774353-pqj5uv-Audemars-Piguet-Bronze.png",
-        "img_gauche": "",
-        "img_droit": "",
-        "img_dos": ""
-      }
-    ],
-    "createdAt": "2026-11-19T16:46:12.122Z"
+    "couleurs": [],
+    "createdAt": "2026-11-19T16:50:50.858Z"
   }
 ]
