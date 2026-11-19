@@ -37,9 +37,6 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--txt);m
 
 
 /* ============================================================
-   SPLASH — Ouverture Prestige (fond blanc doré)
-   ============================================================ */
-/* ============================================================
    SPLASH — Ouverture Prestige (fond blanc doré, animation vivante)
    ============================================================ */
 #splash{
@@ -145,9 +142,6 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--txt);m
 }
 @keyframes goldShimmer{0%{background-position:200% center}100%{background-position:-50% center}}
 
-
-
-
 .home-hero{text-align:center;padding:2rem 1.2rem 1.2rem;}
 .home-subtitle{font-size:.6rem;letter-spacing:.35em;color:var(--or-l);text-transform:uppercase;margin-bottom:.5rem;font-weight:700;text-shadow:var(--ts);}
 .home-title{
@@ -173,13 +167,12 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--txt);m
 
 .cat-card:active{transform:scale(.94);}
 .cat-card:hover{transform:translateY(-4px);box-shadow:0 14px 40px rgba(201,168,76,.22);border-color:var(--or);}
-.cat-card.offre-card{background:linear-gradient(135deg,rgba(201,168,76,.2),rgba(0,0,0,.55));border-color:rgba(201,168,76,.6);}
 .cat-icon{font-size:2rem;line-height:1;filter:drop-shadow(0 0 8px rgba(201,168,76,.5));}
 .cat-label{font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--or-l);font-weight:700;text-align:center;line-height:1.35;text-shadow:var(--ts);}
 
 .cat-count{font-size:.54rem;color:var(--gris);letter-spacing:.08em;font-weight:600;text-shadow:var(--ts);}
 
-#page-cat,#page-offre,#page-avis{display:none;}
+#page-cat,#page-avis{display:none;}
 .page-cat-header{
   display:flex;align-items:center;gap:.85rem;
   padding:.95rem 1rem .4rem;
@@ -251,9 +244,6 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--txt);m
   text-shadow:0 1px 4px rgba(0,0,0,.9);
 }
 
-/* ============================================================
-   ZONE IMAGE — overflow visible pour permettre le mouvement gyro
-   ============================================================ */
 .prod-img-zone{
   width:100%;height:240px;overflow:hidden;
   background:linear-gradient(145deg,rgba(201,168,76,.13) 0%,rgba(139,105,20,.17) 50%,rgba(201,168,76,.1) 100%);
@@ -266,10 +256,6 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--txt);m
 @media(min-width:400px){.prod-img-zone{height:260px;}}
 @media(min-width:600px){.prod-img-zone{height:280px;}}
 
-/* ============================================================
-   SHIMMER DE CHARGEMENT — évite l'impression de lenteur
-   pendant que les photos se téléchargent
-   ============================================================ */
 img.prod-img{opacity:0;transition:opacity .35s ease, transform .08s linear;}
 img.prod-img.loaded{opacity:1;}
 .prod-img-zone::before{
@@ -283,12 +269,6 @@ img.prod-img.loaded{opacity:1;}
 .prod-img-zone.img-ready::before{opacity:0;}
 @keyframes imgShimmer{0%{background-position:150% 0;}100%{background-position:-50% 0;}}
 
-/* ============================================================
-   IMAGE PRODUIT — EFFET GYROSCOPE
-   La transform est contrôlée par JS via --gx et --gy
-   translateX suit l'axe gamma (gauche/droite)
-   translateY suit l'axe beta  (avant/arrière)
-   ============================================================ */
 .prod-img{
   width:100%;height:100%;object-fit:contain;display:block;
   padding:6px;
@@ -300,12 +280,7 @@ img.prod-img.loaded{opacity:1;}
   will-change: transform;
   filter:brightness(1.06) contrast(1.05) saturate(1.05);
 }
-.prod-card:hover .prod-img{
-}
 
-/* ============================================================
-   CARROUSEL VERTICAL AUTO — Boxes produits multi-couleurs
-   ============================================================ */
 .cvar-viewport{
   position:absolute;inset:0;overflow:hidden;border-radius:inherit;
 }
@@ -346,9 +321,6 @@ img.prod-img.loaded{opacity:1;}
 .btn-wa{display:flex;align-items:center;justify-content:center;gap:.35rem;margin-top:.65rem;width:100%;background:linear-gradient(135deg,#0f7a5e,#25D366);border:none;border-radius:8px;color:#fff;font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-family:'Montserrat',sans-serif;padding:.55rem .4rem;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:opacity .22s;}
 .btn-wa:active{opacity:.8;}
 
-/* ============================================================
-   BADGE GYRO — affiché si le gyroscope est actif
-   ============================================================ */
 .gyro-badge{
   position:fixed;top:70px;left:50%;transform:translateX(-50%);z-index:500;
   background:rgba(0,0,0,.8);border:1px solid rgba(201,168,76,.6);
@@ -360,11 +332,7 @@ img.prod-img.loaded{opacity:1;}
 .gyro-badge.show{opacity:1;}
 
 /* ============================================================
-   MODAL
-   ============================================================ */
-/* ============================================================
    VUE IMMERSIVE COLLIERS — défilé plein écran type Stories
-   Réservée UNIQUEMENT à la catégorie Colliers
    ============================================================ */
 #colliersFeed{
   position:fixed;inset:0;z-index:9700;
@@ -396,20 +364,6 @@ img.prod-img.loaded{opacity:1;}
   background:rgba(0,0,0,.45);border:1px solid rgba(201,168,76,.35);border-radius:50px;
   padding:.28rem .68rem;white-space:nowrap;flex-shrink:0;
 }
-.cf-gender-tabs{
-  position:absolute;top:calc(3.4rem + env(safe-area-inset-top,0px));left:0;right:0;z-index:6;
-  display:flex;justify-content:center;gap:.5rem;padding:0 1rem;
-  pointer-events:none;
-}
-.cf-gender-tabs button{pointer-events:auto;}
-.cf-g-tab{
-  padding:.32rem .95rem;border-radius:50px;font-size:.58rem;letter-spacing:.14em;
-  text-transform:uppercase;font-weight:700;font-family:'Montserrat',sans-serif;
-  border:1px solid rgba(201,168,76,.4);color:#E8DFC8;background:rgba(0,0,0,.5);
-  backdrop-filter:blur(8px);cursor:pointer;-webkit-tap-highlight-color:transparent;
-  transition:all .2s;
-}
-.cf-g-tab.active{background:rgba(201,168,76,.28);border-color:var(--or-l);color:#fff;}
 .cf-scroll{
   flex:1;overflow-y:scroll;scroll-snap-type:y mandatory;
   -webkit-overflow-scrolling:touch;scrollbar-width:none;
@@ -505,7 +459,6 @@ img.prod-img.loaded{opacity:1;}
 
 /* ============================================================
    VUE IMMERSIVE CHAÎNES — défilé circulaire type aiguille d'horloge
-   Réservée UNIQUEMENT à la catégorie Chaînes
    ============================================================ */
 #chainesFeed{
   position:fixed;inset:0;z-index:9700;
@@ -562,45 +515,6 @@ img.prod-img.loaded{opacity:1;}
   width:1px;height:60px;background:linear-gradient(0deg,rgba(201,168,76,.55),transparent);
 }
 
-/* ============================================================
-   VUE IMMERSIVE BRACELETS — empilement façon "multitâche iPhone"
-   Réservée UNIQUEMENT à la catégorie Bracelets.
-   Au swipe vers le haut : le bracelet affiché rétrécit, monte et
-   va se ranger tout en haut derrière la pile (encore visible, en
-   réduction), pendant que le bracelet suivant quitte l'arrière-plan
-   en grandissant pour occuper tout l'écran, infos incluses.
-   ============================================================ */
-#braceletsFeed{
-  position:fixed;inset:0;z-index:9700;
-  background:#000;
-  display:none;flex-direction:column;
-}
-#braceletsFeed.open{display:flex;}
-.br-stage{
-  flex:1;position:relative;overflow:hidden;
-  perspective:1500px;-webkit-perspective:1500px;
-  background:radial-gradient(ellipse at 50% 15%, #211d16 0%, #0a0806 78%);
-}
-.br-card{
-  position:absolute;inset:0;width:100%;height:100%;
-  transform-origin:50% 0%;
-  will-change:transform,opacity,filter;
-  backface-visibility:hidden;-webkit-backface-visibility:hidden;
-  transition:transform .68s cubic-bezier(.22,.68,0,1.02),
-             opacity .55s ease, filter .55s ease;
-}
-.br-card.depth-0{transform:translateY(0) scale(1);opacity:1;z-index:5;filter:none;}
-.br-card.depth-1{transform:translateY(-52px) scale(.86);opacity:.5;z-index:4;filter:brightness(.68) blur(.6px);}
-.br-card.depth-exit{transform:translateY(-110px) scale(.64);opacity:0;z-index:3;filter:brightness(.32) blur(2px);}
-.br-card.depth-enter-front{transform:translateY(72px) scale(1.14);opacity:0;z-index:6;filter:brightness(1.15);}
-
-/* Les infos (nom, prix, description, bouton) ne sont visibles que
-   sur le bracelet au premier plan — jamais sur celui d'arrière-plan,
-   pour éviter toute confusion visuelle entre les deux. */
-.br-card .cf-info{opacity:0;pointer-events:none;transition:opacity .22s ease;}
-.br-card.depth-0 .cf-info{opacity:1;pointer-events:auto;transition:opacity .38s ease .22s;}
-
-.qr-box{text-align:center;padding:1.2rem;background:rgba(0,0,0,.3);border-radius:10px;border:1px solid var(--bord);}
 #prodModal{
   position:fixed;inset:0;z-index:9800;
   display:none;flex-direction:column;
@@ -675,9 +589,6 @@ img.prod-img.loaded{opacity:1;}
 .modal-wa-btn{display:flex;align-items:center;justify-content:center;gap:.6rem;width:100%;padding:.95rem;margin-top:.5rem;background:linear-gradient(135deg,#0f7a5e,#25D366);border:none;border-radius:14px;color:#fff;font-size:.78rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;font-family:'Montserrat',sans-serif;cursor:pointer;-webkit-tap-highlight-color:transparent;box-shadow:0 4px 20px rgba(37,211,102,.25);transition:opacity .22s;}
 .modal-wa-btn:active{opacity:.82;}
 
-/* ============================================================
-   DESCRIPTION PRODUIT — Fiche client
-   ============================================================ */
 .modal-desc-wrap{
   margin:.9rem 0 .3rem;
   background:linear-gradient(150deg,rgba(201,168,76,.09) 0%,rgba(0,0,0,.35) 60%);
@@ -712,7 +623,6 @@ img.prod-img.loaded{opacity:1;}
   text-shadow:0 1px 3px rgba(0,0,0,.7);
 }
 
-/* Flèches 360 */
 .badge360{position:absolute;top:10px;left:10px;z-index:5;background:rgba(0,0,0,.72);border:1px solid rgba(201,168,76,.6);color:var(--or-l);font-size:.52rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;border-radius:8px;padding:.3rem .6rem;text-align:center;line-height:1.4;animation:badge360pulse 2s ease-in-out infinite;}
 .badge360 span{font-size:.44rem;opacity:.8;display:block;}
 @keyframes badge360pulse{0%,100%{box-shadow:0 0 6px rgba(201,168,76,.3);}50%{box-shadow:0 0 16px rgba(201,168,76,.6);}}
@@ -724,37 +634,12 @@ img.prod-img.loaded{opacity:1;}
 .dot360{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.3);cursor:pointer;transition:background .2s,transform .2s;}
 .dot360.active{background:var(--or-l);transform:scale(1.4);}
 
-/* PAGE OFFRES */
-.offre-hero{text-align:center;padding:1.5rem 1.2rem 1rem;}
-.offre-title{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;background:linear-gradient(90deg,var(--or-d),var(--or-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:.1em;filter:drop-shadow(0 2px 8px rgba(0,0,0,.9));}
-.offre-subtitle{font-size:.65rem;color:#E8E0CC;letter-spacing:.12em;margin-top:.4rem;line-height:1.7;font-weight:600;text-shadow:var(--ts);}
-.offre-section{padding:0 1rem 1.4rem;}
-.offre-section-title{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--or-l);margin-bottom:.8rem;display:flex;align-items:center;gap:.4rem;font-weight:700;text-shadow:0 0 14px rgba(201,168,76,.6),var(--ts);}
-
-.offre-card{background:rgba(20,17,12,.6);border:1px solid rgba(201,168,76,.35);border-radius:14px;padding:1.1rem;margin-bottom:.8rem;backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px);display:flex;align-items:flex-start;gap:.9rem;transition:transform .22s,box-shadow .22s;}
-
-.offre-card:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(201,168,76,.14);}
-.offre-card-icon{font-size:2rem;flex-shrink:0;line-height:1;}
-.offre-card-body{flex:1;}
-.offre-card-title{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:700;color:#FFFFFF;margin-bottom:.25rem;text-shadow:var(--ts);}
-.offre-card-desc{font-size:.68rem;color:#E8E0CC;line-height:1.65;font-weight:500;text-shadow:var(--ts);}
-
-.offre-badge{display:inline-block;background:linear-gradient(135deg,var(--or-d),var(--or));color:#000;font-size:.55rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:.22rem .65rem;border-radius:50px;margin-bottom:.45rem;}
-.stream-grid{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.6rem;}
-.stream-pill{display:flex;align-items:center;gap:.35rem;background:rgba(0,0,0,.58);border:1px solid rgba(201,168,76,.42);border-radius:50px;padding:.3rem .7rem;font-size:.62rem;color:#E8E0CC;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:all .2s;font-weight:600;backdrop-filter:blur(8px);}
-.stream-pill:hover,.stream-pill.chosen{background:rgba(201,168,76,.18);border-color:var(--or-l);color:#fff;}
-.offre-cta{width:100%;margin-top:.85rem;background:linear-gradient(135deg,var(--or-d),var(--or));color:#000;border:none;border-radius:10px;font-family:'Montserrat',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;padding:.75rem;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:opacity .22s;}
-.offre-cta:active{opacity:.82;}
-
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:300;background:rgba(28,23,17,.62);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--bord);display:flex;padding-bottom:var(--safe-bottom);}
 
 .nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:.18rem;padding:.6rem .2rem .5rem;cursor:pointer;-webkit-tap-highlight-color:transparent;color:#C8BDA0;font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;border:none;background:none;font-family:'Montserrat',sans-serif;transition:color .2s;font-weight:600;text-shadow:var(--ts);}
 .nav-item.active{color:var(--or-l);}
 
-
 .nav-icon{font-size:1.2rem;line-height:1;}
-.nav-offre{position:relative;}
-.nav-offre .pulse-dot{position:absolute;top:2px;right:50%;transform:translateX(60%);width:8px;height:8px;background:#ff4444;border-radius:50%;animation:pulseDot 1.5s ease-in-out infinite;}
 @keyframes pulseDot{0%,100%{opacity:1;transform:translateX(60%) scale(1);}50%{opacity:.5;transform:translateX(60%) scale(1.4);}}
 
 .wa-float{position:fixed;bottom:calc(var(--safe-bottom)+68px);right:1rem;z-index:400;width:52px;height:52px;border-radius:50%;background:var(--wa);display:flex;align-items:center;justify-content:center;text-decoration:none;animation:waPulse 2s ease-in-out infinite;}
@@ -777,7 +662,6 @@ img.prod-img.loaded{opacity:1;}
 @media(hover:none){
   .sunburst-overlay{opacity:.28;}
 }
-/* Variante atténuée — uniquement pour la catégorie Colliers (contraste bijou doré) */
 .sunburst-overlay.neutral-bg{
   background:radial-gradient(circle 140px at calc(var(--x, 50%) * 1%) calc(var(--y, 50%) * 1%),rgba(255,240,180,.28) 0%,rgba(255,215,100,.14) 25%,rgba(201,168,76,.06) 55%,transparent 75%);
 }
@@ -797,9 +681,9 @@ img.prod-img.loaded{opacity:1;}
    BARRE DE RECHERCHE DORÉE
    ============================================================ */
 .search-bar-wrap {
-     padding: .65rem 1rem .4rem;
-     position: relative;
-     z-index: 190;
+  padding: .65rem 1rem .4rem;
+  position: relative;
+  z-index: 190;
   background: rgba(24,19,12,.68);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -829,7 +713,6 @@ img.prod-img.loaded{opacity:1;}
   box-shadow: 0 0 0 2px rgba(201,168,76,.22), 0 6px 36px rgba(0,0,0,.6), 0 0 40px rgba(201,168,76,.30), inset 0 1px 0 rgba(255,255,255,.08);
   animation: none;
 }
-
 
 .search-icon {
   flex-shrink: 0;
@@ -887,7 +770,6 @@ img.prod-img.loaded{opacity:1;}
 }
 @keyframes searchUnderPulse { 0%,100%{opacity:.5;} 50%{opacity:1;} }
 
-/* Page résultats */
 #page-search { display: none; }
 .search-results-header {
   display: flex;
@@ -905,7 +787,6 @@ img.prod-img.loaded{opacity:1;}
 }
 .search-results-count { margin-left: auto; font-size: .52rem; color: var(--gris); letter-spacing: .1em; font-weight: 600; text-shadow: var(--ts); }
 
-/* Message bientôt disponible */
 .search-soon {
   grid-column: 1 / -1;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -931,7 +812,6 @@ img.prod-img.loaded{opacity:1;}
 .search-soon-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--or-l); animation: soonDot 1.2s ease-in-out infinite; }
 @keyframes soonDot { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:.4;transform:scale(.7);} }
 .search-soon .btn-wa { max-width: 300px; }
-
 
 /* ============================================================
    FOND VIDÉO — Mobile uniquement (max 1024px)
@@ -992,7 +872,6 @@ img.prod-img.loaded{opacity:1;}
   100%{background-position:-200% 150%;opacity:.5;}
 }
 
-/* Particules dorées — mode clair uniquement, bien visibles */
 #lightParticles{
   display:none;position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none;
 }
@@ -1013,8 +892,7 @@ body.light-mode #lightParticles{display:block;}
 }
 
 /* ============================================================
-   BULLES DORÉES — fond commun pour Chaîne Homme, Bracelets,
-   Collier Femme et Bagues. Toujours visibles (pas liées au mode clair).
+   BULLES DORÉES — Colliers et Chaînes
    ============================================================ */
 .feed-bubbles{
   position:absolute;inset:0;z-index:1;overflow:hidden;pointer-events:none;
@@ -1033,10 +911,6 @@ body.light-mode #lightParticles{display:block;}
   88%{opacity:.5;}
   100%{transform:translateY(-108vh) translateX(calc(var(--fb-drift,20px) * -1)) scale(.6);opacity:0;}
 }
-#baguesBubbles{
-  display:none;position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none;
-}
-#baguesBubbles.show{display:block;}
 body.light-mode #lightSpace{display:block;}
 body.light-mode #bgLayer,
 body.light-mode #bgOverlay,
@@ -1047,19 +921,17 @@ body.light-mode{
   --txt:#171410; --txt2:#3a331f; --gris:#6b6350;
 }
 
-/* Bouton mode clair (en-tête, en haut à droite) */
 .light-toggle-btn{
-     background:rgba(0,0,0,.25);border:1px solid rgba(201,168,76,.5);
-     border-radius:50%;width:38px;height:38px;flex-shrink:0;
-     display:flex;align-items:center;justify-content:center;cursor:pointer;
-     font-size:1.05rem;-webkit-tap-highlight-color:transparent;
-     transition:background .2s, transform .2s, border-color .2s;
-     margin-left:auto;margin-right:.3rem;margin-top:.35rem;
-   }
+  background:rgba(0,0,0,.25);border:1px solid rgba(201,168,76,.5);
+  border-radius:50%;width:38px;height:38px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+  font-size:1.05rem;-webkit-tap-highlight-color:transparent;
+  transition:background .2s, transform .2s, border-color .2s;
+  margin-left:auto;margin-right:.3rem;margin-top:.35rem;
+}
 .light-toggle-btn:active{transform:scale(.9);}
 body.light-mode .light-toggle-btn{background:rgba(201,168,76,.14);border-color:rgba(201,168,76,.55);}
 
-/* HEADER + RECHERCHE */
 body.light-mode .app-header{background:rgba(255,255,255,.78);border-bottom-color:rgba(201,168,76,.4);}
 body.light-mode .search-bar-wrap{background:rgba(255,255,255,.82);border-bottom-color:rgba(201,168,76,.25);}
 body.light-mode .search-input-row{background:rgba(255,255,255,.9);border-color:rgba(201,168,76,.5);box-shadow:0 0 0 1px rgba(201,168,76,.15),0 4px 20px rgba(180,150,70,.12);}
@@ -1068,18 +940,14 @@ body.light-mode .search-input::placeholder{color:rgba(90,80,55,.55);}
 body.light-mode .search-icon{filter:none;}
 body.light-mode .search-clear{background:rgba(201,168,76,.16);border-color:rgba(201,168,76,.45);color:#8B6914;}
 
-/* ACCUEIL */
 body.light-mode .home-desc{color:#4a4230;}
 
-/* CATÉGORIES — grille d'accueil (le fond blanc reste, le doré des labels ne change pas) */
 body.light-mode .cat-card{background:rgba(255,255,255,.62);border-color:rgba(201,168,76,.45);box-shadow:0 4px 24px rgba(160,140,80,.18),inset 0 1px 0 rgba(255,255,255,.6);}
 body.light-mode .cat-count{color:#6b6350;}
 
-/* ONGLETS HOMME/FEMME — restent dorés, fond adapté */
 body.light-mode .g-tab{background:rgba(255,255,255,.72);color:#7a6a3a;border-color:rgba(201,168,76,.55);}
 body.light-mode .g-tab.active{background:rgba(201,168,76,.22);color:#8B6914;}
 
-/* PAGE CATÉGORIE — header + cartes produit : fond blanc, infos lisibles, doré léger */
 body.light-mode .page-cat-header{background:rgba(255,255,255,.78);}
 body.light-mode .btn-back{background:rgba(201,168,76,.16);color:#8B6914;border-color:rgba(201,168,76,.5);}
 
@@ -1100,21 +968,10 @@ body.light-mode .prod-genre{color:#7a7156;}
 body.light-mode .color-label{color:#7a7156;}
 body.light-mode .card-hint-3d{background:rgba(255,255,255,.85);color:#8B6914;border-color:rgba(201,168,76,.5);}
 
-/* OFFRES */
-body.light-mode .offre-subtitle{color:#4a4230;}
-body.light-mode .offre-card{background:rgba(255,255,255,.72);border-color:rgba(201,168,76,.4);}
-body.light-mode .offre-card:hover{box-shadow:0 8px 28px rgba(180,150,70,.18);}
-body.light-mode .offre-card-title{color:#1c1810;}
-body.light-mode .offre-card-desc{color:#4a4230;}
-body.light-mode .stream-pill{background:rgba(255,255,255,.8);color:#4a4230;border-color:rgba(201,168,76,.5);}
-body.light-mode .stream-pill:hover,body.light-mode .stream-pill.chosen{background:rgba(201,168,76,.2);color:#1c1810;}
-
-/* NAVIGATION BASSE */
 body.light-mode .bottom-nav{background:rgba(255,255,255,.82);border-top-color:rgba(201,168,76,.4);}
 body.light-mode .nav-item{color:#7a7156;}
 body.light-mode .nav-item.active{color:#8B6914;}
 
-/* MODAL PRODUIT (fiche agrandie) — fond blanc avec léger doré */
 body.light-mode #prodModal{
   background:linear-gradient(160deg,rgba(255,253,247,.98) 0%,rgba(250,242,222,.96) 40%,rgba(255,253,247,.98) 100%);
 }
@@ -1130,17 +987,12 @@ body.light-mode .modal-desc-wrap{background:linear-gradient(150deg,rgba(201,168,
 body.light-mode .modal-desc-text{color:#3a331f;}
 body.light-mode .modal-swipe-hint{color:rgba(139,105,20,.65);}
 
-/* VUES IMMERSIVES — Colliers / Chaînes / Bracelets : fond blanc doux */
 body.light-mode #colliersFeed,
-body.light-mode #chainesFeed,
-body.light-mode #braceletsFeed{background:#fdfbf5;}
+body.light-mode #chainesFeed{background:#fdfbf5;}
 body.light-mode .ch-stage{background:radial-gradient(ellipse at 50% 20%, #fbf5e6 0%, #f0e6cc 74%);}
-body.light-mode .br-stage{background:radial-gradient(ellipse at 50% 15%, #fbf5e6 0%, #f0e6cc 78%);}
 body.light-mode .cf-topbar{background:linear-gradient(180deg,rgba(255,255,255,.9) 0%,rgba(255,255,255,.5) 60%,transparent 100%);}
 body.light-mode .cf-back{background:rgba(0,0,0,.06);border-color:rgba(201,168,76,.5);color:#8B6914;}
 body.light-mode .cf-counter{color:#8B6914;background:rgba(255,255,255,.7);border-color:rgba(201,168,76,.4);}
-body.light-mode .cf-g-tab{background:rgba(255,255,255,.75);color:#4a4230;border-color:rgba(201,168,76,.5);}
-body.light-mode .cf-g-tab.active{background:rgba(201,168,76,.22);color:#1c1810;}
 body.light-mode .cf-info{background:linear-gradient(0deg,rgba(255,253,247,.97) 22%,rgba(255,253,247,.75) 55%,transparent 100%);}
 body.light-mode .cf-name{color:#1c1810;text-shadow:0 1px 4px rgba(255,255,255,.7);}
 body.light-mode .cf-genre{color:#7a7156;}
@@ -1149,15 +1001,12 @@ body.light-mode .cf-empty{color:#7a7156;}
 body.light-mode .cf-empty h3{color:#8B6914;}
 body.light-mode .cf-swipe-hint{color:rgba(139,105,20,.75);text-shadow:none;}
 
-/* RECHERCHE */
 body.light-mode .search-results-count{color:#7a7156;}
 body.light-mode .search-soon-sub{color:#4a4230;}
 body.light-mode .empty-cat{background:rgba(255,255,255,.72);border-color:rgba(201,168,76,.25);}
 body.light-mode .empty-cat p{color:#4a4230;}
 
-/* BADGE GYROSCOPE */
 body.light-mode .gyro-badge{background:rgba(255,255,255,.9);color:#8B6914;border-color:rgba(201,168,76,.6);}
-/* Logo — éclat renforcé en mode clair */
 body.light-mode .logo-txt{
   filter:drop-shadow(0 0 6px rgba(201,168,76,.9)) drop-shadow(0 0 16px rgba(232,201,122,.6)) drop-shadow(0 2px 4px rgba(0,0,0,.15));
   animation:goldShimmer 3s linear infinite, logoPulseLight 2.2s ease-in-out infinite;
@@ -1167,25 +1016,8 @@ body.light-mode .logo-txt{
   50%{filter:drop-shadow(0 0 12px rgba(201,168,76,1)) drop-shadow(0 0 28px rgba(245,226,122,.85)) drop-shadow(0 2px 4px rgba(0,0,0,.15));}
 }
 /* ============================================================
-   DEL — Assistante Style (widget de recommandation)
+   DEL — Assistante Style
    ============================================================ */
-.del-fab{
-  position:fixed;bottom:calc(var(--safe-bottom)+68px);left:1rem;z-index:410;
-  width:58px;height:58px;border-radius:50%;
-  background:radial-gradient(circle at 35% 30%, #F5E27A 0%, #C9A84C 45%, #8B6914 100%);
-  border:2px solid rgba(255,255,255,.5);
-  display:flex;align-items:center;justify-content:center;
-  font-size:1.7rem;cursor:pointer;-webkit-tap-highlight-color:transparent;
-  box-shadow:0 6px 24px rgba(139,105,20,.5);
-  animation:delFabBounce 3.4s ease-in-out infinite, delFabPulse 2.6s ease-in-out infinite;
-}
-@keyframes delFabBounce{0%,100%{transform:translateY(0) rotate(0deg);}45%{transform:translateY(-6px) rotate(-4deg);}55%{transform:translateY(-6px) rotate(4deg);}}
-@keyframes delFabPulse{0%,100%{box-shadow:0 6px 24px rgba(139,105,20,.5), 0 0 0 0 rgba(201,168,76,.45);}50%{box-shadow:0 6px 24px rgba(139,105,20,.5), 0 0 0 10px rgba(201,168,76,0);}}
-.del-fab-badge{position:absolute;top:-4px;right:-4px;background:#ff4444;color:#fff;font-size:.6rem;font-weight:700;border-radius:50%;width:19px;height:19px;display:flex;align-items:center;justify-content:center;border:2px solid #fff;animation:pulseDot 1.5s ease-in-out infinite;}
-.del-fab-tip{position:fixed;bottom:calc(var(--safe-bottom)+132px);left:1rem;z-index:410;background:rgba(20,16,8,.92);color:#F0EBD8;border:1px solid rgba(201,168,76,.5);border-radius:14px 14px 14px 4px;padding:.6rem .9rem;font-size:.68rem;font-weight:600;max-width:210px;line-height:1.5;box-shadow:0 6px 20px rgba(0,0,0,.35);opacity:0;transform:translateY(8px);pointer-events:none;animation:delTipShow .5s ease-out 2.4s forwards, delTipHide .5s ease-in 8s forwards;}
-@keyframes delTipShow{to{opacity:1;transform:translateY(0);}}
-@keyframes delTipHide{to{opacity:0;transform:translateY(8px);}}
-/* Bouton Del — intégré à la barre de recherche */
 .search-bar-flex{display:flex;align-items:center;gap:.55rem;}
 .search-bar-flex .search-input-row{flex:1;min-width:0;}
 .del-launcher{
@@ -1231,8 +1063,8 @@ body.light-mode .del-msg.user{color:#1a1510;}
 .del-chip:hover,.del-chip:active{background:rgba(201,168,76,.25);}
 body.light-mode .del-chip{background:rgba(255,255,255,.8);color:#8B6914;border-color:rgba(201,168,76,.55);}
 .del-prod-card{display:flex;gap:.6rem;background:rgba(0,0,0,.32);border:1px solid rgba(201,168,76,.25);border-radius:12px;padding:.55rem;align-items:center;max-width:92%;align-self:flex-start;cursor:pointer;transition:background .2s,transform .15s;}
-   .del-prod-card:hover{background:rgba(201,168,76,.16);transform:translateY(-1px);}
-   body.light-mode .del-prod-card:hover{background:rgba(201,168,76,.2);}
+.del-prod-card:hover{background:rgba(201,168,76,.16);transform:translateY(-1px);}
+body.light-mode .del-prod-card:hover{background:rgba(201,168,76,.2);}
 body.light-mode .del-prod-card{background:rgba(255,255,255,.85);}
 .del-prod-card img{width:52px;height:52px;object-fit:contain;border-radius:8px;background:rgba(201,168,76,.1);flex-shrink:0;}
 .del-prod-info{flex:1;min-width:0;}
@@ -1257,7 +1089,7 @@ body.light-mode .del-input-row input{background:rgba(255,255,255,.85);color:#1c1
 .del-input-send{background:linear-gradient(135deg,#8B6914,#C9A84C);border:none;border-radius:50%;width:40px;height:40px;color:#1a1510;font-size:1rem;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent;}
 
 /* ============================================================
-   AVIS CLIENTS — étoiles + commentaires
+   AVIS CLIENTS
    ============================================================ */
 .avis-summary{text-align:center;padding:1.4rem 1.2rem 1rem;}
 .avis-summary-score{font-family:'Cormorant Garamond',serif;font-size:2.4rem;font-weight:700;background:linear-gradient(90deg,var(--or-d),var(--or-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
@@ -1287,7 +1119,6 @@ body.light-mode .del-input-row input{background:rgba(255,255,255,.85);color:#1c1
 .avis-card-text{font-size:.72rem;color:#E8E0CC;line-height:1.6;font-weight:500;white-space:pre-line;}
 .avis-empty{text-align:center;padding:2rem 1rem;color:var(--gris);font-size:.7rem;font-weight:600;}
 
-/* toast discret d'invitation à laisser un avis */
 .avis-toast{
   position:fixed;left:1rem;right:1rem;
   bottom:calc(var(--safe-bottom) + 70px);
@@ -1318,8 +1149,7 @@ body.light-mode .avis-toast{background:rgba(255,255,255,.95);border-color:rgba(2
 body.light-mode .avis-toast-txt{color:#3a331f;}
 
 /* ============================================================
-   COUPS DE CŒUR — triple-tap sur un produit pour l'aimer
-   (comme Instagram, mais 3 tapotements) — 1 seul cœur par client/produit
+   COUPS DE CŒUR
    ============================================================ */
 .coeur-badge{
   position:absolute;top:8px;right:8px;z-index:6;
@@ -1337,7 +1167,6 @@ body.light-mode .coeur-badge{background:rgba(255,255,255,.85);color:#8B6914;bord
 body.light-mode .coeur-badge.has{background:rgba(255,240,242,.92);border-color:rgba(255,90,120,.55);}
 body.light-mode .coeur-badge.mine{color:#e0355a;border-color:rgba(224,53,90,.7);background:rgba(255,235,238,.95);}
 
-/* Cœur animé qui apparaît sur l'image au triple-tap */
 .coeur-flash{
   position:absolute;inset:0;z-index:8;
   display:flex;align-items:center;justify-content:center;
@@ -1388,7 +1217,6 @@ body.light-mode .coeur-toast{background:rgba(255,255,255,.95);color:#8B6914;bord
 .search-clear:focus-visible,
 .coeur-badge:focus-visible,
 .g-tab:focus-visible,
-.cf-g-tab:focus-visible,
 .color-swatch:focus-visible,
 .arr360:focus-visible,
 .sort-select:focus-visible,
@@ -1430,44 +1258,22 @@ body.light-mode .sort-select{background:rgba(255,255,255,.8);color:#8B6914;borde
 #catalogLoader.show{display:flex;}
 #catalogLoader span{font-size:.65rem;letter-spacing:.15em;color:var(--or-l);text-transform:uppercase;font-weight:700;text-shadow:var(--ts);}
 /* ====== PATCH PERFORMANCE — désactive les animations lourdes ====== */
-
-/* 1) Flou (backdrop-filter) = le plus cher sur mobile, surtout répété sur chaque carte */
 .prod-card, .cat-card, .g-tab, .page-cat-header, .search-bar-wrap,
-.search-input-row, .cf-g-tab, .offre-card, .stream-pill, .bottom-nav,
+.search-input-row, .cf-g-tab, .stream-pill, .bottom-nav,
 .empty-cat, .avis-form-wrap, .avis-card, #prodModal, .del-panel,
 #catalogLoader {
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
 }
-
-/* 2) Halo animé en boucle sur CHAQUE carte produit (très coûteux, multiplié par le nb de cartes) */
 .prod-card::after { animation: none !important; opacity: .55 !important; }
-
-/* 3) Shimmer de chargement d'image en boucle */
 .prod-img-zone::before { animation: none !important; opacity: 0 !important; }
-
-/* 4) Halo pulsant autour de la barre de recherche */
 .search-input-row { animation: none !important; }
 .search-underline { animation: none !important; }
-
-/* 5) Scintillement doré en boucle infinie sur les titres/textes dorés */
 .splash-title, .logo-txt, .home-title, .search-icon { animation: none !important; }
-
-/* 6) Bulles / particules dorées flottantes (nombreux éléments animés en continu) */
 .lp, .fb { display: none !important; }
-
-/* 7) Pastille rouge clignotante + halo bouton WhatsApp + bouton Del */
-.pulse-dot, .wa-float, .del-fab, .del-launcher, .del-fab-badge {
-  animation: none !important;
-}
-
-/* 8) Respiration/rotation du splash screen (impacte le tout premier chargement) */
+.wa-float, .del-fab, .del-launcher, .del-fab-badge { animation: none !important; }
 .splash-stage, .splash-ring { animation-duration: 0s !important; }
-
-/* 9) Sheen animé dans la description produit (modal) */
 .modal-desc-wrap::before { animation: none !important; }
-
-/* 10) Effet lumineux "sunburst" qui recalcule un dégradé à chaque mouvement de souris/doigt */
 .sunburst-overlay { display: none !important; }
 </style>
 <link rel="manifest" href="manifest.json">
@@ -1535,12 +1341,10 @@ body.light-mode .sort-select{background:rgba(255,255,255,.8);color:#8B6914;borde
   </div>
 </div>
 
-<!-- NOUVEAU : loader catalogue, affiché si le chargement de produits.json est lent -->
 <div id="catalogLoader"><div class="loader"></div><span>Chargement de la collection…</span></div>
 
 <div id="bgLayer"></div>
 <div id="bgOverlay"></div>
-<!-- FOND VIDÉO — Mobile uniquement, géré depuis admin -->
 <video id="bgVideo"
        autoplay muted loop playsinline
        preload="auto"
@@ -1554,47 +1358,42 @@ body.light-mode .sort-select{background:rgba(255,255,255,.8);color:#8B6914;borde
   <button class="light-toggle-btn" id="lightModeBtn" onclick="toggleLightMode()" aria-label="Mode clair" title="Mode clair">☀️</button>
 </header>
 
-<!-- BARRE DE RECHERCHE GLOBALE — visible sur tous les onglets -->
+<!-- BARRE DE RECHERCHE GLOBALE -->
 <div class="search-bar-wrap" id="globalSearchWrap">
-     <div class="search-bar-flex">
-     <div class="search-input-row">
-    <span class="search-icon">🔍</span>
-    <input class="search-input" id="searchInput" type="search" inputmode="search"
-           autocomplete="off" autocorrect="off" spellcheck="false"
-           placeholder="Rechercher une montre, bijou…"
-           aria-label="Rechercher un produit"
-           oninput="onSearchInput(this.value)"
-           onkeydown="onSearchKeydown(event)">
-   <button class="search-clear" id="searchClear" onclick="clearSearch()" aria-label="Effacer">✕</button>
-   </div>
-   <button class="del-launcher" id="delFab" onclick="openDelPanel()">
-     <span id="delFabBadge" class="del-fab-badge">1</span>
-     🙋🏽‍♀️
-   </button>
-   </div>
-   <div class="search-underline"></div>
+  <div class="search-bar-flex">
+    <div class="search-input-row">
+      <span class="search-icon">🔍</span>
+      <input class="search-input" id="searchInput" type="search" inputmode="search"
+             autocomplete="off" autocorrect="off" spellcheck="false"
+             placeholder="Rechercher une montre, bijou…"
+             aria-label="Rechercher un produit"
+             oninput="onSearchInput(this.value)"
+             onkeydown="onSearchKeydown(event)">
+      <button class="search-clear" id="searchClear" onclick="clearSearch()" aria-label="Effacer">✕</button>
+    </div>
+    <button class="del-launcher" id="delFab" onclick="openDelPanel()">
+      <span id="delFabBadge" class="del-fab-badge">1</span>
+      🙋🏽‍♀️
+    </button>
+  </div>
+  <div class="search-underline"></div>
 </div>
 
 <!-- PAGE ACCUEIL -->
 <div id="page-home">
-
-
   <div class="home-hero">
     <div class="home-subtitle">Collection Prestige 2025</div>
     <div class="home-title">Khaled Watch</div>
     <div class="home-desc">Explorez notre sélection exclusive de montres &amp; bijoux de prestige.</div>
   </div>
   <div class="cat-grid">
-    <div class="cat-card" onclick="openCat('Montres')">         <div class="cat-icon">⌚</div><div class="cat-label">Montres</div>      <div class="cat-count" id="cnt-Montres">—</div></div>
+    <div class="cat-card" onclick="openCat('Montres')"><div class="cat-icon">⌚</div><div class="cat-label">Montres</div><div class="cat-count" id="cnt-Montres">—</div></div>
     <div class="cat-card" onclick="openCat('Montres Luxueuses')"><div class="cat-icon">💎</div><div class="cat-label">Montres Luxe</div><div class="cat-count" id="cnt-Montres Luxueuses">—</div></div>
-    <div class="cat-card" onclick="openCat('Chaînes')">         <div class="cat-icon">⛓</div><div class="cat-label">Chaîne Homme</div>      <div class="cat-count" id="cnt-Chaînes">—</div></div>
-    <div class="cat-card" onclick="openCat('Bracelets')">       <div class="cat-icon">💫</div><div class="cat-label">Bracelets</div>    <div class="cat-count" id="cnt-Bracelets">—</div></div>
-    <div class="cat-card" onclick="openCat('Colliers')">        <div class="cat-icon">📿</div><div class="cat-label">Collier Femme</div>     <div class="cat-count" id="cnt-Colliers">—</div></div>
-    <div class="cat-card" onclick="openCat('Bagues')">          <div class="cat-icon">💍</div><div class="cat-label">Bagues</div>       <div class="cat-count" id="cnt-Bagues">—</div></div>
-    <div class="cat-card" onclick="openCat('Autres')">          <div class="cat-icon">✨</div><div class="cat-label">Autres</div>       <div class="cat-count" id="cnt-Autres">—</div></div>
-    <div class="cat-card" onclick="openFavoris()">              <div class="cat-icon">❤️</div><div class="cat-label">Coups de Cœur</div> <div class="cat-count" id="cnt-Favoris">—</div></div>
-    <div class="cat-card" onclick="openAvis()">                 <div class="cat-icon">⭐</div><div class="cat-label">Avis Clients</div> <div class="cat-count" id="cnt-Avis">—</div></div>
-    <div class="cat-card offre-card" onclick="openOffres()">    <div class="cat-icon">🎁</div><div class="cat-label" style="color:#FFD700;">Offres</div><div class="cat-count" style="color:var(--or-l);">Promos &amp; Cadeaux</div></div>
+    <div class="cat-card" onclick="openCat('Chaînes')"><div class="cat-icon">⛓</div><div class="cat-label">Chaîne Homme</div><div class="cat-count" id="cnt-Chaînes">—</div></div>
+    <div class="cat-card" onclick="openCat('Colliers')"><div class="cat-icon">📿</div><div class="cat-label">Collier Femme</div><div class="cat-count" id="cnt-Colliers">—</div></div>
+    <div class="cat-card" onclick="openCat('Autres')"><div class="cat-icon">✨</div><div class="cat-label">Autres</div><div class="cat-count" id="cnt-Autres">—</div></div>
+    <div class="cat-card" onclick="openFavoris()"><div class="cat-icon">❤️</div><div class="cat-label">Coups de Cœur</div><div class="cat-count" id="cnt-Favoris">—</div></div>
+    <div class="cat-card" onclick="openAvis()"><div class="cat-icon">⭐</div><div class="cat-label">Avis Clients</div><div class="cat-count" id="cnt-Avis">—</div></div>
   </div>
 </div>
 
@@ -1612,7 +1411,6 @@ body.light-mode .sort-select{background:rgba(255,255,255,.8);color:#8B6914;borde
 
 <!-- PAGE CATÉGORIE -->
 <div id="page-cat">
-  <div class="feed-bubbles" id="baguesBubbles"></div>
   <div class="page-cat-header">
     <div class="btn-back" onclick="goHome()">←</div>
     <span class="cat-page-icon" id="catPageIcon"></span>
@@ -1634,33 +1432,6 @@ body.light-mode .sort-select{background:rgba(255,255,255,.8);color:#8B6914;borde
   <div class="prod-grid" id="prodGrid">
     <div class="loader-wrap"><div class="loader"></div></div>
   </div>
-</div>
-
-<!-- PAGE OFFRES -->
-<div id="page-offre">
-  <div class="page-cat-header">
-    <div class="btn-back" onclick="goHome()">←</div>
-    <span class="cat-page-icon">🎁</span>
-    <div class="cat-page-title">Offres Spéciales</div>
-  </div>
-  <div class="offre-hero">
-    <div class="offre-title">Récompenses &amp; Cadeaux</div>
-    <div class="offre-subtitle">Plus vous achetez, plus vous gagnez.<br>Des avantages exclusifs réservés à nos clients fidèles.</div>
-  </div>
-  <div class="offre-section">
-    <div class="offre-section-title">🚚 Livraison Gratuite</div>
-    <div class="offre-card"><div class="offre-card-icon">🚚</div><div class="offre-card-body"><div class="offre-badge">Dès le 1er achat</div><div class="offre-card-title">Livraison offerte partout au Bénin</div><div class="offre-card-desc">Chaque commande passée via WhatsApp bénéficie de la livraison gratuite à domicile sur Cotonou et ses environs.</div><button class="offre-cta" onclick="ctaOffre('Livraison gratuite')">Commander maintenant</button></div></div>
-  </div>
-  <div class="offre-section">
-    <div class="offre-section-title">🎁 Cadeau dès 3 produits achetés</div>
-    <div class="offre-card"><div class="offre-card-icon">🎬</div><div class="offre-card-body"><div class="offre-badge">3 produits achetés</div><div class="offre-card-title">1 mois d'abonnement streaming offert</div><div class="offre-card-desc">Achetez 3 produits et choisissez votre abonnement gratuit pendant 1 mois !</div><div class="stream-grid"><div class="stream-pill" onclick="choixStream(this,'Netflix')"><span>🎬</span> Netflix</div><div class="stream-pill" onclick="choixStream(this,'Amazon Prime')"><span>📦</span> Amazon Prime</div><div class="stream-pill" onclick="choixStream(this,'Spotify')"><span>🎵</span> Spotify</div><div class="stream-pill" onclick="choixStream(this,'Apple Music')"><span>🎶</span> Apple Music</div></div><button class="offre-cta" id="btnStream" onclick="ctaStream()">Je choisis mon cadeau</button></div></div>
-    <div class="offre-card"><div class="offre-card-icon">💰</div><div class="offre-card-body"><div class="offre-badge">Plus le produit est cher</div><div class="offre-card-title">Cadeau proportionnel à vos achats</div><div class="offre-card-desc"><strong style="color:var(--or-l)">≥ 50 000 F</strong> → Spotify ou Apple Music 1 mois<br><strong style="color:var(--or-l)">≥ 100 000 F</strong> → Netflix ou Amazon Prime 1 mois<br><strong style="color:var(--or-l)">≥ 200 000 F</strong> → 2 abonnements + réduction 10% + livraison offerte</div></div></div>
-  </div>
-  <div class="offre-section">
-    <div class="offre-section-title">🔥 Réduction dès 5 produits</div>
-    <div class="offre-card"><div class="offre-card-icon">🔥</div><div class="offre-card-body"><div class="offre-badge">5 produits achetés</div><div class="offre-card-title">Réduction progressive sur vos commandes</div><div class="offre-card-desc"><strong style="color:var(--or-l)">5 produits</strong> → <strong style="color:#6fcf97">-5%</strong><br><strong style="color:var(--or-l)">7 produits</strong> → <strong style="color:#6fcf97">-10%</strong><br><strong style="color:var(--or-l)">10 produits</strong> → <strong style="color:#6fcf97">-15%</strong> + cadeau surprise</div><button class="offre-cta" onclick="ctaOffre('Réduction fidélité')">Profiter de l'offre</button></div></div>
-  </div>
-  <div style="padding:0 1rem 6rem;text-align:center;"><div style="font-size:.62rem;color:var(--gris);line-height:1.9;text-shadow:var(--ts);">Les offres sont validées sur présentation de vos achats via WhatsApp.</div></div>
 </div>
 
 <!-- PAGE AVIS CLIENTS -->
@@ -1692,7 +1463,7 @@ body.light-mode .sort-select{background:rgba(255,255,255,.8);color:#8B6914;borde
   <div class="avis-list" id="avisList"></div>
 </div>
 
-<!-- PAGE MES COUPS DE CŒUR (NOUVEAU) -->
+<!-- PAGE MES COUPS DE CŒUR -->
 <div id="page-favoris">
   <div class="page-cat-header">
     <div class="btn-back" onclick="goHome()">←</div>
@@ -1702,7 +1473,7 @@ body.light-mode .sort-select{background:rgba(255,255,255,.8);color:#8B6914;borde
   <div class="prod-grid" id="favorisGrid"></div>
 </div>
 
-<!-- VUE IMMERSIVE COLLIERS — plein écran type Stories, catégorie Colliers uniquement -->
+<!-- VUE IMMERSIVE COLLIERS -->
 <div id="colliersFeed">
   <div class="cf-topbar">
     <button class="cf-back" onclick="closeColliersFeed()" aria-label="Retour">←</button>
@@ -1713,7 +1484,7 @@ body.light-mode .sort-select{background:rgba(255,255,255,.8);color:#8B6914;borde
   <div class="cf-scroll" id="cfScroll" onscroll="onCfScroll()"></div>
 </div>
 
-<!-- VUE IMMERSIVE CHAÎNES — défilé circulaire type aiguille d'horloge, catégorie Chaînes uniquement -->
+<!-- VUE IMMERSIVE CHAÎNES -->
 <div id="chainesFeed">
   <div class="cf-topbar">
     <button class="cf-back" onclick="closeChainesFeed()" aria-label="Retour">←</button>
@@ -1723,23 +1494,6 @@ body.light-mode .sort-select{background:rgba(255,255,255,.8);color:#8B6914;borde
   <div class="feed-bubbles" id="chBubbles"></div>
   <div class="ch-stage" id="chStage"></div>
   <div class="ch-pivot-dot"></div>
-</div>
-
-<!-- VUE IMMERSIVE BRACELETS — pile de cartes en profondeur, catégorie Bracelets uniquement -->
-<div id="braceletsFeed">
-  <div class="cf-topbar">
-    <button class="cf-back" onclick="closeBraceletsFeed()" aria-label="Retour">←</button>
-    <div class="cf-title">✦ Collection Bracelets</div>
-    <div class="cf-counter" id="brCounter">1 / 1</div>
-  </div>
-  <div class="cf-gender-tabs" id="brGenderTabs">
-    <button class="cf-g-tab active" data-g="tous" onclick="setBrGender(this)">Tous</button>
-    <button class="cf-g-tab" data-g="Homme" onclick="setBrGender(this)">Homme</button>
-    <button class="cf-g-tab" data-g="Femme" onclick="setBrGender(this)">Femme</button>
-  </div>
-  <div class="feed-bubbles" id="brBubbles"></div>
-  <div class="br-stage" id="brStage"></div>
-  <div class="cf-swipe-hint">↑ Glissez vers le haut</div>
 </div>
 
 <!-- MODAL PRODUIT -->
@@ -1759,15 +1513,14 @@ body.light-mode .sort-select{background:rgba(255,255,255,.8);color:#8B6914;borde
   <button class="nav-item active" id="nav-home" onclick="goHome()"><span class="nav-icon">🏠</span>Accueil</button>
   <button class="nav-item" onclick="openCat('Montres')"><span class="nav-icon">⌚</span>Montres</button>
   <button class="nav-item" onclick="openCat('Chaînes')"><span class="nav-icon">⛓</span>Chaîne H.</button>
-  <button class="nav-item" onclick="openCat('Bracelets')"><span class="nav-icon">💫</span>Bijoux</button>
-  <button class="nav-item nav-offre" onclick="openOffres()"><span class="nav-icon">🎁</span>Offres<div class="pulse-dot"></div></button>
+  <button class="nav-item" onclick="openCat('Colliers')"><span class="nav-icon">📿</span>Colliers</button>
 </nav>
 
 <a class="wa-float" href="https://wa.me/2290169515730" target="_blank" rel="noopener">
   <svg viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
 </a>
 
-<!-- TOAST DISCRET — invitation à laisser un avis -->
+<!-- TOAST — invitation à laisser un avis -->
 <div class="avis-toast" id="avisToast">
   <button class="avis-toast-close" onclick="closeAvisToast()">✕</button>
   <div class="avis-toast-txt">Votre avis compte pour nous <span>⭐</span><br>Aidez-nous à améliorer le site</div>
@@ -1804,11 +1557,11 @@ body.light-mode .sort-select{background:rgba(255,255,255,.8);color:#8B6914;borde
    ============================================================ */
 const WA = '2290169515730';
 const DEL_WORKER_URL = 'https://khaled-watch-del.lewilskhaled.workers.dev';
-
-/* NOUVEAU — backend partagé pour avis clients & coups de cœur.
-   Remplacez cette URL par celle de votre Worker une fois déployé
-   (voir khaled-watch-worker-reviews.js). */
 const DATA_WORKER_URL = 'https://khaled-watch-data.lewilskhaled.workers.dev';
+
+/* Catégories retirées du site (Bracelets / Bagues) */
+const HIDDEN_CATS = ['Bracelets','Bagues'];
+
 let reviewsCache = [];
 let likesCache = {};
 let productsLoaded = false;
@@ -1827,10 +1580,8 @@ async function fetchSharedData() {
   }
 }
 
-  /* ── Fonds d'écran rotatifs — mobile uniquement, toutes les 10h ── */
 const DEFAULT_BG = 'https://images.unsplash.com/photo-1618215649514-c73c18549d63?w=1600&q=85';
 
-/* 6 fonds — de VRAIES photos de montres nettes et bien éclairées */
 const SLIDESHOW_BGS = [
   'https://images.unsplash.com/photo-1618215650148-e8e61eae521c?w=1600&q=90',
   'https://images.unsplash.com/photo-1628608569034-e214532ddfde?w=1600&q=90',
@@ -1840,20 +1591,19 @@ const SLIDESHOW_BGS = [
   'https://images.unsplash.com/photo-1605143185597-9fe1a8065fbb?w=1600&q=90'
 ];
 
-const SLIDESHOW_INTERVAL_MS = 1 * 60 * 60 * 1000; /* 1 heure */
+const SLIDESHOW_INTERVAL_MS = 1 * 60 * 60 * 1000;
 const SLIDESHOW_KEY          = 'kw-slide-idx';
 const SLIDESHOW_TIME_KEY     = 'kw-slide-time';
-const CAT_ICONS = {'Montres':'⌚','Montres Luxueuses':'💎','Chaînes':'⛓','Bracelets':'💫','Colliers':'📿','Bagues':'💍','Autres':'✨'};
+const CAT_ICONS = {'Montres':'⌚','Montres Luxueuses':'💎','Chaînes':'⛓','Colliers':'📿','Autres':'✨'};
 const FALLBACK_IMG = 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=70';
 
 let allProducts   = [];
 let currentCat    = '';
 let currentGender = 'tous';
 let currentList   = [];
-let selectedStream= '';
 
 /* ============================================================
-   GYROSCOPE — Effet parallaxe sur les images des cartes
+   GYROSCOPE
    ============================================================ */
 const GYRO_MAX = 18;
 let gyroX = 0;
@@ -2092,7 +1842,9 @@ async function loadProducts() {
     const r = await fetch('produits.json?t=' + Date.now());
     if (!r.ok) throw 0;
     const raw = await r.json();
-    allProducts = Array.isArray(raw) ? raw.map(normalizeProduct) : [];
+    allProducts = Array.isArray(raw)
+      ? raw.map(normalizeProduct).filter(p => !HIDDEN_CATS.includes(p.categorie))
+      : [];
   } catch { allProducts = []; }
   productsLoaded = true;
   clearTimeout(loaderTimer);
@@ -2118,7 +1870,7 @@ function updateCounts() {
    NAVIGATION
    ============================================================ */
 function hideAll() {
-  ['page-home','page-cat','page-offre','page-search','page-avis','page-favoris'].forEach(id => {
+  ['page-home','page-cat','page-search','page-avis','page-favoris'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.style.display = 'none';
   });
@@ -2127,9 +1879,6 @@ function hideAll() {
 function goHome() {
   closeColliersFeed();
   closeChainesFeed();
-  closeBraceletsFeed();
-  const baguesBg = document.getElementById('baguesBubbles');
-  if (baguesBg) baguesBg.classList.remove('show');
   clearTimeout(searchTimer);
   lastPageBeforeSearch = null;
   var si = document.getElementById('searchInput');
@@ -2145,7 +1894,6 @@ function goHome() {
 function openCat(cat) {
   if (cat === 'Colliers') { openColliersFeed(); return; }
   if (cat === 'Chaînes') { openChainesFeed(); return; }
-  if (cat === 'Bracelets') { openBraceletsFeed(); return; }
   currentCat = cat; currentGender = 'tous';
   currentSort = 'default';
   const sortSel = document.getElementById('sortSelect');
@@ -2156,17 +1904,39 @@ function openCat(cat) {
   document.getElementById('catPageIcon').textContent  = CAT_ICONS[cat] || '✦';
   hideAll();
   document.getElementById('page-cat').style.display = 'block';
-  const baguesBg = document.getElementById('baguesBubbles');
-  if (baguesBg) {
-    if (cat === 'Bagues') { baguesBg.classList.add('show'); spawnBubbles('baguesBubbles', 18); }
-    else baguesBg.classList.remove('show');
-  }
   window.scrollTo(0, 0);
   renderProducts();
 }
 
 /* ============================================================
-   TRI DES PRODUITS (NOUVEAU)
+   UNE BOX PAR COULEUR (plus de défilement dans une même box)
+   ============================================================ */
+const variantMap = {};
+function expandVariants(list){
+  const out = [];
+  list.forEach(p => {
+    const cs = p.couleurs || [];
+    if (cs.length > 1){
+      cs.forEach((c, ci) => {
+        const v = Object.assign({}, p, {
+          id: p.id + '__c' + ci, baseId: p.id,
+          couleurs: [c],
+          image: c.image || p.image,
+          img_gauche: c.img_gauche || p.img_gauche,
+          img_droit: c.img_droit || p.img_droit,
+          img_dos: c.img_dos || p.img_dos
+        });
+        variantMap[v.id] = v;
+        out.push(v);
+      });
+    } else out.push(p);
+  });
+  return out;
+}
+function findProduct(id){ return variantMap[id] || allProducts.find(x => x.id === id); }
+
+/* ============================================================
+   TRI DES PRODUITS
    ============================================================ */
 function onSortChange(val){
   currentSort = val;
@@ -2180,7 +1950,7 @@ function applySort(list){
 }
 
 /* ============================================================
-   MES COUPS DE CŒUR — page dédiée (NOUVEAU)
+   MES COUPS DE CŒUR
    ============================================================ */
 function openFavoris(){
   hideAll();
@@ -2191,7 +1961,7 @@ function openFavoris(){
 function renderFavorisGrid(){
   const mine = getCoeurMine();
   const ids = Object.keys(mine).filter(id => mine[id]);
-  const list = allProducts.filter(p => ids.includes(String(p.id)));
+  const list = expandVariants(allProducts.filter(p => ids.includes(String(p.id))));
   currentList = list;
   const grid = document.getElementById('favorisGrid');
   if (!list.length){
@@ -2215,8 +1985,7 @@ function updateFavorisCount(){
 }
 
 /* ============================================================
-   VUE IMMERSIVE COLLIERS — défilé plein écran type Stories
-   Réservée UNIQUEMENT à la catégorie Colliers
+   VUE IMMERSIVE COLLIERS
    ============================================================ */
 let cfGender = 'tous';
 let cfList   = [];
@@ -2330,8 +2099,7 @@ document.addEventListener('keydown', e => {
 });
 
 /* ============================================================
-   VUE IMMERSIVE CHAÎNES — défilé circulaire type aiguille d'horloge
-   Réservée UNIQUEMENT à la catégorie Chaînes
+   VUE IMMERSIVE CHAÎNES
    ============================================================ */
 let chGender    = 'tous';
 let chList      = [];
@@ -2389,8 +2157,8 @@ function chainSlideHTML(p, idx) {
 }
 
 function initChainStage(startIdx) {
-     const stage = document.getElementById('chStage');
-     chIndex = startIdx || 0;
+  const stage = document.getElementById('chStage');
+  chIndex = startIdx || 0;
   updateChCounter();
   if (!chList.length) {
     stage.innerHTML = `<div class="ch-slide current"><div class="cf-empty">
@@ -2399,7 +2167,7 @@ function initChainStage(startIdx) {
     </div></div>`;
     return;
   }
-stage.innerHTML = `<div class="ch-slide current">${chainSlideHTML(chList[chIndex], chIndex)}</div>`;
+  stage.innerHTML = `<div class="ch-slide current">${chainSlideHTML(chList[chIndex], chIndex)}</div>`;
 }
 
 function updateChCounter() {
@@ -2486,215 +2254,6 @@ document.addEventListener('keydown', e => {
   if (e.key === 'ArrowDown' || e.key === 'ArrowLeft')  goChain(-1);
 });
 
-/* ============================================================
-   VUE IMMERSIVE BRACELETS — pile de cartes en profondeur
-   ============================================================ */
-let brGender    = 'tous';
-let brList      = [];
-let brIndex     = 0;
-let brAnimating = false;
-let brTouchBound = false;
-
-function openBraceletsFeed() {
-  brGender = 'tous';
-  document.querySelectorAll('#brGenderTabs .cf-g-tab').forEach(t => t.classList.remove('active'));
-  document.querySelector('#brGenderTabs .cf-g-tab[data-g="tous"]').classList.add('active');
-  document.getElementById('braceletsFeed').classList.add('open');
-  document.body.style.overflow = 'hidden';
-  spawnBubbles('brBubbles', 18);
-  buildBraceletList();
-  initBraceletStage();
-  if (!brTouchBound) { bindBraceletTouch(); brTouchBound = true; }
-}
-
-function closeBraceletsFeed() {
-  const feed = document.getElementById('braceletsFeed');
-  if (feed) feed.classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-function setBrGender(btn) {
-  document.querySelectorAll('#brGenderTabs .cf-g-tab').forEach(t => t.classList.remove('active'));
-  btn.classList.add('active');
-  brGender = btn.dataset.g;
-  buildBraceletList();
-  initBraceletStage();
-}
-
-function buildBraceletList() {
-  let list = allProducts.filter(p => p.categorie === 'Bracelets');
-  if (brGender !== 'tous') list = list.filter(p => p.genre === brGender);
-  brList = list;
-}
-
-function braceletSlideHTML(p, idx) {
-  const colors  = p.couleurs && p.couleurs.length ? p.couleurs : [];
-  const mainImg = colors.length && colors[0].image ? colors[0].image : (p.image || FALLBACK_IMG);
-
-  const colorDots = colors.length > 1 ? `
-    <div class="cf-colors">
-      ${colors.map((c,ci) => `<div class="cf-color-dot${ci===0?' active':''}" style="background:${h(c.hex)}" title="${h(c.nom)}" onclick="switchBrColor(this,${idx},${ci})"></div>`).join('')}
-    </div>` : '';
-
-  return `
-    <div class="cf-glow"></div>
-    <div class="cf-img-wrap">
-      <img id="brimg-${idx}" src="${h(thumbUrl(mainImg, 1300, 90))}" alt="${h(p.nom)}" decoding="async" onerror="this.src='${FALLBACK_IMG}'">
-    </div>
-    <div class="cf-info">
-     <div class="cf-badge">✦ Bracelet</div>
-      <div class="cf-name">${h(p.nom)}</div>
-      <div class="cf-genre">${h(p.genre||'')}</div>
-      ${p.description ? `<div class="cf-desc">${h(p.description)}</div>` : ''}
-      <div class="cf-price-row">
-        <div class="cf-price">${fmt(p.prix)} <small>FCFA</small></div>
-        ${colorDots}
-      </div>
-      <button class="cf-cta" onclick="commander(this,'${js(p.id)}')">${WA_SVG} Commander sur WhatsApp</button>
-    </div>
-  `;
-}
-
-function initBraceletStage(startIdx) {
-     const stage = document.getElementById('brStage');
-     brIndex = startIdx || 0;
-  updateBrCounter();
-  stage.innerHTML = '';
-
-  if (!brList.length) {
-    stage.innerHTML = `<div class="cf-empty">
-      <h3>✦ Collection à venir</h3>
-      <p>Aucun bracelet disponible ${brGender!=='tous' ? 'pour '+brGender+' ' : ''}pour le moment.<br>Revenez bientôt !</p>
-    </div>`;
-    return;
-  }
-
-  const depthClasses = ['depth-0','depth-1'];
-  const count = Math.min(2, brList.length);
-  for (let d = 0; d < count; d++) {
-    const idx  = (brIndex + d) % brList.length;
-    const card = document.createElement('div');
-    card.className = 'br-card ' + depthClasses[d];
-    card.dataset.pidx = idx;
-    card.innerHTML = braceletSlideHTML(brList[idx], idx);
-    stage.appendChild(card);
-  }
-}
-
-function updateBrCounter() {
-  const el = document.getElementById('brCounter');
-  if (el) el.textContent = brList.length ? `${brIndex+1} / ${brList.length}` : '0 / 0';
-}
-
-function switchBrColor(dot, idx, colorIdx) {
-  const p = brList[idx];
-  if (!p || !p.couleurs) return;
-  const c = p.couleurs[colorIdx];
-  const img = document.getElementById('brimg-' + idx);
-  if (img && c.image) {
-    swapImgSmooth(img, thumbUrl(c.image, 1300, 90));
-  }
-  dot.closest('.cf-colors').querySelectorAll('.cf-color-dot').forEach((d,i) => d.classList.toggle('active', i===colorIdx));
-}
-
-function goBracelet(dir) {
-  if (brAnimating || brList.length < 2) return;
-  brAnimating = true;
-  const stage = document.getElementById('brStage');
-  const front = stage.querySelector('.depth-0');
-  const back  = stage.querySelector('.depth-1');
-
-  if (dir > 0) {
-    const newIdx = (brIndex + 2) % brList.length;
-    const enter = document.createElement('div');
-    enter.className = 'br-card depth-exit';
-    enter.dataset.pidx = newIdx;
-    enter.innerHTML = braceletSlideHTML(brList[newIdx], newIdx);
-    stage.appendChild(enter);
-
-    requestAnimationFrame(() => {
-      if (front) { front.classList.remove('depth-0'); front.classList.add('depth-exit'); }
-      if (back)  { back.classList.remove('depth-1');  back.classList.add('depth-0'); }
-      enter.classList.remove('depth-exit'); enter.classList.add('depth-1');
-    });
-
-    setTimeout(() => {
-      if (front && front.parentNode) front.remove();
-      brIndex = (brIndex + 1) % brList.length;
-      brAnimating = false;
-      updateBrCounter();
-    }, 700);
-
-  } else {
-    const newIdx = (brIndex - 1 + brList.length) % brList.length;
-    const enter = document.createElement('div');
-    enter.className = 'br-card depth-enter-front';
-    enter.dataset.pidx = newIdx;
-    enter.innerHTML = braceletSlideHTML(brList[newIdx], newIdx);
-    stage.appendChild(enter);
-
-    requestAnimationFrame(() => {
-      if (back)  { back.classList.remove('depth-1');  back.classList.add('depth-exit'); }
-      if (front) { front.classList.remove('depth-0'); front.classList.add('depth-1'); }
-      enter.classList.remove('depth-enter-front'); enter.classList.add('depth-0');
-    });
-
-    setTimeout(() => {
-      if (back && back.parentNode) back.remove();
-      brIndex = (brIndex - 1 + brList.length) % brList.length;
-      brAnimating = false;
-      updateBrCounter();
-    }, 700);
-  }
-}
-
-function bindBraceletTouch() {
-  const stage = document.getElementById('brStage');
-  let sx = 0, sy = 0, active = false;
-
-  stage.addEventListener('touchstart', e => {
-    if (e.touches.length !== 1) return;
-    sx = e.touches[0].clientX; sy = e.touches[0].clientY; active = true;
-  }, {passive:true});
-
-  stage.addEventListener('touchend', e => {
-    if (!active) return; active = false;
-    const dx = e.changedTouches[0].clientX - sx;
-    const dy = e.changedTouches[0].clientY - sy;
-    if (Math.abs(dx) < 42 && Math.abs(dy) < 42) return;
-    if (Math.abs(dy) >= Math.abs(dx)) {
-      if (dy < -42) goBracelet(1); else if (dy > 42) goBracelet(-1);
-    } else {
-      if (dx < -42) goBracelet(1); else if (dx > 42) goBracelet(-1);
-    }
-  }, {passive:true});
-
-  let mDown = false, mStartY = 0;
-  stage.addEventListener('mousedown', e => { mDown = true; mStartY = e.clientY; });
-  window.addEventListener('mouseup', e => {
-    if (!mDown) return; mDown = false;
-    const dy = e.clientY - mStartY;
-    if (dy < -42) goBracelet(1); else if (dy > 42) goBracelet(-1);
-  });
-
-  stage.addEventListener('wheel', e => {
-    if (brAnimating) return;
-    if (e.deltaY > 24) goBracelet(1); else if (e.deltaY < -24) goBracelet(-1);
-  }, {passive:true});
-}
-
-document.addEventListener('keydown', e => {
-  if (!document.getElementById('braceletsFeed').classList.contains('open')) return;
-  if (e.key === 'Escape') closeBraceletsFeed();
-  if (e.key === 'ArrowUp'   || e.key === 'ArrowRight') goBracelet(1);
-  if (e.key === 'ArrowDown' || e.key === 'ArrowLeft')  goBracelet(-1);
-});
-
-function openOffres() {
-  hideAll();
-  document.getElementById('page-offre').style.display = 'block';
-  window.scrollTo(0, 0);
-}
 function setGender(btn) {
   document.querySelectorAll('.g-tab').forEach(t => t.classList.remove('active'));
   btn.classList.add('active');
@@ -2720,7 +2279,7 @@ function getImages(p) {
 }
 
 /* ============================================================
-   CARTE PRODUIT — fonction commune (NOUVEAU)
+   CARTE PRODUIT
    ============================================================ */
 function renderProdCardHTML(p, i, eagerLimit){
   const eager = i < (eagerLimit || 6);
@@ -2729,7 +2288,7 @@ function renderProdCardHTML(p, i, eagerLimit){
 
   const colorDots = colors.length ? `
     <div class="color-section">
-      <div class="color-label">Couleurs</div>
+      <div class="color-label">${colors.length===1 && colors[0].nom ? h(colors[0].nom) : 'Couleurs'}</div>
       <div class="color-swatches">
         ${colors.map((c,ci) => `
           <div class="color-swatch${ci===0?' active':''}"
@@ -2756,7 +2315,7 @@ function renderProdCardHTML(p, i, eagerLimit){
     <div class="prod-img-zone${neutralBg}">
       ${imgZoneHTML}
       <div class="sunburst-overlay${neutralBg}" id="sburst-${h(p.id)}"></div>
-      ${coeurBadgeHtml(p.id)}
+      ${coeurBadgeHtml(p.baseId || p.id)}
       <div class="card-hint-3d">👆 Toucher : agrandir · 3 taps : ❤️</div>
     </div>
     <div class="prod-body">
@@ -2776,7 +2335,7 @@ function renderProducts() {
   const grid = document.getElementById('prodGrid');
   let list = allProducts.filter(p => p.categorie === currentCat);
   if (currentGender !== 'tous') list = list.filter(p => p.genre === currentGender);
-  list = applySort(list);
+  list = expandVariants(applySort(list));
   currentList = list;
 
   if (!list.length) {
@@ -2880,7 +2439,6 @@ function openModal(idx) {
   goToSlide(idx, false);
   document.getElementById('prodModal').classList.add('open');
   document.body.style.overflow = 'hidden';
-    // Précharge discrètement toutes les variantes de couleur en arrière-plan
   currentList.forEach(p => {
     (p.couleurs || []).forEach(c => {
       if (c.image) preloadImage(thumbUrl(c.image, 1400, 90));
@@ -3056,15 +2614,15 @@ document.addEventListener('keydown', e => {
 });
 
 /* ============================================================
-   PARTAGE PRODUIT (NOUVEAU)
+   PARTAGE PRODUIT
    ============================================================ */
 async function shareProduct(id){
-  const p = allProducts.find(x => x.id === id);
+  const p = findProduct(id);
   if (!p) return;
   const text = `${p.nom} — ${fmt(p.prix)} FCFA — Khaled Watch`;
-  const url  = location.href.split('#')[0] + '#produit-' + encodeURIComponent(id);
+  const url  = location.href.split('#')[0] + '#produit-' + encodeURIComponent(p.baseId || id);
   if (navigator.share){
-    try { await navigator.share({ title: p.nom, text, url }); } catch(e){ /* annulé par l'utilisateur */ }
+    try { await navigator.share({ title: p.nom, text, url }); } catch(e){ }
   } else {
     try {
       await navigator.clipboard.writeText(`${text}\n${url}`);
@@ -3079,12 +2637,12 @@ async function shareProduct(id){
    WHATSAPP
    ============================================================ */
 function commander(el, productId) {
-  const p = allProducts.find(x => x.id === productId);
+  const p = findProduct(productId);
   if (!p) return;
   let img = p.image || FALLBACK_IMG;
   let colorName = '';
   if (el && el.closest) {
-    const card = el.closest('.prod-card, .cf-slide, .ch-slide, .br-card, .modal-slide');
+    const card = el.closest('.prod-card, .cf-slide, .ch-slide, .modal-slide');
     if (card && p.couleurs && p.couleurs.length) {
       const activeDot = card.querySelector('.color-swatch.active, .cf-color-dot.active, .cvar-dot.active, .modal-color-thumb.active');
       if (activeDot) {
@@ -3100,12 +2658,6 @@ function commander(el, productId) {
   const msg = `Bonjour Khaled Watch 👋\n\nJe suis intéressé(e) par :\n✦ *${p.nom}*${colorName ? '\n🎨 Coloris : *' + colorName + '*' : ''}\n💰 Prix : ${fmt(p.prix)} FCFA\n\n${img}\n\nPouvez-vous me donner plus d'informations ? Merci !`;
   window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`, '_blank');
 }
-/* ============================================================
-   OFFRES
-   ============================================================ */
-function choixStream(el, nom) { document.querySelectorAll('.stream-pill').forEach(p=>p.classList.remove('chosen')); el.classList.add('chosen'); selectedStream=nom; document.getElementById('btnStream').textContent=`Réclamer : ${nom} gratuit 1 mois`; }
-function ctaStream() { const s=selectedStream||'un abonnement streaming'; const msg=`Bonjour Khaled Watch 👋\n\nJ'ai acheté 3 produits et je souhaite réclamer :\n🎁 *${s} gratuit 1 mois*\n\nMerci !`; window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`,'_blank'); }
-function ctaOffre(type) { const msg=`Bonjour Khaled Watch 👋\n\nJe souhaite profiter de l'offre : *${type}*\n\nMerci !`; window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`,'_blank'); }
 
 /* ============================================================
    UTILS
@@ -3131,10 +2683,7 @@ function thumbUrl(url, width, quality) {
     return url;
   }
 }
-/* ============================================================
-   CACHE + PRÉCHARGEMENT D'IMAGES — évite l'attente au changement
-   de couleur/variante (modal, colliers, chaînes, bracelets)
-   ============================================================ */
+
 const imgPreloadCache = new Map();
 
 function preloadImage(url) {
@@ -3142,35 +2691,27 @@ function preloadImage(url) {
   const p = new Promise((resolve) => {
     const im = new Image();
     im.onload = () => resolve(url);
-    im.onerror = () => resolve(url); // on continue même en cas d'erreur
+    im.onerror = () => resolve(url);
     im.src = url;
   });
   imgPreloadCache.set(url, p);
   return p;
 }
 
-// Change la source d'un <img> avec préchargement, cache, et transition fluide.
-// Si l'image est déjà en cache navigateur, le changement est INSTANTANÉ.
 async function swapImgSmooth(imgEl, newSrc) {
   if (!imgEl || !newSrc) return;
   const cached = imgPreloadCache.has(newSrc);
   if (!cached) {
-    imgEl.style.opacity = '0.4'; // léger effet visuel pendant le chargement, pas de blanc total
+    imgEl.style.opacity = '0.4';
   }
   await preloadImage(newSrc);
   imgEl.src = newSrc;
   imgEl.style.opacity = '1';
 }
-/* ============================================================
-   SUNBURST — désactivé pour la performance
-   (le halo lumineux au survol/toucher des cartes est coupé
-   via CSS : ".sunburst-overlay{display:none!important}")
-   ============================================================ */
-function initSunburst() { /* désactivé pour la performance */ }
-
+function initSunburst() { }
 
 /* ============================================================
-   RECHERCHE (recherche floue ajoutée — tolère les fautes de frappe)
+   RECHERCHE
    ============================================================ */
 let searchQuery  = '';
 let searchTimer  = null;
@@ -3234,8 +2775,6 @@ var lastPageBeforeSearch = null;
 function saveCurrentPage() {
   if (document.getElementById('page-cat').style.display !== 'none') {
     lastPageBeforeSearch = 'cat';
-  } else if (document.getElementById('page-offre').style.display !== 'none') {
-    lastPageBeforeSearch = 'offre';
   } else {
     lastPageBeforeSearch = 'home';
   }
@@ -3246,8 +2785,6 @@ function restoreLastPage() {
   if (lastPageBeforeSearch === 'cat') {
     document.getElementById('page-cat').style.display = 'block';
     renderProducts();
-  } else if (lastPageBeforeSearch === 'offre') {
-    document.getElementById('page-offre').style.display = 'block';
   } else {
     document.getElementById('page-home').style.display = 'block';
     var nh = document.getElementById('nav-home');
@@ -3310,6 +2847,7 @@ function renderSearchResults(list, q) {
     return;
   }
 
+  list = expandVariants(list);
   currentList = list;
 
   grid.innerHTML = list.map((p, i) => renderProdCardHTML(p, i, 6)).join('');
@@ -3344,8 +2882,7 @@ function clearSearch() {
 }
 
 /* ============================================================
-   AVIS CLIENTS — étoiles + commentaires (NOUVEAU : stockage
-   partagé via Worker/KV au lieu de localStorage)
+   AVIS CLIENTS
    ============================================================ */
 let avisSelectedStars = 0;
 
@@ -3481,9 +3018,7 @@ function goToAvisFromToast(){
 }
 
 /* ============================================================
-   COUPS DE CŒUR — triple-tap sur un produit pour l'aimer
-   Le total affiché est désormais PARTAGÉ entre tous les clients
-   (via le Worker), le "1 like par appareil" reste en localStorage.
+   COUPS DE CŒUR
    ============================================================ */
 const COEUR_MINE_KEY = 'kw-reactions-mine';
 const COEUR_TAP_WINDOW = 400;
@@ -3511,7 +3046,7 @@ function coeurBadgeHtml(pid){
 }
 
 async function triggerCoeurByPid(pid, badgeEl){
-  const card = badgeEl.closest('.prod-card, .cf-slide, .ch-slide, .br-card') || badgeEl;
+  const card = badgeEl.closest('.prod-card, .cf-slide, .ch-slide') || badgeEl;
   await triggerCoeur(card, pid);
 }
 function updateCoeurBadge(pid){
@@ -3537,11 +3072,8 @@ function updateAllCoeurBadges(){
 }
 
 function handleProductTap(card, pid, idx){
-  // Ouverture INSTANTANÉE — plus aucun délai artificiel
   openModal(idx);
 }
-
-  
 
 async function triggerCoeur(card, pid){
   const mine = getCoeurMine();
@@ -3566,7 +3098,7 @@ async function triggerCoeur(card, pid){
       method: 'POST', headers: {'Content-Type':'application/json'},
       body: JSON.stringify({ pid })
     });
-  } catch(e) { /* déjà affiché côté client, on ne bloque pas l'utilisateur */ }
+  } catch(e) { }
 }
 
 function flashCoeur(zone, already){
@@ -3661,7 +3193,7 @@ fetchSharedData().then(() => { renderAvisList(); updateAllCoeurBadges(); });
 initAvisToast();
 
 /* ============================================================
-   DEL — Assistante Style (guide d'achat intelligent)
+   DEL — Assistante Style
    ============================================================ */
 let delState = { genre:null, cart:[], greeted:false, pendingCat:null, pendingMood:null, pendingBudget:null, history:[] };
 const DEL_COMPLIMENTS = ["Vous avez vraiment du goût ✨","Excellent choix, ça va vous aller à merveille !","J'adore cette sélection 💛","Ça, c'est du style !","Un très bel accessoire, bon choix !"];
@@ -3669,9 +3201,7 @@ const DEL_CAT_KEYWORDS = {
   'Montres': ['montre','montres'],
   'Montres Luxueuses': ['luxe','luxueuse','luxueuses','haut de gamme','prestige'],
   'Chaînes': ['chaine','chaîne','chaines','chaînes'],
-  'Bracelets': ['bracelet','bracelets','gourmette'],
   'Colliers': ['collier','colliers','pendentif'],
-  'Bagues': ['bague','bagues','alliance'],
   'Autres': ['accessoire','accessoires']
 };
 const DEL_MOOD_KEYWORDS = {
@@ -3822,7 +3352,6 @@ function delRenderAiProducts(ids){
   delScrollBottom();
 }
 
-
 async function delResumeAfterGenre(){
   const cat = delState.pendingCat, mood = delState.pendingMood, budget = delState.pendingBudget;
   delState.pendingCat=null; delState.pendingMood=null; delState.pendingBudget=null;
@@ -3839,7 +3368,7 @@ async function delResumeAfterGenre(){
 
 async function delAskBijouType(mood, budget){
   delState.pendingMood = mood; delState.pendingBudget = budget;
-  await delBotSay("Chaîne, bracelet, collier ou bague — lequel vous ferait plaisir ?");
+  await delBotSay("Chaîne ou collier — lequel vous ferait plaisir ?");
 }
 
 function delFilterAndSort(cat, mood, budget){
@@ -3911,20 +3440,8 @@ function delGoToProduct(id){
     if (!chTouchBound) { bindChainTouch(); chTouchBound = true; }
     return;
   }
-  if (cat === 'Bracelets'){
-    brGender = 'tous';
-    document.querySelectorAll('#brGenderTabs .cf-g-tab').forEach(t=>t.classList.toggle('active', t.dataset.g==='tous'));
-    document.getElementById('braceletsFeed').classList.add('open');
-    document.body.style.overflow = 'hidden';
-    spawnBubbles('brBubbles', 18);
-    buildBraceletList();
-    const idx = brList.findIndex(x=>x.id===id);
-    initBraceletStage(idx>=0?idx:0);
-    if (!brTouchBound) { bindBraceletTouch(); brTouchBound = true; }
-    return;
-  }
   openCat(cat);
-  const idx = currentList.findIndex(x=>x.id===id);
+  const idx = currentList.findIndex(x=>x.id===id || x.baseId===id);
   openModal(idx>=0?idx:0);
 }
 
