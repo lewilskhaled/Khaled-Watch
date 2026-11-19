@@ -714,7 +714,7 @@
     "prix": 13000,
     "categorie": "Chaînes",
     "genre": "Homme",
-    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783484780481-kfcfm7-Chaine-elegant-principal.png",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783484780579-wis6gr-Chaine-elegant-Argente-pierre-marron.png",
     "description": "La pièce d'exception , pas très courant",
     "img_gauche": "",
     "img_droit": "",
@@ -724,16 +724,7 @@
     "moods": [],
     "flash_fin": "",
     "flash_reduction": 0,
-    "couleurs": [
-      {
-        "nom": "Argenté pierre marron",
-        "hex": "#b8b8b7",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783484780579-wis6gr-Chaine-elegant-Argente-pierre-marron.png",
-        "img_gauche": "",
-        "img_droit": "",
-        "img_dos": ""
-      }
-    ],
+    "couleurs": [],
     "createdAt": "2026-07-08T04:26:17.511Z"
   },
   {
