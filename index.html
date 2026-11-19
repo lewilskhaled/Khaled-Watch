@@ -468,37 +468,37 @@ img.prod-img.loaded{opacity:1;}
 #chainesFeed.open{display:flex;}
 .ch-stage{
   flex:1;position:relative;overflow:hidden;
-  perspective:1500px;-webkit-perspective:1500px;perspective-origin:50% 38%;
   background:radial-gradient(ellipse at 50% 20%, #211d16 0%, #0a0806 74%);
 }
-/* Pile 3D : chaque produit est derrière le précédent, légèrement plus haut et plus petit */
 .ch-slide{position:absolute;inset:0;width:100%;height:100%;}
+/* Carrousel circulaire : les produits sont posés sur un cercle dont le centre est dans le coin gauche */
 .ch-card{
-  position:absolute;inset:0;width:100%;height:100%;
-  --k:0;
-  transform-origin:50% 100%;
-  transform:translate3d(0,calc(var(--k) * -58px),calc(var(--k) * -120px));
-  opacity:calc(1 - var(--k) * .2);
-  filter:brightness(calc(1 - var(--k) * .14));
-  transition:transform .65s cubic-bezier(.22,.8,.3,1),opacity .65s ease,filter .65s ease;
+  position:absolute;left:var(--px,0px);top:var(--py,0px);
+  width:var(--cw,100%);height:var(--chh,100%);
+  transform-origin:0 0;
+  transition:transform .7s cubic-bezier(.4,0,.2,1),opacity .7s ease,filter .7s ease;
   will-change:transform,opacity;
-  backface-visibility:hidden;-webkit-backface-visibility:hidden;
   pointer-events:none;
 }
-.ch-card.far{opacity:0;}
-/* Le produit de devant s'envole vers le haut puis va se placer tout au fond de la pile */
-@keyframes chFlyUp{
-  0%  {transform:translate3d(0,0,0) rotateX(0deg) scale(1);opacity:1;filter:brightness(1);}
-  38% {transform:translate3d(0,-64%,90px) rotateX(16deg) scale(1.03);opacity:1;filter:brightness(1.05);}
-  68% {transform:translate3d(0,-40%,-380px) rotateX(8deg) scale(1);opacity:.9;}
-  100%{transform:translate3d(0,calc(var(--kb) * -58px),calc(var(--kb) * -120px)) rotateX(0deg) scale(1);opacity:var(--ob);filter:brightness(var(--bb));}
+.ch-dial{
+  position:absolute;z-index:1;pointer-events:none;
+  left:calc(var(--px,0px) - var(--R,0px));top:calc(var(--py,0px) - var(--R,0px));
+  width:calc(var(--R,0px) * 2);height:calc(var(--R,0px) * 2);border-radius:50%;
+  border:1px solid rgba(201,168,76,.30);
+  box-shadow:0 0 46px rgba(201,168,76,.10),inset 0 0 46px rgba(201,168,76,.07);
+  transition:transform .7s cubic-bezier(.4,0,.2,1);
 }
-/* Swipe inverse : le dernier produit revient du fond jusqu'au premier plan */
-@keyframes chFlyDown{
-  0%  {transform:translate3d(0,calc(var(--kb) * -58px),calc(var(--kb) * -120px)) rotateX(0deg) scale(1);opacity:var(--ob);filter:brightness(var(--bb));}
-  32% {transform:translate3d(0,-40%,-380px) rotateX(8deg) scale(1);opacity:.9;}
-  62% {transform:translate3d(0,-64%,90px) rotateX(16deg) scale(1.03);opacity:1;filter:brightness(1.05);}
-  100%{transform:translate3d(0,0,0) rotateX(0deg) scale(1);opacity:1;filter:brightness(1);}
+.ch-dial::before{
+  content:'';position:absolute;inset:0;border-radius:50%;
+  background:repeating-conic-gradient(from 89.4deg,rgba(232,201,122,.85) 0deg 1.2deg,transparent 1.2deg 60deg);
+  -webkit-mask:radial-gradient(circle closest-side,transparent calc(100% - 11px),#000 calc(100% - 10px),#000 100%,transparent 100%);
+          mask:radial-gradient(circle closest-side,transparent calc(100% - 11px),#000 calc(100% - 10px),#000 100%,transparent 100%);
+}
+.ch-hub{
+  position:absolute;z-index:2;left:var(--px,0px);top:var(--py,0px);
+  width:11px;height:11px;margin:-5px 0 0 -5px;border-radius:50%;pointer-events:none;
+  background:radial-gradient(circle,#fff8dd 0%,#E8C97A 45%,#8B6914 100%);
+  box-shadow:0 0 4px 1px rgba(255,248,221,.9),0 0 16px rgba(201,168,76,.85);
 }
 .ch-info-layer{
   position:absolute;inset:0;z-index:500;pointer-events:none;
@@ -2157,8 +2157,11 @@ function buildChainList() {
   chList = list;
 }
 
-const CH_STEP_Y = 58, CH_STEP_Z = 120, CH_MAXK = 4;   // doit rester identique au CSS (.ch-card)
-const CH_DUR = 720;
+const CH_STEP = 60;     // angle entre deux produits (comme les heures d'une horloge)
+const CH_DUR  = 700;
+let chCards = [];       // [{el, pos}]  pos = position sur le cercle (0 = devant, +1 = suivant, -1 = précédent)
+let chRot = 0;          // rotation cumulée du cadran
+let chR = 0;            // rayon du cercle (px)
 
 function chainImgHTML(p, idx) {
   const colors  = p.couleurs && p.couleurs.length ? p.couleurs : [];
@@ -2191,29 +2194,65 @@ function chainInfoHTML(p, idx) {
     <div class="cf-swipe-hint">↑ Glissez pour faire défiler</div>`;
 }
 
-/* place une carte à la profondeur k (0 = devant) */
-function chPlace(card, k) {
-  card.style.setProperty('--k', Math.min(k, CH_MAXK));
-  card.classList.toggle('far', k > CH_MAXK - 1);
-  card.style.zIndex = String(100 - k);
+
+/* géométrie : centre du cercle collé au bord gauche, le produit actif au milieu de l'écran */
+function chLayout() {
+  const stage = document.getElementById('chStage');
+  const W = stage.clientWidth, H = stage.clientHeight;
+  chR = Math.min(W / 2, H * 0.46);
+  stage.style.setProperty('--px', (W / 2 - chR) + 'px');
+  stage.style.setProperty('--py', (H * 0.46) + 'px');
+  stage.style.setProperty('--R',  chR + 'px');
+  stage.style.setProperty('--cw', W + 'px');
+  stage.style.setProperty('--chh', H + 'px');
+}
+
+function chApply(c, forceHidden) {
+  const n  = chList.length;
+  const ap = Math.abs(c.pos);
+  const a  = c.pos * CH_STEP;
+  const vis = ap <= Math.min(2, Math.floor(n / 2));
+  const k  = Math.min(ap, 2);
+  const sc = [1, .52, .36][k];
+  const op = (vis && !forceHidden) ? [1, .8, .45][k] : 0;
+  const br = [1, .82, .64][k];
+  c.el.style.transform = `rotate(${a}deg) translateX(${chR}px) rotate(${-a}deg) translate(-50%,-50%) scale(${sc})`;
+  c.el.style.opacity = op;
+  c.el.style.filter = `brightness(${br})`;
+  c.el.style.zIndex = String(100 - ap);
+}
+
+function chDial() {
+  const d = document.getElementById('chDial');
+  if (d) d.style.transform = `rotate(${chRot}deg)`;
 }
 
 function initChainStage(startIdx) {
   const stage = document.getElementById('chStage');
   chIndex = startIdx || 0;
+  chRot = 0;
   updateChCounter();
   if (!chList.length) {
+    chCards = [];
     stage.innerHTML = `<div class="ch-slide current"><div class="cf-empty">
       <h3>✦ Collection à venir</h3>
       <p>Aucune chaîne disponible ${chGender!=='tous' ? 'pour '+chGender+' ' : ''}pour le moment.<br>Revenez bientôt !</p>
     </div></div>`;
     return;
   }
+  stage.innerHTML = '<div class="ch-dial" id="chDial"></div><div class="ch-hub"></div>'
+    + chList.map((p, i) => `<div class="ch-card" data-i="${i}">${chainImgHTML(p, i)}</div>`).join('')
+    + `<div class="ch-slide ch-info-layer" id="chInfo">${chainInfoHTML(chList[chIndex], chIndex)}</div>`;
+  chLayout();
   const n = chList.length;
-  stage.innerHTML = chList.map((p, i) =>
-    `<div class="ch-card" data-i="${i}">${chainImgHTML(p, i)}</div>`
-  ).join('') + `<div class="ch-slide ch-info-layer" id="chInfo">${chainInfoHTML(chList[chIndex], chIndex)}</div>`;
-  stage.querySelectorAll('.ch-card').forEach((card, i) => chPlace(card, (i - chIndex + n) % n));
+  chCards = Array.from(stage.querySelectorAll('.ch-card')).map((el, i) => {
+    let pos = i - chIndex;
+    if (Math.abs(pos) > Math.floor(n / 2)) pos -= n * Math.round(pos / n);
+    return { el, pos };
+  });
+  chCards.forEach(c => { c.el.style.transition = 'none'; chApply(c); });
+  void stage.offsetWidth;
+  chCards.forEach(c => { c.el.style.transition = ''; });
 }
 
 function updateChCounter() {
@@ -2235,34 +2274,15 @@ function goChain(dir) {
   if (chAnimating || chList.length < 2) return;
   chAnimating = true;
   const n = chList.length;
-  const stage = document.getElementById('chStage');
-  const cards = Array.from(stage.querySelectorAll('.ch-card'));
-  const oldIndex = chIndex;
   const newIndex = (chIndex + dir + n) % n;
   chIndex = newIndex;
 
-  // la carte qui vole : celle de devant (swipe vers le haut) ou celle du fond (swipe vers le bas)
-  const mover = cards[dir > 0 ? oldIndex : newIndex];
-  const kb = Math.min(n - 1, CH_MAXK);
-  mover.style.transition = 'none';
-  mover.style.setProperty('--kb', kb);
-  mover.style.setProperty('--ob', (n - 1 > CH_MAXK - 1) ? 0 : (1 - kb * .2));
-  mover.style.setProperty('--bb', 1 - kb * .14);
-  mover.style.zIndex = '300';
+  // tout le cercle tourne dans le sens du swipe (haut = produit suivant, bas = produit précédent)
+  chRot -= dir * CH_STEP;
+  chDial();
+  chCards.forEach(c => { c.pos -= dir; chApply(c); });
 
-  // toutes les autres avancent (ou reculent) d'un cran dans la pile
-  cards.forEach((card, i) => {
-    if (card === mover) return;
-    chPlace(card, (i - newIndex + n) % n);
-  });
-  // état final de la carte qui vole
-  const finalK = dir > 0 ? n - 1 : 0;
-  mover.style.setProperty('--k', Math.min(finalK, CH_MAXK));
-  mover.classList.toggle('far', finalK > CH_MAXK - 1);
-
-  mover.style.animation = (dir > 0 ? 'chFlyUp' : 'chFlyDown') + ' ' + CH_DUR + 'ms cubic-bezier(.5,0,.25,1) forwards';
-
-  // infos (nom, prix, WhatsApp) : on masque puis on affiche celles du nouveau produit
+  // infos (nom, prix, WhatsApp) : masquées puis remplacées par celles du nouveau produit
   const info = document.getElementById('chInfo');
   if (info) info.classList.add('swap');
   setTimeout(() => {
@@ -2271,18 +2291,36 @@ function goChain(dir) {
       info.classList.remove('swap');
     }
     updateChCounter();
-    // le produit qui part derrière passe sous les autres au milieu de son vol
-    if (dir > 0) mover.style.zIndex = String(100 - finalK);
-  }, CH_DUR * 0.5);
+  }, CH_DUR * 0.45);
 
+  // fin de rotation : les produits sortis du cercle visible repassent de l'autre côté, sans qu'on le voie
   setTimeout(() => {
-    mover.style.animation = '';
-    mover.style.zIndex = String(100 - finalK);
-    void mover.offsetWidth;
-    mover.style.transition = '';
+    const half = Math.floor(n / 2);
+    const moved = [];
+    chCards.forEach(c => {
+      if (Math.abs(c.pos) > half) {
+        c.pos -= n * Math.round(c.pos / n);
+        c.el.style.transition = 'none';
+        chApply(c, true);
+        moved.push(c);
+      }
+    });
+    if (moved.length) {
+      void document.getElementById('chStage').offsetWidth;
+      moved.forEach(c => { c.el.style.transition = ''; chApply(c); });
+    }
     chAnimating = false;
   }, CH_DUR + 30);
 }
+
+window.addEventListener('resize', () => {
+  const feed = document.getElementById('chainesFeed');
+  if (!feed || !feed.classList.contains('open') || !chCards.length) return;
+  chLayout();
+  chCards.forEach(c => { c.el.style.transition = 'none'; chApply(c); });
+  void feed.offsetWidth;
+  chCards.forEach(c => { c.el.style.transition = ''; });
+});
 
 function bindChainTouch() {
   const stage = document.getElementById('chStage');
