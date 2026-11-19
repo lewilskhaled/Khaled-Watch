@@ -639,10 +639,10 @@
   {
     "id": "1783483716932",
     "nom": "Chaine élégance",
-    "prix": 15000,
+    "prix": 10000,
     "categorie": "Chaînes",
     "genre": "Homme",
-    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783483721421-rd6902-Chaine-elegance-Argente-pierre-bleu.png",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783483721348-ywvwpp-Chaine-elegance-principal.png",
     "description": "Chaine luxueuse . Fais toi remarqué grâce a cette merveille",
     "img_gauche": "",
     "img_droit": "",
@@ -652,7 +652,24 @@
     "moods": [],
     "flash_fin": "",
     "flash_reduction": 0,
-    "couleurs": [],
+    "couleurs": [
+      {
+        "nom": "Argenté pierre bleu",
+        "hex": "#b8b8b7",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783483721359-i2ao6z-Chaine-elegance-Argente-pierre-bleu.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Argenté pierre bleu",
+        "hex": "#b8b8b7",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783483721421-rd6902-Chaine-elegance-Argente-pierre-bleu.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      }
+    ],
     "createdAt": "2026-07-08T04:08:36.932Z"
   },
   {
@@ -766,10 +783,10 @@
   {
     "id": "1783488199334",
     "nom": "Chaine élégant",
-    "prix": 12000,
+    "prix": 15000,
     "categorie": "Chaînes",
     "genre": "Homme",
-    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783488201442-hlycij-Chaine-elegant-principal.png",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783488201494-dtyvpn-Chaine-elegant-Dore-marron.png",
     "description": "Elevez vos standards avec cette pépite",
     "img_gauche": "",
     "img_droit": "",
@@ -780,14 +797,6 @@
     "flash_fin": "",
     "flash_reduction": 0,
     "couleurs": [
-      {
-        "nom": "Doré marron",
-        "hex": "#cdbc51",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783488201447-0t7ix8-Chaine-elegant-Dore-marron.png",
-        "img_gauche": "",
-        "img_droit": "",
-        "img_dos": ""
-      },
       {
         "nom": "Doré marron",
         "hex": "#cdbc51",
