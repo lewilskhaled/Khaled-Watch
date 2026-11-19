@@ -1556,5 +1556,51 @@
     "flash_reduction": 0,
     "couleurs": [],
     "createdAt": "2026-11-19T16:59:10.808Z"
+  },
+  {
+    "id": "1795108116378",
+    "nom": "Cartier santos",
+    "prix": 20000,
+    "categorie": "Montres",
+    "genre": "Unisexe",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1795108118639-ryxqmc-Cartier-santos-principal.png",
+    "description": "le luxe",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "or",
+    "is_patron": false,
+    "moods": [
+      "Business"
+    ],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [
+      {
+        "nom": "vert",
+        "hex": "#05481b",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1795108118654-tv67rg-Cartier-santos-vert.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "blanc",
+        "hex": "#d4d4d4",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1795108118678-as9ozb-Cartier-santos-blanc.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Bleu",
+        "hex": "#090764",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1795108118708-prcbqx-Cartier-santos-Bleu.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      }
+    ],
+    "createdAt": "2026-11-19T17:08:36.378Z"
   }
 ]
