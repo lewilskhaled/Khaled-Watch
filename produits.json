@@ -1499,5 +1499,24 @@
       }
     ],
     "createdAt": "2026-11-19T16:28:29.432Z"
+  },
+  {
+    "id": "1795106215267",
+    "nom": "Patek Philippe",
+    "prix": 130000,
+    "categorie": "Montres Luxueuses",
+    "genre": "Unisexe",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1795106218064-ec9odw-Patek-Philippe-principal.png",
+    "description": "Maitrise ton temps, il est précieux",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "argent",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [],
+    "createdAt": "2026-11-19T16:36:55.267Z"
   }
 ]
