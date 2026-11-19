@@ -603,10 +603,10 @@
   {
     "id": "1783483212051",
     "nom": "Chaine élégance",
-    "prix": 10000,
+    "prix": 15000,
     "categorie": "Chaînes",
     "genre": "Homme",
-    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783483215867-direh6-Chaine-elegance-principal.png",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783483215915-a2cro6-Chaine-elegance-Argente-et-pierre-noire.png",
     "description": "le luxe a ton cou, pour ceux qui recherche un style unique et rare",
     "img_gauche": "",
     "img_droit": "",
@@ -616,24 +616,7 @@
     "moods": [],
     "flash_fin": "",
     "flash_reduction": 0,
-    "couleurs": [
-      {
-        "nom": "Argenté et pierre noire",
-        "hex": "#b8b8b7",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783483215875-qnwbb9-Chaine-elegance-Argente-et-pierre-noire.png",
-        "img_gauche": "",
-        "img_droit": "",
-        "img_dos": ""
-      },
-      {
-        "nom": "Argenté et pierre noire",
-        "hex": "#b8b8b7",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783483215915-a2cro6-Chaine-elegance-Argente-et-pierre-noire.png",
-        "img_gauche": "",
-        "img_droit": "",
-        "img_dos": ""
-      }
-    ],
+    "couleurs": [],
     "createdAt": "2026-07-08T04:00:12.051Z"
   },
   {
