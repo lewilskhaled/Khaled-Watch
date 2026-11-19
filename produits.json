@@ -1602,5 +1602,41 @@
       }
     ],
     "createdAt": "2026-11-19T17:08:36.378Z"
+  },
+  {
+    "id": "1795109152521",
+    "nom": "Tissot Chronographe",
+    "prix": 25000,
+    "categorie": "Montres",
+    "genre": "Unisexe",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1795109155328-910fy6-Tissot-Chronographe-principal.png",
+    "description": "",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "argent",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [
+      {
+        "nom": "vert",
+        "hex": "#055737",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1795109155337-ep29hp-Tissot-Chronographe-vert.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Bleu",
+        "hex": "#051957",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1795109155362-06i2e9-Tissot-Chronographe-Bleu.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      }
+    ],
+    "createdAt": "2026-11-19T17:25:52.521Z"
   }
 ]
