@@ -1463,5 +1463,41 @@
       }
     ],
     "createdAt": "2026-11-19T16:14:12.042Z"
+  },
+  {
+    "id": "1795105709432",
+    "nom": "G-shock",
+    "prix": 13000,
+    "categorie": "Montres",
+    "genre": "Unisexe",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1795105711592-tftn63-G-shock-principal.png",
+    "description": "",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "or",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [
+      {
+        "nom": "vert",
+        "hex": "#c0f958",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1795105711604-xdd8hl-G-shock-vert.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "rouge",
+        "hex": "#f95858",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1795105711625-5hz2w4-G-shock-rouge.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      }
+    ],
+    "createdAt": "2026-11-19T16:28:29.432Z"
   }
 ]
