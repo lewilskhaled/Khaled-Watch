@@ -1381,5 +1381,43 @@
       }
     ],
     "createdAt": "2026-09-06T19:34:32.264Z"
+  },
+  {
+    "id": "1795103211294",
+    "nom": "Oméga",
+    "prix": 20000,
+    "categorie": "Montres",
+    "genre": "Homme",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1795103213626-gdp5ng-Omega-principal.png",
+    "description": "",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "argent",
+    "is_patron": false,
+    "moods": [
+      "Gala"
+    ],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [
+      {
+        "nom": "bleu",
+        "hex": "#0c2b73",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1795103213640-lo4grq-Omega-bleu.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "bleu",
+        "hex": "#6275a3",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1795103213669-j9t62h-Omega-bleu.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      }
+    ],
+    "createdAt": "2026-11-19T15:46:51.294Z"
   }
 ]
