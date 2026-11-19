@@ -603,10 +603,10 @@
   {
     "id": "1783483212051",
     "nom": "Chaine élégance",
-    "prix": 15000,
+    "prix": 10000,
     "categorie": "Chaînes",
     "genre": "Homme",
-    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783483215915-a2cro6-Chaine-elegance-Argente-et-pierre-noire.png",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783483215867-direh6-Chaine-elegance-principal.png",
     "description": "le luxe a ton cou, pour ceux qui recherche un style unique et rare",
     "img_gauche": "",
     "img_droit": "",
@@ -616,7 +616,24 @@
     "moods": [],
     "flash_fin": "",
     "flash_reduction": 0,
-    "couleurs": [],
+    "couleurs": [
+      {
+        "nom": "Argenté et pierre noire",
+        "hex": "#b8b8b7",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783483215875-qnwbb9-Chaine-elegance-Argente-et-pierre-noire.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Argenté et pierre noire",
+        "hex": "#b8b8b7",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783483215915-a2cro6-Chaine-elegance-Argente-et-pierre-noire.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      }
+    ],
     "createdAt": "2026-07-08T04:00:12.051Z"
   },
   {
@@ -1045,7 +1062,7 @@
     "prix": 4000,
     "categorie": "Colliers",
     "genre": "Femme",
-    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784308204520-9eiu3h-Collier-hello-kitty-principal.png",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784308204565-kmw75x-Collier-hello-kitty-Argent.png",
     "description": "Si t'aime ce qui brille alors vient chercher",
     "img_gauche": "",
     "img_droit": "",
@@ -1055,24 +1072,7 @@
     "moods": [],
     "flash_fin": "",
     "flash_reduction": 0,
-    "couleurs": [
-      {
-        "nom": "Argent",
-        "hex": "#999794",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784308204532-20t6lg-Collier-hello-kitty-Argent.png",
-        "img_gauche": "",
-        "img_droit": "",
-        "img_dos": ""
-      },
-      {
-        "nom": "Argent",
-        "hex": "#999794",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784308204565-kmw75x-Collier-hello-kitty-Argent.png",
-        "img_gauche": "",
-        "img_droit": "",
-        "img_dos": ""
-      }
-    ],
+    "couleurs": [],
     "createdAt": "2026-07-17T17:10:03.110Z"
   },
   {
