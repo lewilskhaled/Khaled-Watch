@@ -1358,25 +1358,14 @@ body.light-mode .sort-select{background:rgba(255,255,255,.8);color:#8B6914;borde
   <button class="light-toggle-btn" id="lightModeBtn" onclick="toggleLightMode()" aria-label="Mode clair" title="Mode clair">☀️</button>
 </header>
 
-<!-- BARRE DE RECHERCHE GLOBALE -->
+<!-- BOUTON ASSISTANTE (la recherche est maintenant dans l'onglet Montres) -->
 <div class="search-bar-wrap" id="globalSearchWrap">
   <div class="search-bar-flex">
-    <div class="search-input-row">
-      <span class="search-icon">🔍</span>
-      <input class="search-input" id="searchInput" type="search" inputmode="search"
-             autocomplete="off" autocorrect="off" spellcheck="false"
-             placeholder="Rechercher une montre, bijou…"
-             aria-label="Rechercher un produit"
-             oninput="onSearchInput(this.value)"
-             onkeydown="onSearchKeydown(event)">
-      <button class="search-clear" id="searchClear" onclick="clearSearch()" aria-label="Effacer">✕</button>
-    </div>
     <button class="del-launcher" id="delFab" onclick="openDelPanel()">
       <span id="delFabBadge" class="del-fab-badge">1</span>
       🙋🏽‍♀️
     </button>
   </div>
-  <div class="search-underline"></div>
 </div>
 
 <!-- PAGE ACCUEIL -->
@@ -1479,6 +1468,17 @@ body.light-mode .sort-select{background:rgba(255,255,255,.8);color:#8B6914;borde
     <button class="cf-back" onclick="closeColliersFeed()" aria-label="Retour">←</button>
     <div class="cf-title" id="cfTitle">✦ Collier pour Femme</div>
     <div class="cf-counter" id="cfCounter">1 / 1</div>
+  </div>
+  <div class="cf-search" id="cfSearch">
+    <div class="search-input-row">
+      <span class="search-icon">🔍</span>
+      <input class="search-input" id="cfSearchInput" type="search" inputmode="search"
+             autocomplete="off" autocorrect="off" spellcheck="false"
+             placeholder="Rechercher une montre…" aria-label="Rechercher une montre"
+             oninput="onCfSearch(this.value)"
+             onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur();}">
+      <button class="search-clear" id="cfSearchClear" onclick="clearCfSearch()" aria-label="Effacer">✕</button>
+    </div>
   </div>
   <div class="feed-bubbles" id="cfBubbles"></div>
   <div class="cf-scroll" id="cfScroll" onscroll="onCfScroll()"></div>
@@ -1996,8 +1996,31 @@ const CF_CONFIG = {
   'Montres Luxueuses': { title:'✦ Montres Luxe',       badge:'✦ Luxe',    empty:'Aucune montre de luxe disponible pour le moment.' }
 };
 
+let cfQuery = '';
+let cfSearchTimer = null;
+function onCfSearch(val) {
+  cfQuery = (val || '').trim();
+  const c = document.getElementById('cfSearchClear');
+  if (c) c.classList.toggle('visible', cfQuery.length > 0);
+  clearTimeout(cfSearchTimer);
+  cfSearchTimer = setTimeout(function(){
+    const sc = document.getElementById('cfScroll');
+    if (sc) sc.scrollTop = 0;
+    renderColliersFeed();
+  }, 250);
+}
+function clearCfSearch() {
+  const i = document.getElementById('cfSearchInput');
+  if (i) { i.value = ''; i.focus(); }
+  onCfSearch('');
+}
 function openColliersFeed(cat) {
   cfCat = CF_CONFIG[cat] ? cat : 'Colliers';
+  cfQuery = '';
+  (function(){
+    const i = document.getElementById('cfSearchInput'); if (i) i.value = '';
+    const c = document.getElementById('cfSearchClear'); if (c) c.classList.remove('visible');
+  })();
   const t = document.getElementById('cfTitle');
   if (t) t.textContent = CF_CONFIG[cfCat].title;
   const sc = document.getElementById('cfScroll');
@@ -2022,6 +2045,15 @@ function renderColliersFeed() {
   let list = cfCat === 'Colliers'
     ? allProducts.filter(p => p.categorie === 'Colliers' && p.genre === 'Femme')
     : expandVariants(allProducts.filter(p => p.categorie === cfCat));
+  if (cfCat === 'Montres' && cfQuery) {
+    const norm = x => String(x||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+    const words = norm(cfQuery).split(/\s+/).filter(Boolean);
+    list = list.filter(p => {
+      const fields = [norm(p.nom), norm(p.genre), norm(p.marque)]
+        .concat((p.couleurs||[]).map(c => norm(c.nom)));
+      return words.every(w => fields.some(f => typeof fuzzyIncludes === 'function' ? fuzzyIncludes(f, w) : f.includes(w)));
+    });
+  }
   cfList = list;
 
   const scroll = document.getElementById('cfScroll');
@@ -2030,7 +2062,7 @@ function renderColliersFeed() {
   if (!list.length) {
     scroll.innerHTML = `<div class="cf-slide"><div class="cf-empty">
       <h3>✦ Collection à venir</h3>
-      <p>${CF_CONFIG[cfCat].empty}<br>Revenez bientôt !</p>
+      <p>${(cfCat === 'Montres' && cfQuery) ? 'Aucune montre ne correspond à votre recherche.' : CF_CONFIG[cfCat].empty + '<br>Revenez bientôt !'}</p>
     </div></div>`;
     return;
   }
@@ -3691,5 +3723,26 @@ body .home-title,body .home-subtitle,body .home-desc{filter:drop-shadow(0 3px 14
 }
 </style>
 
+
+<style>
+/* ===== Recherche dans l'onglet Montres ===== */
+.cf-search{display:none;position:absolute;left:0;right:0;z-index:7;
+  top:calc(58px + env(safe-area-inset-top,0px));padding:0 1rem;}
+#colliersFeed.montres-lux .cf-search{display:block;}
+#colliersFeed.montres-lux .cf-scroll{padding-top:0;}
+/* bouton assistante seul en haut de l'accueil */
+#globalSearchWrap{background:transparent!important;border-bottom:none!important;
+  backdrop-filter:none!important;-webkit-backdrop-filter:none!important;
+  display:flex;justify-content:flex-end;padding:.5rem 1rem 0;}
+
+/* ===== Vidéo de fond plus visible ===== */
+body #bgOverlay{background:
+  radial-gradient(ellipse at 50% 30%,rgba(0,0,0,0) 0%,rgba(0,0,0,.18) 100%),
+  linear-gradient(180deg,rgba(0,0,0,.10) 0%,rgba(0,0,0,.02) 45%,rgba(0,0,0,.25) 100%)!important;}
+body .cat-card,body .page-cat-header,body .bottom-nav{
+  background:linear-gradient(135deg,rgba(255,255,255,.13) 0%,rgba(255,255,255,.03) 45%,rgba(255,255,255,.08) 100%)!important;
+  -webkit-backdrop-filter:blur(10px) saturate(170%)!important;
+  backdrop-filter:blur(10px) saturate(170%)!important;}
+</style>
 </body>
 </html>
