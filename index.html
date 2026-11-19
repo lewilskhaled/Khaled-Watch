@@ -1489,10 +1489,10 @@ body.light-mode .sort-select{background:rgba(255,255,255,.8);color:#8B6914;borde
 
 <!-- BOTTOM NAV -->
 <nav class="bottom-nav">
-  <button class="nav-item active" id="nav-home" onclick="goHome()"><span class="nav-icon">🏠</span>Accueil</button>
-  <button class="nav-item" onclick="openCat('Montres')"><span class="nav-icon">⌚</span>Montres</button>
-  <button class="nav-item" onclick="openCat('Chaînes')"><span class="nav-icon">⛓</span>Chaîne H.</button>
-  <button class="nav-item" onclick="openCat('Colliers')"><span class="nav-icon">📿</span>Colliers</button>
+  <button class="nav-item active" id="nav-home" data-nav="home" onclick="goHome()"><span class="nav-icon">🏠</span>Accueil</button>
+  <button class="nav-item" data-nav="Montres" onclick="openCat('Montres')"><span class="nav-icon">⌚</span>Montres</button>
+  <button class="nav-item" data-nav="Chaînes" onclick="openCat('Chaînes')"><span class="nav-icon">⛓</span>Chaîne H.</button>
+  <button class="nav-item" data-nav="Colliers" onclick="openCat('Colliers')"><span class="nav-icon">📿</span>Colliers</button>
 </nav>
 
 <a class="wa-float" href="https://wa.me/2290169515730" target="_blank" rel="noopener">
@@ -1870,9 +1870,28 @@ function goHome() {
   document.getElementById('nav-home').classList.add('active');
   window.scrollTo(0, 0);
 }
+function setNavActive(key) {
+  document.querySelectorAll('.bottom-nav .nav-item').forEach(n => n.classList.toggle('active', n.dataset.nav === key));
+}
+function syncNavActive() {
+  const home = document.getElementById('page-home');
+  setNavActive(home && home.style.display !== 'none' ? 'home' : null);
+}
 function openCat(cat) {
-  if (CF_CONFIG[cat]) { openColliersFeed(cat); return; }
-  if (cat === 'Chaînes') { openChainesFeed(); return; }
+  if (CF_CONFIG[cat]) {
+    closeChainesFeed();
+    openColliersFeed(cat);
+    setNavActive(cat === 'Montres' || cat === 'Colliers' ? cat : null);
+    return;
+  }
+  if (cat === 'Chaînes') {
+    closeColliersFeed();
+    openChainesFeed();
+    setNavActive('Chaînes');
+    return;
+  }
+  closeColliersFeed();
+  closeChainesFeed();
   currentCat = cat; currentGender = 'tous';
   currentSort = 'default';
   const sortSel = document.getElementById('sortSelect');
@@ -2021,6 +2040,7 @@ function closeColliersFeed() {
   document.body.style.overflow = '';
   const scroll = document.getElementById('cfScroll');
   if (scroll) scroll.scrollTop = 0;
+  syncNavActive();
 }
 
 function renderColliersFeed() {
@@ -2150,6 +2170,7 @@ function closeChainesFeed() {
   const feed = document.getElementById('chainesFeed');
   if (feed) feed.classList.remove('open');
   document.body.style.overflow = '';
+  syncNavActive();
 }
 
 function buildChainList() {
@@ -3533,6 +3554,7 @@ function delGoToProduct(id){
   const cat = p.categorie;
   if (CF_CONFIG[cat]){
     openColliersFeed(cat);
+    setNavActive(cat === 'Montres' || cat === 'Colliers' ? cat : null);
     requestAnimationFrame(()=>{
       const idx = cfList.findIndex(x=>x.id===id);
       const scroll = document.getElementById('cfScroll');
@@ -3544,6 +3566,7 @@ function delGoToProduct(id){
     document.getElementById('chainesFeed').classList.add('open');
     document.body.style.overflow = 'hidden';
     spawnBubbles('chBubbles', 18);
+    setNavActive('Chaînes');
     buildChainList();
     const idx = chList.findIndex(x=>x.id===id);
     initChainStage(idx>=0?idx:0);
@@ -3806,5 +3829,65 @@ body .cat-card,body .page-cat-header,body .bottom-nav{
   -webkit-backdrop-filter:blur(10px) saturate(170%)!important;
   backdrop-filter:blur(10px) saturate(170%)!important;}
 </style>
+
+<style>
+/* ===== Barre du bas : effet verre (glassmorphism) renforcé ===== */
+body nav.bottom-nav{
+  background:linear-gradient(180deg,rgba(255,255,255,.28) 0%,rgba(255,255,255,.08) 48%,rgba(255,255,255,.17) 100%)!important;
+  -webkit-backdrop-filter:blur(28px) saturate(220%) brightness(1.12)!important;
+  backdrop-filter:blur(28px) saturate(220%) brightness(1.12)!important;
+  border:1px solid rgba(255,255,255,.34)!important;
+  border-bottom:none!important;
+  border-top:1.5px solid rgba(255,255,255,.85)!important;
+  border-radius:26px 26px 0 0!important;
+  box-shadow:
+    0 -12px 38px rgba(0,0,0,.38),
+    inset 0 1.5px 0 rgba(255,255,255,.9),
+    inset 0 -1px 0 rgba(255,255,255,.14),
+    inset 0 0 34px rgba(255,255,255,.12)!important;
+  overflow:hidden;
+}
+/* reflet diagonal qui donne l'aspect vitre */
+body nav.bottom-nav::before{
+  content:'';position:absolute;inset:0;pointer-events:none;border-radius:inherit;
+  background:linear-gradient(115deg,transparent 18%,rgba(255,255,255,.26) 38%,rgba(255,255,255,.05) 54%,transparent 70%);
+  background-size:260% 260%;background-position:120% 0;
+  animation:glassSweep 7s ease-in-out infinite;
+}
+body nav.bottom-nav .nav-item{
+  position:relative;z-index:1;margin:.3rem .22rem;padding:.4rem .2rem .35rem;border-radius:17px;
+  color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.65);
+  transition:color .2s,background .25s,box-shadow .25s;
+}
+body nav.bottom-nav .nav-item.active{
+  color:var(--or-l);
+  background:linear-gradient(135deg,rgba(255,255,255,.34) 0%,rgba(255,255,255,.08) 100%);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.5),inset 0 1.5px 0 rgba(255,255,255,.8),0 6px 18px rgba(0,0,0,.28),0 0 18px rgba(201,168,76,.25);
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+}
+</style>
+
+<style>
+/* ===== Barre du bas toujours visible, même dans les onglets (vues plein écran) ===== */
+body nav.bottom-nav{z-index:9750!important;}
+#colliersFeed,#chainesFeed{
+  bottom:var(--nav-h,66px);
+  --safe-bottom:0px;
+}
+</style>
+<script>
+(function(){
+  function setNavH(){
+    var n=document.querySelector('.bottom-nav');
+    if(!n)return;
+    document.documentElement.style.setProperty('--nav-h',n.offsetHeight+'px');
+  }
+  window.addEventListener('load',setNavH);
+  window.addEventListener('resize',setNavH);
+  window.addEventListener('orientationchange',setNavH);
+  setNavH();
+  setTimeout(setNavH,400);
+})();
+</script>
 </body>
 </html>
