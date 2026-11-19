@@ -988,24 +988,7 @@
     "moods": [],
     "flash_fin": "",
     "flash_reduction": 0,
-    "couleurs": [
-      {
-        "nom": "Argent",
-        "hex": "#999794",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784308204532-20t6lg-Collier-hello-kitty-Argent.png",
-        "img_gauche": "",
-        "img_droit": "",
-        "img_dos": ""
-      },
-      {
-        "nom": "Argent",
-        "hex": "#999794",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784308204565-kmw75x-Collier-hello-kitty-Argent.png",
-        "img_gauche": "",
-        "img_droit": "",
-        "img_dos": ""
-      }
-    ],
+    "couleurs": [],
     "createdAt": "2026-07-17T17:10:03.110Z"
   },
   {
@@ -1130,7 +1113,7 @@
   {
     "id": "1784840855564",
     "nom": "Maurice  lacroix",
-    "prix": 15000,
+    "prix": 10000,
     "categorie": "Montres",
     "genre": "Homme",
     "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1784840859146-18e5n7-Maurice-lacroix-principal.png",
