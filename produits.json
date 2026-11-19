@@ -603,10 +603,10 @@
   {
     "id": "1783483212051",
     "nom": "Chaine élégance",
-    "prix": 13000,
+    "prix": 10000,
     "categorie": "Chaînes",
     "genre": "Homme",
-    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783483215915-a2cro6-Chaine-elegance-Argente-et-pierre-noire.png",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783483215867-direh6-Chaine-elegance-principal.png",
     "description": "le luxe a ton cou, pour ceux qui recherche un style unique et rare",
     "img_gauche": "",
     "img_droit": "",
@@ -616,7 +616,24 @@
     "moods": [],
     "flash_fin": "",
     "flash_reduction": 0,
-    "couleurs": [],
+    "couleurs": [
+      {
+        "nom": "Argenté et pierre noire",
+        "hex": "#b8b8b7",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783483215875-qnwbb9-Chaine-elegance-Argente-et-pierre-noire.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Argenté et pierre noire",
+        "hex": "#b8b8b7",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783483215915-a2cro6-Chaine-elegance-Argente-et-pierre-noire.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      }
+    ],
     "createdAt": "2026-07-08T04:00:12.051Z"
   },
   {
@@ -722,10 +739,10 @@
   {
     "id": "1783487525204",
     "nom": "Chaine élégant",
-    "prix": 12000,
+    "prix": 15000,
     "categorie": "Chaînes",
     "genre": "Homme",
-    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783487527556-2z31nu-Chaine-elegant-principal.png",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783487527604-b1kyid-Chaine-elegant-Dore-pierre-noire.png",
     "description": "Le détail qui sépare vous sépare de l'ordinaire",
     "img_gauche": "",
     "img_droit": "",
@@ -735,24 +752,7 @@
     "moods": [],
     "flash_fin": "",
     "flash_reduction": 0,
-    "couleurs": [
-      {
-        "nom": "Doré pierre noir",
-        "hex": "#cdbc51",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783487527562-ju8gaj-Chaine-elegant-Dore-pierre-noir.png",
-        "img_gauche": "",
-        "img_droit": "",
-        "img_dos": ""
-      },
-      {
-        "nom": "Doré pierre noire",
-        "hex": "#cdbc51",
-        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1783487527604-b1kyid-Chaine-elegant-Dore-pierre-noire.png",
-        "img_gauche": "",
-        "img_droit": "",
-        "img_dos": ""
-      }
-    ],
+    "couleurs": [],
     "createdAt": "2026-07-08T05:12:05.204Z"
   },
   {
