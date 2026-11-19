@@ -1419,5 +1419,49 @@
       }
     ],
     "createdAt": "2026-11-19T15:46:51.294Z"
+  },
+  {
+    "id": "1795104852042",
+    "nom": "RM Ferrari",
+    "prix": 20000,
+    "categorie": "Montres",
+    "genre": "Homme",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1795104854166-nylz03-RM-Ferrari-principal.png",
+    "description": "Bien chic",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "or",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [
+      {
+        "nom": "blanc",
+        "hex": "#dee0e3",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1795104854182-nywgvy-RM-Ferrari-blanc.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Noir",
+        "hex": "#19191a",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1795104854200-i5fho2-RM-Ferrari-Noir.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "bronze",
+        "hex": "#edc9ab",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1795104854219-1g53zn-RM-Ferrari-bronze.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      }
+    ],
+    "createdAt": "2026-11-19T16:14:12.042Z"
   }
 ]
