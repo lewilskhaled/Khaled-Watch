@@ -1352,6 +1352,7 @@ body.light-mode .sort-select{background:rgba(255,255,255,.8);color:#8B6914;borde
 <!-- BOUTON ASSISTANTE (la recherche est maintenant dans l'onglet Montres) -->
 <div class="search-bar-wrap" id="globalSearchWrap">
   <div class="search-bar-flex">
+    <button class="snd-toggle" id="sndBtn" onclick="KWSound.toggle()" aria-label="Activer ou couper le son" title="Son">🔊</button>
     <button class="del-launcher" id="delFab" onclick="openDelPanel()">
       <span id="delFabBadge" class="del-fab-badge">1</span>
       🙋🏽‍♀️
@@ -1990,6 +1991,7 @@ function updateFavorisCount(){
    ============================================================ */
 let cfGender = 'tous';
 let cfList   = [];
+let cfLastIdx = 0;
 let cfCat    = 'Colliers';
 const CF_CONFIG = {
   'Colliers':          { title:'✦ Collier pour Femme', badge:'✦ Collier', empty:'Aucun collier disponible pour le moment.' },
@@ -2006,6 +2008,7 @@ function onCfSearch(val) {
   clearTimeout(cfSearchTimer);
   cfSearchTimer = setTimeout(function(){
     const sc = document.getElementById('cfScroll');
+    cfLastIdx = 0;
     if (sc) sc.scrollTop = 0;
     renderColliersFeed();
   }, 250);
@@ -2025,6 +2028,7 @@ function openColliersFeed(cat) {
   const t = document.getElementById('cfTitle');
   if (t) t.textContent = CF_CONFIG[cfCat].title;
   const sc = document.getElementById('cfScroll');
+  cfLastIdx = 0;
   if (sc) sc.scrollTop = 0;
   const feedEl = document.getElementById('colliersFeed');
   feedEl.classList.toggle('montres-lux', cfCat === 'Montres');
@@ -2039,6 +2043,7 @@ function closeColliersFeed() {
   document.getElementById('colliersFeed').classList.remove('open');
   document.body.style.overflow = '';
   const scroll = document.getElementById('cfScroll');
+  cfLastIdx = 0;
   if (scroll) scroll.scrollTop = 0;
   syncNavActive();
 }
@@ -2138,6 +2143,7 @@ function onCfScroll() {
     const scroll = document.getElementById('cfScroll');
     if (!scroll || !cfList.length) return;
     const idx = Math.round(scroll.scrollTop / scroll.clientHeight);
+    if (idx !== cfLastIdx) { cfLastIdx = idx; if (window.KWSound) KWSound.play('scroll'); }
     updateCfCounter(Math.min(idx+1, cfList.length), cfList.length);
   });
 }
@@ -2294,6 +2300,7 @@ function switchChColor(dot, idx, colorIdx) {
 function goChain(dir) {
   if (chAnimating || chList.length < 2) return;
   chAnimating = true;
+  if (window.KWSound) KWSound.play('swipe');
   const n = chList.length;
   const newIndex = (chIndex + dir + n) % n;
   chIndex = newIndex;
@@ -3887,6 +3894,123 @@ body nav.bottom-nav{z-index:9750!important;}
   window.addEventListener('orientationchange',setNavH);
   setNavH();
   setTimeout(setNavH,400);
+})();
+</script>
+
+<style>
+.snd-toggle{
+  position:relative;flex-shrink:0;width:42px;height:42px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-size:1.05rem;cursor:pointer;
+  -webkit-tap-highlight-color:transparent;color:#fff;
+  background:linear-gradient(135deg,rgba(255,255,255,.22),rgba(255,255,255,.06));
+  border:1px solid rgba(255,255,255,.4);
+  -webkit-backdrop-filter:blur(14px) saturate(190%);backdrop-filter:blur(14px) saturate(190%);
+  box-shadow:0 4px 16px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.7);
+}
+.snd-toggle:active{transform:scale(.92);}
+.snd-toggle.off{opacity:.65;}
+</style>
+<script>
+/* ===== Effets sonores (générés par le navigateur, aucun fichier audio) ===== */
+window.KWSound = (function(){
+  var ctx = null, master = null, noiseBuf = null, enabled = true, last = {};
+  try { enabled = localStorage.getItem('kw-sound') !== '0'; } catch(e) {}
+
+  function ensure(){
+    if (!ctx) {
+      var AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return null;
+      try { ctx = new AC(); } catch(e) { return null; }
+      master = ctx.createGain(); master.gain.value = 0.9; master.connect(ctx.destination);
+      noiseBuf = ctx.createBuffer(1, Math.floor(ctx.sampleRate * 0.6), ctx.sampleRate);
+      var d = noiseBuf.getChannelData(0);
+      for (var i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+    }
+    if (ctx.state === 'suspended') { try { ctx.resume(); } catch(e) {} }
+    return ctx;
+  }
+
+  /* petite note : fréquence qui glisse, enveloppe courte */
+  function tone(t, f0, f1, dur, vol, type){
+    var o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = type || 'sine';
+    o.frequency.setValueAtTime(f0, t);
+    if (f1 && f1 !== f0) o.frequency.exponentialRampToValueAtTime(f1, t + dur);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(vol, t + 0.006);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g); g.connect(master);
+    o.start(t); o.stop(t + dur + 0.02);
+  }
+
+  /* souffle (whoosh) : bruit filtré dont la fréquence monte puis redescend */
+  function whoosh(t, dur, f0, f1, vol){
+    var src = ctx.createBufferSource(); src.buffer = noiseBuf;
+    var bp = ctx.createBiquadFilter(); bp.type = 'bandpass'; bp.Q.value = 1.1;
+    bp.frequency.setValueAtTime(f0, t);
+    bp.frequency.exponentialRampToValueAtTime(f1, t + dur * 0.55);
+    bp.frequency.exponentialRampToValueAtTime(f0, t + dur);
+    var g = ctx.createGain();
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(vol, t + dur * 0.35);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    src.connect(bp); bp.connect(g); g.connect(master);
+    src.start(t); src.stop(t + dur + 0.05);
+  }
+
+  var sounds = {
+    click:  function(t){ tone(t, 1500, 900, 0.05, 0.10); tone(t, 3000, 1800, 0.03, 0.03); },
+    soft:   function(t){ tone(t, 1100, 800, 0.045, 0.07); },
+    tab:    function(t){ tone(t, 700, 1050, 0.07, 0.11); tone(t + 0.055, 1050, 1400, 0.09, 0.09); },
+    scroll: function(t){ tone(t, 1900, 1300, 0.03, 0.06, 'triangle'); },
+    swipe:  function(t){ whoosh(t, 0.42, 400, 2600, 0.16); tone(t + 0.28, 1500, 1000, 0.05, 0.07); },
+    cta:    function(t){ tone(t, 660, 660, 0.09, 0.10); tone(t + 0.07, 880, 880, 0.10, 0.10); tone(t + 0.14, 1320, 1320, 0.16, 0.09); },
+    toggle: function(t){ tone(t, 880, 1320, 0.09, 0.10); }
+  };
+
+  function play(name){
+    if (!enabled || !sounds[name]) return;
+    var now = Date.now();
+    if (last[name] && now - last[name] < 45) return;
+    last[name] = now;
+    var c = ensure();
+    if (!c) return;
+    try { sounds[name](c.currentTime + 0.005); } catch(e) {}
+  }
+
+  function refreshBtn(){
+    var b = document.getElementById('sndBtn');
+    if (!b) return;
+    b.textContent = enabled ? '🔊' : '🔇';
+    b.classList.toggle('off', !enabled);
+  }
+  function toggle(){
+    enabled = !enabled;
+    try { localStorage.setItem('kw-sound', enabled ? '1' : '0'); } catch(e) {}
+    refreshBtn();
+    if (enabled) { var c = ensure(); if (c) sounds.toggle(c.currentTime + 0.005); }
+  }
+
+  /* le navigateur n'autorise le son qu'après un premier toucher */
+  ['pointerdown','touchstart','keydown'].forEach(function(ev){
+    document.addEventListener(ev, function(){ if (enabled) ensure(); }, {passive:true});
+  });
+
+  /* son à chaque clic sur un élément interactif */
+  document.addEventListener('click', function(e){
+    var t = e.target && e.target.closest ? e.target.closest(
+      'button, a, select, .cat-card, .prod-card, .nav-item, .g-tab, .cf-color-dot, .color-swatch, .btn-back, [onclick]'
+    ) : null;
+    if (!t || t.id === 'sndBtn') return;
+    if (t.closest('.nav-item')) play('tab');
+    else if (t.closest('.cf-cta, .btn-wa, .wa-float')) play('cta');
+    else if (t.closest('.cf-color-dot, .color-swatch, .g-tab')) play('soft');
+    else play('click');
+  }, true);
+
+  document.addEventListener('DOMContentLoaded', refreshBtn);
+  refreshBtn();
+  return { play: play, toggle: toggle, isOn: function(){ return enabled; } };
 })();
 </script>
 </body>
