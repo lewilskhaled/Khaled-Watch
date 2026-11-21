@@ -1674,5 +1674,24 @@
       }
     ],
     "createdAt": "2026-11-19T17:40:25.622Z"
+  },
+  {
+    "id": "1795273717647",
+    "nom": "Air pod pro",
+    "prix": 7500,
+    "categorie": "Autres",
+    "genre": "Unisexe",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1795273719876-n8epap-Air-pod-pro-principal.png",
+    "description": "",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "or",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [],
+    "createdAt": "2026-11-21T15:08:37.647Z"
   }
 ]
