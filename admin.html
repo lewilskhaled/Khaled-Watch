@@ -239,6 +239,28 @@ input[type=range]{width:100%;accent-color:var(--or);cursor:pointer;}
   color: var(--or); font-size: .7rem;
 }
 
+/* ===== CLUB (admin) ===== */
+.club-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin-bottom:.9rem;}
+.club-stat{background:rgba(0,0,0,.4);border:1px solid var(--bord);border-radius:10px;padding:.6rem .3rem;text-align:center;}
+.club-stat b{display:block;font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--or-l);line-height:1;}
+.club-stat span{font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;color:#B8AB92;font-weight:600;}
+.cl-row{background:rgba(0,0,0,.35);border:1px solid var(--bord);border-radius:12px;padding:.8rem;margin-bottom:.7rem;}
+.cl-top{display:flex;align-items:center;gap:.7rem;margin-bottom:.5rem;}
+.cl-ava{width:46px;height:46px;border-radius:50%;background:rgba(201,168,76,.15);border:2px solid var(--or);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;font-size:1.2rem;}
+.cl-ava img{width:100%;height:100%;object-fit:cover;}
+.cl-name{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:700;color:#fff;line-height:1.1;}
+.cl-meta{font-size:.6rem;color:#B8AB92;margin-top:.15rem;}
+.cl-lv{margin-left:auto;font-size:.6rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.25rem .6rem;border-radius:50px;border:1px solid var(--or);color:var(--or-l);white-space:nowrap;}
+.cl-lv.argent{border-color:#c9d1d9;color:#e3e8ee;}.cl-lv.bronze{border-color:#cd7f32;color:#e0a066;}.cl-lv.diamant{border-color:#7fe0ff;color:#aeeeff;}.cl-lv.aucune{border-color:#555;color:#999;}
+.cl-wheel{font-size:.65rem;line-height:1.5;padding:.45rem .6rem;border-radius:8px;background:rgba(201,168,76,.1);border-left:2px solid var(--or);margin-bottom:.5rem;color:#E8E0CC;}
+.cl-wheel.todo{background:rgba(39,174,96,.14);border-left-color:#27ae60;}
+.cl-btns{display:flex;flex-wrap:wrap;gap:.4rem;}
+.cl-btns button{flex:1 1 auto;padding:.55rem .7rem;border-radius:8px;font-family:'Montserrat',sans-serif;font-size:.6rem;font-weight:700;letter-spacing:.05em;cursor:pointer;-webkit-tap-highlight-color:transparent;
+  background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.5);color:var(--or-l);}
+.cl-btns button.sale{background:linear-gradient(135deg,var(--or-d),var(--or));color:#000;border:none;}
+.cl-btns button.wheel{background:rgba(160,80,220,.2);border-color:rgba(206,147,216,.6);color:#E1BEE7;}
+.cl-btns button.danger{flex:0 0 auto;background:rgba(192,57,43,.15);border-color:rgba(192,57,43,.35);color:#eb5757;}
+.cl-btns button:disabled{opacity:.4;cursor:not-allowed;}
 </style>
 </head>
 <body>
@@ -259,6 +281,7 @@ input[type=range]{width:100%;accent-color:var(--or);cursor:pointer;}
   <button class="tab" onclick="showTab('list')">📦 Stock</button>
   <button class="tab" onclick="showTab('design')">🎨 Design</button>
   <button class="tab" onclick="showTab('qr')">📲 QR</button>
+  <button class="tab" onclick="showTab('club')">🎁 Club</button>
 </div>
 
 <!-- CONFIG -->
@@ -543,6 +566,28 @@ input[type=range]{width:100%;accent-color:var(--or);cursor:pointer;}
     <div style="display:flex;align-items:center;gap:.5rem;margin:.4rem 0;"><input type="color" id="haloCustom" value="#C9A84C" onchange="setHaloCustom(this.value)"><span style="font-size:.65rem;color:var(--gris);">Couleur personnalisée</span></div>
     <div class="field"><label>Intensité — <span id="intensiteVal">1.0</span>×</label><input type="range" id="glowIntensity" min="0.2" max="5" step="0.1" value="1.5" oninput="updateIntensity(this.value)"></div>
     <div id="haloPreview"></div>
+  </div>
+</div>
+
+<!-- CLUB PRESTIGE -->
+<div class="section" id="sec-club">
+  <div class="card">
+    <div class="card-title">🎁 Club Prestige</div>
+    <div class="card-sub">Ici apparaissent tous les clients qui ont créé un profil. Après chaque vente, cliquez sur « Valider une vente » : la carte du client évolue toute seule. Quand un client Argent, Or ou Diamant vous envoie sa carte sur WhatsApp, vérifiez-la puis cliquez sur « Envoyer la roue ».</div>
+    <div class="field"><label>URL du Worker Club</label><input type="text" id="clubUrl" placeholder="https://khaled-watch-club.xxx.workers.dev"></div>
+    <div class="field"><label>Clé admin du Club</label><input type="password" id="clubKey" placeholder="Votre clé secrète (ADMIN_KEY)" autocomplete="off"></div>
+    <div class="status" id="st-club"></div>
+    <button class="btn-gold" onclick="clubAdminSave()">Enregistrer et charger les clients</button>
+  </div>
+  <div class="card">
+    <div class="card-title">👥 Clients inscrits</div>
+    <div class="club-stats">
+      <div class="club-stat"><b id="clStatAll">0</b><span>Comptes</span></div>
+      <div class="club-stat"><b id="clStatElig">0</b><span>Éligibles roue</span></div>
+      <div class="club-stat"><b id="clStatGift">0</b><span>Cadeaux à remettre</span></div>
+    </div>
+    <div class="field"><input type="text" id="clubSearch" placeholder="Rechercher un client…" oninput="clubAdminRender()"></div>
+    <div id="clubList"><div class="empty-list">Renseignez l'URL et la clé ci-dessus.</div></div>
   </div>
 </div>
 
@@ -1278,7 +1323,7 @@ function generateQR(){
   new QRCode(document.getElementById('qrAdminCanvas'),{text:urlA,width:200,height:200,colorDark:'#9B30FF',colorLight:'#0a0008',correctLevel:QRCode.CorrectLevel.H});
 }
 function telechargerQR(canvasId,filename){const wrap=document.getElementById(canvasId);if(!wrap){alert('Générez d\'abord le QR.');return;} const canvas=wrap.querySelector('canvas'),img=wrap.querySelector('img');let dataURL;if(canvas){dataURL=canvas.toDataURL('image/png');}else if(img){const tmp=document.createElement('canvas');tmp.width=img.naturalWidth||200;tmp.height=img.naturalHeight||200;const ctx=tmp.getContext('2d');ctx.drawImage(img,0,0);dataURL=tmp.toDataURL('image/png');}else{alert('QR introuvable.');return;} const a=document.createElement('a');a.href=dataURL;a.download=filename;a.click();}
-function showTab(t){const TABS=['config','add','list','design','qr'];document.querySelectorAll('.tab').forEach((el,i)=>el.classList.toggle('active',TABS[i]===t));document.querySelectorAll('.section').forEach(el=>el.classList.remove('show'));document.getElementById('sec-'+t).classList.add('show');if(t==='list'&&cfg.token)loadProducts();if(t==='qr')generateQR();}
+function showTab(t){const TABS=['config','add','list','design','qr','club'];document.querySelectorAll('.tab').forEach((el,i)=>el.classList.toggle('active',TABS[i]===t));document.querySelectorAll('.section').forEach(el=>el.classList.remove('show'));document.getElementById('sec-'+t).classList.add('show');if(t==='list'&&cfg.token)loadProducts();if(t==='qr')generateQR();if(t==='club'){clubAdminInit();clubAdminLoad();}}
 function showSt(id,type,msg){const el=document.getElementById('st-'+id);el.className='status '+type;el.textContent=msg;if(type==='ok')setTimeout(()=>el.style.display='none',4000);}
 function h(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function fmt(n){return Number(n||0).toLocaleString('fr-FR');}
@@ -1433,5 +1478,95 @@ initAdminDesign();
 loadConfig();
 </script>
 
+<script>
+/* ===== CLUB PRESTIGE — administration ===== */
+let clubUsers = [], clubMonth = '', clubPhotos = {};
+const CL_LV = {aucune:['•','Membre'], bronze:['🥉','Bronze'], argent:['🥈','Argent'], or:['🥇','Or'], diamant:['💎','Diamant']};
+const CL_MONTHS = {argent:1, or:2, diamant:3};
+const clLvl = n => n>=10 ? 'diamant' : n>=5 ? 'or' : n>=3 ? 'argent' : n>=1 ? 'bronze' : 'aucune';
+const clEsc = s => String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+function clubCfg(){ return { url:(localStorage.getItem('kw-club-url')||'https://khaled-watch-club.lewilskhaled.workers.dev').replace(/\/$/,''), key:localStorage.getItem('kw-club-key')||'' }; }
+function clubAdminInit(){ const c = clubCfg(); document.getElementById('clubUrl').value = c.url; document.getElementById('clubKey').value = c.key; }
+async function clubReq(path, body){
+  const c = clubCfg(), o = { headers:{'X-Admin-Key':c.key,'Content-Type':'application/json'} };
+  if (body){ o.method = 'POST'; o.body = JSON.stringify(body); }
+  const r = await fetch(c.url + path, o), d = await r.json().catch(()=>({}));
+  if (!r.ok) throw new Error(d.error || ('Erreur '+r.status));
+  return d;
+}
+function clubAdminSave(){
+  localStorage.setItem('kw-club-url', document.getElementById('clubUrl').value.trim());
+  localStorage.setItem('kw-club-key', document.getElementById('clubKey').value.trim());
+  clubAdminLoad();
+}
+async function clubAdminLoad(){
+  if (!clubCfg().key) return;
+  showSt('club','load','Chargement des clients…');
+  try {
+    const d = await clubReq('/admin/users');
+    clubUsers = d.users || []; clubMonth = d.month || '';
+    document.getElementById('st-club').className = 'status';
+    clubAdminRender();
+  } catch(e){ showSt('club','err','⚠ ' + e.message); }
+}
+function clubAdminRender(){
+  const q = (document.getElementById('clubSearch').value || '').trim().toLowerCase();
+  const all = clubUsers.slice().sort((a,b) => (b.purchases||0)-(a.purchases||0) || String(a.name).localeCompare(String(b.name)));
+  document.getElementById('clStatAll').textContent = all.length;
+  document.getElementById('clStatElig').textContent = all.filter(u => (u.purchases||0) >= 3).length;
+  document.getElementById('clStatGift').textContent = all.filter(u => u.wheel && u.wheel.status === 'spun').length;
+  const list = all.filter(u => !q || String(u.name).toLowerCase().includes(q));
+  const box = document.getElementById('clubList');
+  if (!list.length){ box.innerHTML = '<div class="empty-list">Aucun client pour le moment.</div>'; return; }
+  box.innerHTML = list.map(u => {
+    const n = u.purchases || 0, lv = clLvl(n), w = u.wheel, cur = w && w.month === clubMonth, mo = CL_MONTHS[lv] || 0;
+    let wl = '', todo = false;
+    if (w && w.status === 'sent') wl = cur ? '🎡 Roue envoyée, en attente que le client la tourne' : '🎡 Roue du mois dernier jamais tournée';
+    else if (w && w.status === 'spun'){ wl = '🎉 A gagné : <b>' + clEsc(w.platform) + ' — ' + w.months + ' mois</b> (à remettre)'; todo = true; }
+    else if (w && w.status === 'given') wl = '✅ Cadeau remis : ' + clEsc(w.platform) + ' — ' + w.months + ' mois' + (cur ? '' : ' (' + clEsc(w.month) + ')');
+    const sent = w && cur;
+    const ava = clubPhotos[u.id] ? '<img src="' + clubPhotos[u.id] + '" alt="">' : '🙂';
+    return '<div class="cl-row"><div class="cl-top"><div class="cl-ava" id="clava-' + u.id + '">' + ava + '</div>' +
+      '<div><div class="cl-name">' + clEsc(u.name) + '</div><div class="cl-meta">' + n + ' achat' + (n>1?'s':'') + ' validé' + (n>1?'s':'') + ' · inscrit le ' + new Date(u.created).toLocaleDateString('fr-FR') + '</div></div>' +
+      '<div class="cl-lv ' + lv + '">' + CL_LV[lv][0] + ' ' + CL_LV[lv][1] + '</div></div>' +
+      (wl ? '<div class="cl-wheel' + (todo ? ' todo' : '') + '">' + wl + '</div>' : '') +
+      '<div class="cl-btns">' +
+        '<button class="sale" onclick="clubSale(\'' + u.id + '\',1)">＋ Valider une vente</button>' +
+        '<button onclick="clubSale(\'' + u.id + '\',-1)"' + (n<1?' disabled':'') + '>↩ −1</button>' +
+        (mo ? '<button class="wheel" onclick="clubWheel(\'' + u.id + '\')"' + (sent?' disabled':'') + '>' + (sent ? '🎡 Roue déjà envoyée' : '🎡 Envoyer la roue (' + mo + ' mois)') + '</button>' : '') +
+        (todo ? '<button onclick="clubGiven(\'' + u.id + '\')">✓ Cadeau remis</button>' : '') +
+        '<button class="danger" onclick="clubDelete(\'' + u.id + '\')">🗑</button>' +
+      '</div></div>';
+  }).join('');
+  list.forEach(u => { if (u.ph && !clubPhotos[u.id]) clubLoadPhoto(u.id); });
+}
+async function clubLoadPhoto(id){
+  clubPhotos[id] = 'loading';
+  try {
+    const d = await clubReq('/admin/photo?id=' + encodeURIComponent(id));
+    clubPhotos[id] = d.photo || '';
+    const el = document.getElementById('clava-' + id);
+    if (el && d.photo) el.innerHTML = '<img src="' + d.photo + '" alt="">';
+  } catch(e){ clubPhotos[id] = ''; }
+}
+const clName = id => (clubUsers.find(u => u.id === id) || {}).name || id;
+async function clubAct(path, body, okMsg){
+  try { await clubReq(path, body); showSt('club','ok','✓ ' + okMsg); await clubAdminLoad(); }
+  catch(e){ showSt('club','err','⚠ ' + e.message); }
+}
+function clubSale(id, d){
+  if (!confirm((d>0 ? 'Valider une vente pour ' : 'Annuler une vente de ') + clName(id) + ' ?')) return;
+  clubAct('/admin/sale', {id, delta:d}, d>0 ? 'Vente validée.' : 'Vente annulée.');
+}
+function clubWheel(id){
+  if (!confirm('Avez-vous bien reçu et vérifié la carte de ' + clName(id) + ' sur WhatsApp ?\nLa roue va apparaître sur son écran.')) return;
+  clubAct('/admin/wheel', {id}, 'Roue envoyée à ' + clName(id) + '.');
+}
+function clubGiven(id){ clubAct('/admin/given', {id}, 'Cadeau marqué comme remis.'); }
+function clubDelete(id){
+  if (!confirm('Supprimer le compte de ' + clName(id) + ' ? Cette action est définitive.')) return;
+  clubAct('/admin/delete', {id}, 'Compte supprimé.');
+}
+</script>
 </body>
 </html>
