@@ -264,7 +264,6 @@ input[type=range]{width:100%;accent-color:var(--or);cursor:pointer;}
 </style>
 </head>
 <body>
-<div class="bg-fixed" id="bgFixed"></div>
 <div class="bg-overlay"></div>
 
 <header class="hdr">
@@ -279,7 +278,6 @@ input[type=range]{width:100%;accent-color:var(--or);cursor:pointer;}
   <button class="tab active" onclick="showTab('config')">⚙ Config</button>
   <button class="tab" onclick="showTab('add')">＋ Produit</button>
   <button class="tab" onclick="showTab('list')">📦 Stock</button>
-  <button class="tab" onclick="showTab('design')">🎨 Design</button>
   <button class="tab" onclick="showTab('qr')">📲 QR</button>
   <button class="tab" onclick="showTab('club')">🎁 Club</button>
 </div>
@@ -447,125 +445,6 @@ input[type=range]{width:100%;accent-color:var(--or);cursor:pointer;}
     <button class="btn-gold" id="btnSaveEdit" onclick="saveEditedProduct()">💾 Enregistrer les modifications</button>
     <button class="btn-gold" style="margin-top:.6rem;background:rgba(255,255,255,.08);color:var(--blanc);" onclick="closeEditModal()">Annuler</button>
     <button class="btn-gold" id="btnDeleteFromEdit" style="margin-top:.9rem;background:rgba(192,57,43,.18);color:#eb5757;border:1px solid rgba(192,57,43,.4);" onclick="deleteFromEditModal()">🗑 Supprimer définitivement ce produit</button>
-  </div>
-</div>
-
-<!-- DESIGN -->
-<div class="section" id="sec-design">
-  <div class="card">
-    <div class="card-title">🖼 Fond Admin</div>
-    <div class="bg-grid" id="bgGrid">
-      <div class="bg-thumb selected" data-url="https://images.unsplash.com/photo-1618215649514-c73c18549d63?w=1600&q=80" onclick="selectAdminBg(this)"><img src="https://images.unsplash.com/photo-1618215649514-c73c18549d63?w=300&q=70" alt=""><div class="check">✓</div></div>
-      <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1730757679771-b53e798846cf?w=1600&q=80" onclick="selectAdminBg(this)"><img src="https://images.unsplash.com/photo-1730757679771-b53e798846cf?w=300&q=70" alt=""><div class="check">✓</div></div>
-      <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1694442139405-28866401a322?w=1600&q=80" onclick="selectAdminBg(this)"><img src="https://images.unsplash.com/photo-1694442139405-28866401a322?w=300&q=70" alt=""><div class="check">✓</div></div>
-      <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1618215649872-6e3143a716ec?w=1600&q=80" onclick="selectAdminBg(this)"><img src="https://images.unsplash.com/photo-1618215649872-6e3143a716ec?w=300&q=70" alt=""><div class="check">✓</div></div>
-      <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1590736969955-71cc94801759?w=1600&q=80" onclick="selectAdminBg(this)"><img src="https://images.unsplash.com/photo-1590736969955-71cc94801759?w=300&q=70" alt=""><div class="check">✓</div></div>
-      <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1613704193420-a53cab02d194?w=1600&q=80" onclick="selectAdminBg(this)"><img src="https://images.unsplash.com/photo-1613704193420-a53cab02d194?w=300&q=70" alt=""><div class="check">✓</div></div>
-    </div>
-    <div class="bg-upload-zone" onclick="document.getElementById('bgFileAdmin').click()"><input type="file" id="bgFileAdmin" accept="image/*" onchange="handleAdminBgUpload(this.files[0])"><div style="font-size:1.6rem;">📁</div><p>Importer depuis mon appareil</p></div>
-  </div>
-
-  <div class="card">
-    <div class="card-title">🌐 Fond Page Clients</div>
-    <p style="font-size:.68rem;color:#C8BDA0;margin-bottom:.9rem;line-height:1.7;font-weight:500;">Ce fond image s'affiche sur la page clients quand aucune vidéo n'est active.</p>
-    <div class="bg-grid" id="bgClientGrid">
-      <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1618215649514-c73c18549d63?w=1600&q=80" onclick="selectClientBg(this)"><img src="https://images.unsplash.com/photo-1618215649514-c73c18549d63?w=300&q=70" alt=""><div class="check">✓</div></div>
-      <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1730757679771-b53e798846cf?w=1600&q=80" onclick="selectClientBg(this)"><img src="https://images.unsplash.com/photo-1730757679771-b53e798846cf?w=300&q=70" alt=""><div class="check">✓</div></div>
-      <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1694442139405-28866401a322?w=1600&q=80" onclick="selectClientBg(this)"><img src="https://images.unsplash.com/photo-1694442139405-28866401a322?w=300&q=70" alt=""><div class="check">✓</div></div>
-      <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1618215649872-6e3143a716ec?w=1600&q=80" onclick="selectClientBg(this)"><img src="https://images.unsplash.com/photo-1618215649872-6e3143a716ec?w=300&q=70" alt=""><div class="check">✓</div></div>
-      <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1590736969955-71cc94801759?w=1600&q=80" onclick="selectClientBg(this)"><img src="https://images.unsplash.com/photo-1590736969955-71cc94801759?w=300&q=70" alt=""><div class="check">✓</div></div>
-      <div class="bg-thumb" data-url="https://images.unsplash.com/photo-1613704193420-a53cab02d194?w=1600&q=80" onclick="selectClientBg(this)"><img src="https://images.unsplash.com/photo-1613704193420-a53cab02d194?w=300&q=70" alt=""><div class="check">✓</div></div>
-    </div>
-    <div class="bg-upload-zone" onclick="document.getElementById('bgFileClient').click()"><input type="file" id="bgFileClient" accept="image/*" onchange="handleClientBgUpload(this.files[0])"><div style="font-size:1.6rem;">📁</div><p>Importer mon propre fond pour les clients</p></div>
-  </div>
-
-  
-  <!-- FOND VIDÉO CLIENTS -->
-  <div class="card" id="cardVideoBg">
-    <div class="card-title">🎬 Fond Vidéo Animé <span style="font-size:.55rem;background:rgba(79,195,247,.15);border:1px solid rgba(79,195,247,.35);color:#4FC3F7;border-radius:50px;padding:.18rem .55rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;margin-left:.4rem;">📱 Mobile uniquement</span></div>
-
-    <div class="video-mobile-badge">
-      📱 Visible uniquement sur téléphone — les PC voient le fond image
-    </div>
-
-    <p style="font-size:.68rem;color:#C8BDA0;margin-bottom:.9rem;line-height:1.7;font-weight:500;">
-      Choisissez une vidéo courte et percutante (5–15 sec max). Elle se répète en boucle automatiquement.<br>
-      <strong style="color:var(--or-l);">Formats : MP4 · WEBM · MOV</strong>
-    </p>
-
-    <div id="st-video" class="status"></div>
-
-    <!-- Onglets source -->
-    <div class="video-src-tabs">
-      <button class="video-src-tab active" onclick="switchVideoSrc('url',this)">🔗 URL Vidéo</button>
-      <button class="video-src-tab" onclick="switchVideoSrc('device',this)">📱 Depuis Appareil</button>
-    </div>
-
-    <!-- Panneau URL -->
-    <div id="videoPane-url">
-      <div class="field" style="margin-bottom:.6rem;">
-        <label>URL de la vidéo</label>
-        <input type="url" id="videoUrlInput"
-               placeholder="https://... .mp4  ou lien vidéo direct"
-               oninput="previewVideoUrl(this.value)">
-      </div>
-      <p style="font-size:.6rem;color:#888;line-height:1.6;margin-bottom:.5rem;">
-        ✦ Liens compatibles : hébergement perso, Cloudinary, Supabase Storage, Bunny CDN, etc.<br>
-        ✦ YouTube / TikTok ne fonctionnent <strong style="color:#eb5757;">pas</strong> (pas de lecture directe).
-      </p>
-    </div>
-
-    <!-- Panneau Appareil -->
-    <div id="videoPane-device" style="display:none;">
-      <div class="video-drop-zone" onclick="document.getElementById('fileVideoInput').click()">
-        <input type="file" id="fileVideoInput" accept="video/mp4,video/webm,video/quicktime"
-               onchange="handleVideoFileUpload(this.files[0])">
-        <div style="font-size:2rem;margin-bottom:.4rem;">🎬</div>
-        <div class="drop-txt"><strong>Appuyer pour choisir</strong><br>MP4 · WEBM · MOV · max 25 Mo</div>
-      </div>
-    </div>
-
-    <!-- Aperçu format téléphone -->
-    <div class="video-preview-wrap" id="videoPreviewWrap" style="display:none;">
-      <video id="videoPreviewEl" autoplay muted loop playsinline
-             style="width:100%;height:100%;object-fit:cover;"></video>
-      <div class="video-phone-frame"></div>
-      <div class="video-phone-label">📱 Aperçu mobile</div>
-    </div>
-
-    <button class="btn-gold" onclick="applyVideoBg()" style="margin-top:.8rem;">
-      ✅ Appliquer aux clients
-    </button>
-    <button class="btn-del-video" onclick="removeVideoBg()">
-      🗑 Supprimer la vidéo (revenir au fond image)
-    </button>
-  </div>
-
-
-  <div class="card">
-    <div class="card-title">🪟 Teinte Verre Dépoli</div>
-    <div class="field-row" style="align-items:end;"><div><label>Couleur de teinte</label><input type="color" id="glassTintColor" value="#C9A84C" style="width:100%;height:42px;"></div><div><label>Opacité (0–30%)</label><input type="range" id="glassTintOpacity" min="0" max="30" value="6" oninput="updateGlassTint()"></div></div>
-    <div style="font-size:.65rem;color:var(--gris);margin-top:.3rem;">Aperçu : <span id="glassTintValue">rgba(201,168,76,0.06)</span></div>
-    <button class="btn-gold btn-sm" onclick="saveGlassTint()" style="width:auto;padding:.5rem 1.2rem;margin-top:.7rem;">Appliquer aux clients</button>
-  </div>
-
-  <div class="card">
-    <div class="card-title">✨ Halo des Boxes Produits</div>
-    <label style="margin-bottom:.4rem;">Couleur du brillant</label>
-    <div class="halo-presets" id="haloPresets">
-      <div class="halo-dot active" style="background:#C9A84C;" data-color="rgba(201,168,76,0.42)" onclick="setHalo(this)" title="Or"></div>
-      <div class="halo-dot" style="background:#E8C97A;" data-color="rgba(232,201,122,0.45)" onclick="setHalo(this)" title="Or clair"></div>
-      <div class="halo-dot" style="background:#fff;"    data-color="rgba(255,255,255,0.35)"   onclick="setHalo(this)" title="Blanc"></div>
-      <div class="halo-dot" style="background:#4FC3F7;" data-color="rgba(79,195,247,0.42)"    onclick="setHalo(this)" title="Bleu"></div>
-      <div class="halo-dot" style="background:#CE93D8;" data-color="rgba(206,147,216,0.42)"   onclick="setHalo(this)" title="Violet"></div>
-      <div class="halo-dot" style="background:#EF9A9A;" data-color="rgba(239,154,154,0.42)"   onclick="setHalo(this)" title="Rose"></div>
-      <div class="halo-dot" style="background:#A5D6A7;" data-color="rgba(165,214,167,0.42)"   onclick="setHalo(this)" title="Vert"></div>
-      <div class="halo-dot" style="background:#FF6F00;" data-color="rgba(255,111,0,0.42)"     onclick="setHalo(this)" title="Orange"></div>
-      <div class="halo-dot" style="background:#F44336;" data-color="rgba(244,67,54,0.4)"      onclick="setHalo(this)" title="Rouge"></div>
-    </div>
-    <div style="display:flex;align-items:center;gap:.5rem;margin:.4rem 0;"><input type="color" id="haloCustom" value="#C9A84C" onchange="setHaloCustom(this.value)"><span style="font-size:.65rem;color:var(--gris);">Couleur personnalisée</span></div>
-    <div class="field"><label>Intensité — <span id="intensiteVal">1.0</span>×</label><input type="range" id="glowIntensity" min="0.2" max="5" step="0.1" value="1.5" oninput="updateIntensity(this.value)"></div>
-    <div id="haloPreview"></div>
   </div>
 </div>
 
@@ -1299,19 +1178,6 @@ function setPendingColorAsMain(i){
   setAngle('fImgDos','prevDos', c.img_dos);
 }
 function clearForm(){ ['fNom','fPrix','fImage','fImgGauche','fImgDroit','fImgDos','fDescription','fFlashReduction','fFlashFin','cImage','cImgGauche','cImgDroit','cImgDos'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';}); ['fCat','fGenre'].forEach(id=>document.getElementById(id).value=''); document.getElementById('fHalo').value='or'; document.getElementById('fPatron').checked=false; document.querySelectorAll('.mood-check').forEach(el=>el.classList.remove('active')); ['prevMain','prevG','prevD','prevDos','prevColor','prevCG','prevCD','prevCDos'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';}); pendingColors=[]; renderColorList(); }
-const DEFAULT_ADMIN_BG='https://images.unsplash.com/photo-1618215649514-c73c18549d63?w=1600&q=80';
-function applyAdminBg(url){document.getElementById('bgFixed').style.backgroundImage=`url('${url}')`;localStorage.setItem('kw-admin-bg',url);}
-function selectAdminBg(t){document.querySelectorAll('#bgGrid .bg-thumb').forEach(x=>x.classList.remove('selected'));t.classList.add('selected');applyAdminBg(t.dataset.url);}
-function handleAdminBgUpload(f){if(!f)return;const r=new FileReader();r.onload=e=>{applyAdminBg(e.target.result);document.querySelectorAll('#bgGrid .bg-thumb').forEach(x=>x.classList.remove('selected'));};r.readAsDataURL(f);}
-function selectClientBg(t){document.querySelectorAll('#bgClientGrid .bg-thumb').forEach(x=>x.classList.remove('selected'));t.classList.add('selected');localStorage.setItem('kw-client-bg',t.dataset.url);alert('✓ Fond clients sauvegardé !');}
-function handleClientBgUpload(f){if(!f)return;const r=new FileReader();r.onload=e=>{localStorage.setItem('kw-client-bg',e.target.result);document.querySelectorAll('#bgClientGrid .bg-thumb').forEach(x=>x.classList.remove('selected'));alert('✓ Fond personnalisé sauvegardé !');};r.readAsDataURL(f);}
-function updateGlassTint(){const color=document.getElementById('glassTintColor').value,opacity=parseInt(document.getElementById('glassTintOpacity').value)/100,r=parseInt(color.slice(1,3),16),g=parseInt(color.slice(3,5),16),b=parseInt(color.slice(5,7),16),rgba=`rgba(${r},${g},${b},${opacity})`;document.getElementById('glassTintValue').textContent=rgba;return rgba;}
-function saveGlassTint(){const rgba=updateGlassTint();localStorage.setItem('kw-glass-tint',rgba);alert('✓ Teinte verre sauvegardée !');}
-let currentGlowColor=localStorage.getItem('kw-card-glow')||'rgba(201,168,76,0.42)', currentGlowInt=parseFloat(localStorage.getItem('kw-glow-intensity')||'1.5');
-function applyHalo(){document.documentElement.style.setProperty('--glow-color',currentGlowColor);document.getElementById('haloPreview').style.setProperty('--glow-color',currentGlowColor);localStorage.setItem('kw-card-glow',currentGlowColor);localStorage.setItem('kw-glow-intensity',currentGlowInt);}
-function setHalo(dot){document.querySelectorAll('.halo-dot').forEach(d=>d.classList.remove('active'));dot.classList.add('active');currentGlowColor=dot.dataset.color;applyHalo();}
-function setHaloCustom(hex){const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);currentGlowColor=`rgba(${r},${g},${b},0.42)`;document.querySelectorAll('.halo-dot').forEach(d=>d.classList.remove('active'));applyHalo();}
-function updateIntensity(v){currentGlowInt=parseFloat(v);document.getElementById('intensiteVal').textContent=parseFloat(v).toFixed(1);applyHalo();}
 function generateQR(){
   const u=cfg.user||document.getElementById('ghUser').value.trim(), r=cfg.repo||document.getElementById('ghRepo').value.trim();
   if(!u||!r) return;
@@ -1323,124 +1189,11 @@ function generateQR(){
   new QRCode(document.getElementById('qrAdminCanvas'),{text:urlA,width:200,height:200,colorDark:'#9B30FF',colorLight:'#0a0008',correctLevel:QRCode.CorrectLevel.H});
 }
 function telechargerQR(canvasId,filename){const wrap=document.getElementById(canvasId);if(!wrap){alert('Générez d\'abord le QR.');return;} const canvas=wrap.querySelector('canvas'),img=wrap.querySelector('img');let dataURL;if(canvas){dataURL=canvas.toDataURL('image/png');}else if(img){const tmp=document.createElement('canvas');tmp.width=img.naturalWidth||200;tmp.height=img.naturalHeight||200;const ctx=tmp.getContext('2d');ctx.drawImage(img,0,0);dataURL=tmp.toDataURL('image/png');}else{alert('QR introuvable.');return;} const a=document.createElement('a');a.href=dataURL;a.download=filename;a.click();}
-function showTab(t){const TABS=['config','add','list','design','qr','club'];document.querySelectorAll('.tab').forEach((el,i)=>el.classList.toggle('active',TABS[i]===t));document.querySelectorAll('.section').forEach(el=>el.classList.remove('show'));document.getElementById('sec-'+t).classList.add('show');if(t==='list'&&cfg.token)loadProducts();if(t==='qr')generateQR();if(t==='club'){clubAdminInit();clubAdminLoad();}}
+function showTab(t){const TABS=['config','add','list','qr','club'];document.querySelectorAll('.tab').forEach((el,i)=>el.classList.toggle('active',TABS[i]===t));document.querySelectorAll('.section').forEach(el=>el.classList.remove('show'));document.getElementById('sec-'+t).classList.add('show');if(t==='list'&&cfg.token)loadProducts();if(t==='qr')generateQR();if(t==='club'){clubAdminInit();clubAdminLoad();}}
 function showSt(id,type,msg){const el=document.getElementById('st-'+id);el.className='status '+type;el.textContent=msg;if(type==='ok')setTimeout(()=>el.style.display='none',4000);}
 function h(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function fmt(n){return Number(n||0).toLocaleString('fr-FR');}
 
-/* ============================================================
-   FOND VIDÉO — Admin
-   ============================================================ */
-
-var pendingVideoSrc = '';
-
-function switchVideoSrc(mode, btn) {
-  btn.closest('.video-src-tabs').querySelectorAll('.video-src-tab')
-     .forEach(function(t){ t.classList.remove('active'); });
-  btn.classList.add('active');
-  document.getElementById('videoPane-url').style.display    = mode === 'url'    ? 'block' : 'none';
-  document.getElementById('videoPane-device').style.display = mode === 'device' ? 'block' : 'none';
-}
-
-function previewVideoUrl(url) {
-  if (!url || !url.trim()) {
-    pendingVideoSrc = '';
-    document.getElementById('videoPreviewWrap').style.display = 'none';
-    return;
-  }
-  pendingVideoSrc = url.trim();
-  showVideoPreview(pendingVideoSrc);
-}
-
-function handleVideoFileUpload(file) {
-  if (!file) return;
-
-  var allowed = ['video/mp4','video/webm','video/quicktime'];
-  if (!allowed.includes(file.type)) {
-    showStVideo('err', '⚠ Format non supporté. Utilisez MP4, WEBM ou MOV.');
-    return;
-  }
-
-  if (file.size > 25 * 1024 * 1024) {
-    showStVideo("err", "⚠ Vidéo trop lourde (max 25 Mo). Compressez-la d'abord.");
-    return;
-  }
-
-  showStVideo('load', '⌛ Chargement de la vidéo…');
-
-  var reader = new FileReader();
-  reader.onload = function(e) {
-    pendingVideoSrc = e.target.result;
-    showVideoPreview(pendingVideoSrc);
-    showStVideo('ok', '✓ Vidéo chargée ! Cliquez "Appliquer aux clients".');
-  };
-  reader.onerror = function() {
-    showStVideo('err', '⚠ Erreur lors de la lecture du fichier.');
-  };
-  reader.readAsDataURL(file);
-}
-
-function showVideoPreview(src) {
-  var wrap  = document.getElementById('videoPreviewWrap');
-  var video = document.getElementById('videoPreviewEl');
-  if (!wrap || !video) return;
-
-  wrap.style.display = 'block';
-  video.src = src;
-  video.load();
-  video.play().catch(function(){});
-}
-
-function applyVideoBg() {
-  var urlInput = document.getElementById('videoUrlInput');
-  var src = pendingVideoSrc || (urlInput ? urlInput.value.trim() : '');
-
-  if (!src) {
-    showStVideo('err', '⚠ Aucune vidéo sélectionnée. Choisissez un fichier ou entrez une URL.');
-    return;
-  }
-
-  try {
-    localStorage.setItem('kw-client-video-bg', src);
-    showStVideo('ok', '✓ Fond vidéo activé ! Les clients le verront sur téléphone au prochain chargement.');
-    showVideoPreview(src);
-  } catch(e) {
-    showStVideo('err', '⚠ Vidéo trop grande pour le stockage local. Utilisez un lien URL à la place.');
-  }
-}
-
-function removeVideoBg() {
-  localStorage.removeItem('kw-client-video-bg');
-  pendingVideoSrc = '';
-  var urlInput = document.getElementById('videoUrlInput');
-  if (urlInput) urlInput.value = '';
-  var wrap = document.getElementById('videoPreviewWrap');
-  if (wrap) wrap.style.display = 'none';
-  var video = document.getElementById('videoPreviewEl');
-  if (video) { video.pause(); video.src = ''; }
-  showStVideo('ok', '✓ Fond vidéo supprimé. Les clients verront le fond image.');
-}
-
-function showStVideo(type, msg) {
-  var el = document.getElementById('st-video');
-  if (!el) return;
-  el.className = 'status ' + type;
-  el.textContent = msg;
-  if (type === 'ok') setTimeout(function(){ el.style.display = 'none'; }, 5000);
-}
-
-function initVideoSection() {
-  var existing = localStorage.getItem('kw-client-video-bg') || '';
-  if (existing) {
-    pendingVideoSrc = existing;
-    if (!existing.startsWith('data:')) {
-      var urlInput = document.getElementById('videoUrlInput');
-      if (urlInput) urlInput.value = existing;
-    }
-    showVideoPreview(existing);
-    showStVideo('ok', '✓ Une vidéo est actuellement active pour les clients.');
-  }
-}
 function setEditColorAsMain(i){
   const c = editColors[i];
   if(!c || !c.image){ alert('Cette couleur n\'a pas de photo.'); return; }
@@ -1463,18 +1216,6 @@ function setEditColorAsMain(i){
   showSt('edit','ok', `✓ Photo de "${c.nom}" définie comme photo principale. N'oubliez pas d'enregistrer.`);
 }
 
-function initAdminDesign(){
-  const bg=localStorage.getItem('kw-admin-bg')||DEFAULT_ADMIN_BG;
-  document.getElementById('bgFixed').style.backgroundImage=`url('${bg}')`;
-  document.querySelectorAll('#bgGrid .bg-thumb').forEach(t=>{t.classList.remove('selected');if(t.dataset.url===bg)t.classList.add('selected');});
-  document.documentElement.style.setProperty('--glow-color',currentGlowColor);
-  document.getElementById('haloPreview').style.setProperty('--glow-color',currentGlowColor);
-  document.getElementById('glowIntensity').value=currentGlowInt;
-  document.getElementById('intensiteVal').textContent=parseFloat(currentGlowInt).toFixed(1);
-  document.querySelectorAll('.halo-dot').forEach(d=>{if(d.dataset.color===currentGlowColor)d.classList.add('active');});
-  initVideoSection();
-}
-initAdminDesign();
 loadConfig();
 </script>
 
