@@ -1093,51 +1093,6 @@ body.light-mode .avis-card-text{color:#4a4230;}
 body.light-mode .avis-toast{background:rgba(255,255,255,.95);border-color:rgba(201,168,76,.5);}
 body.light-mode .avis-toast-txt{color:#3a331f;}
 
-/* ============================================================
-   COUPS DE CŒUR
-   ============================================================ */
-.coeur-badge{
-  position:absolute;top:8px;right:8px;z-index:6;
-  background:rgba(0,0,0,.62);border:1px solid rgba(201,168,76,.45);
-  color:var(--or-l);font-size:.6rem;font-weight:700;letter-spacing:.02em;
-  border-radius:50px;padding:.2rem .55rem;
-  pointer-events:none;transition:transform .25s,border-color .25s,background .25s,color .25s;
-  text-shadow:0 1px 4px rgba(0,0,0,.9);
-  display:flex;align-items:center;gap:.2rem;
-}
-.coeur-badge.has{border-color:rgba(255,90,120,.65);background:rgba(30,8,12,.68);}
-.coeur-badge.mine{color:#ff6b81;border-color:rgba(255,107,129,.8);background:rgba(40,10,16,.75);}
-.coeur-badge.bump{transform:scale(1.35);}
-body.light-mode .coeur-badge{background:rgba(255,255,255,.85);color:#8B6914;border-color:rgba(201,168,76,.5);}
-body.light-mode .coeur-badge.has{background:rgba(255,240,242,.92);border-color:rgba(255,90,120,.55);}
-body.light-mode .coeur-badge.mine{color:#e0355a;border-color:rgba(224,53,90,.7);background:rgba(255,235,238,.95);}
-
-.coeur-flash{
-  position:absolute;inset:0;z-index:8;
-  display:flex;align-items:center;justify-content:center;
-  pointer-events:none;
-}
-.coeur-flash-icon{
-  font-size:4.4rem;color:#ff3b5c;
-  filter:drop-shadow(0 4px 18px rgba(0,0,0,.55));
-  animation:coeurFlashPop .85s cubic-bezier(.17,.89,.32,1.25) forwards;
-}
-.coeur-flash-icon.already{font-size:3.2rem;animation:coeurFlashShake .5s ease-out forwards;}
-@keyframes coeurFlashPop{
-  0%{transform:scale(0) rotate(-14deg);opacity:0;}
-  32%{transform:scale(1.3) rotate(6deg);opacity:1;}
-  50%{transform:scale(1) rotate(0deg);opacity:1;}
-  80%{transform:scale(1) translateY(0);opacity:1;}
-  100%{transform:scale(.92) translateY(-14px);opacity:0;}
-}
-@keyframes coeurFlashShake{
-  0%{transform:scale(.6);opacity:0;}
-  25%{transform:scale(1.1) rotate(-8deg);opacity:1;}
-  50%{transform:scale(1) rotate(8deg);}
-  75%{transform:scale(1) rotate(-4deg);}
-  100%{transform:scale(1) rotate(0);opacity:0;}
-}
-
 .coeur-toast{
   position:fixed;left:50%;bottom:calc(var(--safe-bottom) + 140px);z-index:9910;
   transform:translate(-50%,10px);opacity:0;pointer-events:none;
@@ -1160,7 +1115,6 @@ body.light-mode .coeur-toast{background:rgba(255,255,255,.95);color:#8B6914;bord
 .del-close:focus-visible,
 .del-launcher:focus-visible,
 .search-clear:focus-visible,
-.coeur-badge:focus-visible,
 .g-tab:focus-visible,
 .color-swatch:focus-visible,
 .arr360:focus-visible,
@@ -1374,7 +1328,7 @@ body.light-mode .sort-select{background:rgba(255,255,255,.8);color:#8B6914;borde
 .wh-result .win{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;color:var(--or-l);display:block;margin:.2rem 0 .4rem;text-shadow:0 0 16px rgba(245,226,122,.5);}
 /* ===== SITE DYNAMIQUE ===== */
 @keyframes kwPageIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
-#page-home,#page-cat,#page-search,#page-avis,#page-club,#page-favoris{animation:kwPageIn .5s cubic-bezier(.22,.9,.3,1) backwards;}
+#page-home,#page-cat,#page-search,#page-avis,#page-club{animation:kwPageIn .5s cubic-bezier(.22,.9,.3,1) backwards;}
 .rv{opacity:0;transform:translateY(24px) scale(.97);
   transition:opacity .7s ease var(--d,0ms),transform .7s cubic-bezier(.22,.9,.3,1) var(--d,0ms)!important;}
 .rv.in{opacity:1;transform:none;}
@@ -1579,7 +1533,6 @@ body.light-mode .sort-select{background:rgba(255,255,255,.8);color:#8B6914;borde
     <div class="cat-card" onclick="openAvis()"><div class="cat-icon">⭐</div><div class="cat-label">Avis Clients</div><div class="cat-count" id="cnt-Avis">—</div></div>
   </div>
   <div class="live-sec rv" id="liveNew" style="display:none"><div class="live-title"><span>✦ Nouveautés</span><small>Faites défiler →</small></div><div class="live-track" id="liveNewTrack"></div></div>
-  <div class="live-sec rv" id="liveLove" style="display:none"><div class="live-title"><span>❤ Coups de cœur</span><small>Les plus aimés</small></div><div class="live-track" id="liveLoveTrack"></div></div>
   <div class="home-end"></div>
 </div>
 
@@ -1796,20 +1749,15 @@ const DATA_WORKER_URL = 'https://khaled-watch-data.lewilskhaled.workers.dev';
 const HIDDEN_CATS = ['Bracelets','Bagues'];
 
 let reviewsCache = [];
-let likesCache = {};
 let productsLoaded = false;
 let currentSort = 'default';
 
 async function fetchSharedData() {
   try {
-    const [rRes, lRes] = await Promise.all([
-      fetch(DATA_WORKER_URL + '/reviews'),
-      fetch(DATA_WORKER_URL + '/likes'),
-    ]);
+    const rRes = await fetch(DATA_WORKER_URL + '/reviews');
     reviewsCache = rRes.ok ? await rRes.json() : [];
-    likesCache   = lRes.ok ? await lRes.json() : {};
   } catch (e) {
-    reviewsCache = []; likesCache = {};
+    reviewsCache = [];
   }
 }
 
@@ -2083,7 +2031,6 @@ async function loadProducts() {
   clearTimeout(loaderTimer);
   if (loader) loader.classList.remove('show');
   updateCounts();
-  updateFavorisCount();
   if (typeof renderHomeLive === 'function') renderHomeLive();
 }
 
@@ -2097,14 +2044,13 @@ function updateCounts() {
     else n = allProducts.filter(p => p.categorie === c).length;
     if (typeof kwCountUp === 'function') kwCountUp(el, n); else el.textContent = n + (n <= 1 ? ' article' : ' articles');
   });
-  updateFavorisCount();
 }
 
 /* ============================================================
    NAVIGATION
    ============================================================ */
 function hideAll() {
-  ['page-home','page-cat','page-search','page-avis','page-favoris','page-club'].forEach(id => {
+  ['page-home','page-cat','page-search','page-avis','page-club'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.style.display = 'none';
   });
@@ -2200,44 +2146,6 @@ function applySort(list){
   if (currentSort === 'price_desc') return [...list].sort((a,b)=>b.prix-a.prix);
   if (currentSort === 'newest')     return [...list].sort((a,b)=> new Date(b.createdAt) - new Date(a.createdAt));
   return list;
-}
-
-/* ============================================================
-   MES COUPS DE CŒUR
-   ============================================================ */
-function openFavoris(){
-  var pf = document.getElementById('page-favoris');
-  if (!pf) return;
-  hideAll();
-  pf.style.display = 'block';
-  renderFavorisGrid();
-  window.scrollTo(0,0);
-}
-function renderFavorisGrid(){
-  const mine = getCoeurMine();
-  const ids = Object.keys(mine).filter(id => mine[id]);
-  const list = expandVariants(allProducts.filter(p => ids.includes(String(p.id))));
-  currentList = list;
-  const grid = document.getElementById('favorisGrid');
-  if (!grid) return;
-  if (!list.length){
-    if (!productsLoaded){
-      grid.innerHTML = `<div class="loader-wrap"><div class="loader"></div></div>`;
-      return;
-    }
-    grid.innerHTML = `<div class="empty-cat"><h3>Aucun coup de cœur pour l'instant</h3><p>Touchez 3 fois une carte produit pour l'ajouter ici ❤️</p></div>`;
-    return;
-  }
-  grid.innerHTML = list.map((p,i) => renderProdCardHTML(p, i, 6)).join('');
-  if (gyroActive) applyGyroToImages(gyroX, gyroY);
-  initColorCycles('#favorisGrid');
-}
-function updateFavorisCount(){
-  const el = document.getElementById('cnt-Favoris');
-  if (!el) return;
-  const mine = getCoeurMine();
-  const n = Object.keys(mine).filter(id=>mine[id]).length;
-  el.textContent = n + (n<=1?' article':' articles');
 }
 
 /* ============================================================
@@ -2677,8 +2585,7 @@ function renderProdCardHTML(p, i, eagerLimit){
     <div class="prod-img-zone${neutralBg}">
       ${imgZoneHTML}
       <div class="sunburst-overlay${neutralBg}" id="sburst-${h(p.id)}"></div>
-      ${coeurBadgeHtml(p.baseId || p.id)}
-      <div class="card-hint-3d">👆 Toucher : agrandir · 3 taps : ❤️</div>
+      <div class="card-hint-3d">👆 Toucher pour agrandir</div>
     </div>
     <div class="prod-body">
       <div class="prod-badge">${h(p.categorie)}</div>
@@ -3382,106 +3289,16 @@ function goToAvisFromToast(){
 }
 
 /* ============================================================
-   COUPS DE CŒUR
+   OUVERTURE D'UN PRODUIT + MESSAGE DISCRET
    ============================================================ */
-const COEUR_MINE_KEY = 'kw-reactions-mine';
-const COEUR_TAP_WINDOW = 400;
-
-let coeurTapState = {};
-
-function getCoeurMine(){
-  let d;
-  try { d = JSON.parse(localStorage.getItem(COEUR_MINE_KEY) || '{}'); } catch(e){ d = {}; }
-  if (!d || typeof d !== 'object' || Array.isArray(d)) d = {};
-  return d;
-}
-function saveCoeurMine(d){
-  try { localStorage.setItem(COEUR_MINE_KEY, JSON.stringify(d)); } catch(e){}
-}
-function coeurTotalFor(pid){
-  const v = likesCache[pid];
-  return (typeof v === 'number' && !isNaN(v)) ? v : 0;
-}
-function coeurBadgeHtml(pid){
-  const total = coeurTotalFor(pid);
-  const mine  = !!getCoeurMine()[pid];
-  return `<div class="coeur-badge${total>0?' has':''}${mine?' mine':''}" data-pid="${h(pid)}"
-            onclick="event.stopPropagation();triggerCoeurByPid('${js(pid)}', this)">❤ <span>${total}</span></div>`;
-}
-
-async function triggerCoeurByPid(pid, badgeEl){
-  const card = badgeEl.closest('.prod-card, .cf-slide, .ch-slide') || badgeEl;
-  await triggerCoeur(card, pid);
-}
-function updateCoeurBadge(pid){
-  const safe = String(pid).replace(/\\/g, '\\\\').replace(/"/g, '\\"');
-  let badges = [];
-  try {
-    badges = document.querySelectorAll('.coeur-badge[data-pid="' + safe + '"]');
-  } catch(err){
-    badges = [];
-  }
-  badges.forEach(badge => {
-    const total = coeurTotalFor(pid);
-    const mine  = !!getCoeurMine()[pid];
-    badge.innerHTML = '❤ <span>' + total + '</span>';
-    badge.classList.toggle('has', total > 0);
-    badge.classList.toggle('mine', mine);
-    badge.classList.add('bump');
-    setTimeout(() => badge.classList.remove('bump'), 260);
-  });
-}
-function updateAllCoeurBadges(){
-  document.querySelectorAll('.coeur-badge').forEach(b => updateCoeurBadge(b.dataset.pid));
-}
-
 function handleProductTap(card, pid, idx){
   openModal(idx);
-}
-
-async function triggerCoeur(card, pid){
-  const mine = getCoeurMine();
-  const zone = card.querySelector('.prod-img-zone');
-
-  if (mine[pid]){
-    flashCoeur(zone, true);
-    showCoeurToast('déjà aimé');
-    return;
-  }
-
-  mine[pid] = true;
-  saveCoeurMine(mine);
-  likesCache[pid] = (likesCache[pid] || 0) + 1;
-  updateCoeurBadge(pid);
-  flashCoeur(zone, false);
-  showCoeurToast('aimé');
-  if (navigator.vibrate) { try { navigator.vibrate(15); } catch(err){} }
-
-  try {
-    await fetch(DATA_WORKER_URL + '/likes', {
-      method: 'POST', headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({ pid })
-    });
-  } catch(e) { }
-}
-
-function flashCoeur(zone, already){
-  if (!zone) return;
-  const flash = document.createElement('div');
-  flash.className = 'coeur-flash';
-  flash.innerHTML = `<span class="coeur-flash-icon${already?' already':''}">❤️</span>`;
-  zone.appendChild(flash);
-  setTimeout(() => flash.remove(), 900);
 }
 
 function showCoeurToast(kind){
   const toast = document.getElementById('coeurToast');
   if (!toast) return;
-  const msgs = {
-    'aimé': 'Ajouté à vos coups de cœur ❤️',
-    'déjà aimé': 'Vous avez déjà aimé ce produit ❤️',
-    'lien-copie': 'Lien copié dans le presse-papiers 🔗'
-  };
+  const msgs = { 'lien-copie': 'Lien copié dans le presse-papiers 🔗' };
   toast.textContent = msgs[kind] || '';
   toast.classList.add('show');
   clearTimeout(toast._hideTimer);
@@ -3553,7 +3370,7 @@ initDesign();
 initLightMode();
 loadProducts();
 initGyroscope();
-fetchSharedData().then(() => { renderAvisList(); updateAllCoeurBadges(); if (typeof renderHomeLive === 'function') renderHomeLive(); });
+fetchSharedData().then(() => { renderAvisList(); if (typeof renderHomeLive === 'function') renderHomeLive(); });
 initAvisToast();
 
 /* ============================================================
@@ -4456,7 +4273,7 @@ function kwCountUp(el, n){
   (function f(t){ const k = Math.min(1, (t - t0) / 900); el.textContent = txt(Math.round(n * (1 - Math.pow(1 - k, 3)))); if (k < 1) requestAnimationFrame(f); })(t0);
 }
 
-/* sections vivantes : nouveautés + coups de cœur (données réelles du catalogue) */
+/* section vivante : nouveautés (données réelles du catalogue) */
 function liveCardHTML(p, badge, cls){
   const c = p.couleurs && p.couleurs[0] && p.couleurs[0].image ? p.couleurs[0].image : p.image;
   return `<div class="live-card" onclick="delGoToProduct('${js(p.id)}')"><div class="live-img"><img src="${h(thumbUrl(c || FALLBACK_IMG, 420))}" alt="${h(p.nom)}" loading="lazy" decoding="async" onerror="this.src='${FALLBACK_IMG}'"><span class="live-badge ${cls||''}">${badge}</span></div><div class="live-name">${h(p.nom)}</div><div class="live-price">${fmt(p.prix)} <small>FCFA</small></div></div>`;
@@ -4474,19 +4291,14 @@ function liveAuto(track){
 }
 function renderHomeLive(){
   if (!productsLoaded) return;
-  const secNew = document.getElementById('liveNew'), secLove = document.getElementById('liveLove');
-  if (!secNew || !secLove) return;
+  const secNew = document.getElementById('liveNew');
+  if (!secNew) return;
   const fresh = allProducts.map((p, i) => ({ p, i }))
     .sort((a, b) => (new Date(b.p.createdAt) - new Date(a.p.createdAt)) || (b.i - a.i)).map(x => x.p).slice(0, 8);
   const tr = document.getElementById('liveNewTrack');
   if (fresh.length >= 3){ tr.innerHTML = fresh.map(p => liveCardHTML(p, '✦ Nouveau', '')).join(''); secNew.style.display = ''; liveAuto(tr); }
   else secNew.style.display = 'none';
-  const loved = allProducts.filter(p => (likesCache[p.id] || 0) > 0)
-    .sort((a, b) => (likesCache[b.id] || 0) - (likesCache[a.id] || 0)).slice(0, 8);
-  const tl = document.getElementById('liveLoveTrack');
-  if (loved.length >= 2){ tl.innerHTML = loved.map(p => liveCardHTML(p, '❤ ' + likesCache[p.id], 'love')).join(''); secLove.style.display = ''; liveAuto(tl); }
-  else secLove.style.display = 'none';
-  [secNew, secLove].forEach(s => { if (s.style.display !== 'none' && window._kwIO && s.classList.contains('rv')) window._kwIO.observe(s); });
+  if (secNew.style.display !== 'none' && window._kwIO && secNew.classList.contains('rv')) window._kwIO.observe(secNew);
 }
 renderHomeLive();
 </script>
