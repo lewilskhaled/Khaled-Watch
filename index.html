@@ -509,35 +509,11 @@ img.prod-img.loaded{opacity:1;}
   background:radial-gradient(ellipse at 50% 20%, #211d16 0%, #0a0806 74%);
 }
 .ch-slide{position:absolute;inset:0;width:100%;height:100%;}
-/* Carrousel circulaire : les produits sont posés sur un cercle dont le centre est dans le coin gauche */
-.ch-card{
-  position:absolute;left:var(--px,0px);top:var(--py,0px);
-  width:var(--cw,100%);height:var(--chh,100%);
-  transform-origin:0 0;
-  transition:transform .7s cubic-bezier(.4,0,.2,1),opacity .7s ease,filter .7s ease;
-  will-change:transform,opacity;
-  pointer-events:none;
-}
-.ch-dial{
-  position:absolute;z-index:1;pointer-events:none;
-  left:calc(var(--px,0px) - var(--R,0px));top:calc(var(--py,0px) - var(--R,0px));
-  width:calc(var(--R,0px) * 2);height:calc(var(--R,0px) * 2);border-radius:50%;
-  border:1px solid rgba(201,168,76,.30);
-  box-shadow:0 0 46px rgba(201,168,76,.10),inset 0 0 46px rgba(201,168,76,.07);
-  transition:transform .7s cubic-bezier(.4,0,.2,1);
-}
-.ch-dial::before{
-  content:'';position:absolute;inset:0;border-radius:50%;
-  background:repeating-conic-gradient(from 89.4deg,rgba(232,201,122,.85) 0deg 1.2deg,transparent 1.2deg 60deg);
-  -webkit-mask:radial-gradient(circle closest-side,transparent calc(100% - 11px),#000 calc(100% - 10px),#000 100%,transparent 100%);
-          mask:radial-gradient(circle closest-side,transparent calc(100% - 11px),#000 calc(100% - 10px),#000 100%,transparent 100%);
-}
-.ch-hub{
-  position:absolute;z-index:2;left:var(--px,0px);top:var(--py,0px);
-  width:11px;height:11px;margin:-5px 0 0 -5px;border-radius:50%;pointer-events:none;
-  background:radial-gradient(circle,#fff8dd 0%,#E8C97A 45%,#8B6914 100%);
-  box-shadow:0 0 4px 1px rgba(255,248,221,.9),0 0 16px rgba(201,168,76,.85);
-}
+
+
+
+
+
 .ch-info-layer{
   position:absolute;inset:0;z-index:500;pointer-events:none;
   transition:opacity .2s ease;
@@ -1286,6 +1262,39 @@ body.light-mode .sort-select{background:rgba(255,255,255,.8);color:#8B6914;borde
 }
 #catalogLoader.show{display:flex;}
 #catalogLoader span{font-size:.65rem;letter-spacing:.15em;color:var(--or-l);text-transform:uppercase;font-weight:700;text-shadow:var(--ts);}
+
+/* ===== CHAÎNES — Cascade 3D dorée ===== */
+#chainesFeed .ch-stage{perspective:1300px;perspective-origin:50% 45%;}
+.ch-card{
+  position:absolute;left:0;top:0;width:100%;height:100%;transform-origin:50% 50%;
+  backface-visibility:hidden;pointer-events:none;will-change:transform,opacity;
+  transition:transform .85s cubic-bezier(.22,1.15,.36,1),opacity .6s ease,filter .6s ease;
+}
+#chainesFeed .ch-card .cf-img-wrap{padding:5rem .4rem 9rem;}
+.ch-card .cf-img-wrap::after{
+  content:'';position:absolute;inset:0;pointer-events:none;opacity:0;
+  background:linear-gradient(110deg,transparent 38%,rgba(255,244,190,.38) 50%,transparent 62%);
+  background-size:250% 100%;background-position:150% 0;
+}
+.ch-card.is-cur .cf-img-wrap::after{animation:chShine 1.3s ease-out .35s 1;}
+@keyframes chShine{0%{opacity:1;background-position:150% 0}100%{opacity:1;background-position:-50% 0}}
+.ch-aura{
+  position:absolute;left:50%;top:44%;width:120vmin;height:120vmin;z-index:0;pointer-events:none;
+  transform:translate(-50%,-50%);border-radius:50%;
+  background:radial-gradient(circle,rgba(255,214,120,.28) 0%,rgba(201,168,76,.10) 38%,transparent 66%);
+  animation:chAura 4s ease-in-out infinite;
+}
+@keyframes chAura{0%,100%{transform:translate(-50%,-50%) scale(.92);opacity:.7}50%{transform:translate(-50%,-50%) scale(1.08);opacity:1}}
+.ch-spark{
+  position:absolute;left:50%;top:44%;width:7px;height:7px;border-radius:50%;z-index:4;pointer-events:none;
+  background:radial-gradient(circle,#fffceb,#F5E27A 50%,transparent 75%);box-shadow:0 0 8px #F5E27A;
+  animation:chSpark .9s ease-out forwards;
+}
+@keyframes chSpark{from{transform:translate(-50%,-50%) scale(1);opacity:1}to{transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(.2);opacity:0}}
+.ch-rail{position:absolute;right:10px;top:50%;transform:translateY(-50%);z-index:600;display:flex;flex-direction:column;gap:7px;pointer-events:none;}
+.ch-rail i{display:block;width:4px;height:12px;border-radius:4px;background:rgba(255,255,255,.28);
+  transition:height .4s cubic-bezier(.22,1,.36,1),background .3s,box-shadow .3s;}
+.ch-rail i.on{height:28px;background:var(--or-l);box-shadow:0 0 10px rgba(201,168,76,.8);}
 /* ====== PATCH PERFORMANCE — désactive les animations lourdes ====== */
 .prod-card, .cat-card, .g-tab, .page-cat-header, .search-bar-wrap,
 .search-input-row, .cf-g-tab, .stream-pill, .bottom-nav,
@@ -2216,6 +2225,77 @@ let chCards = [];       // [{el, pos}]  pos = position sur le cercle (0 = devant
 let chRot = 0;          // rotation cumulée du cadran
 let chR = 0;            // rayon du cercle (px)
 
+function chWrap(p,n){p=((p%n)+n)%n;if(p>n/2)p-=n;return p;}
+function chLayout(){chR=0;}
+function chDial(){}
+function chApply(c,hide){
+  const p=c.pos,ap=Math.abs(p);let t,o,f;
+  if(p===0){t='translateY(0) rotateX(0deg) scale(1)';o=1;f='none';}
+  else if(p>0&&ap===1){t='translateY(66%) rotateX(-58deg) scale(.58)';o=.55;f='blur(2.5px) brightness(.7)';}
+  else if(p<0&&ap===1){t='translateY(-72%) rotateX(58deg) scale(.58)';o=0;f='blur(6px)';}
+  else{t=p>0?'translateY(110%) rotateX(-70deg) scale(.4)':'translateY(-110%) rotateX(70deg) scale(.4)';o=0;f='blur(8px)';}
+  if(hide)o=0;
+  c.el.style.transform=t;c.el.style.opacity=o;c.el.style.filter=f;c.el.style.zIndex=String(100-ap);
+  c.el.classList.toggle('is-cur',p===0&&!hide);
+}
+function updateChCounter(){
+  const el=document.getElementById('chCounter');
+  if(el)el.textContent=chList.length?`${chIndex+1} / ${chList.length}`:'0 / 0';
+  const rail=document.getElementById('chRail');
+  if(rail)Array.from(rail.children).forEach((d,i)=>d.classList.toggle('on',i===chIndex));
+}
+function chBurst(){
+  const stage=document.getElementById('chStage');if(!stage)return;
+  for(let i=0;i<14;i++){
+    const s=document.createElement('div');s.className='ch-spark';
+    const a=Math.random()*Math.PI*2,d=60+Math.random()*110;
+    s.style.setProperty('--dx',(Math.cos(a)*d).toFixed(0)+'px');
+    s.style.setProperty('--dy',(Math.sin(a)*d).toFixed(0)+'px');
+    s.style.width=s.style.height=(4+Math.random()*6)+'px';
+    stage.appendChild(s);setTimeout(()=>s.remove(),950);
+  }
+}
+function initChainStage(startIdx){
+  const stage=document.getElementById('chStage');
+  chIndex=startIdx||0;chRot=0;
+  if(!chList.length){
+    chCards=[];
+    stage.innerHTML=`<div class="ch-slide current"><div class="cf-empty"><h3>✦ Collection à venir</h3><p>Aucune chaîne disponible pour le moment.<br>Revenez bientôt !</p></div></div>`;
+    updateChCounter();return;
+  }
+  const n=chList.length;
+  stage.innerHTML='<div class="ch-aura"></div>'
+    +(n>1?'<div class="ch-rail" id="chRail">'+chList.map(()=>'<i></i>').join('')+'</div>':'')
+    +chList.map((p,i)=>`<div class="ch-card" data-i="${i}">${chainImgHTML(p,i)}</div>`).join('')
+    +`<div class="ch-slide ch-info-layer" id="chInfo">${chainInfoHTML(chList[chIndex],chIndex)}</div>`;
+  chCards=Array.from(stage.querySelectorAll('.ch-card')).map((el,i)=>({el,pos:chWrap(i-chIndex,n)}));
+  chCards.forEach(c=>{c.el.style.transition='none';chApply(c);});
+  void stage.offsetWidth;
+  chCards.forEach(c=>{c.el.style.transition='';});
+  updateChCounter();
+}
+function goChain(dir){
+  if(chAnimating||chList.length<2)return;
+  chAnimating=true;
+  const n=chList.length;
+  const newIndex=(chIndex+dir+n)%n;chIndex=newIndex;
+  const jumped=[];
+  chCards.forEach(c=>{
+    const raw=c.pos-dir,w=chWrap(raw,n);c.pos=w;
+    if(w!==raw){c.el.style.transition='none';chApply(c,true);jumped.push(c);}else chApply(c);
+  });
+  if(jumped.length){void document.getElementById('chStage').offsetWidth;jumped.forEach(c=>{c.el.style.transition='';chApply(c);});}
+  chBurst();
+  if(navigator.vibrate){try{navigator.vibrate(10);}catch(e){}}
+  const info=document.getElementById('chInfo');
+  if(info)info.classList.add('swap');
+  setTimeout(()=>{
+    if(info){info.innerHTML=chainInfoHTML(chList[newIndex],newIndex);info.classList.remove('swap');}
+    updateChCounter();
+  },CH_DUR*0.45);
+  setTimeout(()=>{chAnimating=false;},CH_DUR+30);
+}
+
 function chainImgHTML(p, idx) {
   const colors  = p.couleurs && p.couleurs.length ? p.couleurs : [];
   const mainImg = colors.length && colors[0].image ? colors[0].image : (p.image || FALLBACK_IMG);
@@ -2249,69 +2329,15 @@ function chainInfoHTML(p, idx) {
 
 
 /* géométrie : centre du cercle collé au bord gauche, le produit actif au milieu de l'écran */
-function chLayout() {
-  const stage = document.getElementById('chStage');
-  const W = stage.clientWidth, H = stage.clientHeight;
-  chR = Math.min(W / 2, H * 0.46);
-  stage.style.setProperty('--px', (W / 2 - chR) + 'px');
-  stage.style.setProperty('--py', (H * 0.46) + 'px');
-  stage.style.setProperty('--R',  chR + 'px');
-  stage.style.setProperty('--cw', W + 'px');
-  stage.style.setProperty('--chh', H + 'px');
-}
 
-function chApply(c, forceHidden) {
-  const n  = chList.length;
-  const ap = Math.abs(c.pos);
-  const a  = c.pos * CH_STEP;
-  const vis = ap <= Math.min(2, Math.floor(n / 2));
-  const k  = Math.min(ap, 2);
-  const sc = [1, .52, .36][k];
-  const op = (vis && !forceHidden) ? [1, .8, .45][k] : 0;
-  const br = [1, .82, .64][k];
-  c.el.style.transform = `rotate(${a}deg) translateX(${chR}px) rotate(${-a}deg) translate(-50%,-50%) scale(${sc})`;
-  c.el.style.opacity = op;
-  c.el.style.filter = `brightness(${br})`;
-  c.el.style.zIndex = String(100 - ap);
-}
 
-function chDial() {
-  const d = document.getElementById('chDial');
-  if (d) d.style.transform = `rotate(${chRot}deg)`;
-}
 
-function initChainStage(startIdx) {
-  const stage = document.getElementById('chStage');
-  chIndex = startIdx || 0;
-  chRot = 0;
-  updateChCounter();
-  if (!chList.length) {
-    chCards = [];
-    stage.innerHTML = `<div class="ch-slide current"><div class="cf-empty">
-      <h3>✦ Collection à venir</h3>
-      <p>Aucune chaîne disponible ${chGender!=='tous' ? 'pour '+chGender+' ' : ''}pour le moment.<br>Revenez bientôt !</p>
-    </div></div>`;
-    return;
-  }
-  stage.innerHTML = '<div class="ch-dial" id="chDial"></div><div class="ch-hub"></div>'
-    + chList.map((p, i) => `<div class="ch-card" data-i="${i}">${chainImgHTML(p, i)}</div>`).join('')
-    + `<div class="ch-slide ch-info-layer" id="chInfo">${chainInfoHTML(chList[chIndex], chIndex)}</div>`;
-  chLayout();
-  const n = chList.length;
-  chCards = Array.from(stage.querySelectorAll('.ch-card')).map((el, i) => {
-    let pos = i - chIndex;
-    if (Math.abs(pos) > Math.floor(n / 2)) pos -= n * Math.round(pos / n);
-    return { el, pos };
-  });
-  chCards.forEach(c => { c.el.style.transition = 'none'; chApply(c); });
-  void stage.offsetWidth;
-  chCards.forEach(c => { c.el.style.transition = ''; });
-}
 
-function updateChCounter() {
-  const el = document.getElementById('chCounter');
-  if (el) el.textContent = chList.length ? `${chIndex+1} / ${chList.length}` : '0 / 0';
-}
+
+
+
+
+
 
 function switchChColor(dot, idx, colorIdx) {
   const p = chList[idx];
@@ -2323,48 +2349,7 @@ function switchChColor(dot, idx, colorIdx) {
   }
   dot.closest('.cf-colors').querySelectorAll('.cf-color-dot').forEach((d,i) => d.classList.toggle('active', i===colorIdx));
 }
-function goChain(dir) {
-  if (chAnimating || chList.length < 2) return;
-  chAnimating = true;
-  const n = chList.length;
-  const newIndex = (chIndex + dir + n) % n;
-  chIndex = newIndex;
 
-  // tout le cercle tourne dans le sens du swipe (haut = produit suivant, bas = produit précédent)
-  chRot -= dir * CH_STEP;
-  chDial();
-  chCards.forEach(c => { c.pos -= dir; chApply(c); });
-
-  // infos (nom, prix, WhatsApp) : masquées puis remplacées par celles du nouveau produit
-  const info = document.getElementById('chInfo');
-  if (info) info.classList.add('swap');
-  setTimeout(() => {
-    if (info) {
-      info.innerHTML = chainInfoHTML(chList[newIndex], newIndex);
-      info.classList.remove('swap');
-    }
-    updateChCounter();
-  }, CH_DUR * 0.45);
-
-  // fin de rotation : les produits sortis du cercle visible repassent de l'autre côté, sans qu'on le voie
-  setTimeout(() => {
-    const half = Math.floor(n / 2);
-    const moved = [];
-    chCards.forEach(c => {
-      if (Math.abs(c.pos) > half) {
-        c.pos -= n * Math.round(c.pos / n);
-        c.el.style.transition = 'none';
-        chApply(c, true);
-        moved.push(c);
-      }
-    });
-    if (moved.length) {
-      void document.getElementById('chStage').offsetWidth;
-      moved.forEach(c => { c.el.style.transition = ''; chApply(c); });
-    }
-    chAnimating = false;
-  }, CH_DUR + 30);
-}
 
 window.addEventListener('resize', () => {
   const feed = document.getElementById('chainesFeed');
