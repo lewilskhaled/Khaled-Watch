@@ -1365,8 +1365,6 @@ body.light-mode .sort-select{background:rgba(255,255,255,.8);color:#8B6914;borde
 @keyframes kwBounce{0%{transform:scale(1)}35%{transform:scale(1.35) translateY(-3px)}70%{transform:scale(.95)}100%{transform:scale(1)}}
 .nav-item.active .nav-icon{animation:kwBounce .55s cubic-bezier(.3,1.4,.5,1);}
 /* ===== Vidéo de fond : invisible tant qu'elle ne joue pas (aucun bouton natif visible) ===== */
-#bgPoster{position:fixed;inset:0;z-index:-4;pointer-events:none;
-  background:#0d0a06 url('https://images.unsplash.com/photo-1618215649514-c73c18549d63?w=900&q=70') center/cover no-repeat;}
 body #bgVideo{opacity:0;transition:opacity .9s ease;pointer-events:none!important;-webkit-user-select:none;user-select:none;}
 body #bgVideo.is-playing{opacity:1;}
 #bgVideo::-webkit-media-controls{display:none!important;}
@@ -1375,6 +1373,9 @@ body #bgVideo.is-playing{opacity:1;}
 #bgVideo::-webkit-media-controls-start-playback-button{display:none!important;}
 #bgVideo::-webkit-media-controls-overlay-play-button{display:none!important;}
 #bgVideo::-webkit-media-controls-enclosure{display:none!important;}
+/* ===== Les vues plein écran laissent voir la vidéo de fond ===== */
+#colliersFeed,#chainesFeed{background:rgba(0,0,0,.2)!important;}
+#chainesFeed .ch-stage{background:transparent!important;}
 /* ====== PATCH PERFORMANCE — désactive les animations lourdes ====== */
 .prod-card, .cat-card, .g-tab, .page-cat-header, .search-bar-wrap,
 .search-input-row, .cf-g-tab, .stream-pill, .bottom-nav,
@@ -1491,9 +1492,7 @@ body #bgVideo.is-playing{opacity:1;}
 
 <div id="catalogLoader"><div class="loader"></div><span>Chargement de la collection…</span></div>
 
-<div id="bgLayer"></div>
 <div id="bgOverlay"></div>
-<div id="bgPoster"></div>
 <video id="bgVideo"
        autoplay muted loop playsinline webkit-playsinline x5-playsinline
        preload="auto" tabindex="-1"
@@ -1775,20 +1774,6 @@ async function fetchSharedData() {
   }
 }
 
-const DEFAULT_BG = 'https://images.unsplash.com/photo-1618215649514-c73c18549d63?w=1600&q=85';
-
-const SLIDESHOW_BGS = [
-  'https://images.unsplash.com/photo-1618215650148-e8e61eae521c?w=1600&q=90',
-  'https://images.unsplash.com/photo-1628608569034-e214532ddfde?w=1600&q=90',
-  'https://images.unsplash.com/photo-1662333084914-3eea84762671?w=1600&q=90',
-  'https://images.unsplash.com/photo-1618215650067-8e8addd96b0e?w=1600&q=90',
-  'https://images.unsplash.com/photo-1618215650201-8d552591218d?w=1600&q=90',
-  'https://images.unsplash.com/photo-1605143185597-9fe1a8065fbb?w=1600&q=90'
-];
-
-const SLIDESHOW_INTERVAL_MS = 1 * 60 * 60 * 1000;
-const SLIDESHOW_KEY          = 'kw-slide-idx';
-const SLIDESHOW_TIME_KEY     = 'kw-slide-time';
 const CAT_ICONS = {'Montres':'⌚','Montres Luxueuses':'💎','Chaînes':'⛓','Colliers':'📿','Autres':'✨'};
 const FALLBACK_IMG = 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=70';
 
@@ -1889,111 +1874,6 @@ function initDesign() {
   document.documentElement.style.setProperty('--card-glow-color', glowColor);
   document.documentElement.style.setProperty('--glow-intensity',  glowInt);
 
-  initVideoBg();
-  initBgSlideshow();
-}
-
-function initBgSlideshow() {
-  var isMobile = window.innerWidth <= 1024;
-
-  if (!isMobile) {
-    var fixedBg = localStorage.getItem('kw-client-bg') || DEFAULT_BG;
-    setBgImage(fixedBg);
-    return;
-  }
-
-  var now        = Date.now();
-  var lastTime   = parseInt(localStorage.getItem(SLIDESHOW_TIME_KEY) || '0', 10);
-  var savedIdx   = parseInt(localStorage.getItem(SLIDESHOW_KEY) || '0', 10);
-
-  var adminBg = localStorage.getItem('kw-client-bg') || '';
-
-  var elapsed = now - lastTime;
-
-  if (elapsed >= SLIDESHOW_INTERVAL_MS || lastTime === 0) {
-    var newIdx = (savedIdx + Math.floor(elapsed / SLIDESHOW_INTERVAL_MS)) % SLIDESHOW_BGS.length;
-    localStorage.setItem(SLIDESHOW_KEY, newIdx);
-    localStorage.setItem(SLIDESHOW_TIME_KEY, now - (elapsed % SLIDESHOW_INTERVAL_MS));
-    savedIdx = newIdx;
-  }
-
-  var currentBg = adminBg || SLIDESHOW_BGS[savedIdx];
-  setBgImage(currentBg);
-
-  var nextIdx = (savedIdx + 1) % SLIDESHOW_BGS.length;
-  var preload = new Image();
-  preload.src = SLIDESHOW_BGS[nextIdx];
-
-  var timeUntilNext = SLIDESHOW_INTERVAL_MS - ((now - parseInt(localStorage.getItem(SLIDESHOW_TIME_KEY), 10)) % SLIDESHOW_INTERVAL_MS);
-  if (timeUntilNext < 1000) timeUntilNext = SLIDESHOW_INTERVAL_MS;
-
-  setTimeout(function slideTick() {
-    if (document.body.classList.contains('video-bg-active')) {
-      setTimeout(slideTick, SLIDESHOW_INTERVAL_MS);
-      return;
-    }
-    var curIdx = parseInt(localStorage.getItem(SLIDESHOW_KEY) || '0', 10);
-    var nxtIdx = (curIdx + 1) % SLIDESHOW_BGS.length;
-    var adminOverride = localStorage.getItem('kw-client-bg') || '';
-    var nextBg = adminOverride || SLIDESHOW_BGS[nxtIdx];
-
-    localStorage.setItem(SLIDESHOW_KEY, nxtIdx);
-    localStorage.setItem(SLIDESHOW_TIME_KEY, Date.now());
-
-    fadeToBg(nextBg);
-
-    var pr = new Image();
-    pr.src = SLIDESHOW_BGS[(nxtIdx + 1) % SLIDESHOW_BGS.length];
-
-    setTimeout(slideTick, SLIDESHOW_INTERVAL_MS);
-  }, timeUntilNext);
-}
-
-function setBgImage(url) {
-  var layer = document.getElementById('bgLayer');
-  if (layer) layer.style.backgroundImage = "url('" + url + "')";
-}
-
-function fadeToBg(url) {
-  var layer = document.getElementById('bgLayer');
-  if (!layer) return;
-  layer.style.transition = 'opacity .8s ease';
-  layer.style.opacity    = '0';
-  setTimeout(function() {
-    layer.style.backgroundImage = "url('" + url + "')";
-    layer.style.opacity         = '1';
-  }, 850);
-}
-
-function initVideoBg() {
-  if (window.innerWidth > 1024) return;
-
-  const videoSrc = localStorage.getItem('kw-client-video-bg') || '';
-  const videoEl  = document.getElementById('bgVideo');
-  if (!videoEl) return;
-
-  if (videoSrc) {
-    if (videoEl.src !== videoSrc && videoEl.getAttribute('data-src') !== videoSrc) {
-      videoEl.setAttribute('data-src', videoSrc);
-      videoEl.src = videoSrc;
-      videoEl.load();
-    }
-    document.body.classList.add('video-bg-active');
-
-    const playPromise = videoEl.play();
-    if (playPromise !== undefined) {
-      playPromise.catch(() => {
-        document.addEventListener('touchstart', function tryPlay() {
-          videoEl.play().catch(() => {});
-          document.removeEventListener('touchstart', tryPlay);
-        }, { once: true, passive: true });
-      });
-    }
-  } else {
-    document.body.classList.remove('video-bg-active');
-    videoEl.pause();
-    videoEl.src = '';
-  }
 }
 
 /* ============================================================
@@ -3784,13 +3664,6 @@ body .home-title,body .home-subtitle,body .home-desc{filter:drop-shadow(0 3px 14
 <style>
 /* ===== FOND LUXE — ONGLET MONTRES (téléphone uniquement) ===== */
 @media (max-width:1024px){
-  #colliersFeed.montres-lux{background:#0c0905!important;}
-  /* photo de marbre doré, légèrement adoucie pour que la montre du client reste la vedette */
-  #colliersFeed.montres-lux::before{
-    content:'';position:absolute;inset:-4%;z-index:-2;pointer-events:none;
-    background:url('fond-montres.jpg') center 30%/cover no-repeat;
-    filter:blur(5px) brightness(.62) saturate(1.2) contrast(1.05);
-  }
   /* lumière dorée au centre + vignette sombre */
   #colliersFeed.montres-lux::after{
     content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;
@@ -3830,59 +3703,6 @@ body .home-title,body .home-subtitle,body .home-desc{filter:drop-shadow(0 3px 14
 }
 </style>
 
-<style>
-/* ===== FOND LUXE — COLLIER FEMME (téléphone uniquement) ===== */
-@media (max-width:1024px){
-  #colliersFeed.collier-lux{
-    background:#f7f1e3 url('fond-collier.jpg') center top/cover no-repeat!important;
-  }
-  /* voile champagne + vignette dorée */
-  #colliersFeed.collier-lux::before{
-    content:'';position:absolute;inset:0;z-index:0;pointer-events:none;
-    background:
-      radial-gradient(ellipse 80% 55% at 50% 38%,rgba(255,236,185,.28) 0%,rgba(255,236,185,0) 70%),
-      radial-gradient(ellipse 120% 80% at 50% 50%,rgba(0,0,0,0) 55%,rgba(60,40,8,.28) 100%);
-  }
-  /* barre du haut claire et dorée */
-  #colliersFeed.collier-lux .cf-topbar{
-    background:linear-gradient(180deg,rgba(255,250,236,.92) 0%,rgba(255,250,236,.55) 65%,transparent 100%);
-  }
-  #colliersFeed.collier-lux .cf-back{
-    background:rgba(255,255,255,.75);border-color:rgba(139,105,20,.55);color:#8B6914;
-    box-shadow:0 4px 14px rgba(139,105,20,.22);
-  }
-  #colliersFeed.collier-lux .cf-title{
-    background:linear-gradient(90deg,#8B6914 0%,#C9A84C 45%,#8B6914 100%);
-    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
-    filter:drop-shadow(0 1px 0 rgba(255,255,255,.8));
-  }
-  #colliersFeed.collier-lux .cf-counter{
-    color:#6e520f;background:rgba(255,255,255,.78);border-color:rgba(139,105,20,.45);
-  }
-  /* collier mis en valeur sur le fond clair */
-  #colliersFeed.collier-lux .cf-glow{
-    background:radial-gradient(circle at 50% 42%,rgba(255,226,140,.42) 0%,rgba(255,226,140,.12) 38%,transparent 62%);
-  }
-  #colliersFeed.collier-lux .cf-img-wrap img{
-    filter:drop-shadow(0 18px 26px rgba(70,45,5,.38)) drop-shadow(0 0 22px rgba(201,168,76,.45)) brightness(1.06) contrast(1.06) saturate(1.1);
-  }
-  /* panneau d'information : verre noir luxe avec liseré or */
-  #colliersFeed.collier-lux .cf-info{
-    padding-top:2.6rem;
-    background:linear-gradient(0deg,rgba(10,8,5,.96) 0%,rgba(14,11,7,.9) 55%,rgba(14,11,7,0) 100%);
-  }
-  #colliersFeed.collier-lux .cf-info::before{
-    content:'';position:absolute;left:12%;right:12%;top:1.9rem;height:1px;
-    background:linear-gradient(90deg,transparent,#E8C97A,transparent);opacity:.8;
-  }
-  #colliersFeed.collier-lux .cf-badge{
-    background:rgba(201,168,76,.16);border-color:rgba(232,201,122,.7);
-  }
-  #colliersFeed.collier-lux .cf-swipe-hint{color:#6e520f;text-shadow:0 1px 0 rgba(255,255,255,.7);}
-  /* étincelles dorées */
-  #colliersFeed.collier-lux .fb{display:block!important;}
-}
-</style>
 
 
 <style>
