@@ -1364,14 +1364,17 @@ body.light-mode .sort-select{background:rgba(255,255,255,.8);color:#8B6914;borde
 @keyframes kwRipple{to{transform:scale(1);opacity:0}}
 @keyframes kwBounce{0%{transform:scale(1)}35%{transform:scale(1.35) translateY(-3px)}70%{transform:scale(.95)}100%{transform:scale(1)}}
 .nav-item.active .nav-icon{animation:kwBounce .55s cubic-bezier(.3,1.4,.5,1);}
-/* ===== Vidéo de fond : aucun bouton natif (lecture/pause) ne doit apparaître ===== */
-#bgVideo{pointer-events:none!important;-webkit-user-select:none;user-select:none;}
-#bgVideo::-webkit-media-controls,
-#bgVideo::-webkit-media-controls-panel,
-#bgVideo::-webkit-media-controls-play-button,
-#bgVideo::-webkit-media-controls-start-playback-button,
-#bgVideo::-webkit-media-controls-overlay-play-button,
-#bgVideo::-webkit-media-controls-enclosure{display:none!important;opacity:0!important;-webkit-appearance:none;}
+/* ===== Vidéo de fond : invisible tant qu'elle ne joue pas (aucun bouton natif visible) ===== */
+#bgPoster{position:fixed;inset:0;z-index:-4;pointer-events:none;
+  background:#0d0a06 url('https://images.unsplash.com/photo-1618215649514-c73c18549d63?w=900&q=70') center/cover no-repeat;}
+body #bgVideo{opacity:0;transition:opacity .9s ease;pointer-events:none!important;-webkit-user-select:none;user-select:none;}
+body #bgVideo.is-playing{opacity:1;}
+#bgVideo::-webkit-media-controls{display:none!important;}
+#bgVideo::-webkit-media-controls-panel{display:none!important;}
+#bgVideo::-webkit-media-controls-play-button{display:none!important;}
+#bgVideo::-webkit-media-controls-start-playback-button{display:none!important;}
+#bgVideo::-webkit-media-controls-overlay-play-button{display:none!important;}
+#bgVideo::-webkit-media-controls-enclosure{display:none!important;}
 /* ====== PATCH PERFORMANCE — désactive les animations lourdes ====== */
 .prod-card, .cat-card, .g-tab, .page-cat-header, .search-bar-wrap,
 .search-input-row, .cf-g-tab, .stream-pill, .bottom-nav,
@@ -1490,12 +1493,12 @@ body.light-mode .sort-select{background:rgba(255,255,255,.8);color:#8B6914;borde
 
 <div id="bgLayer"></div>
 <div id="bgOverlay"></div>
+<div id="bgPoster"></div>
 <video id="bgVideo"
        autoplay muted loop playsinline webkit-playsinline x5-playsinline
        preload="auto" tabindex="-1"
        disablepictureinpicture disableremoteplayback
        controlslist="nodownload nofullscreen noremoteplayback noplaybackrate"
-       poster="https://images.unsplash.com/photo-1618215649514-c73c18549d63?w=900&q=70"
        aria-hidden="true">
 </video>
 
@@ -3764,7 +3767,8 @@ body .home-title,body .home-subtitle,body .home-desc{filter:drop-shadow(0 3px 14
   play();
   ['loadedmetadata','loadeddata','canplay','canplaythrough'].forEach(function(ev){ v.addEventListener(ev,play); });
   /* si le téléphone met la vidéo en pause tout seul, on la relance */
-  v.addEventListener('pause',function(){ if(!document.hidden && !v.ended) setTimeout(play,150); });
+  v.addEventListener('playing',function(){ v.classList.add('is-playing'); });
+  v.addEventListener('pause',function(){ v.classList.remove('is-playing'); if(!document.hidden && !v.ended) setTimeout(play,150); });
   /* certains téléphones exigent un premier geste : le moindre toucher la lance, sans rien afficher */
   ['touchstart','touchend','pointerdown','click','scroll','keydown'].forEach(function(ev){
     window.addEventListener(ev,play,{passive:true,capture:true});
@@ -4252,7 +4256,7 @@ document.addEventListener('visibilitychange', () => { if (!document.hidden) club
   }
 
   /* apparition progressive des éléments de l'accueil (après l'ouverture) */
-  var items = document.querySelectorAll('#page-home .home-hero > *, #page-home .cat-card, #page-home .club-banner');
+  var items = document.querySelectorAll('#page-home .home-hero > *:not(.home-rotate), #page-home .cat-card, #page-home .club-banner');
   items.forEach(function(e, n){ e.classList.add('rv'); e.style.setProperty('--d', (n * 70) + 'ms'); });
   var started = false;
   function startReveal(){
@@ -4273,8 +4277,10 @@ document.addEventListener('visibilitychange', () => { if (!document.hidden) club
   if (sp){
     sp.addEventListener('animationend', function(e){ if (e.animationName === 'splashOut') startReveal(); });
     sp.addEventListener('click', function(){ setTimeout(startReveal, 400); });
-    setTimeout(startReveal, 6600);
+    setTimeout(startReveal, 4600);
   } else startReveal();
+  /* filet de sécurité : rien ne doit rester caché */
+  setTimeout(function(){ document.querySelectorAll('.rv').forEach(function(e){ e.classList.add('in'); }); }, 8000);
 
   /* effet d'onde dorée au toucher */
   document.addEventListener('pointerdown', function(e){
