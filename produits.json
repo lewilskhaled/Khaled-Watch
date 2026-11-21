@@ -1756,5 +1756,24 @@
       }
     ],
     "createdAt": "2026-11-21T17:30:19.801Z"
+  },
+  {
+    "id": "1795282530479",
+    "nom": "Valenzo",
+    "prix": 7000,
+    "categorie": "Montres",
+    "genre": "Unisexe",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1795282532570-t5ypbz-Valenzo-principal.png",
+    "description": "",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "or",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [],
+    "createdAt": "2026-11-21T17:35:30.479Z"
   }
 ]
