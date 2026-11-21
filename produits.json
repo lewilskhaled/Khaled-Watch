@@ -1712,5 +1712,49 @@
     "flash_reduction": 0,
     "couleurs": [],
     "createdAt": "2026-11-21T17:06:28.685Z"
+  },
+  {
+    "id": "1795282219801",
+    "nom": "Valenzo",
+    "prix": 7000,
+    "categorie": "Montres",
+    "genre": "Unisexe",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1795282221926-io4qd7-Valenzo-principal.png",
+    "description": "",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "or",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [
+      {
+        "nom": "Noir",
+        "hex": "#0e0c07",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1795282221943-2jhzam-Valenzo-Noir.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Noir",
+        "hex": "#0e0c07",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1795282221959-ymqjw5-Valenzo-Noir.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Gris",
+        "hex": "#6c6c6a",
+        "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1795282221976-9gkc62-Valenzo-Gris.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      }
+    ],
+    "createdAt": "2026-11-21T17:30:19.801Z"
   }
 ]
