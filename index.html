@@ -1364,6 +1364,14 @@ body.light-mode .sort-select{background:rgba(255,255,255,.8);color:#8B6914;borde
 @keyframes kwRipple{to{transform:scale(1);opacity:0}}
 @keyframes kwBounce{0%{transform:scale(1)}35%{transform:scale(1.35) translateY(-3px)}70%{transform:scale(.95)}100%{transform:scale(1)}}
 .nav-item.active .nav-icon{animation:kwBounce .55s cubic-bezier(.3,1.4,.5,1);}
+/* ===== Vidéo de fond : aucun bouton natif (lecture/pause) ne doit apparaître ===== */
+#bgVideo{pointer-events:none!important;-webkit-user-select:none;user-select:none;}
+#bgVideo::-webkit-media-controls,
+#bgVideo::-webkit-media-controls-panel,
+#bgVideo::-webkit-media-controls-play-button,
+#bgVideo::-webkit-media-controls-start-playback-button,
+#bgVideo::-webkit-media-controls-overlay-play-button,
+#bgVideo::-webkit-media-controls-enclosure{display:none!important;opacity:0!important;-webkit-appearance:none;}
 /* ====== PATCH PERFORMANCE — désactive les animations lourdes ====== */
 .prod-card, .cat-card, .g-tab, .page-cat-header, .search-bar-wrap,
 .search-input-row, .cf-g-tab, .stream-pill, .bottom-nav,
@@ -1483,8 +1491,11 @@ body.light-mode .sort-select{background:rgba(255,255,255,.8);color:#8B6914;borde
 <div id="bgLayer"></div>
 <div id="bgOverlay"></div>
 <video id="bgVideo"
-       autoplay muted loop playsinline
-       preload="auto"
+       autoplay muted loop playsinline webkit-playsinline x5-playsinline
+       preload="auto" tabindex="-1"
+       disablepictureinpicture disableremoteplayback
+       controlslist="nodownload nofullscreen noremoteplayback noplaybackrate"
+       poster="https://images.unsplash.com/photo-1618215649514-c73c18549d63?w=900&q=70"
        aria-hidden="true">
 </video>
 
@@ -3739,19 +3750,30 @@ body .prod-card::after{animation:none!important;opacity:.35!important;}
 body .home-title,body .home-subtitle,body .home-desc{filter:drop-shadow(0 3px 14px rgba(0,0,0,.75));}
 </style>
 <script>
-/* Vidéo = seul fond d'écran (mobile + ordinateur) */
+/* Vidéo = seul fond d'écran (mobile + ordinateur) — lecture fiable, sans bouton visible */
 (function(){
   document.body.classList.remove('light-mode');
-  localStorage.setItem('kw-light-mode','0');
-  var v=document.getElementById('bgVideo');
-  if(!v)return;
-  v.muted=true;v.loop=true;v.setAttribute('playsinline','');
+  try{ localStorage.setItem('kw-light-mode','0'); }catch(e){}
+  var v=document.getElementById('bgVideo'); if(!v) return;
+  v.muted=true; v.defaultMuted=true; v.loop=true; v.controls=false;
+  v.setAttribute('playsinline',''); v.setAttribute('webkit-playsinline','');
+  v.removeAttribute('controls');
   v.src='fond.mp4';
   document.body.classList.add('video-bg-active');
-  var p=v.play();
-  if(p&&p.catch)p.catch(function(){
-    document.addEventListener('touchstart',function(){v.play().catch(function(){});},{once:true,passive:true});
+  function play(){ if(!v.paused && !v.ended) return; var p=v.play(); if(p&&p.catch) p.catch(function(){}); }
+  play();
+  ['loadedmetadata','loadeddata','canplay','canplaythrough'].forEach(function(ev){ v.addEventListener(ev,play); });
+  /* si le téléphone met la vidéo en pause tout seul, on la relance */
+  v.addEventListener('pause',function(){ if(!document.hidden && !v.ended) setTimeout(play,150); });
+  /* certains téléphones exigent un premier geste : le moindre toucher la lance, sans rien afficher */
+  ['touchstart','touchend','pointerdown','click','scroll','keydown'].forEach(function(ev){
+    window.addEventListener(ev,play,{passive:true,capture:true});
   });
+  document.addEventListener('visibilitychange',function(){ if(!document.hidden) play(); });
+  /* à la fin de l'ouverture, on s'assure que la vidéo tourne */
+  var sp=document.getElementById('splash');
+  if(sp) sp.addEventListener('animationend',function(e){ if(e.animationName==='splashOut') play(); });
+  setTimeout(play,1500); setTimeout(play,4000); setTimeout(play,6500);
 })();
 </script>
 
