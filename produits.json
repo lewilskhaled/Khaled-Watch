@@ -1693,5 +1693,24 @@
     "flash_reduction": 0,
     "couleurs": [],
     "createdAt": "2026-11-21T15:08:37.647Z"
+  },
+  {
+    "id": "1795280788685",
+    "nom": "Cartier Strasse",
+    "prix": 12000,
+    "categorie": "Montres",
+    "genre": "Femme",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1795280790914-07c8m5-Cartier-Strasse-principal.png",
+    "description": "",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "or",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [],
+    "createdAt": "2026-11-21T17:06:28.685Z"
   }
 ]
