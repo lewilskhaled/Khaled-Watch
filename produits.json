@@ -1775,5 +1775,24 @@
     "flash_reduction": 0,
     "couleurs": [],
     "createdAt": "2026-11-21T17:35:30.479Z"
+  },
+  {
+    "id": "1795348070165",
+    "nom": "Casque JBL",
+    "prix": 10000,
+    "categorie": "Autres",
+    "genre": "Unisexe",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1795348072186-4516hp-Casque-JBL-principal.png",
+    "description": "",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "or",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [],
+    "createdAt": "2026-11-22T11:47:50.165Z"
   }
 ]
