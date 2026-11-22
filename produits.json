@@ -1832,5 +1832,24 @@
     "flash_reduction": 0,
     "couleurs": [],
     "createdAt": "2026-11-22T11:59:58.562Z"
+  },
+  {
+    "id": "1795350075318",
+    "nom": "Manette PS5",
+    "prix": 20000,
+    "categorie": "Autres",
+    "genre": "Unisexe",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1795350080289-036kgg-Manette-PS5-principal.png",
+    "description": "",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "or",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [],
+    "createdAt": "2026-11-22T12:21:15.318Z"
   }
 ]
