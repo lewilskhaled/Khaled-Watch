@@ -1813,5 +1813,24 @@
     "flash_reduction": 0,
     "couleurs": [],
     "createdAt": "2026-11-22T11:49:41.725Z"
+  },
+  {
+    "id": "1795348798562",
+    "nom": "Manette PS4 new",
+    "prix": 13000,
+    "categorie": "Autres",
+    "genre": "Unisexe",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1795348801632-f6i2nm-Manette-PS4-new-principal.png",
+    "description": "Plusieurs couleur disponible",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "or",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [],
+    "createdAt": "2026-11-22T11:59:58.562Z"
   }
 ]
