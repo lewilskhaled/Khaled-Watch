@@ -50,7 +50,7 @@ body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--txt);m
   position:absolute;left:50%;top:38%;width:170vmax;height:170vmax;margin:-85vmax 0 0 -85vmax;z-index:0;pointer-events:none;
   background:repeating-conic-gradient(from 0deg,rgba(245,226,122,.16) 0deg 3deg,transparent 3deg 15deg);
   -webkit-mask:radial-gradient(circle,#000 0%,transparent 42%);mask:radial-gradient(circle,#000 0%,transparent 42%);
-  opacity:0;animation:ksRays 2.6s ease-out 3.1s forwards,ksSpin 40s linear 3.1s infinite;
+  opacity:0;animation:ksRays 2.6s ease-out 3.1s forwards;
 }
 @keyframes ksRays{0%{opacity:0;transform:scale(.3)}40%{opacity:1}100%{opacity:.55;transform:scale(1)}}
 @keyframes ksSpin{to{rotate:360deg}}
@@ -1459,7 +1459,7 @@ body #bgVideo.is-playing{opacity:1;}
   var cv=document.getElementById('ksDust'), cx=cv.getContext('2d'), W,H,DPR=Math.min(window.devicePixelRatio||1,2);
   function size(){W=cv.width=innerWidth*DPR;H=cv.height=innerHeight*DPR;}
   size(); addEventListener('resize',size);
-  var N=110, P=[], t0=performance.now(), burst=false, alive=true;
+  var N=56, P=[], t0=performance.now(), burst=false, alive=true;
   for(var n=0;n<N;n++){var ang=Math.random()*6.283, d=Math.max(innerWidth,innerHeight)*(.35+Math.random()*.6);
     P.push({a:ang,d:d,s:(1.2+Math.random()*2.6)*DPR,sp:.6+Math.random()*.9,vx:0,vy:0,x:0,y:0,tw:Math.random()*6});}
   function frame(now){
@@ -1467,7 +1467,7 @@ body #bgVideo.is-playing{opacity:1;}
     var t=(now-t0)/1000, ox=W/2, oy=H*.38;
     cx.clearRect(0,0,W,H);
     if(!burst && t>=3.15){burst=true;P.forEach(function(p){var v=(3+Math.random()*9)*DPR,aa=Math.random()*6.283;p.vx=Math.cos(aa)*v;p.vy=Math.sin(aa)*v;p.x=ox;p.y=oy;});}
-    cx.globalCompositeOperation='lighter';
+    cx.globalCompositeOperation='source-over';
     P.forEach(function(p){
       var al,x,y;
       if(!burst){
@@ -1480,15 +1480,17 @@ body #bgVideo.is-playing{opacity:1;}
       }
       if(al<=0) return;
       var tw=.6+.4*Math.sin(t*6+p.tw), rad=p.s*(burst?1.1:1)*(.7+.5*tw);
-      var gr=cx.createRadialGradient(x,y,0,x,y,rad*3);
-      gr.addColorStop(0,'rgba(255,251,230,'+al+')');gr.addColorStop(.35,'rgba(245,226,122,'+(al*.6)+')');gr.addColorStop(1,'rgba(201,168,76,0)');
-      cx.fillStyle=gr;cx.beginPath();cx.arc(x,y,rad*3,0,6.283);cx.fill();
+      cx.globalAlpha=Math.min(1,al);
+      cx.fillStyle='#F5E27A'; cx.beginPath(); cx.arc(x,y,rad*1.6,0,6.283); cx.fill();
+      cx.fillStyle='#fffbe6'; cx.beginPath(); cx.arc(x,y,rad*.7,0,6.283); cx.fill();
     });
     if(t<6.4) requestAnimationFrame(frame); else alive=false;
   }
   requestAnimationFrame(frame);
   /* un toucher passe l'animation */
   sp.addEventListener('click',function(){sp.style.animation='splashOut .45s ease-in forwards';alive=false;});
+  /* une fois terminé, l'écran d'ouverture est retiré de la page : plus aucun calcul en arrière-plan */
+  sp.addEventListener('animationend',function(e){ if(e.animationName==='splashOut'){ alive=false; sp.remove(); } });
 })();
 </script>
 
@@ -1818,14 +1820,20 @@ function onDeviceOrientation(e) {
 
 function startGyroLoop() {
   if (gyroRafId) return;
+  let lastX = 1e9, lastY = 1e9;
   function loop() {
+    gyroRafId = requestAnimationFrame(loop);
+    if (document.hidden) return;
+    /* l'effet n'est utilisé que sur les grilles de produits et la fiche produit */
+    const pc = document.getElementById('page-cat'), ps = document.getElementById('page-search'), pm = document.getElementById('prodModal');
+    const need = (pc && pc.style.display === 'block') || (ps && ps.style.display === 'block') || (pm && pm.classList.contains('open'));
+    if (!need) return;
     gyroX += (rawGX - gyroX) * GYRO_SMOOTH;
     gyroY += (rawGY - gyroY) * GYRO_SMOOTH;
-
+    if (Math.abs(gyroX - lastX) < 0.15 && Math.abs(gyroY - lastY) < 0.15) return;
+    lastX = gyroX; lastY = gyroY;
     applyGyroToImages(gyroX, gyroY);
     applyGyroToModal(gyroX, gyroY);
-
-    gyroRafId = requestAnimationFrame(loop);
   }
   loop();
 }
@@ -2142,7 +2150,7 @@ function renderColliersFeed() {
     <div class="cf-slide" data-idx="${i}">
       <div class="cf-glow"></div>
       <div class="cf-img-wrap">
-        <img id="cfimg-${i}" src="${h(thumbUrl(mainImg, 1300, 90))}" alt="${h(p.nom)}" loading="${i<2?'eager':'lazy'}" decoding="async" onerror="this.src='${FALLBACK_IMG}'">
+        <img id="cfimg-${i}" src="${h(thumbUrl(mainImg, 900, 82))}" alt="${h(p.nom)}" loading="${i<2?'eager':'lazy'}" decoding="async" onerror="this.src='${FALLBACK_IMG}'">
       </div>
       <div class="cf-info">
        <div class="cf-badge">${CF_CONFIG[cfCat].badge}</div>
@@ -2166,7 +2174,7 @@ function switchCfColor(dot, slideIdx, colorIdx) {
   const c = p.couleurs[colorIdx];
   const img = document.getElementById('cfimg-' + slideIdx);
   if (img && c.image) {
-    const newSrc = thumbUrl(c.image, 1300, 90);
+    const newSrc = thumbUrl(c.image, 900, 82);
     const preload = new Image();
     preload.onload = () => {
       img.style.transition = 'opacity .28s ease';
@@ -2320,7 +2328,7 @@ function chainImgHTML(p, idx) {
   return `
     <div class="cf-glow"></div>
     <div class="cf-img-wrap">
-      <img id="chimg-${idx}" src="${h(thumbUrl(mainImg, 1100, 88))}" alt="${h(p.nom)}" decoding="async" onerror="this.src='${FALLBACK_IMG}'">
+      <img id="chimg-${idx}" src="${h(thumbUrl(mainImg, 800, 82))}" alt="${h(p.nom)}" decoding="async" onerror="this.src='${FALLBACK_IMG}'">
     </div>`;
 }
 
@@ -2363,7 +2371,7 @@ function switchChColor(dot, idx, colorIdx) {
   const c = p.couleurs[colorIdx];
   const img = document.getElementById('chimg-' + idx);
   if (img && c.image) {
-    swapImgSmooth(img, thumbUrl(c.image, 1300, 90));
+    swapImgSmooth(img, thumbUrl(c.image, 900, 82));
   }
   dot.closest('.cf-colors').querySelectorAll('.cf-color-dot').forEach((d,i) => d.classList.toggle('active', i===colorIdx));
 }
@@ -2604,11 +2612,10 @@ function openModal(idx) {
   goToSlide(idx, false);
   document.getElementById('prodModal').classList.add('open');
   document.body.style.overflow = 'hidden';
-  currentList.forEach(p => {
-    (p.couleurs || []).forEach(c => {
-      if (c.image) preloadImage(thumbUrl(c.image, 1400, 90));
-    });
-  });
+  setTimeout(() => {   /* on ne précharge que les couleurs du produit ouvert */
+    const cur = currentList[idx];
+    if (cur) (cur.couleurs || []).forEach(c => { if (c.image) preloadImage(thumbUrl(c.image, 1000, 85)); });
+  }, 600);
 }
 function closeModal() {
   document.getElementById('prodModal').classList.remove('open');
@@ -2662,7 +2669,7 @@ function buildAllSlides() {
     <div class="modal-slide" data-slide="${i}">
       <div class="modal-img-wrap${p.categorie === 'Colliers' ? ' neutral-bg' : ''}" id="wrap360-${i}"
            ${has360 ? `ontouchstart="start360(event,${i})" ontouchmove="move360(event,${i})" ontouchend="end360(event,${i})" onmousedown="mdown360(event,${i})"` : ''}>
-        <img id="mimg-${i}" src="${h(thumbUrl(mainImg, 1400, 90))}" alt="${h(p.nom)}" onerror="this.src='${FALLBACK_IMG}'" draggable="false">
+        <img id="mimg-${i}" src="${h(thumbUrl(mainImg, 1000, 85))}" alt="${h(p.nom)}" onerror="this.src='${FALLBACK_IMG}'" draggable="false">
         ${has360 ? `<div class="badge360">🔄 360°<br><span>Glisser</span></div>` : ''}
         ${arrows360}
         ${dots360}
@@ -2704,7 +2711,7 @@ function showAngle(slideIdx, frameIdx) {
   if (!s) return;
   s.cur = ((frameIdx % s.frames.length) + s.frames.length) % s.frames.length;
   const img = document.getElementById('mimg-' + slideIdx);
-  if (img) { img.style.opacity = '.7'; img.src = thumbUrl(s.frames[s.cur], 1400, 90); img.onload = () => { img.style.opacity = '1'; }; }
+  if (img) { img.style.opacity = '.7'; img.src = thumbUrl(s.frames[s.cur], 1000, 85); img.onload = () => { img.style.opacity = '1'; }; }
   const dotsEl = document.getElementById('dots360-' + slideIdx);
   if (dotsEl) dotsEl.querySelectorAll('.dot360').forEach((d,i) => d.classList.toggle('active', i===s.cur));
 }
@@ -2757,7 +2764,7 @@ function updateModalNav() {
 function switchModalColor(slideIdx, colorIdx, thumb) {
   const p = currentList[slideIdx]; const c = p.couleurs[colorIdx];
   const img = document.getElementById('mimg-' + slideIdx);
-  const url = thumbUrl(c.image || p.image, 1400, 90);
+  const url = thumbUrl(c.image || p.image, 1000, 85);
   swapImgSmooth(img, url);
   thumb.closest('.modal-color-strip').querySelectorAll('.modal-color-thumb').forEach((t,i) => t.classList.toggle('active', i===colorIdx));
 }
@@ -4272,5 +4279,21 @@ function renderHomeLive(){
 }
 renderHomeLive();
 </script>
+<style>
+/* ===== PERFORMANCE : verre allégé et animations continues retirées ===== */
+body .prod-card,body .avis-card,body .avis-form-wrap,body .empty-cat,body .g-tab,body .sort-select,body .search-input-row,
+body .live-card,body .club-step,body .club-tier,body .club-prize,body .club-note{
+  -webkit-backdrop-filter:none!important;backdrop-filter:none!important;}
+body .prod-card{background:linear-gradient(135deg,rgba(46,39,29,.82),rgba(30,25,18,.76))!important;}
+body .live-card,body .club-step,body .club-tier,body .club-prize,body .club-note{background:rgba(34,29,21,.74)!important;}
+body .cat-card,body .page-cat-header{-webkit-backdrop-filter:blur(7px)!important;backdrop-filter:blur(7px)!important;}
+body nav.bottom-nav{-webkit-backdrop-filter:blur(10px)!important;backdrop-filter:blur(10px)!important;}
+body .cat-card::before,body .prod-card::before,body nav.bottom-nav::before{animation:none!important;}
+.prod-img{will-change:auto!important;}
+/* le flottement des grandes images se fait sur le conteneur (sans filtre) : bien plus léger */
+.cf-img-wrap img{animation:none!important;}
+.cf-img-wrap{animation:cfFloat 4.5s ease-in-out infinite;}
+.ch-card .cf-img-wrap{animation:none;}
+</style>
 </body>
 </html>
