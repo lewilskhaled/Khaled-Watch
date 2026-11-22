@@ -4359,22 +4359,25 @@ body .cat-card::before,body .prod-card::before,body nav.bottom-nav::before{anima
   background:radial-gradient(circle,rgba(201,168,76,.24),rgba(201,168,76,0) 70%);pointer-events:none;}
 </style>
 <style>
-/* ===== BOXES PRODUIT — version premium (sans voile ni flou) ===== */
+/* ===== BOXES PRODUIT — effet verre (glass) + finitions premium ===== */
 body .prod-card{
-  border:1px solid transparent!important;border-radius:20px!important;overflow:hidden;
-  background:
-    linear-gradient(180deg,#1c1711 0%,#100c08 100%) padding-box,
-    linear-gradient(150deg,rgba(255,236,160,.9) 0%,rgba(201,168,76,.18) 32%,rgba(201,168,76,.08) 62%,rgba(232,201,122,.65) 100%) border-box!important;
-  box-shadow:0 14px 34px rgba(0,0,0,.55),0 0 22px rgba(201,168,76,.12)!important;
-  -webkit-backdrop-filter:none!important;backdrop-filter:none!important;
+  border:1px solid rgba(255,255,255,.28)!important;
+  border-top-color:rgba(255,255,255,.65)!important;border-left-color:rgba(255,255,255,.45)!important;
+  border-radius:20px!important;overflow:hidden;
+  background:linear-gradient(135deg,rgba(255,255,255,.20) 0%,rgba(255,255,255,.06) 45%,rgba(255,255,255,.12) 100%)!important;
+  -webkit-backdrop-filter:blur(10px) saturate(150%)!important;backdrop-filter:blur(10px) saturate(150%)!important;
+  box-shadow:0 12px 36px rgba(0,0,0,.45),inset 0 1.5px 0 rgba(255,255,255,.7),inset 0 -1px 0 rgba(255,255,255,.12),inset 0 0 22px rgba(255,255,255,.07)!important;
 }
-/* on supprime le reflet figé et le halo intérieur qui donnaient un aspect flou */
-body .prod-card::before,body .prod-card::after{display:none!important;}
+/* reflet de verre doux dans le coin (pas de bande, pas d'animation) */
+body .prod-card::before{display:none!important;}
+body .prod-card::after{
+  display:block!important;content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:5;
+  background:linear-gradient(135deg,rgba(255,255,255,.16) 0%,rgba(255,255,255,.03) 34%,rgba(255,255,255,0) 52%);
+  box-shadow:none!important;animation:none!important;opacity:1!important;
+}
 body .prod-img-zone,body .prod-img-zone.neutral-bg{
-  background:
-    radial-gradient(ellipse 72% 58% at 50% 46%,rgba(232,201,122,.30) 0%,rgba(201,168,76,.10) 42%,rgba(20,16,10,0) 72%),
-    linear-gradient(180deg,#221c13 0%,#120e09 100%)!important;
-  border-bottom:1px solid rgba(201,168,76,.35)!important;
+  background:radial-gradient(ellipse 72% 58% at 50% 46%,rgba(255,243,176,.24) 0%,rgba(232,201,122,.08) 45%,rgba(255,255,255,0) 72%),rgba(255,255,255,.04)!important;
+  border-bottom:1px solid rgba(255,255,255,.2)!important;
 }
 /* ombre douce sous le produit, comme posé sur un présentoir */
 body .prod-img-zone::before,body .prod-img-zone.img-ready::before{
