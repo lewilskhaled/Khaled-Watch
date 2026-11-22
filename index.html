@@ -1924,7 +1924,7 @@ async function loadProducts() {
   const loader = document.getElementById('catalogLoader');
   const loaderTimer = setTimeout(()=>{ if(!productsLoaded && loader) loader.classList.add('show'); }, 500);
   try {
-    const r = await fetch('produits.json?t=' + Date.now());
+    const r = await fetch('produits.json', { cache: 'no-cache' });
     if (!r.ok) throw 0;
     const raw = await r.json();
     allProducts = Array.isArray(raw)
@@ -1936,6 +1936,7 @@ async function loadProducts() {
   if (loader) loader.classList.remove('show');
   updateCounts();
   if (typeof renderHomeLive === 'function') renderHomeLive();
+  if (typeof warmImages === 'function') warmImages();
 }
 
 function updateCounts() {
@@ -2299,6 +2300,15 @@ function initChainStage(startIdx){
   void stage.offsetWidth;
   chCards.forEach(c=>{c.el.style.transition='';});
   updateChCounter();
+  chLoadNear(); setTimeout(() => chLoadNear(true), 2500);
+}
+function chLoadNear(all){
+  chCards.forEach(c => {
+    if (all || Math.abs(c.pos) <= 1){
+      const im = c.el.querySelector('img');
+      if (im && !im.getAttribute('src') && im.dataset.src) im.src = im.dataset.src;
+    }
+  });
 }
 function goChain(dir){
   if(chAnimating||chList.length<2)return;
@@ -2311,6 +2321,7 @@ function goChain(dir){
     if(w!==raw){c.el.style.transition='none';chApply(c,true);jumped.push(c);}else chApply(c);
   });
   if(jumped.length){void document.getElementById('chStage').offsetWidth;jumped.forEach(c=>{c.el.style.transition='';chApply(c);});}
+  chLoadNear();
   chBurst();
   if(navigator.vibrate){try{navigator.vibrate(10);}catch(e){}}
   const info=document.getElementById('chInfo');
@@ -2328,7 +2339,7 @@ function chainImgHTML(p, idx) {
   return `
     <div class="cf-glow"></div>
     <div class="cf-img-wrap">
-      <img id="chimg-${idx}" src="${h(thumbUrl(mainImg, 800, 82))}" alt="${h(p.nom)}" decoding="async" onerror="this.src='${FALLBACK_IMG}'">
+      <img id="chimg-${idx}" data-src="${h(thumbUrl(mainImg, 800, 82))}" alt="${h(p.nom)}" decoding="async" onerror="this.src='${FALLBACK_IMG}'">
     </div>`;
 }
 
@@ -2853,7 +2864,7 @@ function thumbUrl(url, width, quality) {
       return u.toString();
     }
     const stripped = url.replace(/^https?:\/\//, '');
-    return `https://images.weserv.nl/?url=${encodeURIComponent(stripped)}&w=${width}&output=webp&q=${q}&sharp=1`;
+    return `https://images.weserv.nl/?url=${encodeURIComponent(stripped)}&w=${width}&we&output=webp&q=${q}`;
   } catch (e) {
     return url;
   }
@@ -4266,6 +4277,21 @@ function liveAuto(track){
     else track.scrollBy({ left: step, behavior: 'smooth' });
   }, 3200);
 }
+/* pendant l'écran d'ouverture, on charge à l'avance les premières photos de chaque onglet */
+function warmImages(){
+  if (!allProducts.length || window._kwWarmed) return; window._kwWarmed = true;
+  const main = p => (p.couleurs && p.couleurs[0] && p.couleurs[0].image) || p.image;
+  const pick = (list, w, q, n) => list.slice(0, n).map(main).filter(Boolean).map(u => thumbUrl(u, w, q));
+  const urls = [].concat(
+    pick(expandVariants(allProducts.filter(p => p.categorie === 'Montres')), 900, 82, 3),
+    pick(expandVariants(allProducts.filter(p => p.categorie === 'Montres Luxueuses')), 900, 82, 3),
+    pick(allProducts.filter(p => p.categorie === 'Colliers' && p.genre === 'Femme'), 900, 82, 3),
+    pick(allProducts.filter(p => p.categorie === 'Chaînes' && p.genre === 'Homme'), 800, 82, 3)
+  );
+  let i = 0;
+  const next = () => { if (i < urls.length) preloadImage(urls[i++]).then(next); };
+  setTimeout(() => { next(); next(); }, 400);
+}
 function renderHomeLive(){
   if (!productsLoaded) return;
   const secNew = document.getElementById('liveNew');
@@ -4294,6 +4320,9 @@ body .cat-card::before,body .prod-card::before,body nav.bottom-nav::before{anima
 .cf-img-wrap img{animation:none!important;}
 .cf-img-wrap{animation:cfFloat 4.5s ease-in-out infinite;}
 .ch-card .cf-img-wrap{animation:none;}
+/* halo doré visible tant que la photo n'est pas arrivée */
+.cf-img-wrap::before{content:'';position:absolute;left:50%;top:46%;width:46vmin;height:46vmin;transform:translate(-50%,-50%);border-radius:50%;
+  background:radial-gradient(circle,rgba(201,168,76,.24),rgba(201,168,76,0) 70%);pointer-events:none;}
 </style>
 </body>
 </html>
