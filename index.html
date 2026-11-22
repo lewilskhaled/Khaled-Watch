@@ -1373,9 +1373,11 @@ body #bgVideo.is-playing{opacity:1;}
 #bgVideo::-webkit-media-controls-start-playback-button{display:none!important;}
 #bgVideo::-webkit-media-controls-overlay-play-button{display:none!important;}
 #bgVideo::-webkit-media-controls-enclosure{display:none!important;}
-/* ===== Les vues plein écran laissent voir la vidéo de fond ===== */
-#colliersFeed,#chainesFeed{background:rgba(0,0,0,.2)!important;}
-#chainesFeed .ch-stage{background:transparent!important;}
+/* ===== Del : boutons des cartes produit ===== */
+.del-prod-btns{display:flex;flex-direction:column;gap:.3rem;flex-shrink:0;}
+.del-prod-btns .del-prod-add{width:100%;}
+.del-prod-360{background:rgba(201,168,76,.16);border:1px solid rgba(201,168,76,.55);color:var(--or-l);font-size:.58rem;font-weight:700;border-radius:8px;padding:.35rem .5rem;cursor:pointer;white-space:nowrap;-webkit-tap-highlight-color:transparent;font-family:'Montserrat',sans-serif;}
+.del-prod-360:active{background:rgba(201,168,76,.35);}
 /* ====== PATCH PERFORMANCE — désactive les animations lourdes ====== */
 .prod-card, .cat-card, .g-tab, .page-cat-header, .search-bar-wrap,
 .search-input-row, .cf-g-tab, .stream-pill, .bottom-nav,
@@ -2611,6 +2613,8 @@ function openModal(idx) {
 function closeModal() {
   document.getElementById('prodModal').classList.remove('open');
   document.body.style.overflow = '';
+  if (window._savedList){ currentList = window._savedList; window._savedList = null; }
+  if (window._delReturn){ window._delReturn = false; openDelPanel(); }
 }
 
 const view360 = {};
@@ -2679,6 +2683,7 @@ function buildAllSlides() {
         <button class="modal-wa-btn" onclick="commander(this,'${js(p.id)}')">
           ${WA_SVG_BIG} Commander sur WhatsApp
         </button>
+        <button class="modal-share-btn" onclick="askDelAbout('${js(p.baseId||p.id)}')">💬 Demander l'avis de Del</button>
         <button class="modal-share-btn" onclick="shareProduct('${js(p.id)}')">🔗 Partager ce produit</button>
       </div>
     </div>`;
@@ -3270,7 +3275,7 @@ initAvisToast();
 /* ============================================================
    DEL — Assistante Style
    ============================================================ */
-let delState = { genre:null, cart:[], greeted:false, pendingCat:null, pendingMood:null, pendingBudget:null, history:[] };
+let delState = { genre:null, cart:[], greeted:false, pendingCat:null, pendingMood:null, pendingBudget:null, history:[], tone:null };
 const DEL_COMPLIMENTS = ["Vous avez vraiment du goût ✨","Excellent choix, ça va vous aller à merveille !","J'adore cette sélection 💛","Ça, c'est du style !","Un très bel accessoire, bon choix !"];
 const DEL_CAT_KEYWORDS = {
   'Montres': ['montre','montres'],
@@ -3328,7 +3333,7 @@ function delQuickReplies(options){
   const body = document.getElementById('delBody');
   const wrap = document.createElement('div');
   wrap.className = 'del-quick'; wrap.id = 'delActiveQuick';
-  options.slice(0,2).forEach(opt => {
+  options.slice(0,4).forEach(opt => {
     const btn = document.createElement('button');
     btn.className = 'del-chip'; btn.textContent = opt.label;
     btn.onclick = () => { delClearQuick(); opt.action(); };
@@ -3339,9 +3344,31 @@ function delQuickReplies(options){
 function delClearQuick(){ const el = document.getElementById('delActiveQuick'); if (el) el.remove(); }
 
 async function delStart(){
-  await delBotSay("Bonjour, bienvenue chez Khaled Watch 👋 Je suis <strong>Del</strong>, votre assistante style.");
-  await delBotSay("Dites-moi ce que vous cherchez — un accessoire, un style, une occasion — je vous écoute 🙂");
+  await delBotSay("Bonjour / Hello 👋 Je suis <strong>Del</strong>, votre assistante style chez Khaled Watch. Je parle français et English.");
+  await delBotSay("Avant de commencer : préférez-vous que je vous vouvoie ou que je vous tutoie ? / Would you like me to use “vous” (formal) or “tu” (casual)?");
+  delQuickReplies([
+    {label:'Vouvoiement (vous)', action:() => delSetTone('vous')},
+    {label:'Tutoiement (tu)',    action:() => delSetTone('tu')}
+  ]);
 }
+async function delSetTone(t){
+  delState.tone = t;
+  delUserSay(t === 'vous' ? 'Vouvoiement' : 'Tutoiement');
+  await delBotSay(t === 'vous'
+    ? "Très bien, je vous vouvoie 😊 Dites-moi ce que vous cherchez, ou posez-moi toutes vos questions."
+    : "Super, on se tutoie 😊 Dis-moi ce que tu cherches, ou pose-moi toutes tes questions.");
+  delFaqChips();
+}
+function delFaqChips(){
+  const tu = delState.tone === 'tu';
+  delQuickReplies([
+    {label:'🚚 Livraison', action:() => delAsk('Comment se passe la livraison ?')},
+    {label:'💳 Paiement',  action:() => delAsk('Comment je paie ma commande ?')},
+    {label:'🎁 Club',      action:() => delAsk(tu ? 'Explique-moi le Club Prestige' : 'Expliquez-moi le Club Prestige')},
+    {label:'↩️ Retour',    action:() => delAsk('Puis-je retourner un produit ?')}
+  ]);
+}
+function delAsk(q){ delClearQuick(); delUserSay(q); delHandleFreeText(q); }
 
 function delParseIntent(text){
   const t = text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
@@ -3359,14 +3386,22 @@ function delParseIntent(text){
   return out;
 }
 
+/* un produit n'est "360°" que s'il a vraiment des photos d'autres angles (gauche, droite, dos) */
+function hasRealAngles(p){
+  const has = o => !!(o && (o.img_gauche || o.img_droit || o.img_dos));
+  return has(p) || (p.couleurs || []).some(has);
+}
 function buildProductsForAI(){
   return allProducts.map(p => ({
-    id: p.id, nom: p.nom, categorie: p.categorie,
-    genre: p.genre, prix: p.prix
+    id: p.id, nom: p.nom, categorie: p.categorie, genre: p.genre, prix: p.prix,
+    couleurs: (p.couleurs || []).map(c => c.nom).filter(Boolean),
+    description: (p.description || '').slice(0, 300),
+    moods: Array.isArray(p.moods) ? p.moods : [],
+    vue360: hasRealAngles(p)
   }));
 }
 
-async function delHandleFreeText(text){
+async function delHandleFreeText(text, focusId){
   delState.history.push({ role:'user', content:text });
   delShowTyping();
 
@@ -3378,7 +3413,10 @@ async function delHandleFreeText(text){
         message: text,
         history: delState.history.slice(-8),
         products: buildProductsForAI(),
-        genre: delState.genre
+        genre: delState.genre,
+        tone: delState.tone,
+        focus_product_id: focusId || null,
+        club: (typeof clubUser !== 'undefined' && clubUser) ? { name: clubUser.name, level: clubUser.level, purchases: clubUser.purchases } : null
       })
     });
 
@@ -3420,8 +3458,8 @@ function delRenderAiProducts(ids){
     const img = colors.length && colors[0].image ? colors[0].image : (p.image || FALLBACK_IMG);
     const card = document.createElement('div');
     card.className = 'del-prod-card';
-    card.innerHTML = `<img src="${h(thumbUrl(img, 160))}" alt="${h(p.nom)}" onerror="this.src='${FALLBACK_IMG}'"><div class="del-prod-info"><div class="del-prod-name">${h(p.nom)}</div><div class="del-prod-price">${fmt(p.prix)} FCFA</div></div><button class="del-prod-add" onclick="event.stopPropagation();delAddToCart('${js(p.id)}', this)">➕</button>`;
-    card.onclick = (e) => { if (e.target.classList.contains('del-prod-add')) return; delGoToProduct(p.id); };
+    card.innerHTML = `<img src="${h(thumbUrl(img, 160))}" alt="${h(p.nom)}" onerror="this.src='${FALLBACK_IMG}'"><div class="del-prod-info"><div class="del-prod-name">${h(p.nom)}</div><div class="del-prod-price">${fmt(p.prix)} FCFA</div></div><div class="del-prod-btns"><button class="del-prod-360" onclick="event.stopPropagation();delView360('${js(p.id)}')" aria-label="Voir le produit">${hasRealAngles(p) ? '🔄 360°' : '🔍 Voir'}</button><button class="del-prod-add" onclick="event.stopPropagation();delAddToCart('${js(p.id)}', this)">➕</button></div>`;
+    card.onclick = (e) => { if (e.target.closest('.del-prod-btns')) return; delGoToProduct(p.id); };
     body.appendChild(card);
   });
   delScrollBottom();
@@ -3520,6 +3558,20 @@ function delGoToProduct(id){
   openCat(cat);
   const idx = currentList.findIndex(x=>x.id===id || x.baseId===id);
   openModal(idx>=0?idx:0);
+}
+
+function delView360(id){
+  const p = allProducts.find(x => x.id === id); if (!p) return;
+  window._savedList = currentList; window._delReturn = true;
+  closeDelPanel(); currentList = [p]; openModal(0);
+}
+function askDelAbout(id){
+  const p = allProducts.find(x => x.id === id); if (!p) return;
+  closeModal();
+  delState.greeted = true;
+  openDelPanel(); delClearQuick();
+  const q = delState.tone === 'tu' ? `Que penses-tu de « ${p.nom} » ? Pour quel genre de sortie ou de personne ?` : `Que pensez-vous de « ${p.nom} » ? Pour quel genre de sortie ou de personne ?`;
+  delUserSay(q); delHandleFreeText(q, p.id);
 }
 
 function delAddToCart(id, btnEl){
@@ -3664,6 +3716,13 @@ body .home-title,body .home-subtitle,body .home-desc{filter:drop-shadow(0 3px 14
 <style>
 /* ===== FOND LUXE — ONGLET MONTRES (téléphone uniquement) ===== */
 @media (max-width:1024px){
+  #colliersFeed.montres-lux{background:#0c0905!important;}
+  /* photo de marbre doré, légèrement adoucie pour que la montre du client reste la vedette */
+  #colliersFeed.montres-lux::before{
+    content:'';position:absolute;inset:-4%;z-index:-2;pointer-events:none;
+    background:url('fond-montres.jpg') center 30%/cover no-repeat;
+    filter:blur(5px) brightness(.62) saturate(1.2) contrast(1.05);
+  }
   /* lumière dorée au centre + vignette sombre */
   #colliersFeed.montres-lux::after{
     content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;
@@ -3704,6 +3763,60 @@ body .home-title,body .home-subtitle,body .home-desc{filter:drop-shadow(0 3px 14
 </style>
 
 
+
+<style>
+/* ===== FOND LUXE — COLLIER FEMME (téléphone uniquement) ===== */
+@media (max-width:1024px){
+  #colliersFeed.collier-lux{
+    background:#f7f1e3 url('fond-collier.jpg') center top/cover no-repeat!important;
+  }
+  /* voile champagne + vignette dorée */
+  #colliersFeed.collier-lux::before{
+    content:'';position:absolute;inset:0;z-index:0;pointer-events:none;
+    background:
+      radial-gradient(ellipse 80% 55% at 50% 38%,rgba(255,236,185,.28) 0%,rgba(255,236,185,0) 70%),
+      radial-gradient(ellipse 120% 80% at 50% 50%,rgba(0,0,0,0) 55%,rgba(60,40,8,.28) 100%);
+  }
+  /* barre du haut claire et dorée */
+  #colliersFeed.collier-lux .cf-topbar{
+    background:linear-gradient(180deg,rgba(255,250,236,.92) 0%,rgba(255,250,236,.55) 65%,transparent 100%);
+  }
+  #colliersFeed.collier-lux .cf-back{
+    background:rgba(255,255,255,.75);border-color:rgba(139,105,20,.55);color:#8B6914;
+    box-shadow:0 4px 14px rgba(139,105,20,.22);
+  }
+  #colliersFeed.collier-lux .cf-title{
+    background:linear-gradient(90deg,#8B6914 0%,#C9A84C 45%,#8B6914 100%);
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+    filter:drop-shadow(0 1px 0 rgba(255,255,255,.8));
+  }
+  #colliersFeed.collier-lux .cf-counter{
+    color:#6e520f;background:rgba(255,255,255,.78);border-color:rgba(139,105,20,.45);
+  }
+  /* collier mis en valeur sur le fond clair */
+  #colliersFeed.collier-lux .cf-glow{
+    background:radial-gradient(circle at 50% 42%,rgba(255,226,140,.42) 0%,rgba(255,226,140,.12) 38%,transparent 62%);
+  }
+  #colliersFeed.collier-lux .cf-img-wrap img{
+    filter:drop-shadow(0 18px 26px rgba(70,45,5,.38)) drop-shadow(0 0 22px rgba(201,168,76,.45)) brightness(1.06) contrast(1.06) saturate(1.1);
+  }
+  /* panneau d'information : verre noir luxe avec liseré or */
+  #colliersFeed.collier-lux .cf-info{
+    padding-top:2.6rem;
+    background:linear-gradient(0deg,rgba(10,8,5,.96) 0%,rgba(14,11,7,.9) 55%,rgba(14,11,7,0) 100%);
+  }
+  #colliersFeed.collier-lux .cf-info::before{
+    content:'';position:absolute;left:12%;right:12%;top:1.9rem;height:1px;
+    background:linear-gradient(90deg,transparent,#E8C97A,transparent);opacity:.8;
+  }
+  #colliersFeed.collier-lux .cf-badge{
+    background:rgba(201,168,76,.16);border-color:rgba(232,201,122,.7);
+  }
+  #colliersFeed.collier-lux .cf-swipe-hint{color:#6e520f;text-shadow:0 1px 0 rgba(255,255,255,.7);}
+  /* étincelles dorées */
+  #colliersFeed.collier-lux .fb{display:block!important;}
+}
+</style>
 
 <style>
 /* ===== Recherche dans l'onglet Montres ===== */
@@ -3798,10 +3911,10 @@ const CLUB = {
     {t:'Tournez la roue', d:'Chaque mois, envoyez votre carte sur WhatsApp et tentez de gagner un abonnement.'}
   ],
   tiers: [
-    {ico:'🥉', name:'Bronze',  req:'Dès le 1er achat',      color:'#cd7f32', perks:['Livraison gratuite']},
-    {ico:'🥈', name:'Argent',  req:'À partir de 3 achats',  color:'#c9d1d9', perks:['Livraison gratuite','Roue du mois : 1 mois d\'abonnement à gagner']},
-    {ico:'🥇', name:'Or',      req:'À partir de 5 achats',  color:'#F5E27A', perks:['Livraison gratuite','5 % de réduction sur vos achats','Roue du mois : 2 mois d\'abonnement à gagner']},
-    {ico:'💎', name:'Diamant', req:'À partir de 10 achats', color:'#7fe0ff', perks:['Livraison gratuite','10 % de réduction sur vos achats','Roue du mois : 3 mois d\'abonnement à gagner']}
+    {ico:'🥉', name:'Bronze',  req:'Dès le 1er achat',      color:'#cd7f32', perks:['Votre 1er achat est livré gratuitement']},
+    {ico:'🥈', name:'Argent',  req:'À partir de 3 achats',  color:'#c9d1d9', perks:['1 livraison gratuite : la première commande après l\'obtention de la carte','Roue du mois : 1 mois d\'abonnement à gagner']},
+    {ico:'🥇', name:'Or',      req:'À partir de 5 achats',  color:'#F5E27A', perks:['1 livraison gratuite : la première commande après l\'obtention de la carte','5 % de réduction sur vos achats','Roue du mois : 2 mois d\'abonnement à gagner']},
+    {ico:'💎', name:'Diamant', req:'À partir de 10 achats', color:'#7fe0ff', perks:['1 livraison gratuite : la première commande après l\'obtention de la carte','10 % de réduction sur vos achats','Roue du mois : 3 mois d\'abonnement à gagner']}
   ],
   prizes: [
     {ico:'🎵', name:'Spotify',      sub:'1, 2 ou 3 mois selon votre carte'},
@@ -3809,7 +3922,7 @@ const CLUB = {
     {ico:'🎬', name:'Netflix',      sub:'1, 2 ou 3 mois selon votre carte'},
     {ico:'📦', name:'Amazon Prime', sub:'1, 2 ou 3 mois selon votre carte'}
   ],
-  note: `<b>Comment participer :</b> créez votre profil (nom, photo, mot de passe). C'est facultatif pour acheter, mais obligatoire pour être éligible aux récompenses. Après chaque achat, Khaled Watch valide la vente sur votre profil et votre carte monte de niveau. À la fin de chaque mois, les clients Argent, Or et Diamant envoient leur carte sur WhatsApp. Une fois la carte vérifiée, la roue apparaît sur votre écran d'accueil : un seul tour par mois, et l'abonnement gagné dure 1, 2 ou 3 mois selon votre carte.`
+  note: `<b>Livraison gratuite :</b> votre 1er achat est livré gratuitement, puis la première commande qui suit l'obtention de chaque carte (Argent, Or, Diamant). Les autres commandes sont livrées au tarif habituel, selon la distance.<br><br><b>Comment participer :</b> créez votre profil (nom, photo, mot de passe). C'est facultatif pour acheter, mais obligatoire pour être éligible aux récompenses. Après chaque achat, Khaled Watch valide la vente sur votre profil et votre carte monte de niveau. À la fin de chaque mois, les clients Argent, Or et Diamant envoient leur carte sur WhatsApp. Une fois la carte vérifiée, la roue apparaît sur votre écran d'accueil : un seul tour par mois, et l'abonnement gagné dure 1, 2 ou 3 mois selon votre carte.`
 };
 
 let clubBuilt = false;
@@ -3969,7 +4082,8 @@ function pfUserHTML(u){
     <div class="pf-card-foot"><span>${new Date().toLocaleDateString('fr-FR',{month:'long',year:'numeric'})}</span><span style="text-align:right"><big>${n}</big><br>achat${n>1?'s':''} validé${n>1?'s':''}</span></div>
   </div>
   <div class="pf-prog">${prog}</div>
-  ${tier ? `<div class="pf-box"><b>Vos avantages</b><ul>${tier.perks.map(p => `<li>${h(p)}</li>`).join('')}</ul></div>` : `<div class="pf-box">Faites votre premier achat : Khaled le validera sur votre profil et vous recevrez votre carte <b>Bronze</b> 🥉 avec la livraison gratuite.</div>`}
+  ${tier ? `<div class="pf-box"><b>Vos avantages</b><ul>${tier.perks.map(p => `<li>${h(p)}</li>`).join('')}</ul></div>` : `<div class="pf-box">Votre <b>premier achat est livré gratuitement</b> 🚚. Khaled le validera sur votre profil et vous recevrez votre carte <b>Bronze</b> 🥉.</div>`}
+  ${[0,3,5,10].includes(n) ? `<div class="pf-box glow">🚚 <b>Votre prochaine livraison est gratuite !</b><br>${n === 0 ? 'Votre premier achat est offert en livraison.' : 'Votre première commande avec la carte ' + (LV[u.level] || LV.aucune).n + ' est livrée gratuitement.'}</div>` : ''}
   ${pfWheelHTML(u)}
   <button class="pf-logout" onclick="pfLogout()">Se déconnecter</button>`;
 }
