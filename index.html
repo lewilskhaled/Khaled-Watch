@@ -1378,6 +1378,7 @@ body #bgVideo.is-playing{opacity:1;}
 .del-prod-btns .del-prod-add{width:100%;}
 .del-prod-360{background:rgba(201,168,76,.16);border:1px solid rgba(201,168,76,.55);color:var(--or-l);font-size:.58rem;font-weight:700;border-radius:8px;padding:.35rem .5rem;cursor:pointer;white-space:nowrap;-webkit-tap-highlight-color:transparent;font-family:'Montserrat',sans-serif;}
 .del-prod-360:active{background:rgba(201,168,76,.35);}
+.cat-search{padding:0 1rem .6rem;}
 /* ====== PATCH PERFORMANCE — désactive les animations lourdes ====== */
 .prod-card, .cat-card, .g-tab, .page-cat-header, .search-bar-wrap,
 .search-input-row, .cf-g-tab, .stream-pill, .bottom-nav,
@@ -1584,6 +1585,15 @@ body #bgVideo.is-playing{opacity:1;}
       <option value="price_desc">Prix décroissant</option>
       <option value="newest">Nouveautés</option>
     </select>
+  </div>
+  <div class="cat-search" id="catSearch" style="display:none">
+    <div class="search-input-row">
+      <span class="search-icon">🔍</span>
+      <input class="search-input" id="catSearchInput" type="search" inputmode="search" autocomplete="off" autocorrect="off" spellcheck="false"
+             placeholder="Rechercher une montre…" aria-label="Rechercher une montre" oninput="onCatSearch(this.value)"
+             onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur();}">
+      <button class="search-clear" id="catSearchClear" onclick="clearCatSearch()" aria-label="Effacer">✕</button>
+    </div>
   </div>
   <div class="prod-grid" id="prodGrid">
     <div class="loader-wrap"><div class="loader"></div></div>
@@ -2006,8 +2016,13 @@ function openCat(cat) {
   document.querySelector('.g-tab[data-g="tous"]').classList.add('active');
   document.getElementById('catPageTitle').textContent = cat;
   document.getElementById('catPageIcon').textContent  = CAT_ICONS[cat] || '✦';
+  catQuery = '';
+  const csi = document.getElementById('catSearchInput'); if (csi) csi.value = '';
+  const csc = document.getElementById('catSearchClear'); if (csc) csc.classList.remove('visible');
+  const csw = document.getElementById('catSearch'); if (csw) csw.style.display = (cat === 'Montres' || cat === 'Montres Luxueuses') ? 'block' : 'none';
   hideAll();
   document.getElementById('page-cat').style.display = 'block';
+  setNavActive(cat === 'Montres' ? 'Montres' : null);
   window.scrollTo(0, 0);
   renderProducts();
 }
@@ -2061,8 +2076,6 @@ let cfList   = [];
 let cfCat    = 'Colliers';
 const CF_CONFIG = {
   'Colliers':          { title:'✦ Collier pour Femme', badge:'✦ Collier', empty:'Aucun collier disponible pour le moment.' },
-  'Montres':           { title:'✦ Montres',            badge:'✦ Montre',  empty:'Aucune montre disponible pour le moment.' },
-  'Montres Luxueuses': { title:'✦ Montres Luxe',       badge:'✦ Luxe',    empty:'Aucune montre de luxe disponible pour le moment.' }
 };
 
 let cfQuery = '';
@@ -2439,6 +2452,17 @@ document.addEventListener('keydown', e => {
   if (e.key === 'ArrowDown' || e.key === 'ArrowLeft')  goChain(-1);
 });
 
+let catQuery = '', catSearchTimer = null;
+function onCatSearch(val){
+  catQuery = (val || '').trim();
+  const c = document.getElementById('catSearchClear'); if (c) c.classList.toggle('visible', catQuery.length > 0);
+  clearTimeout(catSearchTimer);
+  catSearchTimer = setTimeout(renderProducts, 250);
+}
+function clearCatSearch(){
+  const i = document.getElementById('catSearchInput'); if (i){ i.value = ''; i.focus(); }
+  onCatSearch('');
+}
 function setGender(btn) {
   document.querySelectorAll('.g-tab').forEach(t => t.classList.remove('active'));
   btn.classList.add('active');
@@ -2519,6 +2543,14 @@ function renderProducts() {
   const grid = document.getElementById('prodGrid');
   let list = allProducts.filter(p => p.categorie === currentCat);
   if (currentGender !== 'tous') list = list.filter(p => p.genre === currentGender);
+  if (catQuery) {
+    const norm = x => String(x || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    const words = norm(catQuery).split(/\s+/).filter(Boolean);
+    list = list.filter(p => {
+      const fields = [norm(p.nom), norm(p.genre), norm(p.marque)].concat((p.couleurs || []).map(c => norm(c.nom)));
+      return words.every(w => fields.some(f => fuzzyIncludes(f, w)));
+    });
+  }
   list = expandVariants(applySort(list));
   currentList = list;
 
@@ -2527,7 +2559,9 @@ function renderProducts() {
       grid.innerHTML = `<div class="loader-wrap"><div class="loader"></div></div>`;
       return;
     }
-    grid.innerHTML = `<div class="empty-cat"><h3>Collection à venir</h3><p>Aucun produit dans cette catégorie pour le moment.<br>Revenez bientôt !</p></div>`;
+    grid.innerHTML = catQuery
+      ? `<div class="empty-cat"><h3>Aucun résultat</h3><p>Aucun produit ne correspond à votre recherche.</p></div>`
+      : `<div class="empty-cat"><h3>Collection à venir</h3><p>Aucun produit dans cette catégorie pour le moment.<br>Revenez bientôt !</p></div>`;
     return;
   }
 
