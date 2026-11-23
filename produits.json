@@ -1851,5 +1851,33 @@
     "flash_reduction": 0,
     "couleurs": [],
     "createdAt": "2026-11-22T12:21:15.318Z"
+  },
+  {
+    "id": "1795457897781",
+    "nom": "Air Force one",
+    "prix": 8000,
+    "categorie": "Autres",
+    "genre": "Unisexe",
+    "image": "https://raw.githubusercontent.com/lewilsKhaled/Khaled-Watch/main/images/1795457900028-3v0fye-Air-Force-one-principal.png",
+    "description": "Plusieurs couleurs disponibles",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "or",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [
+      {
+        "nom": "Noir",
+        "hex": "#000000",
+        "image": "https://raw.githubusercontent.com/lewilsKhaled/Khaled-Watch/main/images/1795457900054-ak51yp-Air-Force-one-Noir.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      }
+    ],
+    "createdAt": "2026-11-23T18:18:17.781Z"
   }
 ]
