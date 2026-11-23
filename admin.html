@@ -457,6 +457,11 @@ input[type=range]{width:100%;accent-color:var(--or);cursor:pointer;}
     <div class="field"><label>Clé admin du Club</label><input type="password" id="clubKey" placeholder="Votre clé secrète (ADMIN_KEY)" autocomplete="off"></div>
     <div class="status" id="st-club"></div>
     <button class="btn-gold" onclick="clubAdminSave()">Enregistrer et charger les clients</button>
+    <div style="display:flex;gap:.5rem;margin-top:.6rem;flex-wrap:wrap">
+      <button class="btn-gold" style="flex:1;background:rgba(201,168,76,.18);color:var(--or-l);border:1px solid rgba(201,168,76,.5)" onclick="clubExport()">💾 Exporter une sauvegarde</button>
+      <label class="btn-gold" style="flex:1;margin:0;text-align:center;cursor:pointer;background:rgba(201,168,76,.18);color:var(--or-l);border:1px solid rgba(201,168,76,.5)">♻️ Restaurer<input type="file" accept="application/json,.json" hidden onchange="clubRestore(this)"></label>
+    </div>
+    <div class="card-sub" style="margin-top:.6rem">Conseil : exportez une sauvegarde chaque semaine et gardez le fichier sur votre téléphone ou votre ordinateur.</div>
   </div>
   <div class="card">
     <div class="card-title">👥 Clients inscrits</div>
@@ -595,7 +600,11 @@ function compressDataUri(dataUri, maxDim=1400, jpegQuality=0.85){
         const ctx = canvas.getContext('2d');
         ctx.drawImage(img, 0, 0, width, height);
         try{
-          const out = isPng ? canvas.toDataURL('image/png') : canvas.toDataURL('image/jpeg', jpegQuality);
+          let out;
+          if (isPng) {                       // PNG détouré : on tente le WebP (transparence conservée, bien plus léger)
+            out = canvas.toDataURL('image/webp', 0.85);
+            if (!/^data:image\/webp/i.test(out)) out = canvas.toDataURL('image/png');
+          } else out = canvas.toDataURL('image/jpeg', jpegQuality);
           resolve(out);
         }catch(e){ resolve(dataUri); } // en cas d'échec, on garde l'original plutôt que de tout casser
       };
@@ -608,8 +617,8 @@ function compressDataUri(dataUri, maxDim=1400, jpegQuality=0.85){
 async function planImageUploads(np){
   const fileChanges = [];
   const isCollier = np.categorie === 'Colliers';
-  const maxDim = isCollier ? 2200 : 1400;
-  const quality = isCollier ? 0.95 : 0.85;
+  const maxDim = isCollier ? 1200 : 1000;
+  const quality = isCollier ? 0.86 : 0.82;
   async function planField(getVal, setVal, hint){
     const val = getVal();
     if(typeof val === 'string' && val.startsWith('data:')){
@@ -1134,8 +1143,8 @@ function handleFileField(input,fieldId,previewId,catElId){
   const catEl = document.getElementById(catElId||'fCat');
   const isCollier = catEl && catEl.value === 'Colliers';
   // Qualité renforcée spécifiquement pour les Colliers (détails fins de chaîne bien nets)
-  const maxDim = isCollier ? 2200 : 1400;
-  const quality = isCollier ? 0.95 : 0.85;
+  const maxDim = isCollier ? 1200 : 1000;
+  const quality = isCollier ? 0.86 : 0.82;
   compressImageFile(file, maxDim, quality).then(dataUri=>{
     document.getElementById(fieldId).value = dataUri;
     img.src = dataUri; img.style.display='block';
@@ -1305,6 +1314,37 @@ function clubWheel(id){
   clubAct('/admin/wheel', {id}, 'Roue envoyée à ' + clName(id) + '.');
 }
 function clubGiven(id){ clubAct('/admin/given', {id}, 'Cadeau marqué comme remis.'); }
+async function clubExport(){
+  showSt('club','load','Sauvegarde en cours…');
+  try {
+    let cursor = null, all = [];
+    do {
+      const d = await clubReq('/admin/export' + (cursor ? '?cursor=' + encodeURIComponent(cursor) : ''));
+      all = all.concat(d.users || []); cursor = d.next;
+    } while (cursor);
+    const blob = new Blob([JSON.stringify({ app:'khaled-watch-club', date:new Date().toISOString(), users:all })], { type:'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = 'sauvegarde-club-' + new Date().toISOString().slice(0,10) + '.json';
+    document.body.appendChild(a); a.click(); a.remove();
+    showSt('club','ok','✓ Sauvegarde téléchargée (' + all.length + ' compte' + (all.length>1?'s':'') + ').');
+  } catch(e){ showSt('club','err','⚠ ' + e.message); }
+}
+async function clubRestore(inp){
+  const f = inp.files && inp.files[0]; if (!f) return;
+  if (!confirm('Restaurer cette sauvegarde ? Les comptes du fichier remplaceront ceux qui portent le même nom.')) { inp.value = ''; return; }
+  try {
+    const data = JSON.parse(await f.text());
+    if (data.app !== 'khaled-watch-club' || !Array.isArray(data.users)) throw new Error('Fichier de sauvegarde non reconnu.');
+    showSt('club','load','Restauration en cours…');
+    let n = 0;
+    for (let i = 0; i < data.users.length; i += 30){
+      const r = await clubReq('/admin/import', { users: data.users.slice(i, i + 30) }); n += r.restored || 0;
+    }
+    showSt('club','ok','✓ ' + n + ' compte' + (n>1?'s':'') + ' restauré' + (n>1?'s':'') + '.');
+    clubAdminLoad();
+  } catch(e){ showSt('club','err','⚠ ' + e.message); }
+  inp.value = '';
+}
 function clubDelete(id){
   if (!confirm('Supprimer le compte de ' + clName(id) + ' ? Cette action est définitive.')) return;
   clubAct('/admin/delete', {id}, 'Compte supprimé.');
