@@ -1397,6 +1397,26 @@ body #bgVideo.is-playing{opacity:1;}
 .modal-desc-wrap::before { animation: none !important; }
 .sunburst-overlay { display: none !important; }
 </style>
+<script>
+/* Mode allégé : détecté automatiquement sur téléphone modeste, économie de données ou connexion lente */
+(function(){
+  try{
+    var d=document.documentElement, c=navigator.connection||{}, st=null;
+    try{ st=JSON.parse(localStorage.getItem('kw-lite')||'null'); }catch(e){}
+    var forced=(st&&st.until>Date.now())?st.v:null;
+    var weak=(c.saveData===true)||/(^|-)2g$/.test(c.effectiveType||'')||(navigator.deviceMemory&&navigator.deviceMemory<=2)||(navigator.hardwareConcurrency&&navigator.hardwareConcurrency<=2);
+    if(forced===true||(forced===null&&weak)) d.classList.add('lite');
+  }catch(e){}
+})();
+</script>
+<meta name="description" content="Khaled Watch : montres et bijoux de prestige, originaux, livrés partout au Bénin. Paiement après livraison.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Khaled Watch">
+<meta property="og:title" content="Khaled Watch — Montres & Bijoux de Prestige">
+<meta property="og:description" content="Montres, chaînes et colliers originaux. Livraison partout au Bénin, paiement après livraison.">
+<meta property="og:image" content="https://lewilskhaled.github.io/icons/icon-192.png">
+<meta property="og:locale" content="fr_FR">
+<meta name="twitter:card" content="summary">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#1B1815">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -1440,6 +1460,7 @@ body #bgVideo.is-playing{opacity:1;}
 <script>
 (function(){
   var sp=document.getElementById('splash'); if(!sp) return;
+  if(document.documentElement.classList.contains('lite')){ sp.remove(); return; }
   /* graduations du cadran */
   var NS='http://www.w3.org/2000/svg', g=document.getElementById('ksTicks');
   for(var i=0;i<60;i++){
@@ -1551,6 +1572,7 @@ body #bgVideo.is-playing{opacity:1;}
     <div class="cat-card" onclick="openAvis()"><div class="cat-icon">⭐</div><div class="cat-label">Avis Clients</div><div class="cat-count" id="cnt-Avis">—</div></div>
   </div>
   <div class="live-sec rv" id="liveNew" style="display:none"><div class="live-title"><span>✦ Nouveautés</span><small>Faites défiler →</small></div><div class="live-track" id="liveNewTrack"></div></div>
+  <div class="legal-links"><a onclick="openLegal('lg-cgv')">Conditions de vente</a><a onclick="openLegal('lg-club')">Règles du Club</a><a onclick="openLegal('lg-privacy')">Confidentialité</a></div>
   <div class="home-end"></div>
 </div>
 
@@ -1627,6 +1649,54 @@ body #bgVideo.is-playing{opacity:1;}
   </div>
 
   <div class="avis-list" id="avisList"></div>
+</div>
+
+<!-- PAGE INFORMATIONS LÉGALES -->
+<div id="page-legal">
+  <div class="page-cat-header">
+    <div class="btn-back" onclick="goHome()">←</div>
+    <span class="cat-page-icon">📜</span>
+    <div class="cat-page-title">Informations</div>
+  </div>
+
+  <div class="legal-card" id="lg-cgv">
+    <h3>Conditions de vente</h3>
+    <ul>
+      <li><b>Vendeur :</b> Khaled Watch, Bénin. Contact et commandes sur WhatsApp : +229 0169515730.</li>
+      <li><b>Commande :</b> elle se fait via le bouton « Commander sur WhatsApp ». Elle est confirmée par Khaled Watch, qui vérifie la disponibilité du produit.</li>
+      <li><b>Prix :</b> exprimés en FCFA, tels qu'affichés sur le site.</li>
+      <li><b>Livraison :</b> dans toutes les zones du Bénin, dès que la commande est passée. Le tarif dépend de la distance et est communiqué sur WhatsApp. La livraison gratuite du Club est détaillée dans « Règles du Club ».</li>
+      <li><b>Paiement :</b> uniquement après la livraison, en main propre ou par Mobile Money (MTN MoMo +229 0169515730, Celtiis +229 0128180525). Les frais de retrait de l'opérateur s'appliquent.</li>
+      <li><b>Retour :</b> le client dispose de 24 heures après la remise du colis pour retourner un produit qui ne lui convient pas, à condition qu'il ne soit pas abîmé. Passé ce délai, la maison n'accepte plus de reprise et ne procède à aucun remboursement.</li>
+      <li><b>Authenticité :</b> tous les produits sont originaux. Les produits les plus chers sont accompagnés d'une carte d'authenticité. Les chaînes sont en acier inoxydable.</li>
+    </ul>
+  </div>
+
+  <div class="legal-card" id="lg-club">
+    <h3>Règles du Club Prestige et de la roue</h3>
+    <ul>
+      <li><b>Profil :</b> facultatif pour acheter, obligatoire pour bénéficier des récompenses (nom, photo, mot de passe).</li>
+      <li><b>Cartes :</b> Bronze dès 1 achat, Argent dès 3, Or dès 5, Diamant dès 10. Chaque achat est validé par Khaled Watch sur le profil du client.</li>
+      <li><b>Livraison gratuite :</b> le premier achat est livré gratuitement, puis une livraison gratuite pour chaque carte obtenue (la première commande qui suit son obtention).</li>
+      <li><b>Réductions :</b> 5 % à partir du 5ᵉ achat (carte Or), 10 % à partir du 10ᵉ achat (carte Diamant).</li>
+      <li><b>Roue du mois :</b> à la fin de chaque mois, les clients Argent, Or et Diamant envoient leur carte sur WhatsApp. Après vérification, la roue est envoyée sur leur profil. Un seul tour par mois, pour gagner un abonnement de 1 mois (Argent), 2 mois (Or) ou 3 mois (Diamant) chez Spotify, Apple Music, Netflix ou Amazon Prime.</li>
+      <li>Ces marques appartiennent à leurs propriétaires respectifs et ne sont pas affiliées à Khaled Watch.</li>
+      <li>Tout abus (comptes multiples, fausses preuves) peut entraîner l'exclusion du programme. Khaled Watch peut modifier ou arrêter le programme en le signalant sur le site.</li>
+    </ul>
+  </div>
+
+  <div class="legal-card" id="lg-privacy">
+    <h3>Confidentialité</h3>
+    <ul>
+      <li><b>Données du profil :</b> nom, photo, mot de passe (conservé sous forme chiffrée), achats validés, carte et gains. Elles servent uniquement à gérer le Club et à contacter les gagnants.</li>
+      <li><b>Avis :</b> le nom, la note et le texte que vous publiez sont visibles par tous.</li>
+      <li><b>Del, l'assistante :</b> vos messages sont traités par le service Gemini de Google pour générer les réponses. N'y écrivez jamais de mot de passe ni d'information bancaire.</li>
+      <li><b>Paiement :</b> aucune donnée de paiement n'est collectée sur ce site : le paiement se fait après la livraison.</li>
+      <li><b>Stockage :</b> les données du Club et les avis sont hébergés chez Cloudflare. Votre navigateur garde aussi quelques préférences et votre connexion. Le site n'utilise ni publicité ni pistage.</li>
+      <li><b>Vos droits :</b> vous pouvez demander à tout moment la modification ou la suppression de votre profil en écrivant sur WhatsApp au +229 0169515730.</li>
+    </ul>
+  </div>
+  <div class="legal-copy">Dernière mise à jour : novembre 2026</div>
 </div>
 
 <!-- PAGE CLUB PRESTIGE -->
@@ -1940,13 +2010,26 @@ async function loadProducts() {
     allProducts = Array.isArray(raw)
       ? raw.map(normalizeProduct).filter(p => !HIDDEN_CATS.includes(p.categorie))
       : [];
-  } catch { allProducts = []; }
+    try { localStorage.setItem('kw-catalog-v1', JSON.stringify(raw)); } catch(e) {}
+  } catch {
+    allProducts = [];
+    try {
+      const saved = JSON.parse(localStorage.getItem('kw-catalog-v1') || 'null');
+      if (Array.isArray(saved) && saved.length){
+        allProducts = saved.map(normalizeProduct).filter(p => !HIDDEN_CATS.includes(p.categorie));
+        setTimeout(() => { if (typeof showCoeurToast === 'function') showCoeurToast('hors-ligne'); }, 1200);
+      }
+    } catch(e) {}
+    if (!window._kwRetried) { window._kwRetried = true; setTimeout(loadProducts, 6000); }
+  }
   productsLoaded = true;
   clearTimeout(loaderTimer);
   if (loader) loader.classList.remove('show');
   updateCounts();
   if (typeof renderHomeLive === 'function') renderHomeLive();
   if (typeof warmImages === 'function') warmImages();
+  const pcat = document.getElementById('page-cat');
+  if (currentCat && pcat && pcat.style.display === 'block') renderProducts();
 }
 
 function updateCounts() {
@@ -1965,7 +2048,7 @@ function updateCounts() {
    NAVIGATION
    ============================================================ */
 function hideAll() {
-  ['page-home','page-cat','page-search','page-avis','page-club'].forEach(id => {
+  ['page-home','page-cat','page-search','page-avis','page-club','page-legal'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.style.display = 'none';
   });
@@ -3249,7 +3332,7 @@ function handleProductTap(card, pid, idx){
 function showCoeurToast(kind){
   const toast = document.getElementById('coeurToast');
   if (!toast) return;
-  const msgs = { 'lien-copie': 'Lien copié dans le presse-papiers 🔗' };
+  const msgs = { 'lien-copie': 'Lien copié dans le presse-papiers 🔗', 'hors-ligne': 'Connexion faible : catalogue enregistré affiché 📶' };
   toast.textContent = msgs[kind] || '';
   toast.classList.add('show');
   clearTimeout(toast._hideTimer);
@@ -3750,6 +3833,7 @@ body .home-title,body .home-subtitle,body .home-desc{filter:drop-shadow(0 3px 14
   document.body.classList.remove('light-mode');
   try{ localStorage.setItem('kw-light-mode','0'); }catch(e){}
   var v=document.getElementById('bgVideo'); if(!v) return;
+  if(document.documentElement.classList.contains('lite')) return;   /* mode allégé : on ne télécharge pas la vidéo */
   v.muted=true; v.defaultMuted=true; v.loop=true; v.controls=false;
   v.setAttribute('playsinline',''); v.setAttribute('webkit-playsinline','');
   v.removeAttribute('controls');
@@ -4086,7 +4170,8 @@ function pfAuthHTML(){
   <input class="pf-input" id="pfName" type="text" maxlength="24" placeholder="Votre nom" autocomplete="username" onkeydown="if(event.key==='Enter')document.getElementById('pfPass').focus()">
   <input class="pf-input" id="pfPass" type="password" maxlength="64" placeholder="Mot de passe (4 caractères minimum)" autocomplete="${reg?'new-password':'current-password'}" onkeydown="if(event.key==='Enter')pfSubmit()">
   <div class="pf-err" id="pfErr"></div>
-  <button class="pf-btn" id="pfGo" onclick="pfSubmit()">${reg ? 'Créer mon profil' : 'Me connecter'}</button>`;
+  <button class="pf-btn" id="pfGo" onclick="pfSubmit()">${reg ? 'Créer mon profil' : 'Me connecter'}</button>
+  ${reg ? `<div class="pf-terms">En créant un profil, vous acceptez les <a onclick="closeProfile();openLegal('lg-club')">règles du Club</a> et la <a onclick="closeProfile();openLegal('lg-privacy')">politique de confidentialité</a>.</div>` : ''}`;
 }
 
 function pfPickPhoto(inp){
@@ -4415,6 +4500,70 @@ body .btn-wa{
   box-shadow:0 8px 18px rgba(37,211,102,.28),inset 0 1px 0 rgba(255,255,255,.28);
 }
 body .prod-card:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(0,0,0,.6),0 0 28px rgba(201,168,76,.22)!important;}
+/* ===== MODE ALLÉGÉ (téléphones modestes) : même contenu, décor plus simple ===== */
+html.lite #bgVideo,html.lite #bgPoster,html.lite #splash{display:none!important;}
+html.lite body{background:#120e08 radial-gradient(ellipse at 50% 0%,#2b2112 0%,#120e08 62%,#0a0805 100%) no-repeat!important;}
+html.lite *,html.lite *::before,html.lite *::after{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;}
+html.lite body .prod-card{background:linear-gradient(135deg,rgba(62,52,38,.94),rgba(34,28,20,.94))!important;animation:none!important;}
+html.lite body .cat-card,html.lite body .page-cat-header,html.lite body nav.bottom-nav,html.lite .club-banner,html.lite .live-card,html.lite .club-step,html.lite .club-tier,html.lite .club-prize,html.lite .club-note{background:rgba(42,35,25,.94)!important;}
+html.lite .cf-img-wrap,html.lite .ch-aura,html.lite .club-banner::after,html.lite .pf-card::after{animation:none!important;}
+html.lite .rv{transition-duration:.01ms!important;}
+/* pied de page de l'accueil */
+.legal-links{display:flex;flex-wrap:wrap;justify-content:center;gap:.4rem 1rem;padding:1.4rem 1rem 0;font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;}
+.legal-links a{color:var(--or-l);text-decoration:none;text-shadow:var(--ts);cursor:pointer;padding:.3rem .2rem;}
+.legal-copy{text-align:center;font-size:.52rem;color:var(--gris);letter-spacing:.08em;margin-top:.6rem;text-shadow:var(--ts);}
+#page-legal{display:none;padding-bottom:6.5rem;}
+.legal-card{max-width:640px;margin:.8rem 1rem;padding:1rem 1.05rem;border-radius:16px;font-size:.7rem;line-height:1.75;color:#E8E0CC;
+  background:linear-gradient(135deg,rgba(255,255,255,.16),rgba(255,255,255,.05) 50%,rgba(255,255,255,.1));border:1px solid rgba(255,255,255,.26);border-top-color:rgba(255,255,255,.55);}
+@media(min-width:672px){.legal-card{margin-left:auto;margin-right:auto;}}
+.legal-card h3{font-family:'Cormorant Garamond',serif;font-size:1.15rem;color:var(--or-l);margin:.7rem 0 .25rem;}
+.legal-card h3:first-child{margin-top:0;}
+.legal-card ul{list-style:none;display:flex;flex-direction:column;gap:.3rem;margin:.2rem 0;}
+.legal-card li{padding-left:1rem;position:relative;}
+.legal-card li::before{content:'✦';position:absolute;left:0;color:var(--or-l);font-size:.55rem;top:.2rem;}
+.legal-card b{color:#fff;}
+.pf-terms{font-size:.58rem;line-height:1.6;color:#B8AB92;text-align:center;margin-top:.7rem;}
+.pf-terms a{color:var(--or-l);text-decoration:underline;cursor:pointer;}
 </style>
+<script>
+/* ===== Fiabilité : service worker, mesure de fluidité, pages d'information ===== */
+if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
+  window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(() => {}); });
+}
+function openLegal(id){
+  closeColliersFeed(); closeChainesFeed();
+  hideAll();
+  document.getElementById('page-legal').style.display = 'block';
+  window.scrollTo(0, 0);
+  const el = id && document.getElementById(id);
+  if (el) setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
+}
+/* si le téléphone n'est pas assez fluide, le mode allégé s'active tout seul (et se souvient) */
+window.addEventListener('load', () => {
+  const root = document.documentElement;
+  if (root.classList.contains('lite')) return;
+  setTimeout(() => {
+    let n = 0, t0 = 0, stop = false;
+    document.addEventListener('visibilitychange', () => { stop = true; }, { once: true });
+    (function tick(t){
+      if (stop) return;
+      if (!t0) t0 = t;
+      const el = t - t0;
+      if (el >= 1000) n++;
+      if (el < 3500) return requestAnimationFrame(tick);
+      const fps = n / 2.5;
+      try {
+        if (fps < 22){
+          localStorage.setItem('kw-lite', JSON.stringify({ v: true, until: Date.now() + 14*864e5 }));
+          root.classList.add('lite');
+          const v = document.getElementById('bgVideo'); if (v){ v.pause(); v.removeAttribute('src'); v.load(); }
+        } else if (fps > 40) {
+          localStorage.setItem('kw-lite', JSON.stringify({ v: false, until: Date.now() + 7*864e5 }));
+        }
+      } catch(e) {}
+    })(performance.now());
+  }, 800);
+});
+</script>
 </body>
 </html>
