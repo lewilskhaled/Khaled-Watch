@@ -1398,14 +1398,19 @@ body #bgVideo.is-playing{opacity:1;}
 .sunburst-overlay { display: none !important; }
 </style>
 <script>
-/* Mode allégé : détecté automatiquement sur téléphone modeste, économie de données ou connexion lente */
+/* Mode allégé : moins d'effets sur un téléphone modeste. La vidéo de fond reste TOUJOURS affichée,
+   sauf si le visiteur a activé l'économie de données ou a une connexion très lente. */
 (function(){
   try{
     var d=document.documentElement, c=navigator.connection||{}, st=null;
-    try{ st=JSON.parse(localStorage.getItem('kw-lite')||'null'); }catch(e){}
+    var q=(location.search.match(/[?&]lite=([01])/)||[])[1];          /* ?lite=0 force le design complet, ?lite=1 le mode allégé */
+    if(q==='0'){ try{ localStorage.removeItem('kw-lite2'); localStorage.setItem('kw-lite2',JSON.stringify({v:false,until:Date.now()+30*864e5})); }catch(e){} }
+    if(q==='1'){ try{ localStorage.setItem('kw-lite2',JSON.stringify({v:true,until:Date.now()+30*864e5})); }catch(e){} }
+    try{ localStorage.removeItem('kw-lite'); st=JSON.parse(localStorage.getItem('kw-lite2')||'null'); }catch(e){}
     var forced=(st&&st.until>Date.now())?st.v:null;
-    var weak=(c.saveData===true)||/(^|-)2g$/.test(c.effectiveType||'')||(navigator.deviceMemory&&navigator.deviceMemory<=2)||(navigator.hardwareConcurrency&&navigator.hardwareConcurrency<=2);
+    var weak=(navigator.deviceMemory&&navigator.deviceMemory<=2);
     if(forced===true||(forced===null&&weak)) d.classList.add('lite');
+    if(c.saveData===true||/(^|-)2g$/.test(c.effectiveType||'')) d.classList.add('nodata');
   }catch(e){}
 })();
 </script>
@@ -3833,7 +3838,7 @@ body .home-title,body .home-subtitle,body .home-desc{filter:drop-shadow(0 3px 14
   document.body.classList.remove('light-mode');
   try{ localStorage.setItem('kw-light-mode','0'); }catch(e){}
   var v=document.getElementById('bgVideo'); if(!v) return;
-  if(document.documentElement.classList.contains('lite')) return;   /* mode allégé : on ne télécharge pas la vidéo */
+  if(document.documentElement.classList.contains('nodata')) return;   /* économie de données : on ne télécharge pas la vidéo */
   v.muted=true; v.defaultMuted=true; v.loop=true; v.controls=false;
   v.setAttribute('playsinline',''); v.setAttribute('webkit-playsinline','');
   v.removeAttribute('controls');
@@ -4501,8 +4506,9 @@ body .btn-wa{
 }
 body .prod-card:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(0,0,0,.6),0 0 28px rgba(201,168,76,.22)!important;}
 /* ===== MODE ALLÉGÉ (téléphones modestes) : même contenu, décor plus simple ===== */
-html.lite #bgVideo,html.lite #bgPoster,html.lite #splash{display:none!important;}
-html.lite body{background:#120e08 radial-gradient(ellipse at 50% 0%,#2b2112 0%,#120e08 62%,#0a0805 100%) no-repeat!important;}
+html.lite #splash{display:none!important;}
+html.nodata #bgVideo,html.nodata #bgPoster{display:none!important;}
+html.nodata body{background:#120e08 radial-gradient(ellipse at 50% 0%,#2b2112 0%,#120e08 62%,#0a0805 100%) no-repeat!important;}
 html.lite *,html.lite *::before,html.lite *::after{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;}
 html.lite body .prod-card{background:linear-gradient(135deg,rgba(62,52,38,.94),rgba(34,28,20,.94))!important;animation:none!important;}
 html.lite body .cat-card,html.lite body .page-cat-header,html.lite body nav.bottom-nav,html.lite .club-banner,html.lite .live-card,html.lite .club-step,html.lite .club-tier,html.lite .club-prize,html.lite .club-note{background:rgba(42,35,25,.94)!important;}
@@ -4553,12 +4559,11 @@ window.addEventListener('load', () => {
       if (el < 3500) return requestAnimationFrame(tick);
       const fps = n / 2.5;
       try {
-        if (fps < 22){
-          localStorage.setItem('kw-lite', JSON.stringify({ v: true, until: Date.now() + 14*864e5 }));
+        if (fps < 14){
+          localStorage.setItem('kw-lite2', JSON.stringify({ v: true, until: Date.now() + 14*864e5 }));
           root.classList.add('lite');
-          const v = document.getElementById('bgVideo'); if (v){ v.pause(); v.removeAttribute('src'); v.load(); }
         } else if (fps > 40) {
-          localStorage.setItem('kw-lite', JSON.stringify({ v: false, until: Date.now() + 7*864e5 }));
+          localStorage.setItem('kw-lite2', JSON.stringify({ v: false, until: Date.now() + 7*864e5 }));
         }
       } catch(e) {}
     })(performance.now());
