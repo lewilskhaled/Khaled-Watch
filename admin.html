@@ -312,7 +312,7 @@ input[type=range]{width:100%;accent-color:var(--or);cursor:pointer;}
       <div><label>Halo Cadran</label><select id="fHalo"><option value="or">🟡 Or</option><option value="argent">⚪ Argent</option><option value="sombre">⚫ Sombre</option></select></div>
     </div>
     <div class="field-row">
-      <div><label>Catégorie *</label><select id="fCat"><option value="">— Choisir —</option><option>Montres</option><option>Montres Luxueuses</option><option>Chaînes</option><option>Bracelets</option><option>Colliers</option><option>Bagues</option><option>Autres</option></select></div>
+      <div><label>Catégorie *</label><select id="fCat"><option value="">— Choisir —</option><option>Montres</option><option>Montres Luxueuses</option><option>Chaînes</option><option>Bracelets</option><option>Colliers</option><option>Sacs Femme</option><option>Bagues</option><option>Autres</option></select></div>
       <div><label>Genre *</label><select id="fGenre"><option value="">— Choisir —</option><option>Homme</option><option>Femme</option><option>Unisexe</option></select></div>
     </div>
     <div class="toggle-row"><input type="checkbox" id="fPatron"><label for="fPatron">⭐ Marquer comme "Choix du Patron"</label></div>
@@ -397,7 +397,7 @@ input[type=range]{width:100%;accent-color:var(--or);cursor:pointer;}
       <div><label>Halo Cadran</label><select id="eHalo"><option value="or">🟡 Or</option><option value="argent">⚪ Argent</option><option value="sombre">⚫ Sombre</option></select></div>
     </div>
     <div class="field-row">
-      <div><label>Catégorie *</label><select id="eCat"><option value="">— Choisir —</option><option>Montres</option><option>Montres Luxueuses</option><option>Chaînes</option><option>Bracelets</option><option>Colliers</option><option>Bagues</option><option>Autres</option></select></div>
+      <div><label>Catégorie *</label><select id="eCat"><option value="">— Choisir —</option><option>Montres</option><option>Montres Luxueuses</option><option>Chaînes</option><option>Bracelets</option><option>Colliers</option><option>Sacs Femme</option><option>Bagues</option><option>Autres</option></select></div>
       <div><label>Genre *</label><select id="eGenre"><option value="">— Choisir —</option><option>Homme</option><option>Femme</option><option>Unisexe</option></select></div>
     </div>
     <div class="toggle-row"><input type="checkbox" id="ePatron"><label for="ePatron">⭐ Marquer comme "Choix du Patron"</label></div>
@@ -616,7 +616,7 @@ function compressDataUri(dataUri, maxDim=1400, jpegQuality=0.85){
 
 async function planImageUploads(np){
   const fileChanges = [];
-  const isCollier = np.categorie === 'Colliers';
+  const isCollier = np.categorie === 'Colliers' || np.categorie === 'Sacs Femme';
   const maxDim = isCollier ? 1200 : 1000;
   const quality = isCollier ? 0.86 : 0.82;
   async function planField(getVal, setVal, hint){
@@ -1141,7 +1141,7 @@ function handleFileField(input,fieldId,previewId,catElId){
   if(file.size>15*1024*1024){alert('⚠ Image trop lourde (max 15 Mo avant compression).');return;}
   const img=document.getElementById(previewId);
   const catEl = document.getElementById(catElId||'fCat');
-  const isCollier = catEl && catEl.value === 'Colliers';
+  const isCollier = catEl && (catEl.value === 'Colliers' || catEl.value === 'Sacs Femme');
   // Qualité renforcée spécifiquement pour les Colliers (détails fins de chaîne bien nets)
   const maxDim = isCollier ? 1200 : 1000;
   const quality = isCollier ? 0.86 : 0.82;
