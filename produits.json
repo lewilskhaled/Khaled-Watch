@@ -1950,5 +1950,24 @@
       }
     ],
     "createdAt": "2026-11-25T08:21:10.759Z"
+  },
+  {
+    "id": "1795602743543",
+    "nom": "Casio",
+    "prix": 8000,
+    "categorie": "Montres",
+    "genre": "Homme",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1795602744951-9kam31-Casio-principal.webp",
+    "description": "",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "or",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [],
+    "createdAt": "2026-11-25T10:32:23.543Z"
   }
 ]
