@@ -1573,6 +1573,7 @@ body #bgVideo.is-playing{opacity:1;}
     <div class="cat-card" onclick="openCat('Montres Luxueuses')"><div class="cat-icon">💎</div><div class="cat-label">Montres Luxe</div><div class="cat-count" id="cnt-Montres Luxueuses">—</div></div>
     <div class="cat-card" onclick="openCat('Chaînes')"><div class="cat-icon">⛓</div><div class="cat-label">Chaîne Homme</div><div class="cat-count" id="cnt-Chaînes">—</div></div>
     <div class="cat-card" onclick="openCat('Colliers')"><div class="cat-icon">📿</div><div class="cat-label">Collier Femme</div><div class="cat-count" id="cnt-Colliers">—</div></div>
+    <div class="cat-card" onclick="openCat('Sacs Femme')"><div class="cat-icon">👜</div><div class="cat-label">Sac Femme</div><div class="cat-count" id="cnt-Sacs Femme">—</div></div>
     <div class="cat-card" onclick="openCat('Autres')"><div class="cat-icon">✨</div><div class="cat-label">Autres</div><div class="cat-count" id="cnt-Autres">—</div></div>
     <div class="cat-card" onclick="openAvis()"><div class="cat-icon">⭐</div><div class="cat-label">Avis Clients</div><div class="cat-count" id="cnt-Avis">—</div></div>
   </div>
@@ -1801,6 +1802,7 @@ body #bgVideo.is-playing{opacity:1;}
   <button class="nav-item" data-nav="Montres" onclick="openCat('Montres')"><span class="nav-icon">⌚</span>Montres</button>
   <button class="nav-item" data-nav="Chaînes" onclick="openCat('Chaînes')"><span class="nav-icon">⛓</span>Chaîne H.</button>
   <button class="nav-item" data-nav="Colliers" onclick="openCat('Colliers')"><span class="nav-icon">📿</span>Colliers</button>
+  <button class="nav-item" data-nav="Sacs Femme" onclick="openCat('Sacs Femme')"><span class="nav-icon">👜</span>Sacs</button>
   <button class="nav-item" data-nav="club" onclick="openClub()"><span class="nav-icon">🎁</span>Club</button>
 </nav>
 
@@ -1863,7 +1865,7 @@ async function fetchSharedData() {
   }
 }
 
-const CAT_ICONS = {'Montres':'⌚','Montres Luxueuses':'💎','Chaînes':'⛓','Colliers':'📿','Autres':'✨'};
+const CAT_ICONS = {'Montres':'⌚','Montres Luxueuses':'💎','Chaînes':'⛓','Colliers':'📿','Sacs Femme':'👜','Autres':'✨'};
 const FALLBACK_IMG = 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=70';
 
 let allProducts   = [];
@@ -2085,7 +2087,7 @@ function openCat(cat) {
   if (CF_CONFIG[cat]) {
     closeChainesFeed();
     openColliersFeed(cat);
-    setNavActive(cat === 'Montres' || cat === 'Colliers' ? cat : null);
+    setNavActive(cat === 'Montres' || cat === 'Colliers' || cat === 'Sacs Femme' ? cat : null);
     return;
   }
   if (cat === 'Chaînes') {
@@ -2164,6 +2166,7 @@ let cfList   = [];
 let cfCat    = 'Colliers';
 const CF_CONFIG = {
   'Colliers':          { title:'✦ Collier pour Femme', badge:'✦ Collier', empty:'Aucun collier disponible pour le moment.' },
+  'Sacs Femme':        { title:'✦ Sac pour Femme', badge:'✦ Sac', empty:'Aucun sac disponible pour le moment.' },
 };
 
 let cfQuery = '';
@@ -2197,7 +2200,7 @@ function openColliersFeed(cat) {
   if (sc) sc.scrollTop = 0;
   const feedEl = document.getElementById('colliersFeed');
   feedEl.classList.toggle('montres-lux', cfCat === 'Montres');
-  feedEl.classList.toggle('collier-lux', cfCat === 'Colliers');
+  feedEl.classList.toggle('collier-lux', cfCat === 'Colliers' || cfCat === 'Sacs Femme');
   feedEl.classList.add('open');
   document.body.style.overflow = 'hidden';
   spawnBubbles('cfBubbles', 18);
@@ -2595,7 +2598,7 @@ function renderProdCardHTML(p, i, eagerLimit){
       </div>
     </div>` : '';
 
-  const neutralBg = p.categorie === 'Colliers' ? ' neutral-bg' : '';
+  const neutralBg = (p.categorie === 'Colliers' || p.categorie === 'Sacs Femme') ? ' neutral-bg' : '';
 
   const imgZoneHTML = colors.length > 1 ? `
     <div class="cvar-viewport prod-img" data-pid="${h(p.id)}">
@@ -2800,7 +2803,7 @@ function buildAllSlides() {
 
     return `
     <div class="modal-slide" data-slide="${i}">
-      <div class="modal-img-wrap${p.categorie === 'Colliers' ? ' neutral-bg' : ''}" id="wrap360-${i}"
+      <div class="modal-img-wrap${(p.categorie === 'Colliers' || p.categorie === 'Sacs Femme') ? ' neutral-bg' : ''}" id="wrap360-${i}"
            ${has360 ? `ontouchstart="start360(event,${i})" ontouchmove="move360(event,${i})" ontouchend="end360(event,${i})" onmousedown="mdown360(event,${i})"` : ''}>
         <img id="mimg-${i}" src="${h(thumbUrl(mainImg, 1000, 85))}" alt="${h(p.nom)}" onerror="this.src='${FALLBACK_IMG}'" draggable="false">
         ${has360 ? `<div class="badge360">🔄 360°<br><span>Glisser</span></div>` : ''}
@@ -3684,7 +3687,7 @@ function delGoToProduct(id){
   const cat = p.categorie;
   if (CF_CONFIG[cat]){
     openColliersFeed(cat);
-    setNavActive(cat === 'Montres' || cat === 'Colliers' ? cat : null);
+    setNavActive(cat === 'Montres' || cat === 'Colliers' || cat === 'Sacs Femme' ? cat : null);
     requestAnimationFrame(()=>{
       const idx = cfList.findIndex(x=>x.id===id||x.baseId===id);
       const scroll = document.getElementById('cfScroll');
@@ -4334,7 +4337,7 @@ document.addEventListener('visibilitychange', () => { if (!document.hidden) club
   /* mots qui défilent sous le titre */
   var el = document.getElementById('homeRotate');
   if (el){
-    var W = ['Montres de prestige','Chaînes pour homme','Colliers pour femme',"Bijoux d'exception"], i = 0;
+    var W = ['Montres de prestige','Chaînes pour homme','Colliers pour femme','Sacs pour femme',"Bijoux d'exception"], i = 0;
     var show = function(){ el.classList.remove('in'); setTimeout(function(){ el.textContent = W[i++ % W.length]; el.classList.add('in'); }, 350); };
     show(); setInterval(show, 2800);
   }
@@ -4410,6 +4413,7 @@ function warmImages(){
     pick(expandVariants(allProducts.filter(p => p.categorie === 'Montres')), 900, 82, 3),
     pick(expandVariants(allProducts.filter(p => p.categorie === 'Montres Luxueuses')), 900, 82, 3),
     pick(allProducts.filter(p => p.categorie === 'Colliers' && p.genre === 'Femme'), 900, 82, 3),
+    pick(expandVariants(allProducts.filter(p => p.categorie === 'Sacs Femme')), 900, 82, 3),
     pick(allProducts.filter(p => p.categorie === 'Chaînes' && p.genre === 'Homme'), 800, 82, 3)
   );
   let i = 0;
