@@ -1898,5 +1898,57 @@
     "flash_reduction": 0,
     "couleurs": [],
     "createdAt": "2026-11-25T07:57:37.650Z"
+  },
+  {
+    "id": "1795594870759",
+    "nom": "Stanley cup",
+    "prix": 8000,
+    "categorie": "Autres",
+    "genre": "Unisexe",
+    "image": "https://raw.githubusercontent.com/lewilsKhaled/Khaled-Watch/main/images/1795594872756-d2uu5i-Stanley-cup-principal.png",
+    "description": "",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "or",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [
+      {
+        "nom": "Noir",
+        "hex": "#000000",
+        "image": "https://raw.githubusercontent.com/lewilsKhaled/Khaled-Watch/main/images/1795594872780-ni9d08-Stanley-cup-Noir.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Rose",
+        "hex": "#ffb5af",
+        "image": "https://raw.githubusercontent.com/lewilsKhaled/Khaled-Watch/main/images/1795594872803-gz32c4-Stanley-cup-Rose.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Vert",
+        "hex": "#b1dd8b",
+        "image": "https://raw.githubusercontent.com/lewilsKhaled/Khaled-Watch/main/images/1795594872819-su144i-Stanley-cup-Vert.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      },
+      {
+        "nom": "Violet",
+        "hex": "#d9c9fe",
+        "image": "https://raw.githubusercontent.com/lewilsKhaled/Khaled-Watch/main/images/1795594872834-qtzny0-Stanley-cup-Violet.png",
+        "img_gauche": "",
+        "img_droit": "",
+        "img_dos": ""
+      }
+    ],
+    "createdAt": "2026-11-25T08:21:10.759Z"
   }
 ]
