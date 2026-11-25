@@ -1879,5 +1879,24 @@
       }
     ],
     "createdAt": "2026-11-23T18:18:17.781Z"
+  },
+  {
+    "id": "1795593457649",
+    "nom": "Nike mind",
+    "prix": 8000,
+    "categorie": "Autres",
+    "genre": "Unisexe",
+    "image": "https://raw.githubusercontent.com/lewilsKhaled/Khaled-Watch/main/images/1795593459576-849aio-Nike-mind-principal.png",
+    "description": "",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "or",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [],
+    "createdAt": "2026-11-25T07:57:37.650Z"
   }
 ]
