@@ -2068,5 +2068,24 @@
     "flash_reduction": 0,
     "couleurs": [],
     "createdAt": "2026-11-26T20:51:09.138Z"
+  },
+  {
+    "id": "1795726764634",
+    "nom": "Sac",
+    "prix": 12000,
+    "categorie": "Sacs Femme",
+    "genre": "Femme",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1795726766676-9ivt2r-Sac-principal.webp",
+    "description": "",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "or",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [],
+    "createdAt": "2026-11-26T20:59:24.634Z"
   }
 ]
