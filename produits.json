@@ -1969,5 +1969,26 @@
     "flash_reduction": 0,
     "couleurs": [],
     "createdAt": "2026-11-25T10:32:23.543Z"
+  },
+  {
+    "id": "1795723600446",
+    "nom": "Sac chloé",
+    "prix": 5000,
+    "categorie": "Sacs Femme",
+    "genre": "Femme",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1795723613719-9bttb3-Sac-chloe-principal.webp",
+    "description": "",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "or",
+    "is_patron": false,
+    "moods": [
+      "Discret"
+    ],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [],
+    "createdAt": "2026-11-26T20:06:40.446Z"
   }
 ]
