@@ -2011,5 +2011,24 @@
     "flash_reduction": 0,
     "couleurs": [],
     "createdAt": "2026-11-26T20:11:09.107Z"
+  },
+  {
+    "id": "1795724181536",
+    "nom": "Sac PEDRA",
+    "prix": 15000,
+    "categorie": "Sacs Femme",
+    "genre": "Femme",
+    "image": "https://raw.githubusercontent.com/lewilskhaled/Khaled-Watch/main/images/1795724183534-5pk31e-Sac-PEDRA-principal.webp",
+    "description": "",
+    "img_gauche": "",
+    "img_droit": "",
+    "img_dos": "",
+    "halo_cadran": "or",
+    "is_patron": false,
+    "moods": [],
+    "flash_fin": "",
+    "flash_reduction": 0,
+    "couleurs": [],
+    "createdAt": "2026-11-26T20:16:21.536Z"
   }
 ]
