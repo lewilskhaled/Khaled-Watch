@@ -2087,7 +2087,7 @@ function openCat(cat) {
   if (CF_CONFIG[cat]) {
     closeChainesFeed();
     openColliersFeed(cat);
-    setNavActive(cat === 'Montres' || cat === 'Colliers' || cat === 'Sacs Femme' ? cat : null);
+    setNavActive(cat === 'Montres' || cat === 'Colliers' ? cat : null);
     return;
   }
   if (cat === 'Chaînes') {
@@ -2112,7 +2112,8 @@ function openCat(cat) {
   const csw = document.getElementById('catSearch'); if (csw) csw.style.display = (cat === 'Montres' || cat === 'Montres Luxueuses') ? 'block' : 'none';
   hideAll();
   document.getElementById('page-cat').style.display = 'block';
-  setNavActive(cat === 'Montres' ? 'Montres' : null);
+  setNavActive(cat === 'Montres' || cat === 'Sacs Femme' ? cat : null);
+  const gt = document.querySelector('.gender-tabs'); if (gt) gt.style.display = (cat === 'Sacs Femme') ? 'none' : '';
   window.scrollTo(0, 0);
   renderProducts();
 }
@@ -2166,7 +2167,6 @@ let cfList   = [];
 let cfCat    = 'Colliers';
 const CF_CONFIG = {
   'Colliers':          { title:'✦ Collier pour Femme', badge:'✦ Collier', empty:'Aucun collier disponible pour le moment.' },
-  'Sacs Femme':        { title:'✦ Sac pour Femme', badge:'✦ Sac', empty:'Aucun sac disponible pour le moment.' },
 };
 
 let cfQuery = '';
@@ -2200,7 +2200,7 @@ function openColliersFeed(cat) {
   if (sc) sc.scrollTop = 0;
   const feedEl = document.getElementById('colliersFeed');
   feedEl.classList.toggle('montres-lux', cfCat === 'Montres');
-  feedEl.classList.toggle('collier-lux', cfCat === 'Colliers' || cfCat === 'Sacs Femme');
+  feedEl.classList.toggle('collier-lux', cfCat === 'Colliers');
   feedEl.classList.add('open');
   document.body.style.overflow = 'hidden';
   spawnBubbles('cfBubbles', 18);
@@ -3687,7 +3687,7 @@ function delGoToProduct(id){
   const cat = p.categorie;
   if (CF_CONFIG[cat]){
     openColliersFeed(cat);
-    setNavActive(cat === 'Montres' || cat === 'Colliers' || cat === 'Sacs Femme' ? cat : null);
+    setNavActive(cat === 'Montres' || cat === 'Colliers' ? cat : null);
     requestAnimationFrame(()=>{
       const idx = cfList.findIndex(x=>x.id===id||x.baseId===id);
       const scroll = document.getElementById('cfScroll');
